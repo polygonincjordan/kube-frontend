@@ -126,6 +126,9 @@ import { SurgeryWorklistTabComponent } from './surgery-worklist-tab/surgery-work
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
 import { SharedModuleModule } from '../shared-module/shared-module.module';
+import { PostAnesthesiaCareRecordComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/post-anesthesia-care-record.component';
+import { ModifiedAldreteDocumentForInportComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/modified-aldrete-document/modified-aldrete-document.component';
+import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/er-vitals/er-vitals.component';
 
 const route: Routes = [
   {
@@ -217,6 +220,9 @@ const route: Routes = [
     CompanionMealOrderingComponentNew,
     ReceiveCartComponent,
     ArrivalMainListComponent,
+    PostAnesthesiaCareRecordComponent,
+    ModifiedAldreteDocumentForInportComponent,
+    ErVitalsForSBARComponent,
     SurgeryWorklistTabComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],

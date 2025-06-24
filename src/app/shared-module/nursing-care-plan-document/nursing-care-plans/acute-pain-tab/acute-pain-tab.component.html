@@ -6,7 +6,7 @@
         <div class="row">
           <div class="col-md-8">
             <input type="checkbox" formControlName="CapAcutePain" />
-            <label>Activity Intolerance;</label>
+            <label>Acute Pain</label>
           </div>
           <div class="col-md-4">
             <div>
@@ -14,7 +14,7 @@
               <label>Actual</label>
             </div>
             <div>
-              <input type="checkbox" formControlName="CapPotential" 
+              <input type="checkbox" formControlName="CapPotential"
               (change)="onCheckboxChange('CapPotential', ['CapActual'])"/>
               <label>Potential</label>
             </div>
@@ -122,7 +122,7 @@
             <div class="d-flex">
               <input type="checkbox" formControlName="CaiOthers" />
               <label class="mr-3">Others: </label>
-              <input type="text" formControlName="CaiOthersTxt" 
+              <input type="text" formControlName="CaiOthersTxt"
               class="form-control"
               [readOnly]="nursingCarePlanForm.get('CaiOthers').value == false"/>
             </div>

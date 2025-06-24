@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 8px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openCPRDocument && !openPreCardiacCath">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openPostAnesthesia && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openCPRDocument && !openPreCardiacCath">
         <div class="search-functionality col-md-2 pl-0" style="flex: 0 0 13.66667%; max-width: 13.66667%;">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,9 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openCPRDocument || openPreCardiacCath"
+
+
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openPostAnesthesia || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale || openNursingCarePlans || openDischargeSummery || openNurseAdmission || openCPRDocument || openPreCardiacCath"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -121,6 +123,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Post Anesthesia Care Record'">
+            <button type="button" class="action-doc" (click)="copyDirectReleasePostCareRecord()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pre-Cardiac Cath Checklist'">
             <button type="button" class="action-doc" (click)="copyDirectReleasePreCardiac()">
               Release
@@ -154,7 +161,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openCPRDocument && !openPreCardiacCath">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openPostAnesthesia  && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openNursingCarePlans && !openDischargeSummery && !openMorseFallScale && !openNurseAdmission && !openCPRDocument && !openPreCardiacCath">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -193,7 +200,28 @@
                     </div>
                 </div>
               </div>
-             
+
+               <!-- Post Anesthesia Care Record -->
+               <div [ngClass]="isPostAnesthesia ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+                *ngIf="!selectedDocument || selectedDocument == 'PACR'" (click)="selectAssessment('isPostAnesthesia',PostAnesthesiaList[0])">
+                 <div class="col-md-4"> Post Anesthesia Care Record {{PostAnesthesiaList[0]?.Zversion ?
+                   dockVer(PostAnesthesiaList[0]?.Zversion) : ''}} :</div>
+                 <div class="col-md-2 status-color">{{PostAnesthesiaList[0]?.StatusTxt || 'N/A'}}</div>
+                 <div class="col-md-2" title="{{getTime(PostAnesthesiaList[0]?.DocTime)}}">
+                   {{(getDate(PostAnesthesiaList[0]?.DocDate) | date: "dd.MM.y") || '-'}}
+                 </div>
+                 <div class="col-md-3">{{PostAnesthesiaList[0]?.PhyNm || '-'}}</div>
+                 <div class="col-md-1 d-flex">
+                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                     (click)="openPostCareRecordPDF(PostAnesthesiaList[0]?.Dockey)"
+                     *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
+                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
+                       <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
+                         id=""></select>
+                     </div>
+                 </div>
+               </div>
+
               <!-- Education Assessment -->
               <div *ngIf="!selectedDocument || selectedDocument == 'EDA'"
                 [ngClass]="isEducationAssement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -279,7 +307,7 @@
                     </div>
                 </div>
               </div>
-              
+
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event" *ngIf="!selectedDocument || selectedDocument == 'ATD'"
                 [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -505,7 +533,7 @@
               </div>
             </div>
         </div>
-        </div> 
+        </div>
       </div>
       <div class="col-md-6">
         <div class="box-col document-overflow">
@@ -566,6 +594,7 @@
     <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
     <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
     <app-pre-cardiac-cath *ngIf="openPreCardiacCath"></app-pre-cardiac-cath>
+    <app-post-anesthesia-care-record *ngIf="openPostAnesthesia"></app-post-anesthesia-care-record>
     <ng-template #releasepdfmodal>
       <div class="modal-body">
         <ngx-extended-pdf-viewer *ngIf="pdfUrlType == 'pdf'" [src]="pdfUrl" height="80vh" [backgroundColor]="'#525659'"
