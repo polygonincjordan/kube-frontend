@@ -162,11 +162,11 @@ export class DocumentingDeliveryComponent implements OnInit {
       class: 'modal-dialog-centered modal-xl allergy-modal-size',
     };
     this.modalRefForAllergy = this.modalService.show(this.allergyModal, config);
-    this.initForm();
-    this.getPatientDeliveryDetails();
     setTimeout(() => {
       this.deliveryForm.disable();
-    }, 2000);
+    }, 100);
+    this.initForm();
+    this.getPatientDeliveryDetails();
   }
 
   getPatientDeliveryDetails() {

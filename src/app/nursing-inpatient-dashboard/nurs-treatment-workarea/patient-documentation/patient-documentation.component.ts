@@ -8327,10 +8327,10 @@ export class PatientDocumentationComponent implements OnInit {
     })
   }
   releasePostCareRecordDetail() {
-    this.emergencyService.fetchPostCareRecord(this.PostAnesthesiaList[0].Dockey).subscribe((res: any) => {
-      delete res?.results[0]?.__metadata;
+    this.emergencyService.fetchPostCareRecord(this.PostAnesthesiaList[0]?.Dockey).subscribe((res: any) => {
+      delete res.d.results[0].__metadata;
       let d: any = {
-        d: res?.results[0],
+         d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
       this.emergencyService.savePostCareRecord(d).subscribe(
