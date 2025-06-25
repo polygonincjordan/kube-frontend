@@ -100,7 +100,7 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
     // Subscribe using an object to define handlers
     this.subscription = this.emergencyService.getDocFallRiskAssessmentDetails(dockey).subscribe({
       next: (data: any) => {
-      this.pediatricsForm.patchValue(data?.d?.results[0])
+        this.pediatricsForm.patchValue(data?.d?.results[0])
         // Handle successful data retrieval
 
       },
@@ -124,8 +124,8 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }  
-     if (this.actionTypeSubscription$) {
+    }
+    if (this.actionTypeSubscription$) {
       this.actionTypeSubscription$.unsubscribe();
       this.dataShareService.sendActionType(null);
     }
@@ -139,7 +139,7 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
       Einri: this.storageService.einri,
       Patnr: this.storageService.patnr,
       Falnr: this.storageService.falnr,
-      Lfdnr : this.storageService.lfdnr,
+      Lfdnr: this.storageService.lfdnr,
       Orgdo: localStorage.getItem('initOrg'),
       AttendPhy: this.storageService.getGpart(),
       DocStatus: "",
@@ -164,8 +164,107 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
       ScoreDesc: "",
       Comments: ""
     })
+
+    this.pediatricsForm.get('CompleteParalysis')?.valueChanges.subscribe(val => {
+      if (val) {
+        // Disable other checkboxes
+        this.pediatricsForm.get('Experience')?.disable({ emitEvent: false });
+        this.pediatricsForm.get('Dizzeness')?.disable({ emitEvent: false });
+
+        // Disable dropdowns
+        this.disableAllDropdowns(true);
+
+        // Set score and description
+        this.pediatricsForm.patchValue({
+          TotalScore: '0',
+          ScoreDesc: 'Low fall risk prevention protocol'
+        }, { emitEvent: false });
+      } else {
+        // Enable other checkboxes
+        this.pediatricsForm.get('Experience')?.enable({ emitEvent: false });
+        this.pediatricsForm.get('Dizzeness')?.enable({ emitEvent: false });
+
+        // Re-enable dropdowns only if other checkboxes are also false
+        const exp = this.pediatricsForm.get('Experience')?.value;
+        const diz = this.pediatricsForm.get('Dizzeness')?.value;
+        if (!exp && !diz) {
+          this.disableAllDropdowns(false);
+          this.pediatricsForm.patchValue({
+            TotalScore: '',
+            ScoreDesc: ''
+          }, { emitEvent: false });
+        }
+      }
+    });
+
+    ['Experience', 'Dizzeness'].forEach(ctrl => {
+      this.pediatricsForm.get(ctrl)?.valueChanges.subscribe(val => {
+        const otherCtrl = ctrl === 'Experience' ? 'Dizzeness' : 'Experience';
+        const exp = this.pediatricsForm.get('Experience')?.value;
+        const diz = this.pediatricsForm.get('Dizzeness')?.value;
+
+        if (exp || diz) {
+          this.pediatricsForm.get('CompleteParalysis')?.disable({ emitEvent: false });
+          this.disableAllDropdowns(true);
+
+          this.pediatricsForm.patchValue({
+            TotalScore: '0',
+            ScoreDesc: 'High fall risk prevention protocol'
+          }, { emitEvent: false });
+        } else {
+          this.pediatricsForm.get('CompleteParalysis')?.enable({ emitEvent: false });
+          this.disableAllDropdowns(false);
+
+          this.pediatricsForm.patchValue({
+            TotalScore: '',
+            ScoreDesc: ''
+          }, { emitEvent: false });
+        }
+      });
+    });
+    this.setDefaultAgeAndGender(this.storageService?.patientData?.gender)
+    this.calculateTotalScore();
+
   }
 
+  disableAllDropdowns(disabled: boolean) {
+    const dropdowns = [
+      'AgeDesc', 'GenderDesc', 'CognitiveDesc', 'ResponseDesc',
+      'DiagnosisDesc', 'EnvironmentalDesc', 'MedicationDesc'
+    ];
+
+    dropdowns.forEach(ctrl => {
+      if (disabled) {
+        this.pediatricsForm.get(ctrl)?.disable({ emitEvent: false });
+      } else {
+        this.pediatricsForm.get(ctrl)?.enable({ emitEvent: false });
+      }
+    });
+
+  }
+
+  setDefaultAgeAndGender(genderValue: string) {
+    console.log(genderValue, "genderValue")
+    const parts = genderValue?.split('-');
+    const age = parseInt(parts[0].trim().split(' ')[0], 10);
+    const gender = parts[1].trim().toLowerCase();
+
+    if (gender === 'male') {
+      this.pediatricsForm.patchValue({ GenderDesc: '1', GenderScore: '1' });
+    } else if (gender === 'female') {
+      this.pediatricsForm.patchValue({ GenderDesc: '2', GenderScore: '1' });
+    }
+
+    if (age >= 13) {
+      this.pediatricsForm.patchValue({ AgeDesc: '1', AgeScore: '1' });
+    } else if (age >= 7) {
+      this.pediatricsForm.patchValue({ AgeDesc: '2', AgeScore: '2' });
+    } else if (age >= 3) {
+      this.pediatricsForm.patchValue({ AgeDesc: '3', AgeScore: '3' });
+    } else {
+      this.pediatricsForm.patchValue({ AgeDesc: '4', AgeScore: '4' });
+    }
+  }
 
 
   calculateTotalScore() {
@@ -195,13 +294,13 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
 
     const totalScore = Number(this.pediatricsForm.get('TotalScore')?.value || 0);
     this.pediatricsForm.get('TotalScore')?.setValue(String(total), { emitEvent: false });
-      if ((totalScore >= 7 && totalScore <= 11)) {
-         this.pediatricsForm.get('ScoreDesc')?.setValue('Low fall risk prevention protocol');
-       } else if (totalScore >= 12) {
-         this.pediatricsForm.get('ScoreDesc')?.setValue('High fall risk prevention protocol');
-       } else {
-         this.pediatricsForm.get('ScoreDesc')?.setValue('');
-       }
+    if ((totalScore >= 7 && totalScore <= 11)) {
+      this.pediatricsForm.get('ScoreDesc')?.setValue('Low fall risk prevention protocol');
+    } else if (totalScore >= 12) {
+      this.pediatricsForm.get('ScoreDesc')?.setValue('High fall risk prevention protocol');
+    } else {
+      this.pediatricsForm.get('ScoreDesc')?.setValue('');
+    }
   }
 
   createFallRiskPed(dockStatus): Promise<any> {
@@ -227,7 +326,7 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
           this.sharedService.waringSwallModel(`POST Error at facepain : ${err}`);
         },
         complete: () => {
-            resolve(true);
+          resolve(true);
           // Handle completion (optional), invoked when the observable completes
           this.sharedService.successSwallModel('Pediatrics Fall Risk Assessment Document create successfully');
         }

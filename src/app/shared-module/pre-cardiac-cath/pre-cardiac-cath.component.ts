@@ -30,7 +30,9 @@ export class PreCardiacCathComponent implements OnInit {
     { id: "03", name: "Dr. Kamel Toukan" },
     { id: "04", name: "Dr. Amir Malkawi" },
     { id: "05", name: "Dr. Ziad Qura'n" },
-    { id: "06", name: "Dr. Nazih Kadri" }
+    { id: "06", name: "Dr. Nazih Kadri" },
+    { id: "07", name: "Dr. Mohammad Hajiri" },
+    { id: "08", name: "Dr. Fadi Alqaisi" },
   ]
 
   constrastAllergy = [

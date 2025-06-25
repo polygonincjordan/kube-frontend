@@ -106,6 +106,7 @@ export class MedicalReportComponent implements OnInit,OnChanges {
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditMedicalDoc = false;
       this.admissionService.isCloneMedicalDoc = false;
+      this.sharedService.successSwallModel('Medical Report Document Created Successfully');
     },(err) =>{
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditMedicalDoc = false;
@@ -126,6 +127,7 @@ export class MedicalReportComponent implements OnInit,OnChanges {
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditMedicalDoc = false;
       this.admissionService.isCloneMedicalDoc = false;
+      this.sharedService.successSwallModel('Medical Report Document Edited Successfully');
     },(err) =>{
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditMedicalDoc = false;
@@ -142,6 +144,7 @@ export class MedicalReportComponent implements OnInit,OnChanges {
       this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';
     this.admissionService.clearSoapEvent.next(true);
+    this.sharedService.successSwallModel('Medical Report Document Released Successfully');
     this.realodEducationList.next(true);
     })
    }

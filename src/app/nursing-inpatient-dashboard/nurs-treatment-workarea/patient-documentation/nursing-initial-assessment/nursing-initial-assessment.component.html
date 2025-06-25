@@ -21,7 +21,7 @@
       <div class="col-md-3">
         <div class="form-group">
           <label class="mr-3">Time</label>
-          <input type="time" placeholder="00:00" class="form-control" aria-label="24hr format"
+          <input type="time" placeholder="00:00" class="form-control" step="2"
             formControlName="Timee" />
         </div>
       </div>
@@ -810,13 +810,33 @@
           <div class="col-md-2">
             <div class="form-group">
               <div class="label mr-2" style="width: 130px">LMP</div>
-              <input type="text" class="form-control" formControlName="PhLmp" />
+              <div class="header-date p-0">
+                <span
+                  style="position: relative; top: 32px; right: 30px; float: right; margin-top: -26px; font-size: 18px; z-index: 1;">
+                  <img src="assets/img/Calender.svg" alt="" />
+                </span>
+                <input class="form-control ml-0 col-1"
+                  style="color: #000; border-radius: 8px; min-width: 230px; height: 40px !important" type="text"
+                  placeholder="" [minDate]="" [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker
+                  [bsValue]="CurrentDateAndTime" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                  formControlName="PhLmp" />
+              </div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <div class="label mr-2" style="width: 130px">EDD</div>
-              <input type="text" class="form-control" formControlName="PhEdd" />
+              <div class="header-date p-0">
+                <span
+                  style="position: relative; top: 32px; right: 30px; float: right; margin-top: -26px; font-size: 18px; z-index: 1;">
+                  <img src="assets/img/Calender.svg" alt="" />
+                </span>
+                <input class="form-control ml-0 col-1"
+                  style="color: #000; border-radius: 8px; min-width: 230px; height: 40px !important" type="text"
+                  placeholder="" [minDate]="" [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker
+                  [bsValue]="CurrentDateAndTime" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                  formControlName="PhEdd" />
+              </div>
             </div>
           </div>
           <div class="col-md-2">
@@ -877,7 +897,17 @@
           <div class="col-md-2">
             <div class="form-group">
               <div class="label">Date of Last CS</div>
-              <input type="text" class="form-control ml-2" formControlName="PhDateLastCs" />
+              <div class="header-date p-0">
+                <span
+                  style="position: relative; top: 32px; right: 30px; float: right; margin-top: -26px; font-size: 18px; z-index: 1;">
+                  <img src="assets/img/Calender.svg" alt="" />
+                </span>
+                <input class="form-control ml-0 col-1"
+                  style="color: #000; border-radius: 8px; min-width: 230px; height: 40px !important" type="text"
+                  placeholder="" [minDate]="" [maxDate]="" readonly #dp="bsDatepicker" bsDatepicker
+                  [bsValue]="CurrentDateAndTime" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                  formControlName="PhDateLastCs" />
+              </div>
             </div>
           </div>
         </div>
@@ -1878,38 +1908,42 @@
         </div>
 
         <table class="table table-bordered table-responsive max-height300">
-          <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
+          <thead style="
+                    position: sticky;
+                    top: -10px;
+                    z-index: 9;
+                    background: #e4edf5;
+                  ">
             <tr>
-              <th></th>
+              <!-- <th></th> -->
               <th>No.</th>
               <th>Time</th>
               <th>Sex</th>
-              <th>Wt</th>
+              <th>Wt(in gm)</th>
               <th>APGAR Score(1)</th>
               <th>APGAR Score(5)</th>
               <th>APGAR Score(10)</th>
-              <th>Status Description</th>
+              <th style="width:15%">Status Description</th>
             </tr>
           </thead>
           <tbody style="background: #fbfcff">
-            <ng-container formArrayName="TOCONSULTATION"
+            <ng-container formArrayName="TOBABY"
               *ngFor=" let item of nursingFormGroup.get('TOBABY')['controls']; let i = index">
               <tr [formGroupName]="i" class="c-pointer">
-                <td></td>
+                <!-- <td></td> -->
                 <td><input type="text" class="form-control" formControlName="No" /></td>
-                <td><input type="text" class="form-control" formControlName="Time" /></td>
+                <td><input type="time" step="2" class="form-control" formControlName="Time" /></td>
                 <td><input type="text" class="form-control" formControlName="Sex" /></td>
                 <td><input type="text" class="form-control" formControlName="Wt" /></td>
                 <td><input type="text" class="form-control" formControlName="ApgarScore1" /></td>
                 <td><input type="text" class="form-control" formControlName="ApgarScore5" /></td>
                 <td><input type="text" class="form-control" formControlName="ApgarScore10" /></td>
                 <td>
-                  <ng-select [items]="statusDescriptions" bindLabel="label" bindValue="value" placeholder="Select"
+                  <ng-select [items]="status" bindLabel="label" bindValue="value" placeholder="Select"
                     style="width: 100%" formControlName="StatusDesc"></ng-select>
                 </td>
               </tr>
             </ng-container>
-
           </tbody>
         </table>
         <div class="row">
@@ -1962,7 +1996,7 @@
             <div class="col-md-2"><label>Uterine massage</label></div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="radio" class="ml-0 mr-1"  formControlName="PpaUterineMassage" value="0" />
+                <input type="radio" class="ml-0 mr-1" formControlName="PpaUterineMassage" value="0" />
                 <div class="label">Yes</div>
               </div>
             </div>
@@ -2082,13 +2116,13 @@
             <div class="col-md-2"><label>episiotomy</label></div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="radio" class="ml-0 mr-1" formControlName="PpaEpisiotomy" value="0"/>
+                <input type="radio" class="ml-0 mr-1" formControlName="PpaEpisiotomy" value="0" />
                 <div class="label">Yes</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="radio" class="ml-0 mr-1" formControlName="PpaEpisiotomy" value="1"/>
+                <input type="radio" class="ml-0 mr-1" formControlName="PpaEpisiotomy" value="1" />
                 <div class="label">No</div>
               </div>
             </div>
@@ -2260,7 +2294,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-4">
               <div class="form-group">
-                <input type="radio" class="ml-0 mr-1" formControlName="PpaCatheter" />
+                <input type="radio" class="ml-0 mr-1" value="1" formControlName="PpaBladder" />
                 <div class="label">with foley's catheter</div>
               </div>
             </div>
@@ -2465,7 +2499,7 @@
             </div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="radio" class="ml-0 mr-1" value="0"  formControlName="EdModeIncision" />
+                <input type="radio" class="ml-0 mr-1" value="0" formControlName="EdModeIncision" />
                 <div class="label">yes</div>
               </div>
             </div>
