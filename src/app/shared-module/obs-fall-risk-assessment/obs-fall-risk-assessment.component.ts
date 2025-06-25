@@ -144,7 +144,32 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
       TotalScoreDesc: [''],
       Recommendations: ['']
     });
+
+    this.setupNoneLogic('PNone', ['PHxFall', 'PHxBedrest', 'PVisual']);
+    this.setupNoneLogic('CNone', ['CHxAnemia', 'COrthostatic', 'CDizziness']);
+    this.setupNoneLogic('HNone', ['HPpHemorrhage', 'HDxAbruption']);
+    this.setupNoneLogic('NNone', ['NNumbness', 'NEpiduralOff']);
+    this.setupNoneLogic('MeNone', ['MeIvImNarcotics', 'MeAntiHypertensives']);
   }
+
+  setupNoneLogic(noneControl: string, otherControls: string[]) {
+    this.obsFallRiskForm.get(noneControl)?.valueChanges.subscribe(checked => {
+      if (checked) {
+        const updates = {};
+        otherControls.forEach(c => updates[c] = false);
+        this.obsFallRiskForm.patchValue(updates, { emitEvent: false });
+      }
+    });
+
+    otherControls.forEach(controlName => {
+      this.obsFallRiskForm.get(controlName)?.valueChanges.subscribe(val => {
+        if (val) {
+          this.obsFallRiskForm.get(noneControl)?.setValue(false, { emitEvent: false });
+        }
+      });
+    });
+  }
+
 
 
   getDocData(dockey: string) {
@@ -309,7 +334,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
         complete: () => {
           // Handle completion (optional), invoked when the observable completes
           resolve(true); // Resolve the promise with formValue
-          this.sharedService.successSwallModel('APGAR Scale Document created successfully');
+          this.sharedService.successSwallModel('Obstetric Fall Risk Assessment Document created successfully');
         }
       });
     });

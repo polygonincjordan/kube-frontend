@@ -682,6 +682,7 @@ export class DocumentationComponent implements OnInit {
             .releaseMedDoc(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
+              this.sharedService.successSwallModel('Medical Report Document Relesed Successfully');
             });
         }
       });

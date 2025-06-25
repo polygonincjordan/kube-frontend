@@ -667,6 +667,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getApgarScaleDoc();
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
+    this.getNursingInitalGynoDoc();
   }
 
   LatestMFSSet() {
@@ -989,6 +990,20 @@ export class PatientDocumentationComponent implements OnInit {
       },
     });
   }
+
+  // Nursing Intial Assessment Gyno Document
+  getNursingInitalGynoDoc() {
+    this.emergencyService.NursingInitialGynoSetLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestNursingInitialList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
 
   // Stamp Document Latest
   getStampDocDetails() {
@@ -2273,6 +2288,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getApgarScaleDoc();
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
+    this.getNursingInitalGynoDoc();
   }
 
   openDocument(action) {
@@ -8330,7 +8346,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.fetchPostCareRecord(this.PostAnesthesiaList[0]?.Dockey).subscribe((res: any) => {
       delete res.d.results[0].__metadata;
       let d: any = {
-         d: res?.d?.results[0],
+        d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
       this.emergencyService.savePostCareRecord(d).subscribe(
