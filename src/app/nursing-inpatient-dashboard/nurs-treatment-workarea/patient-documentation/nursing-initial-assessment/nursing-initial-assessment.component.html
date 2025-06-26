@@ -346,7 +346,7 @@
           <tbody style="background-color: hsl(225, 100%, 99%)">
             <tr *ngFor="let item of medicationImportDrugArray; let i = index" style="text-align: center">
               <td>{{ item.OrderType }}</td>
-              <td style="width: 270px">{{ item.Descr }}</td>
+              <td style="width: 270px">{{ item.Description }}</td>
               <td style="text-align: center; pointer-events: none">
                 <input type="checkbox" style="width: 18px" [(ngModel)]="item.HomeMedication"
                   [ngModelOptions]="{ standalone: true }" />
@@ -376,13 +376,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaDoYouHave" [value]="'Yes'" name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaDoYouHave" [value]="'1'" name="" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaDoYouHave" [value]="'No'" name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaDoYouHave" [value]="'0'" name="" />
               <div class="label">No</div>
             </div>
           </div>
@@ -469,7 +469,7 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <ng-select class="w-100" [items]="pain" bindLabel="label" bindValue="value" placeholder="Select"
+              <ng-select class="w-100" [items]="pain" bindLabel="id" bindValue="label" placeholder="Select"
                 formControlName="PaPainIntensity1">
               </ng-select>
             </div>
@@ -484,13 +484,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaSleepingNight" [value]="'Yes'" name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaSleepingNight" [value]="'1'" name="" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaSleepingNight" [value]="'No'" name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaSleepingNight" [value]="'0'" name="" />
               <div class="label">No</div>
             </div>
           </div>
@@ -504,14 +504,14 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'Yes'"
+              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'1'"
                 name="" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'No'"
+              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'0'"
                 name="" />
               <div class="label">No</div>
             </div>
@@ -526,13 +526,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaPainEveryday" [value]="'Yes'" name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaPainEveryday" [value]="'1'" name="" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaPainEveryday" [value]="'No'" name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaPainEveryday" [value]="'0'" name="" />
               <div class="label">No</div>
             </div>
           </div>
@@ -735,13 +735,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="NReferDietician" value="Yes" />
+              <input type="radio" class="mr-2 ml-0" formControlName="NReferDietician" value="1" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="NReferDietician" value="No" />
+              <input type="radio" class="mr-2 ml-0" formControlName="NReferDietician" value="0" />
               <div class="label">No</div>
             </div>
           </div>
@@ -802,7 +802,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <div class="label mr-2" style="width: 130px">Blood Group</div>
-              <ng-select [items]="bloodGroups" bindLabel="label" bindValue="value" placeholder="Select"
+              <ng-select [items]="bloodGroups" bindLabel="label" bindValue="id" placeholder="Select"
                 style="width: 100%" formControlName="PhBloodGroup">
               </ng-select>
             </div>
@@ -878,13 +878,13 @@
           <div class="col-md-2"><label>Previous CS</label></div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="No" formControlName="PhPreviousCs" />
+              <input type="radio" class="mr-2 ml-0" value="0" formControlName="PhPreviousCs" />
               <div class="label">No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="Yes" formControlName="PhPreviousCs" />
+              <input type="radio" class="mr-2 ml-0" value="1" formControlName="PhPreviousCs" />
               <div class="label">Yes</div>
             </div>
           </div>
@@ -917,13 +917,13 @@
           <div class="col-md-2"><label>Hepatitis A Immune</label></div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="Yes" formControlName="PhHepatitisA" />
+              <input type="radio" class="mr-2 ml-0" value="1" formControlName="PhHepatitisA" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="No" formControlName="PhHepatitisA" />
+              <input type="radio" class="mr-2 ml-0" value="0" formControlName="PhHepatitisA" />
               <div class="label">No</div>
             </div>
           </div>
@@ -934,13 +934,13 @@
           <div class="col-md-2"><label>Hepatitis B Immune</label></div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="Yes" formControlName="PhHepatitisB" />
+              <input type="radio" class="mr-2 ml-0" value="1" formControlName="PhHepatitisB" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="No" formControlName="PhHepatitisB" />
+              <input type="radio" class="mr-2 ml-0" value="0" formControlName="PhHepatitisB" />
               <div class="label">No</div>
             </div>
           </div>
@@ -951,13 +951,13 @@
           <div class="col-md-2"><label>Hepatitis C Immune</label></div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="Yes" formControlName="PhHepatitisC" />
+              <input type="radio" class="mr-2 ml-0" value="1" formControlName="PhHepatitisC" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" value="No" formControlName="PhHepatitisC" />
+              <input type="radio" class="mr-2 ml-0" value="0" formControlName="PhHepatitisC" />
               <div class="label">No</div>
             </div>
           </div>
@@ -1345,13 +1345,13 @@
           <div class="col-md-2"><label>Respiratory</label></div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" value="0"/>
               <div class="label">Normal</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" value="1"/>
               <div class="label">Abnormal</div>
             </div>
           </div>

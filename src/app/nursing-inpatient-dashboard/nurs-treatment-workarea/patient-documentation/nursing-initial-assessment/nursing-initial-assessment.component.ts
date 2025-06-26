@@ -39,14 +39,14 @@ export class NursingInitialAssessmentComponent implements OnInit {
   ];
 
   bloodGroups = [
-    { id: 0, label: 'A-' },
-    { id: 1, label: 'A+' },
-    { id: 2, label: 'B-' },
-    { id: 3, label: 'B+' },
-    { id: 4, label: 'O-' },
-    { id: 5, label: 'O+' },
-    { id: 6, label: 'AB-' },
-    { id: 7, label: 'AB+' }
+    { id: '0', label: 'A-' },
+    { id: '1', label: 'A+' },
+    { id: '2', label: 'B-' },
+    { id: '3', label: 'B+' },
+    { id: '4', label: 'O-' },
+    { id: '5', label: 'O+' },
+    { id: '6', label: 'AB-' },
+    { id: '7', label: 'AB+' }
   ];
   pain = [
     { id: 0, label: '1' },
@@ -576,7 +576,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
     this.TOBABY.push(this.fb.group({
       Dockey: [data?.Dockey || ''],
       No: [data?.No || ''],
-      Time: [data?.Time || ''],
+      Time: [this.parseTime(data?.Time) || this.currentTime],
       Sex: [data?.Sex || ''],
       ApgarScore1: [data?.ApgarScore1 || ''],
       ApgarScore5: [data?.ApgarScore5 || ''],
@@ -590,7 +590,6 @@ export class NursingInitialAssessmentComponent implements OnInit {
     this.subscription = this.emergencyService.fetchNursingInitialGynoDocument(docKey).subscribe({
       next: (apiResponse: any) => {
         const response = apiResponse?.d?.results?.[0] || {};
-
         this.nursingFormGroup.patchValue({
           Datee: this.getDate(response.Datee),
           PhDateLastCs: this.getDate(response.PhDateLastCs),
@@ -598,9 +597,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
           PhEdd: this.getDate(response.PhEdd),
           PhLmp: this.getDate(response.PhLmp),
           SMDeliveryTime: this.parseTime(response.SMDeliveryTime),
-          Timee: this.getDate(response.Timee),
-        });
-        this.nursingFormGroup.patchValue({
+          Timee: this.parseTime(response.Timee),
           Dockey: response.Dockey,
           Dtid: response.Dtid,
           Einri: response.Einri,
@@ -1067,7 +1064,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
         Dockey: '',
         OrderType:
           element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
-        Descr:
+        Description:
           element.Descrlt +
           element.Quan +
           element.Quanunit +
@@ -1611,6 +1608,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
       //   }
       // }
       let formData = this.nursingFormGroup.value;
+      formData.DocStatus = status;
       formData['TOMEDICATION'] = this.medicationImportDrugArray;
       let checkVitalList: any[] = this.toVitalsArr?.filter((res) => {
         delete res.Vunit;
@@ -1619,6 +1617,10 @@ export class NursingInitialAssessmentComponent implements OnInit {
       });
       formData['TOVITALSIGN'] = checkVitalList;
       formData['TOALLERGY'] = this.toAllergyArr;
+      formData['TOBABY'] = formData.TOBABY.filter(res => res.Consultation || res.EmpResp).map(res => ({
+        ...res,
+        Time: this.convertToPTTime(res.Time),
+      }));
       formData.Datee = this.sanitizeSAPDateFormat(formData.Datee) || '',
         formData.PhDateLastCs = this.sanitizeSAPDateFormat(formData.PhDateLastCs) || '',
         formData.SMDeliveryDate = this.sanitizeSAPDateFormat(formData.SMDeliveryDate) || '',

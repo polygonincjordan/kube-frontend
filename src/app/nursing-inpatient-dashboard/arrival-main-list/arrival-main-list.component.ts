@@ -22,6 +22,8 @@ import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { DatePipe } from '@angular/common';
+import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-arrival-main-list',
@@ -34,6 +36,7 @@ export class ArrivalMainListComponent implements OnInit {
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() dataToParent = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+  @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @Input() listItem: any = [];
   @Input() listType: string;
@@ -85,7 +88,7 @@ export class ArrivalMainListComponent implements OnInit {
   inArrivalslistListClone: any[];
   riskList: any[];
   constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private hospitalistService: HospitalistService,
-    private storageService: StorageService
+    private storageService: StorageService, private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -107,7 +110,7 @@ export class ArrivalMainListComponent implements OnInit {
     });
   }
   selectedDate: any;
-// 2025-05-10T00:00:00
+  // 2025-05-10T00:00:00
   arrivalList(date?: any) {
     this.selectedDate = date;
     let dateFormate = `${new DatePipe('en-US').transform(this.selectedDate, 'yyyy-MM-dd')}T00:00:00`;
@@ -129,58 +132,58 @@ export class ArrivalMainListComponent implements OnInit {
   wardValueArr: any = [];
   specialtyValueArr: any = [];
   filterListData(event) {
-  if (
-    event.Physician || event.Status || event.FCategory ||
-    event.FWard || event.FSpecialty || event.RoomidText || event.CaseType
-  ) {
-    let filterValue = this.inArrivalslistListClone;
+    if (
+      event.Physician || event.Status || event.FCategory ||
+      event.FWard || event.FSpecialty || event.RoomidText || event.CaseType
+    ) {
+      let filterValue = this.inArrivalslistListClone;
 
-    if (event.Physician?.length) {
-      filterValue = filterValue.filter(item =>
-        event.Physician.includes(item.BehArztName?.trimStart())
-      );
+      if (event.Physician?.length) {
+        filterValue = filterValue.filter(item =>
+          event.Physician.includes(item.BehArztName?.trimStart())
+        );
+      }
+
+      if (event.RoomidText?.length) {
+        filterValue = filterValue.filter(item =>
+          event.RoomidText.includes(item.Zimmkub?.trimStart())
+        );
+      }
+
+      if (event.CaseType?.length) {
+        filterValue = filterValue.filter(item =>
+          event.CaseType.includes(item.Fatyptxt)
+        );
+      }
+
+      if (event.FWard?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FWard.includes(item.Orgpfkb)
+        );
+      }
+
+      if (event.FSpecialty?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FSpecialty.includes(item.Orgfakb)
+        );
+      }
+
+      if (event.FCategory?.length) {
+        filterValue = filterValue.filter(item =>
+          event.FCategory.includes(item.ZzfinCat)
+        );
+      }
+
+      this.inArrivalslistList = filterValue;
+    } else {
+      this.inArrivalslistList = this.inArrivalslistListClone;
     }
 
-    if (event.RoomidText?.length) {
-      filterValue = filterValue.filter(item =>
-        event.RoomidText.includes(item.Zimmkub?.trimStart())
-      );
-    }
-
-    if (event.CaseType?.length) {
-      filterValue = filterValue.filter(item =>
-        event.CaseType.includes(item.Fatyptxt)
-      );
-    }
-
-    if (event.FWard?.length) {
-      filterValue = filterValue.filter(item =>
-        event.FWard.includes(item.Orgpfkb)
-      );
-    }
-
-    if (event.FSpecialty?.length) {
-      filterValue = filterValue.filter(item =>
-        event.FSpecialty.includes(item.Orgfakb)
-      );
-    }
-
-    if (event.FCategory?.length) {
-      filterValue = filterValue.filter(item =>
-        event.FCategory.includes(item.ZzfinCat)
-      );
-    }
-
-    this.inArrivalslistList = filterValue;
-  } else {
-    this.inArrivalslistList = this.inArrivalslistListClone;
+    this.sendErPatientCount.emit(this.inArrivalslistList.length);
   }
 
-  this.sendErPatientCount.emit(this.inArrivalslistList.length);
-}
-
   asc: boolean;
-   commanSorting(keyName: string) {
+  commanSorting(keyName: string) {
     if (!this.asc) {
       this.asc = true;
       this.inArrivalslistList.sort((a, b) => {
@@ -505,7 +508,7 @@ export class ArrivalMainListComponent implements OnInit {
     }
   }
 
-   redirectToTreatByName(data) {
+  redirectToTreatByName(data) {
     data.Patnr = data.Patnr.padStart(10, '0');;
     data.Einri = data.Einri ? data.Einri : '1000';
     data.Falnr = data.Falnr.padStart(10, '0');;
@@ -651,6 +654,157 @@ export class ArrivalMainListComponent implements OnInit {
     }
   }
 
+  openModalForAttechment(data) {
+    data.Pnamec = data.Pnamec1;
+    data.Patnr = data.Patnr;
+    data.Falnr = data.Falnr;
+    data.Bwidt = data.Bwidt;
+    this.nurErAttechment.openModalForAttechment(data);
+  }
+
+  getAttachmentTooltip(status: string): string {
+    switch (status) {
+      case 'Red':
+        return 'No Attached Documents';
+      case 'Green':
+        return 'Attached Documents Exist';
+      default:
+        return '';
+    }
+  }
+
+  admissionStatusModel: any;
+  changeStatusForm: FormGroup;
+  dischargeTypeList = [
+    {
+      label: 'AMA',
+      value: 'AM'
+    },
+    {
+      label: 'Deceased',
+      value: 'EX'
+    },
+    {
+      label: 'Dis.to Ext.Hosp',
+      value: 'DE'
+    },
+    {
+      label: 'Left w/o treat',
+      value: 'LW'
+    },
+    {
+      label: 'Reg. Discharge',
+      value: 'RD'
+    },
+  ]
+  public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
+    data.Pnamec = data.Pnamec1;
+    data.Mrn = data.Patnr;
+    data.Falnr = data.Falnr;
+    data.Bwidt = data.Bwidt;
+    this.admissionStatusModel = data;
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl',
+      initialState: {
+        admissionStatusModel: this.admissionStatusModel // Pass data into the modal
+      }
+    };
+    this.modalRefForRisk = this.modalService.show(template, config);
+    this.changeStatusForm = this.formBuilder.group({
+      Einri: [this.admissionStatusModel?.Institute],
+      Falnr: [this.admissionStatusModel?.CaseNumber],
+      Lfdnr: [this.admissionStatusModel?.Lfdnr],
+      AdmStatusCode: [''],
+      Bwidt: [new Date()],
+      Bwizt: [''],
+      Kztxt: [''],
+      Bwart: [''],
+      Pernr: [this.admissionStatusModel?.AttendingDoctorName],
+    });
+
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+        this.admissionStatusModel = [];
+      }
+    });
+  }
+
+  getStatusValue() {
+    let currentStatus = this.admissionStatusModel.AdmissionStatus;
+    if (currentStatus === 'Planned Arrival') {
+      return 'Actual Arrival';
+    } else if (currentStatus === 'Actual Arrival') {
+      return 'Planned Discharge';
+    } else if (currentStatus === 'Planned Discharge') {
+      return 'Actual Discharge';
+    } else {
+      return '';
+    }
+  }
+
+  changeStatus(visitStat: string) {
+    let visitStatCode: number;
+
+    switch (visitStat.toLowerCase()) {
+      case 'planned arrival':
+        visitStatCode = 97;
+        break;
+      case 'actual arrival':
+        visitStatCode = 98;
+        break;
+      case 'planned discharge':
+        visitStatCode = 99;
+        break;
+      case 'actual discharge':
+        visitStatCode = 96;
+        break;
+      default:
+        visitStatCode = null; // Handle undefined cases
+    }
+    let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    const json = {
+      Einri: this.changeStatusForm.value.Einri,
+      Falnr: this.changeStatusForm.value.Falnr,
+      Lfdnr: this.changeStatusForm.value.Lfdnr,
+      AdmStatusCode: visitStatCode.toString(),
+      Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
+      Bwizt: createTime,
+      Kztxt: this.changeStatusForm.value.Kztxt,
+      Bwart: this.changeStatusForm.value.Bwart,
+      Pernr: this.admissionStatusModel.AttendingDoctor,
+    };
+
+    if (!json?.Bwart) {
+      delete json.Bwart
+    }
+
+    this.emergencyService.changeAdmissionStatus(json).subscribe({
+      next: (_success: any) => {
+        Swal.fire({
+          text: 'Change Status Successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
+        this.modalService.hide();
+        this.arrivalList(this.selectedDate);
+      },
+      error: (err: any) => {
+        this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+      }
+    });
+
+  }
+
+  sanitizeSAPDateFormat(date: any) {
+    if (typeof date === 'string') {
+      return date;
+    } else {
+      return `\/Date(${date.getTime()})\/`;
+    }
+  }
 
   onSortClick(event, col: string) {
     let target = event.currentTarget,

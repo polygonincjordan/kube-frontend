@@ -181,7 +181,21 @@ export class ErPhysicianComponent implements OnInit {
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
       })
-    }else{
+    } else if(this.PhyAssessmentForm.controls.AdmDate.value == '') {
+      Swal.fire({
+        text: "Admission Date is mandatory",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+    } else if(this.PhyAssessmentForm.controls.AdmTime.value == '') {
+      Swal.fire({
+        text: "Admission Time is mandatory",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+    } else{
     let createAdmDate = '';
     let createAdmTime = '';
     let createDiscDate = '';

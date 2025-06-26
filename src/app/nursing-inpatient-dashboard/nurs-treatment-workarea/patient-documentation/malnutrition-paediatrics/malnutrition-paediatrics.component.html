@@ -53,7 +53,7 @@
           <tbody formArrayName="Diagnosis">
             <tr *ngFor="let drain of Diagnosis.controls; let i = index" [formGroupName]="i">
               <td>
-                <input type="text" class="form-control" formControlName="Screening" />
+                <input type="text" class="form-control" formControlName="Screening" [readOnly]="true"/>
               </td>
               <td>
                 <ng-select [items]="diagnosisOptions" bindLabel="label" bindValue="value" placeholder="Select" [appendTo]="'body'" (change)="calculateScore(i)"
@@ -118,7 +118,7 @@
           <tbody formArrayName="Nutritional">
             <tr *ngFor="let drain of Nutritional.controls; let i = index" [formGroupName]="i">
               <td>
-                <input type="text" class="form-control" formControlName="Screening" />
+                <input type="text" class="form-control" formControlName="Screening" [readOnly]="true"/>
               </td>
               <td>
                 <ng-select [items]="intakeOptions" bindLabel="label" bindValue="value" placeholder="Select" [appendTo]="'body'" (change)="calculateScore(i)"
@@ -188,7 +188,7 @@
           <tbody formArrayName="Weight">
             <tr *ngFor="let drain of Weight.controls; let i = index" [formGroupName]="i">
               <td>
-                <input type="text" class="form-control" formControlName="Screening" />
+                <input type="text" class="form-control" formControlName="Screening" [readOnly]="true"/>
               </td>
               <td>
                 <input type="text" class="form-control" style="min-width: 80px !important" formControlName="Weight" />
@@ -259,7 +259,7 @@
           <tbody formArrayName="Overall">
             <tr *ngFor="let drain of Overall.controls; let i = index" [formGroupName]="i">
               <td>
-                <input type="text" class="form-control" formControlName="Screening" />
+                <input type="text" class="form-control" formControlName="Screening" [readOnly]="true"/>
               </td>
               <td>
                 <input type="text" class="form-control" formControlName="Score" />

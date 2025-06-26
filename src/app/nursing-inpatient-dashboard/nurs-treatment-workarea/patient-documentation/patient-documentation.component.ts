@@ -57,6 +57,7 @@ import { NewScaleDocumentComponent } from 'src/app/shared-module/new-scale-docum
 import { ObsFallRiskAssessmentComponent } from 'src/app/shared-module/obs-fall-risk-assessment/obs-fall-risk-assessment.component';
 import { DeliveryRecordDocComponent } from './delivery-record-doc/delivery-record-doc.component';
 import { NursingInitialAssessmentComponent } from './nursing-initial-assessment/nursing-initial-assessment.component';
+import { NIPSDocumentComponent } from 'src/app/shared-module/nips-document/nips-document.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -103,6 +104,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(ObsFallRiskAssessmentComponent) ObsFallRiskAssessmentComp: ObsFallRiskAssessmentComponent;
   @ViewChild(DeliveryRecordDocComponent) DeliveryRecordDocComp: DeliveryRecordDocComponent;
   @ViewChild(NursingInitialAssessmentComponent) NursingInitialAssessmentComp: NursingInitialAssessmentComponent;
+  @ViewChild(NIPSDocumentComponent) NIPSDocumentComp: NIPSDocumentComponent;
 
 
 
@@ -665,6 +667,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSBARNursingDocDetails();
     this.getPostCareRecordDetails();
     this.getApgarScaleDoc();
+    this.getNewbornDocument();
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
@@ -957,6 +960,19 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.ApgarScaleLatestDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.latestNewScaleDocumentList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  // New Born Document 1 years
+  getNewbornDocument() {
+    this.emergencyService.NewBornScaleLatest(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestNIPSDocumentList = _success.d.results
       },
       error: (err: any) => {
         console.error('Error  Data:', err);
@@ -2149,6 +2165,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openNewBorn) {
       this.newBornComp?.ngOnDestroy();
     }
+    if (this.openNIPSDocumentDocument) {
+      this.NIPSDocumentComp?.ngOnDestroy();
+    }
     if (this.openBundles) {
       this.ICBundlesComp?.ngOnDestroy();
     }
@@ -2286,6 +2305,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSBARNursingDocDetails();
     this.getPostCareRecordDetails();
     this.getApgarScaleDoc();
+    this.getNewbornDocument();
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
@@ -2785,7 +2805,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releaseNursingInitialGynoDetails();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -5759,6 +5779,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openNIPSDocumentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NIPSDocumentComp.createNIPSDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -6183,6 +6215,18 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.MalnutritionPaediatricsComp.createStampDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+      if (this.openNIPSDocumentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NIPSDocumentComp.createNIPSDocument(docStatus).then((formValue: any) => {
           if (formValue) {
             if (btnType == 'close') this.refresh();
           }
@@ -6646,7 +6690,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
-
+      if (this.openNIPSDocumentDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.NIPSDocumentComp.createNIPSDocument(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
       if (this.openMorseFallScale) {
         const formData = {
           ...this.morseFallScaleC.getFormData(),
@@ -6670,6 +6725,7 @@ export class PatientDocumentationComponent implements OnInit {
           this.sharedService.errorSwallModel(error?.error?.error.message.value)
         })
       }
+
     }
   }
 
@@ -6933,6 +6989,16 @@ export class PatientDocumentationComponent implements OnInit {
     // }
     else if (this.openRichmondScale) {
       this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error scale:', error);
+        console.error('Error creating Glasgow coma scale:', error);
+      });
+    }
+    else if (this.openNIPSDocumentDocument) {
+      this.NIPSDocumentComp.createNIPSDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -8322,6 +8388,20 @@ export class PatientDocumentationComponent implements OnInit {
       };
       d.d.DocStatus = '2';
       this.admissionService.createNurseAssMainDoc(d).subscribe(
+        (result) => {
+          this.refresh();
+        }
+      );
+    })
+  }
+  releaseNursingInitialGynoDetails() {
+    this.emergencyService.fetchNursingInitialGynoDocument(this.latestNursingInitialList[0].Dockey).subscribe((res: any) => {
+      delete res?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.saveNursingInitialGyno(d).subscribe(
         (result) => {
           this.refresh();
         }
