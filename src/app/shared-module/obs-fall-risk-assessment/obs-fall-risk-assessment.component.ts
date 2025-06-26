@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./obs-fall-risk-assessment.component.scss']
 })
 export class ObsFallRiskAssessmentComponent implements OnInit {
+  @Input() isReadOnly : boolean =false;
 
   // Prior History
   priorOptions = [
@@ -61,7 +63,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
   private subscription: Subscription;
 
   constructor(private fb: FormBuilder, private _route: ActivatedRoute, private storageService: StorageService, private dataShareService: DataShareService,
-    private emergencyService: EmergencyService, private sharedService: SharedService) {
+    private emergencyService: EmergencyService, private sharedService: SharedService, private admissionService: AdmissionService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -97,6 +99,9 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.isReadOnly){
+      this.getDocData(this.admissionService.selectedCurrentDocDetails.Dockey)
+    }
   }
 
   initForm() {

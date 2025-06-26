@@ -1905,6 +1905,27 @@ export class EmergencyService {
     });
   }
 
+     // Nursing Initial Assessment Gyno Obstetrics PMD Doc
+  saveNewBornDoc(json) {
+    return this.http.post(this.url + 'saveNewBornDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchNewbornScaleDoc(dockey) {
+    return this.http.get(this.url + `fetchNewbornScaleDoc?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  NewBornScaleLatest(json) {
+    return this.http.get(
+      this.url + `NewBornScaleLatest?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

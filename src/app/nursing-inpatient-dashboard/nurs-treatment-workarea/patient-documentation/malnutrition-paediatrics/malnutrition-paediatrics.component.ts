@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./malnutrition-paediatrics.component.scss'],
 })
 export class MalnutritionPaediatricsComponent implements OnInit {
+  @Input() isReadOnly : boolean =false;
   public CurrentDateAndTime: Date = new Date();
   malnutritionForm: FormGroup;
   currentTime: any;
@@ -86,6 +87,9 @@ export class MalnutritionPaediatricsComponent implements OnInit {
     this.initForm();
     this.realized = this.storageService.getUserProfile().Gpart;
     this.realizedDescription = this.storageService.getUserProfile().GpartName;
+    if(this.isReadOnly){
+      this.getStampDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey)
+    }
   }
 
   initForm() {
@@ -111,8 +115,6 @@ export class MalnutritionPaediatricsComponent implements OnInit {
       this.addWeight();
       this.addOverall();
     }
-
-    console.log(this.malnutritionForm, "this.malnutritionForm")
   }
 
   get Nutritional(): FormArray {
@@ -167,8 +169,8 @@ export class MalnutritionPaediatricsComponent implements OnInit {
       Dockey: "",
       Screening: (this.Diagnosis.length + 1),
       DoesTheChild: "",
-      EntryDate: '',
-      EntryTime: '',
+      EntryDate: new Date(),
+      EntryTime: this.currentTime,
       Signature: ""
     });
     this.Diagnosis.push(drainGroup);
@@ -178,8 +180,8 @@ export class MalnutritionPaediatricsComponent implements OnInit {
       Dockey: "",
       Screening: (this.Nutritional.length + 1),
       WhatIsTheChild: "",
-      EntryDate: '',
-      EntryTime: '',
+      EntryDate: new Date(),
+      EntryTime: this.currentTime,
       Signature: ""
     });
     this.Nutritional.push(drainGroup);
@@ -191,8 +193,8 @@ export class MalnutritionPaediatricsComponent implements OnInit {
       Weight: "",
       Height: "",
       UseGrowthChart: "",
-      EntryDate: '',
-      EntryTime: '',
+      EntryDate: new Date(),
+      EntryTime: this.currentTime,
       Signature: ""
     });
     this.Weight.push(drainGroup);
@@ -203,8 +205,8 @@ export class MalnutritionPaediatricsComponent implements OnInit {
       Screening: (this.Overall.length + 1),
       Score: "",
       RiskLevel: "",
-      EntryDate: '',
-      EntryTime: '',
+      EntryDate: new Date(),
+      EntryTime: this.currentTime,
       Signature: ""
     });
     this.Overall.push(drainGroup);
@@ -248,6 +250,10 @@ export class MalnutritionPaediatricsComponent implements OnInit {
             }));
           });
 
+        for (let index = data.TOWEIGHTHEIGHT.results.length; index < 3; index++) {
+          this.addWeight();
+        }
+
         // Step 3: Bind TONUTRITIONAL (Nutritional FormArray)
         const nutritionalArray = this.malnutritionForm.get('Nutritional') as FormArray;
         nutritionalArray.clear();
@@ -264,6 +270,10 @@ export class MalnutritionPaediatricsComponent implements OnInit {
               Signature: item.Signature
             }));
           });
+
+        for (let index = data.TONUTRITIONAL.results.length; index < 3; index++) {
+          this.addNutritional();
+        }
 
         // Step 4: Bind TOVERALLRISK (Overall FormArray)
         const overallArray = this.malnutritionForm.get('Overall') as FormArray;
@@ -283,6 +293,10 @@ export class MalnutritionPaediatricsComponent implements OnInit {
             }));
           });
 
+        for (let index = data.TOVERALLRISK.results.length; index < 3; index++) {
+          this.addOverall();
+        }
+
         // Step 5: Bind TODIAGNOSIS (Diagnosis FormArray)
         const diagnosisArray = this.malnutritionForm.get('Diagnosis') as FormArray;
         diagnosisArray.clear();
@@ -300,6 +314,9 @@ export class MalnutritionPaediatricsComponent implements OnInit {
             }));
           });
 
+         for (let index = data.TODIAGNOSIS.results.length; index < 3; index++) {
+            this.addDiagnosis();
+          }
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -326,33 +343,34 @@ export class MalnutritionPaediatricsComponent implements OnInit {
           Orgdo: this.malnutritionForm.value.Orgdo,
           AttendPhy: this.malnutritionForm.value.AttendPhy,
           DocStatus: docStatus,
-          
-          TONUTRITIONAL: this.malnutritionForm.value.Nutritional.filter(item => item?.Screening).map((item) => ({
+          TONUTRITIONAL: this.malnutritionForm.value.Nutritional.filter(item => item?.WhatIsTheChild).map((item) => ({
             ...item,
             WhatIsTheChild: item.WhatIsTheChild.toString(),
             Screening: item.Screening.toString(),
-            EntryDate: item.EntryDate ? this.sanitizeSAPDateFormat(item.EntryDate) : '',
-            EntryTime: item.EntryTime ? this.parsePayloadFormateTime(item.EntryTime) : '',
+            EntryDate: this.sanitizeSAPDateFormat(item.EntryDate),
+            EntryTime: this.parsePayloadFormateTime(item.EntryTime),
           })),
-          TOWEIGHTHEIGHT: this.malnutritionForm.value.Weight.filter(item => item?.Screening).map((item) => ({
+
+
+          TOWEIGHTHEIGHT: this.malnutritionForm.value.Weight.filter(item => item?.UseGrowthChart).map((item) => ({
             ...item,
             UseGrowthChart: item.UseGrowthChart.toString(),
             Screening: item.Screening.toString(),
-            EntryDate: item.EntryDate ? this.sanitizeSAPDateFormat(item.EntryDate) : '',
-            EntryTime: item.EntryTime ? this.parsePayloadFormateTime(item.EntryTime) : '',
+            EntryDate: this.sanitizeSAPDateFormat(item.EntryDate),
+            EntryTime: this.parsePayloadFormateTime(item.EntryTime),
           })),
-          TOVERALLRISK: this.malnutritionForm.value.Overall.filter(item => item?.Screening).map((item) => ({
+          TOVERALLRISK: this.malnutritionForm.value.Overall.filter(item => item?.Score).map((item) => ({
             ...item,
-            Screening: item.Screening.toString(),
-            EntryDate: item.EntryDate ? this.sanitizeSAPDateFormat(item.EntryDate) : '',
-            EntryTime: item.EntryTime ? this.parsePayloadFormateTime(item.EntryTime) : '',
+            Screening: item?.Screening.toString(),
+            EntryDate: this.sanitizeSAPDateFormat(item.EntryDate),
+            EntryTime: this.parsePayloadFormateTime(item.EntryTime),
           })),
-          TODIAGNOSIS: this.malnutritionForm.value.Diagnosis.filter(item => item?.Screening).map((item) => ({
+          TODIAGNOSIS: this.malnutritionForm.value.Diagnosis.filter(item => item?.DoesTheChild).map((item) => ({
             ...item,
             DoesTheChild: item.DoesTheChild.toString(),
-            Screening: item.Screening.toString(),
-            EntryDate: item.EntryDate ? this.sanitizeSAPDateFormat(item.EntryDate) : '',
-            EntryTime: item.EntryTime ? this.parsePayloadFormateTime(item.EntryTime) : '',
+            Screening: item?.Screening.toString(),
+            EntryDate: this.sanitizeSAPDateFormat(item.EntryDate),
+            EntryTime: this.parsePayloadFormateTime(item.EntryTime),
           }))
         },
       };

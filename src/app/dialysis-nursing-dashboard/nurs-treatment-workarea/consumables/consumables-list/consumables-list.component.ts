@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConsumableService } from '@services/consumables/consumable.service';
 import { ConsumableList, MaterialDetails, MaterialDetailsResult, MaterialStockDetails } from '@services/consumables/interfaces/consumables.interface';
@@ -183,7 +183,8 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
       PrioReq: new FormControl(""),
       Gernr: new FormControl(""),
       isSelected: new FormControl(false),
-    })
+      NonBillable:new FormControl(true)
+    });
   }
 
   public isAllchecked(event: any): void {
@@ -213,14 +214,14 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
   }
 
 
-  public searchMaterial(event, type: string, index: number) {
+  public searchMaterialByCode(event, type: string, index: number) {
     this.materialType = type
     this.indexNumber = index;
     this.searchSubject.next(event);
   }
 
 
-  public getMaterialList() {
+  public getMaterialListByCode() {
     this.searchSubject.pipe(debounceTime(2000)).subscribe((term) => {
       const fltVal = (this.materialType === this.wordType.MaterialCode$) ? 2 : 3;
       if (term.length >= fltVal.valueOf()) {
@@ -238,6 +239,44 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     });
   }
 
+  public searchMaterial(event, type: string, index: number) {
+    this.materialType = type
+    this.indexNumber = index;
+    this.searchTermText = event;
+    if (event.length != 0) {
+      this.searchSubject.next(event);
+    } else {
+      this.materialList = this.materialListCopy = [];
+    }
+  }
+
+
+  private getMaterialList() {
+    this.searchSubject.pipe(
+      debounceTime(200), // Debounce the events for 2000ms
+      filter(term => {
+        const fltVal = (this.materialType === 'MaterialCode') ? 2 : 3;
+        return term.length >= fltVal; // Filter based on the condition
+      }),
+      switchMap(term => {
+        if (this.materialList.length === 0) {
+          return this.consumableService.getMaterialDetails(term);
+        } else {
+          return [];
+        }
+      })
+    ).subscribe({
+      next: (resp: MaterialDetails) => {
+        if (resp && resp.d.results) {
+          this.materialList = this.materialListCopy = resp.d.results;
+          if (resp.d.results.length === 1) {
+            this.getDetailsOfMaterial(this.searchTermText, this.indexNumber.valueOf());
+          }
+        }
+      }
+    });
+  }
+
   public getUnitTextList(event: any, index: number){
     if(event){
      this.emergencyService.getUnitList(event).subscribe({
@@ -250,46 +289,10 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     }
    }
 
-  // public searchMaterial(event, type: string, index: number) {
-  //   this.materialType = type
-  //   this.indexNumber = index;
-  //   this.searchTermText = event;
-  //   if (event.length != 0) {
-  //     this.searchSubject.next(event);
-  //   } else {
-  //     this.materialList = this.materialListCopy = [];
-  //   }
-  // }
-
-
-  // private getMaterialList() {
-  //   this.searchSubject.pipe(
-  //     debounceTime(200), // Debounce the events for 2000ms
-  //     filter(term => {
-  //       const fltVal = (this.materialType === 'MaterialCode') ? 2 : 3;
-  //       return term.length >= fltVal; // Filter based on the condition
-  //     }),
-  //     switchMap(term => {
-  //       if (this.materialList.length === 0) {
-  //         return this.consumableService.getMaterialDetails(term);
-  //       } else {
-  //         return [];
-  //       }
-  //     })
-  //   ).subscribe({
-  //     next: (resp: MaterialDetails) => {
-  //       if (resp && resp.d.results) {
-  //         this.materialList = this.materialListCopy = resp.d.results;
-  //         if (resp.d.results.length === 1) {
-  //           this.getDetailsOfMaterial(this.searchTermText, this.indexNumber.valueOf());
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
-
-
   public getDetailsOfMaterial(event: any, index: number) {
+    const material = this.materialList.find((elem) => elem.Matnr === event);
+    (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx').patchValue(material.Maktx);
+    (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr').patchValue(material.Matnr);
     const enteredValue = event;
     let parms = {
       enteredValue: event,
@@ -338,75 +341,83 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     this.resultsFormArray.removeAt(index);
   }
 
-    private saveRecords(): void {
-      var payload;
-      var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
-        return (val.isSelected === true);
-      }).length > 0;
-      if (hasMatch) {
-        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-          .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
-          .map(d => d.value);
-      } else {
-        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-          .filter(d => d.valid && d.value.Matnr.trim() !== '')
-          .map(d => d.value);
-      }
-  
-      payload.forEach(element => {
-        delete element.Id;
-        delete element.Arktx;
-        delete element.isSelected;
-        delete element.Stock;
-        delete element.Lgort
-      });
-      let newpayload = payload.filter(item => item.Matnr !== '');
-      this.consumableHistoryForm.patchValue({
-        Lgort: this.selectedStorageLocation,
-      })
-      delete this.consumableHistoryForm.value.isAllSelected;
-      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
-      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
-      if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
-        Swal.fire({
-          text: "Please filed all the required values",
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
-        })
-        return;
-      }
-      this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
-        Swal.fire({
-          text: "Saved Successully",
-          icon: 'success',
-          confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
-        }).then((result) => {
-          if (result.value) {
-            this.actionTypeSubscription$.unsubscribe();
-            this.consumableHistoryForm.reset();
-          }
-        })
-      }, (error: any) => {
-        let messageError = error.error.error.innererror.errordetails;
-        let message: any = '';
-        messageError.forEach((e, index) => {
-          if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
-            if (message) {
-              message = `${message} <br> ${index + 1}) ${e.message}`;
-            } else {
-              message = `${index + 1}) ${e.message}`;
-            }
-          }
-        });
-        Swal.fire({
-          title: message,
-          icon: 'error',
-          confirmButtonText: 'OK',
-          customClass: 'diagnosis-error',
-        });
-      });
+  private saveRecords(): void {
+    var payload;
+    var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
+      return (val.isSelected === true);
+    }).length > 0;
+    if (hasMatch) {
+      payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
+        .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
+        .map(d => d.value);
+    } else {
+      payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
+        .filter(d => d.valid && d.value.Matnr.trim() !== '')
+        .map(d => d.value);
     }
-}
 
+    this.dataShareService.filterType$.subscribe((data)=>{
+      this.consumableHistoryForm.patchValue({
+        Lgort: data.value.Lgort,
+      })
+    })
+
+    payload.forEach(element => {
+      delete element.Id;
+      delete element.Arktx;
+      delete element.isSelected;
+      delete element.Stock;
+      delete element.Lgort;
+    });
+    let newpayload = payload.filter(item => item.Matnr !== '');
+    
+    newpayload.forEach((elem)=>{
+      if(elem.Charg === null){
+        elem.Charg = ""
+      }
+    })
+    delete this.consumableHistoryForm.value.isAllSelected;
+    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
+    this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
+    if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
+      Swal.fire({
+        text: "Please filed all the required values",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+      return;
+    }
+    this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
+      Swal.fire({
+        text: "Saved Successully",
+        icon: 'success',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      }).then((result) => {
+        if (result.value) {
+          this.actionTypeSubscription$.unsubscribe();
+          this.consumableHistoryForm.reset();
+        }
+      })
+    }, (error: any) => {
+      let messageError = error.error.error.innererror.errordetails;
+      let message: any = '';
+      messageError.forEach((e, index) => {
+        if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
+          if (message) {
+            message = `${message} <br> ${index + 1}) ${e.message}`;
+          } else {
+            message = `${index + 1}) ${e.message}`;
+          }
+        }
+      });
+      Swal.fire({
+        title: message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        customClass: 'diagnosis-error',
+      });
+    });
+  }
+}
