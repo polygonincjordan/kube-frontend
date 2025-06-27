@@ -1,4 +1,4 @@
-<form [formGroup]="nursingFormGroup">
+<form [formGroup]="nursingFormGroup" [ngClass]="{'disabled-form p-3' :isReadOnly}">
   <div class="status_body">
     <div class="row">
       <div class="col-md-3">
@@ -21,8 +21,7 @@
       <div class="col-md-3">
         <div class="form-group">
           <label class="mr-3">Time</label>
-          <input type="time" placeholder="00:00" class="form-control" step="2"
-            formControlName="Timee" />
+          <input type="time" placeholder="00:00" class="form-control" step="2" formControlName="Timee" />
         </div>
       </div>
     </div>
@@ -81,7 +80,8 @@
         <div class="form-group">
           <input type="checkbox" class="mr-1" formControlName="ROther" />
           <div class="label">Other</div>
-          <input type="text" class="mx-2 form-control" formControlName="ROtherTxt" />
+          <input type="text" class="mx-2 form-control" formControlName="ROtherTxt"
+            [readOnly]="!nursingFormGroup.get('ROther').value" />
         </div>
       </div>
     </div>
@@ -141,7 +141,7 @@
           <div class="col-md-2 form-group">
             <input type="checkbox" class="mr-1" formControlName="PLOther" />
             <div class="label mr-2">Other</div>
-            <input type="text" class="form-control" formControlName="PLOtherTxt" />
+            <input type="text" class="form-control" formControlName="PLOtherTxt" [readOnly]="!nursingFormGroup.get('PLOther').value" />
           </div>
         </div>
 
@@ -302,7 +302,7 @@
           <div class="col-md-2 form-group"><input type="checkbox" class="mr-1" formControlName="PMOther" />
             <div class="label">Other</div>
           </div>
-          <div class="col-md-2 form-group"><input type="text" class="form-control" formControlName="PMOtherTxt" />
+          <div class="col-md-2 form-group"><input type="text" class="form-control" formControlName="PMOtherTxt" [readOnly]="!nursingFormGroup.get('PMOther').value"/>
           </div>
         </div>
       </div>
@@ -454,7 +454,7 @@
             <div class="form-group d-flex">
               <input type="checkbox" class="mr-1" formControlName="PaSlOther" />
               <div class="label">Other</div>
-              <input type="text" class="ml-2 form-control" formControlName="PaSlOtherTxt" />
+              <input type="text" class="ml-2 form-control" formControlName="PaSlOtherTxt" [readOnly]="!nursingFormGroup.get('PaSlOther').value"/>
             </div>
           </div>
         </div>
@@ -504,15 +504,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'1'"
-                name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'1'" name="" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'0'"
-                name="" />
+              <input type="radio" class="mr-2 ml-0" formControlName="PaParticipatingActivities" [value]="'0'" name="" />
               <div class="label">No</div>
             </div>
           </div>
@@ -585,13 +583,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" ormControlName="NDiabetic" value="0" />
+              <input type="radio" class="mr-2 ml-0" formControlName="NDiabetic" value="0" />
               <div class="label">(0)Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" ormControlName="NDiabetic" value="3" />
+              <input type="radio" class="mr-2 ml-0" formControlName="NDiabetic" value="3" />
               <div class="label">(3)No</div>
             </div>
           </div>
@@ -802,8 +800,8 @@
           <div class="col-md-2">
             <div class="form-group">
               <div class="label mr-2" style="width: 130px">Blood Group</div>
-              <ng-select [items]="bloodGroups" bindLabel="label" bindValue="id" placeholder="Select"
-                style="width: 100%" formControlName="PhBloodGroup">
+              <ng-select [items]="bloodGroups" bindLabel="label" bindValue="id" placeholder="Select" style="width: 100%"
+                formControlName="PhBloodGroup">
               </ng-select>
             </div>
           </div>
@@ -1345,13 +1343,13 @@
           <div class="col-md-2"><label>Respiratory</label></div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" value="0"/>
+              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" value="0" />
               <div class="label">Normal</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" value="1"/>
+              <input type="radio" class="ml-0 mr-1" formControlName="RaRespiratory" value="1" />
               <div class="label">Abnormal</div>
             </div>
           </div>
@@ -1399,13 +1397,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaSuctionR" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaSuctionR" value="1" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaSuctionR" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaSuctionR" value="0" />
               <div class="label">No</div>
             </div>
           </div>
@@ -1440,13 +1438,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaCyanoticR" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaCyanoticR" value="1" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaCyanoticR" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaCyanoticR" value="0" />
               <div class="label">No</div>
             </div>
           </div>
@@ -1457,13 +1455,13 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaOnOxygen" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaOnOxygen" value="1" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="RaOnOxygen" />
+              <input type="radio" class="ml-0 mr-1" formControlName="RaOnOxygen" value="0" />
               <div class="label">No</div>
             </div>
           </div>
@@ -1498,7 +1496,7 @@
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="text" class="form-control" name="" formControlName="RaOthersTxt" />
+              <input type="text" class="form-control" name="" formControlName="RaOthersTxt" [readOnly]="!nursingFormGroup.get('RaOthers').value"/>
             </div>
           </div>
         </div>
@@ -1509,13 +1507,13 @@
           <div class="col-md-2"><label>cardiovascular Problems</label></div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaCardiovascular" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaCardiovascular" value="1" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaCardiovascular" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaCardiovascular" value="0" />
               <div class="label">No</div>
             </div>
           </div>
@@ -1529,13 +1527,13 @@
           <div class="col-md-2"><label>Heart Rate</label></div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaHeartRate" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaHeartRate" value="0" />
               <div class="label">Regular</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaHeartRate" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaHeartRate" value="1" />
               <div class="label">Irregular</div>
             </div>
           </div>
@@ -1544,13 +1542,13 @@
           <div class="col-md-2"><label>Chest Pain Pressure</label></div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaChestPain" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaChestPain" value="1" />
               <div class="label">Yes</div>
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaChestPain" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaChestPain" value="0" />
               <div class="label">No</div>
             </div>
           </div>
@@ -1559,13 +1557,13 @@
           <div class="col-md-2"><label>Capillary Refill</label></div>
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="ml-0 mr-1" formControlName="CaCapillary" />
+              <input type="radio" class="ml-0 mr-1" formControlName="CaCapillary" value="0" />
               <div class="label">Normal< 2-3 secs</div>
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="radio" class="ml-0 mr-1" formControlName="CaCapillary" />
+                <input type="radio" class="ml-0 mr-1" formControlName="CaCapillary" value="1" />
                 <div class="label">Abnormal</div>
               </div>
             </div>
@@ -1685,7 +1683,6 @@
               <label class="admitting-physician">No Risk Factors</label>
             </div>
             <div>
-
               <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
             </div>
 
@@ -1933,7 +1930,11 @@
                 <!-- <td></td> -->
                 <td><input type="text" class="form-control" formControlName="No" /></td>
                 <td><input type="time" step="2" class="form-control" formControlName="Time" /></td>
-                <td><input type="text" class="form-control" formControlName="Sex" /></td>
+                <td>
+                  <!-- <input type="text" class="form-control" formControlName="Sex" /> -->
+                  <ng-select [items]="gender" bindLabel="label" bindValue="value" placeholder="Select"
+                    style="width: 100%" formControlName="Sex"></ng-select>
+                </td>
                 <td><input type="text" class="form-control" formControlName="Wt" /></td>
                 <td><input type="text" class="form-control" formControlName="ApgarScore1" /></td>
                 <td><input type="text" class="form-control" formControlName="ApgarScore5" /></td>
@@ -2364,7 +2365,7 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="EdCoOthersTxt" />
+                <input type="text" class="form-control" formControlName="EdCoOthersTxt" [readOnly]="!nursingFormGroup.get('EdCoOthers').value"/>
               </div>
             </div>
           </div>
@@ -2392,7 +2393,7 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="EdPrOthersTxt" />
+                <input type="text" class="form-control" formControlName="EdPrOthersTxt" [readOnly]="!nursingFormGroup.get('EdPrOthers').value"/>
               </div>
             </div>
           </div>
@@ -2420,7 +2421,7 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="EdFrOthersTxt" />
+                <input type="text" class="form-control" formControlName="EdFrOthersTxt" [readOnly]="!nursingFormGroup.get('EdFrOthers').value"/>
               </div>
             </div>
           </div>
@@ -2454,7 +2455,7 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <input type="text" class="form-control" formControlName="EdMeOthersTxt" />
+                <input type="text" class="form-control" formControlName="EdMeOthersTxt" [readOnly]="!nursingFormGroup.get('EdMeOthers').value"/>
               </div>
             </div>
           </div>
@@ -3192,3 +3193,139 @@
 
 <app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>
 <app-er-sbar-vitals #erVitalsModal (importEvent)="importVitalsData($event)"></app-er-sbar-vitals>
+
+<ng-template #riskModal>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Risk History</span>
+      </div>
+      <div class="risk-history-main">
+        <ul class="allergy-header-ul d-flex">
+          <li class="allergy-header-item" style="margin-left: 10%">
+            Patient Name : <span>{{ selectedERList.Patname }}</span>
+          </li>
+          <li class="allergy-header-item">MRN: {{ selectedERList.Patnr }}</li>
+          <li class="allergy-header-item">
+            Admission date:
+            {{ getDate(selectedERList.Datum) | date : "dd.MM.y" }}
+          </li>
+          <li class="close-icon allergy-header-item">
+            <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <form [formGroup]="updateRiskForm" (keydown.enter)="$event.preventDefault()">
+      <div class="mt-3 mb-3 update-risk-main">
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Risk code" style="height: 33px" formControlName="Rsfna"
+              [ngClass]="updateRiskForm.get('Rsfna').errors && isFormValidError ? 'ep-error-message': ''"
+              (dblclick)="openCommonModal(commonColModal, 'RiskCode')"
+              (keyup.enter)="openCommonModal(commonColModal, 'RiskCode')" />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control risk-short-disc" placeholder="Short description"
+              formControlName="Rsfkb" />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control risk-short-disc" placeholder="Risk description"
+              formControlName="Rsfna" />
+          </div>
+        </div>
+        <div class="row create-form-inputs">
+          <div class="col-md-4">
+            <input class="form-control" type="text" placeholder="Reported on" [minDate]="" [maxDate]=""
+              #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+              [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" style="height: 33px" />
+          </div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4" style="text-align: end">
+            <button class="update-risk-save-btn" (click)="saveRiskJsonFormat()">Save</button>
+            <button class="update-risk-save-btn" (click)="resetUpdateRiskForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="riskform" style="max-height: 296px; overflow: auto">
+      <table class="table table-bordered risk-table">
+        <thead style="background-color: #e4edf5; color: black; text-align: center">
+          <tr>
+            <th scope="col">Risk Code</th>
+            <th scope="col">Short Description</th>
+            <th scope="col">Risk Description</th>
+            <th scope="col">Reported On</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody style="background-color: #fbfcff">
+          <ng-container formArrayName="riskFormitems">
+            <ng-container *ngFor="let item of riskform.get('riskFormitems')['controls']; let i = index">
+              <tr [formGroupName]="i">
+                <td class="risk-item-rsfnr">
+                  <ng-select appendTo="body" placeholder="Search" formControlName="Rsfnr">
+                    <ng-option *ngFor="let riskV of riskValues" [value]="riskV.Rsfnr">
+                      {{ riskV.Rsfna }}
+                    </ng-option>
+                  </ng-select>
+                </td>
+                <td class="risk-item-rsfkb">
+                  <input type="text" class="form-control" formControlName="Rsfkb" [title]="item.get('Rsfkb').value" />
+                </td>
+                <td class="risk-item-rsfna">
+                  <input type="text" class="form-control" formControlName="Rsfna" [title]="item.get('Rsfna').value" />
+                </td>
+                <td class="risk-item-repdt">
+                  <input class="form-control" style="background-color: #e9ecef !important;" type="text"
+                    #dp="bsDatepicker" bsDatepicker formControlName="Repdt"
+                    [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"
+                    [title]="item.get('Repdt').value" />
+                </td>
+                <td class="risk-item-image">
+                  <img class="cursor-pointer" src="assets/img/allergy-edit.svg"
+                    (click)="selectValueFromRiskTable(riskList[i])" title="Edit" />
+                  <img class="cursor-pointer" src="assets/img/Delete.svg"
+                    (click)="confirmationForRiskDelete('D', riskList[i])" style="margin-left: 11px" title="Delete" />
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</ng-template>
+
+
+
+<ng-template #commonColModal>
+  <div class="modal-body p-0">
+    <div class="infoModel-title" style="background: #0056b0">
+      <h4 class="m-0 pl-3">{{ colName }}</h4>
+    </div>
+    <div class="search-functionality search-image-comman col-md-10 pl-0 mt-2"
+      *ngIf="this.colName == 'Allergen' || this.colName == 'RiskCode'">
+      <img src="assets/img/pres-search-icon.svg" alt="" />
+      <input type="text" placeholder="Search" id="searchFilter" class="form-control w-100" [(ngModel)]="searchString"
+        (input)="someMethod(searchString)" />
+    </div>
+    <div style="max-height: 30em; overflow: auto; padding: 11px">
+      <table class="table table-bordered">
+        <thead style="position: sticky; top: -10px; z-index: 9; background: #e4edf5">
+          <tr>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff">
+          <tr class="c-pointer" *ngFor="let item of modalCommonDataArr" (click)="selectValueFromList(item)">
+            <td>{{item.Bcpname || item.EvalTxt || item.CerText || item.EvalText || item.ReaText || item.SoaText ||
+              item.TypText || item.Rsfna}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>

@@ -1926,6 +1926,27 @@ export class EmergencyService {
     );
   }
 
+  // Confusion Assessment Method for ICU PMD Doc
+  saveConfusionDocument(json) {
+    return this.http.post(this.url + 'saveConfusionDocument', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchConfusionDocument(dockey) {
+    return this.http.get(this.url + `fetchConfusionDocument?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  ConfusionLatestDocument(json) {
+    return this.http.get(
+      this.url + `ConfusionLatestDocument?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

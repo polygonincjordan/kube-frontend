@@ -58,6 +58,7 @@ import { ObsFallRiskAssessmentComponent } from 'src/app/shared-module/obs-fall-r
 import { DeliveryRecordDocComponent } from './delivery-record-doc/delivery-record-doc.component';
 import { NursingInitialAssessmentComponent } from './nursing-initial-assessment/nursing-initial-assessment.component';
 import { NIPSDocumentComponent } from 'src/app/shared-module/nips-document/nips-document.component';
+import { ConfusionAssessmentMethodComponent } from 'src/app/shared-module/confusion-assessment-method/confusion-assessment-method.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -105,6 +106,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(DeliveryRecordDocComponent) DeliveryRecordDocComp: DeliveryRecordDocComponent;
   @ViewChild(NursingInitialAssessmentComponent) NursingInitialAssessmentComp: NursingInitialAssessmentComponent;
   @ViewChild(NIPSDocumentComponent) NIPSDocumentComp: NIPSDocumentComponent;
+  @ViewChild(ConfusionAssessmentMethodComponent) ConfusionAssessmentMethodComp: ConfusionAssessmentMethodComponent;
 
 
 
@@ -671,6 +673,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
+    this.getConfusionAssessmentList();
   }
 
   LatestMFSSet() {
@@ -695,6 +698,20 @@ export class PatientDocumentationComponent implements OnInit {
       next: (_success: any) => {
         if (_success?.d?.results) {
           this.painAssessmentLaestDoc = _success.d.results;
+        }
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getConfusionAssessmentList() {
+    this.emergencyService.ConfusionLatestDocument(this.apiJson).subscribe({
+      next: (_success: any) => {
+        if (_success?.d?.results) {
+          this.latestConfusionAssessmentList = _success.d.results;
         }
       },
       error: (err: any) => {
@@ -2309,6 +2326,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
+    this.getConfusionAssessmentList();
   }
 
   openDocument(action) {
@@ -5791,6 +5809,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openConfusionAssessmentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.ConfusionAssessmentMethodComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -6233,6 +6263,19 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+
+      if (this.openConfusionAssessmentDocument) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.ConfusionAssessmentMethodComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
         });
       }
     }
@@ -6702,6 +6745,19 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+
+      if (this.openConfusionAssessmentDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.ConfusionAssessmentMethodComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
+        });
+      }
       if (this.openMorseFallScale) {
         const formData = {
           ...this.morseFallScaleC.getFormData(),
@@ -7118,7 +7174,18 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Obstetric Fall Risk Assessment:', error);
       });
-    }
+    } else if (this.openConfusionAssessmentDocument) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.ConfusionAssessmentMethodComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
+        });
+      }
   }
 
   newVersionDirectReleased() {
@@ -8396,13 +8463,14 @@ export class PatientDocumentationComponent implements OnInit {
   }
   releaseNursingInitialGynoDetails() {
     this.emergencyService.fetchNursingInitialGynoDocument(this.latestNursingInitialList[0].Dockey).subscribe((res: any) => {
-      delete res?.results[0]?.__metadata;
+      delete res?.d?.results[0]?.__metadata;
       let d: any = {
-        d: res?.results[0],
+        d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
       this.emergencyService.saveNursingInitialGyno(d).subscribe(
         (result) => {
+          this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD released successfully');
           this.refresh();
         }
       );

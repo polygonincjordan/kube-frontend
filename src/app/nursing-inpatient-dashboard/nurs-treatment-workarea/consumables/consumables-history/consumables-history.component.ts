@@ -154,6 +154,17 @@ export class ConsumablesHistoryComponent implements OnInit {
     }
   }
 
+  getTime(value) {
+    if (value) {
+      var str = value;
+      var str = str.replace(/[PT]/g, '');
+      var str = str.replace(/[H]/g, ':');
+      var str = str.replace(/[M]/g, ':');
+      var str = str.replace(/[S]/g, '');
+      return str;
+    }
+  }
+
 
   public sortTable(column: string) {
     if (this.sortColumn === column) {

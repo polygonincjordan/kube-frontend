@@ -1041,7 +1041,7 @@
                 [ngClass]="isNIPSDocument ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'NIPS'" (click)="selectAssessment('isNIPSDocument',latestNIPSDocumentList[0])">
                 <div class="col-md-4"> NIPS (Newborn to 1 Year) {{latestNIPSDocumentList[0]?.Zversion ?
-                  dockVer(latestNIPSDocumentList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                  dockVer(latestNIPSDocumentList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNIPSDocumentList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNIPSDocumentList[0]?.DocTime)}}">
                   {{getDate(latestNIPSDocumentList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
@@ -1068,14 +1068,10 @@
                   {{getDate(latestNursingInitialList[0]?.DocDate) | date: "dd.MM.y" || '-'}} / {{getTime(latestNursingInitialList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestNursingInitialList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1 d-flex">
-                    <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                    (click)="openNurseAssMainsPdf(latestNursingInitialList[0]?.Dockey)"
-                    *ngIf="latestNursingInitialList[0]?.StatusTxt == 'Released'"></i>
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNursingInitialList[0]?.Dockey, latestNursingInitialList[0])">
-                      <select *ngIf="latestNursingInitialList.length && latestNursingInitialList[0]?.StatusTxt !='N/A' && latestNursingInitialList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                    </div>
+                 <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                     (click)="openPDfModal(NursingInitialGynoHTML, latestNursingInitialList[0])"
+                    *ngIf="latestNursingInitialList[0]?.StatusTxt == 'Released'" />
                 </div>
               </div>
 
@@ -1480,7 +1476,7 @@
                 <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
                   {{ member.DokstText ? member.DokstText : "N/A" }}</div>
                 <div class="col-md-2" (click)="getPatientProfileData(member)">
-                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
+                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}/{{getTime(member?.CreatedAt)}}</div>
                 <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                 <div class="col-md-1 p-0">
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
@@ -1671,6 +1667,18 @@
         </div>
         <app-patient-profile-header></app-patient-profile-header>
         <app-nursing-care-plans [isReadOnly]="true" ></app-nursing-care-plans>
+        <!-- <app-hematology-bmt-unit [isReadOnly]="true"></app-hematology-bmt-unit> -->
+      </div>
+    </ng-template>
+    <ng-template #NursingInitialGynoHTML>
+      <div class="modal-body p-0" id="templatePrintID">
+        <div class="d-flex justify-content-between">
+          <div (click)="closePopup()" class="close-html">
+            <img src="assets/img/CloseTab.svg" style="width: 40px;">
+          </div>
+        </div>
+        <app-patient-profile-header></app-patient-profile-header>
+        <app-nursing-initial-assessment [isReadOnly]="true" ></app-nursing-initial-assessment>
         <!-- <app-hematology-bmt-unit [isReadOnly]="true"></app-hematology-bmt-unit> -->
       </div>
     </ng-template>

@@ -116,6 +116,10 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     {value : '1',label:'Yes'},
     {value : '2',label:'UnKnown'}
   ]
+  public antiD = [
+    {value : '0',label:'No'},
+    {value : '1',label:'Yes'},
+  ]
   public motherAgeOptions = Array.from({ length: 51 }, (_, i) => ({ label: (0 + i).toString(), value: (0 + i).toString() }));
 
   
