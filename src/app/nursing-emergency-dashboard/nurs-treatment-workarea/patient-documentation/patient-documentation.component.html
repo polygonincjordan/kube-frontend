@@ -163,7 +163,7 @@
                   dockVer(latestEmergencyNursingDocList[0]?.Zversion) : ''}}</div>
                 <div class="col-md-2 status-color">{{latestEmergencyNursingDocList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestEmergencyNursingDocList[0]?.DocTime)}}">
-                  {{getDate(latestEmergencyNursingDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestEmergencyNursingDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestEmergencyNursingDocList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestEmergencyNursingDocList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -183,7 +183,7 @@
                 <div class="col-md-4">Glasgow Coma Scale :</div>
                 <div class="col-md-2 status-color">{{latestGlasgowComaScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestGlasgowComaScaleList[0]?.DocTime)}}">
-                  {{getDate(latestGlasgowComaScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestGlasgowComaScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestGlasgowComaScaleList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestGlasgowComaScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -203,7 +203,7 @@
                 <div class="col-md-4">Face Pain Scale :</div>
                 <div class="col-md-2 status-color">{{latestFacePainScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestFacePainScaleList[0]?.DocTime)}}">
-                  {{getDate(latestFacePainScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestFacePainScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestFacePainScaleList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestFacePainScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -224,7 +224,7 @@
                 <div class="col-md-4">Numeric Rating Scale(more than 8 yrs) :</div>
                 <div class="col-md-2 status-color">{{latestNumericratingscaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNumericratingscaleList[0]?.DocTime)}}">
-                  {{getDate(latestNumericratingscaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestNumericratingscaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestNumericratingscaleList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestNumericratingscaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -244,7 +244,7 @@
                 <div class="col-md-4"> Braden Scale :</div>
                 <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
-                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestBridentScaleList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -265,7 +265,7 @@
                   dockVer(educationAssList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{educationAssList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(educationAssList[0]?.DocTime)}}">
-                  {{getDate(educationAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(educationAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(educationAssList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{educationAssList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -296,7 +296,7 @@
                   dockVer(nurseEndorsementList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{nurseEndorsementList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(nurseEndorsementList[0]?.DocTime)}}">
-                  {{getDate(nurseEndorsementList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(nurseEndorsementList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(nurseEndorsementList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{nurseEndorsementList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
@@ -312,7 +312,7 @@
               dockVer(surgicalPassportList[0]?.Zversion) : ''}} :</div>
             <div class="col-md-2 status-color">{{surgicalPassportList[0]?.StatusTxt || 'N/A'}}</div>
             <div class="col-md-2" title="{{getTime(surgicalPassportList[0]?.DocTime)}}">
-              {{getDate(surgicalPassportList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              {{getDate(surgicalPassportList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(surgicalPassportList[0]?.DocTime)}}
             </div>
             <div class="col-md-3">{{surgicalPassportList[0]?.PhyNm || '-'}}</div>
             <div class="col-md-1 d-flex">
@@ -333,7 +333,7 @@
                 dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
             <div class="col-md-2 status-color">{{painAssessmentLaestDoc[0]?.StatusTxt || 'N/A'}}</div>
             <div class="col-md-2" title="{{getTime(painAssessmentLaestDoc[0]?.DocTime)}}">
-              {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+              {{getDate(painAssessmentLaestDoc[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(painAssessmentLaestDoc[0]?.DocTime)}}
             </div>
             <div class="col-md-3">{{painAssessmentLaestDoc[0]?.PhyNm || '-'}}</div>
             <div class="col-md-1 d-flex">
@@ -354,7 +354,7 @@
             dockVer(pediatricEarlyWarningList[0]?.Zversion) : ''}}:</div>
             <div class="col-md-2 status-color">{{pediatricEarlyWarningList[0]?.StatusTxt || 'N/A'}}</div>
           <div class="col-md-2" title="{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}">
-            {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+            {{getDate(pediatricEarlyWarningList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(pediatricEarlyWarningList[0]?.DocTime)}}
           </div>
           <div class="col-md-3">{{pediatricEarlyWarningList[0]?.PhyNm || '-'}}</div>
           <div class="col-md-1 d-flex">
@@ -375,7 +375,7 @@
             dockVer(latestCprList[0]?.Zversion) : ''}}:</div>
         <div class="col-md-2 status-color">{{latestCprList[0]?.StatusTxt || 'N/A'}}</div>
         <div class="col-md-2" title="{{getTime(latestCprList[0]?.DocTime)}}">
-          {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+          {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestCprList[0]?.DocTime)}}
         </div>
         <div class="col-md-3">{{latestCprList[0]?.PhyNm || '-'}}</div>
         <div class="col-md-1 d-flex">
@@ -398,7 +398,7 @@
            dockVer(sbarNurEndList[0]?.Zversion) : ''}} :</div>
          <div class="col-md-2 status-color">{{sbarNurEndList[0]?.StatusTxt || 'N/A'}}</div>
          <div class="col-md-2" title="{{getTime(sbarNurEndList[0]?.DocTime)}}">
-           {{getDate(sbarNurEndList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+           {{getDate(sbarNurEndList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(sbarNurEndList[0]?.DocTime)}}
          </div>
          <div class="col-md-3">{{sbarNurEndList[0]?.PhyNm || '-'}}</div>
           <div class="col-md-1 d-flex">
@@ -478,7 +478,7 @@
                 <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
                   {{ member.DokstText ? member.DokstText : "N/A" }}</div>
                 <div class="col-md-2" (click)="getPatientProfileData(member)">
-                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
+                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}/{{getTime(member?.CreatedAt)}}</div>
                 <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                 <div class="col-md-1 p-0">
                   <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">

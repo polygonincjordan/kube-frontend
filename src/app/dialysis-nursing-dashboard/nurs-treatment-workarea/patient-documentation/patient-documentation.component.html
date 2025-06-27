@@ -150,7 +150,7 @@
                   dockVer(latestBridentScaleList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestBridentScaleList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestBridentScaleList[0]?.DocTime)}}">
-                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestBridentScaleList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestBridentScaleList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestBridentScaleList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -182,7 +182,7 @@
                   dockVer(latestDocData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestDocData?.StatusTxt ? latestDocData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestDocData?.DocTime)}}">
-                  {{getDate(latestDocData?.DocDate) | date: "dd.MM.y" || '-'}}</div>
+                  {{getDate(latestDocData?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestDocData?.DocTime)}}</div>
                   <div class="col-md-3">{{latestDocData?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openDiaAssessReleasePdf(latestDocData.Dockey)" *ngIf="latestDocData?.StatusTxt == 'Released'"></i>
@@ -201,7 +201,7 @@
                   dockVer(latestMorseFallScaleData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestMorseFallScaleData?.StatusTxt ? latestMorseFallScaleData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestMorseFallScaleData?.DocTime)}}">
-                  {{getDate(latestMorseFallScaleData?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestMorseFallScaleData?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestMorseFallScaleData?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestMorseFallScaleData?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -224,7 +224,7 @@
                 dockVer(latestNurAdmissionList[0]?.Zversion) : ''}} :</div>
               <div class="col-md-2 status-color">{{latestNurAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2" title="{{getTime(latestNurAdmissionList[0]?.DocTime)}}">
-                {{getDate(latestNurAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                {{getDate(latestNurAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestNurAdmissionList[0]?.DocTime)}}
               </div>
               <div class="col-md-3">{{latestNurAdmissionList[0]?.PhyNm || '-'}}</div>
               <div class="col-md-1 d-flex">
@@ -246,7 +246,7 @@
                   dockVer(latestHemoCatheterData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestHemoCatheterData?.StatusTxt ? latestHemoCatheterData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestHemoCatheterData?.DocTime)}}">
-                  {{getDate(latestHemoCatheterData?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestHemoCatheterData?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestHemoCatheterData?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestHemoCatheterData?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
@@ -266,7 +266,7 @@
                   dockVer(latestHemoDialysisFistulaGraftData?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{ latestHemoDialysisFistulaGraftData?.StatusTxt ? latestHemoDialysisFistulaGraftData.StatusTxt : "N/A" }}</div>
                 <div class="col-md-2" title="{{getTime(latestHemoDialysisFistulaGraftData?.DocTime)}}">
-                  {{getDate(latestHemoDialysisFistulaGraftData?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestHemoDialysisFistulaGraftData?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestHemoDialysisFistulaGraftData?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestHemoDialysisFistulaGraftData?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
@@ -285,7 +285,7 @@
                     dockVer(latestCprList[0]?.Zversion) : ''}}:</div>
                 <div class="col-md-2 status-color">{{latestCprList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestCprList[0]?.DocTime)}}">
-                  {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestCprList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestCprList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestCprList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -310,7 +310,7 @@
                   dockVer(latestNurCarePlanList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestNurCarePlanList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestNurCarePlanList[0]?.DocTime)}}">
-                  {{getDate(latestNurCarePlanList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestNurCarePlanList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestNurCarePlanList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestNurCarePlanList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -336,7 +336,7 @@
                     dockVer(latestPreCardiacCathList[0]?.Zversion) : ''}}:</div>
                 <div class="col-md-2 status-color">{{latestPreCardiacCathList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestPreCardiacCathList[0]?.DocTime)}}">
-                  {{getDate(latestPreCardiacCathList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(latestPreCardiacCathList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestPreCardiacCathList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestPreCardiacCathList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -386,7 +386,7 @@
                   <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">
                     {{ member.DokstText ? member.DokstText : "N/A" }}</div>
                   <div class="col-md-2" (click)="getPatientProfileData(member)">
-                    {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
+                    {{ getDate(member.Dodat) | date: "dd-MM-y"}}/{{getTime(member?.CreatedAt)}}</div>
                   <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                   <div class="col-md-1 p-0">
                     <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">

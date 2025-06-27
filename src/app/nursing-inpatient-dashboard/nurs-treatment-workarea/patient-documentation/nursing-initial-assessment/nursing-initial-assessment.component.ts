@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { SharedService } from '@services/shared.service';
@@ -13,6 +13,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType } from '@services/interfaces/common.enum';
+import { AdmissionService } from '@services/admission/admission.service';
 
 @Component({
   selector: 'app-nursing-initial-assessment',
@@ -22,6 +23,7 @@ import { ActionType } from '@services/interfaces/common.enum';
 export class NursingInitialAssessmentComponent implements OnInit {
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsForSBARComponent;
+  @Input() isReadOnly: boolean = false;
 
   nursingFormGroup: FormGroup;
   activeTab: string = 'persoalData'
@@ -37,7 +39,11 @@ export class NursingInitialAssessmentComponent implements OnInit {
     { id: 2, label: 'Premature' },
     { id: 3, label: 'Post Mature' }
   ];
-
+  public gender = [
+    { value: '1', label: 'Male' },
+    { value: '2', label: 'Female' },
+    { value: '3', label: 'UnKnown' }
+  ]
   bloodGroups = [
     { id: '0', label: 'A-' },
     { id: '1', label: 'A+' },
@@ -57,8 +63,8 @@ export class NursingInitialAssessmentComponent implements OnInit {
     { id: 5, label: '6' },
     { id: 6, label: '7' },
     { id: 7, label: '8' },
-    { id: 7, label: '9' },
-    { id: 7, label: '10' }
+    { id: 8, label: '9' },
+    { id: 9, label: '10' }
   ];
 
   status = [
@@ -74,7 +80,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
 
-  constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, public storageService: StorageService,
+  constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, public storageService: StorageService, private admissionService: AdmissionService,
     private sharedService: SharedService, private route: ActivatedRoute, private fb: FormBuilder, private dataShareService: DataShareService, private emergencyService: EmergencyService
   ) {
     const now = new Date();
@@ -117,12 +123,62 @@ export class NursingInitialAssessmentComponent implements OnInit {
       } else {
         // for after code
       }
-    })
+    });
+
+    this.riskform = this.fb.group({
+      riskFormitems: new FormArray([]),
+    });
+    this.updateRiskForm = this.fb.group({
+      Rsfnr: [''],
+      Rsfna: [''],
+      Rsfkb: [''],
+      Rsfsn: [''],
+      Repdt: [''],
+    });
   }
 
 
   ngOnInit() {
+    if (this.isReadOnly) {
+      this.getNurseDocDetail(this.admissionService.selectedCurrentDocDetails.Dockey)
+    }
+    this.nursingFormGroup.valueChanges.subscribe(() => {
+      this.calculateNutritionalRisk();
+    });
+  }
 
+  calculateNutritionalRisk(): void {
+    const fields = [
+      'NDiabetic',
+      'NSevereAnorexia',
+      'NLactating',
+      'NVitamins',
+      'NSwallowing',
+      'NSpecialDiet',
+      'NGiDisturbance'
+    ];
+
+    let total = 0;
+
+    fields.forEach(field => {
+      const val = +this.nursingFormGroup.get(field)?.value;
+      if (!isNaN(val)) {
+        total += val;
+      }
+    });
+
+    // Bind result
+    this.nursingFormGroup.get('NPatientRiskResult')?.setValue(total, { emitEvent: false });
+
+    // Optional: Set risk category
+    let riskText = '';
+     if (total <= 4) {
+      riskText = 'No Nutritional Risk';
+    } else {
+      riskText = 'High Nutritional Risk';
+    }
+
+    this.nursingFormGroup.get('NPatientRiskResultTxt')?.setValue(riskText, { emitEvent: false });
   }
 
   initForm() {
@@ -484,24 +540,26 @@ export class NursingInitialAssessmentComponent implements OnInit {
         const deliveryDetails = response?.d?.results[0];
         const neonatalArray = deliveryDetails.TOPATDEL.results || [];
 
-        const formArray = this.TOBABY;
-        formArray.clear();
+        if (neonatalArray.length) {
+          const formArray = this.TOBABY;
+          formArray.clear();
 
-        // Loop and add each neonatal entry
-        neonatalArray.forEach((item, index) => {
-          const convertedItem = {
-            Dockey: deliveryDetails.Faln1,
-            No: (index + 1).toString(),
-            Time: item.Gbtim,
-            Sex: item.Gschl,
-            Wt: item.Gbgew,
-            ApgarScore1: item.Bwert,
-            ApgarScore5: item.Bwert5,
-            ApgarScore10: item.Bwert10,
-            StatusDesc: item.Kztxt
-          };
-          this.addBaby(convertedItem);
-        });
+          // Loop and add each neonatal entry
+          neonatalArray.forEach((item, index) => {
+            const convertedItem = {
+              Dockey: deliveryDetails.Faln1,
+              No: (index + 1).toString(),
+              Time: item.Gbtim,
+              Sex: item.Gschl,
+              Wt: item.Gbgew,
+              ApgarScore1: item.Bwert,
+              ApgarScore5: item.Bwert5,
+              ApgarScore10: item.Bwert10,
+              StatusDesc: item.Kztxt
+            };
+            this.addBaby(convertedItem);
+          });
+        }
       });
   }
 
@@ -1617,10 +1675,15 @@ export class NursingInitialAssessmentComponent implements OnInit {
       });
       formData['TOVITALSIGN'] = checkVitalList;
       formData['TOALLERGY'] = this.toAllergyArr;
-      formData['TOBABY'] = formData.TOBABY.filter(res => res.Consultation || res.EmpResp).map(res => ({
-        ...res,
-        Time: this.convertToPTTime(res.Time),
-      }));
+      formData['TOBABY'] = formData.TOBABY
+        .filter(res => res.Time || res.Sex || res.Wt || res.ApgarScore1 || res.ApgarScore5 || res.ApgarScore10 || res.StatusDesc)
+        .map(res => {
+          const { Wt, ...rest } = res; // destructure and remove Wt
+          return {
+            ...rest,
+            Time: this.convertToPTTime(res.Time)
+          };
+        });
       formData.Datee = this.sanitizeSAPDateFormat(formData.Datee) || '',
         formData.PhDateLastCs = this.sanitizeSAPDateFormat(formData.PhDateLastCs) || '',
         formData.SMDeliveryDate = this.sanitizeSAPDateFormat(formData.SMDeliveryDate) || '',
@@ -1629,23 +1692,23 @@ export class NursingInitialAssessmentComponent implements OnInit {
         formData.SMDeliveryTime = formData.SMDeliveryTime ? this.convertToPTTime(formData.SMDeliveryTime) : 'PT00H00M00S',
         formData.Timee = formData.Timee ? this.convertToPTTime(formData.Timee) : 'PT00H00M00S',
 
-      this.subscription = this.emergencyService.saveNursingInitialGyno(formData).subscribe({
-        next: (data: any) => {
-        },
-        error: (err: any) => {
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at Nursing Initial Assessment Gyno Obstetrics PMD : ${err}`);
-        },
-        complete: () => {
-          resolve(true);
-          if (status === 'edit') {
-            this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD updated successfully');
-          } else {
-            this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD created successfully');
+        this.subscription = this.emergencyService.saveNursingInitialGyno(formData).subscribe({
+          next: (data: any) => {
+          },
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(`PUT Error at Nursing Initial Assessment Gyno Obstetrics PMD : ${err}`);
+          },
+          complete: () => {
+            resolve(true);
+            if (status === 'edit') {
+              this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD updated successfully');
+            } else {
+              this.sharedService.successSwallModel('Nursing Initial Assessment Gyno Obstetrics PMD created successfully');
+            }
+            // this.successEvent.next(true)
           }
-          // this.successEvent.next(true)
-        }
-      });
+        });
     })
   }
 
@@ -1698,4 +1761,428 @@ export class NursingInitialAssessmentComponent implements OnInit {
     return null;
   }
 
+
+  modalRefForRisk: BsModalRef;
+  modalRef: BsModalRef;
+  selectedERList: any;
+  isRiskUpdate: boolean;
+  riskList: any[];
+  riskValues: any;
+  riskform: FormGroup;
+  riskFormitems: FormArray;
+  updateRiskForm: FormGroup;
+  isFormValidError: boolean = false;
+  colName: any;
+  modalCommonDataArr: any;
+  allergenValues: any;
+  updateAllergyForm: FormGroup;
+
+
+  public openModalForRisk(template: TemplateRef<any>, data?: any) {
+    // const config = ModalOptions = {
+    //   class: 'modal-dialog-centered modal-xl risk-modal-size',
+    // };
+    // data.Einri = this.paramsObject.einri;
+    // data.Patnr = this.paramsObject.patnr;
+    // data.Falnr = this.paramsObject.falnr;
+    // data.Lfdnr = this.paramsObject.lfdnr;
+    // this.modalRefForRisk = this.modalService.show(template, config);
+    // this.selectedERList = data;
+    // this.getRiskList(data);
+    // this.getRiskValues();
+    // this.isRiskUpdate = false;
+    // this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+    //   if (reason === 'backdrop-click') {
+    //     this.closeRiskModal();
+    //   }
+    // });
+  }
+
+  closeRiskModal() {
+    this.modalRefForRisk.hide();
+  }
+
+  getRiskList(data) {
+    const json = {
+      einri: data.Einri,
+      patnr: data.Patnr,
+    };
+    this.emergencyService.getRiskList(json).subscribe(
+      (_success: any) => {
+        this.riskList = [];
+        this.riskList = _success.d.results;
+        this.riskList.forEach((element) => {
+          if (element.Repdt == '0000-00-00') {
+            element['Repdt'] = '';
+          } else {
+            element['Repdt'] = new Date(element.Repdt);
+          }
+          this.addItemForRisk(element);
+        });
+      },
+      (_error: any) => { }
+    );
+  }
+  getRiskValues() {
+    this.emergencyService.getRiskValues().subscribe(
+      (_success: any) => {
+        this.riskValues = _success.d.results;
+      },
+      (_error: any) => { }
+    );
+  }
+  addItemForRisk(element?): void {
+    this.riskFormitems = this.riskform.get('riskFormitems') as FormArray;
+    this.riskFormitems.push(this.showRiskDetailsOnList(element));
+    this.disableInputs();
+  }
+
+  disableInputs() {
+    (<FormArray>this.riskform.get('riskFormitems')).controls.forEach(
+      (control) => {
+        control['controls']['Rsfna'].disable();
+        control['controls']['Rsfkb'].disable();
+      }
+    );
+  }
+
+
+  showRiskDetailsOnList(element?): FormGroup {
+    if (element) {
+      return this.fb.group({
+        Rsfnr: [element.Rsfnr],
+        Rsfna: [element.Rsfna],
+        Rsfkb: [element.Rsfkb],
+        Rsfsn: [element.Rsfsn],
+        Repdt: [element.Repdt],
+        Einri: [this.selectedERList.Einri],
+        Patnr: [this.selectedERList.Patnr],
+        Lfdnr: [this.selectedERList.Lfdbw],
+        Mode: [''],
+        isChecked: [false],
+      });
+    } else {
+      return this.fb.group({
+        Rsfnr: [''],
+        Rsfna: [''],
+        Rsfkb: [''],
+        Rsfsn: [''],
+        Repdt: [''],
+        Einri: [this.selectedERList.Einri],
+        Patnr: [this.selectedERList.Patnr],
+        Lfdnr: [this.selectedERList.Lfdbw],
+        Mode: [''],
+        isChecked: [true],
+      });
+    }
+  }
+  searchString: any;
+  allergenGroupValues: any;
+  allergyCertaintyValues: any;
+  allergyEvaluationValues: any;
+  allergyReactionValues: any;
+  severityValues: any;
+  allergyTypeValues: any;
+  openCommonModal(template: TemplateRef<any>, column) {
+    const config: ModalOptions = { class: 'modal-dialog-centered' };
+    this.modalRef = this.modalService.show(template, config);
+    this.colName = column;
+    if (column == 'Allergen') {
+      this.modalCommonDataArr = this.allergenValues;
+      this.searchString = this.updateAllergyForm.controls.Allergen.value;
+      this.someMethod(this.searchString);
+    }
+    if (column == 'Allergen group') {
+      this.modalCommonDataArr = this.allergenGroupValues;
+    }
+    if (column == 'Certainty') {
+      this.modalCommonDataArr = this.allergyCertaintyValues;
+    }
+    if (column == 'Evaluation') {
+      this.modalCommonDataArr = this.allergyEvaluationValues;
+    }
+    if (column == 'Allergic reaction') {
+      this.modalCommonDataArr = this.allergyReactionValues;
+    }
+    if (column == 'Severity') {
+      this.modalCommonDataArr = this.severityValues;
+    }
+    if (column == 'Allergy type') {
+      this.modalCommonDataArr = this.allergyTypeValues;
+    }
+    if (column == 'Comments') {
+      this.modalCommonDataArr = this.allergenValues;
+    }
+    if (column == 'RiskCode') {
+      this.modalCommonDataArr = this.riskValues;
+      this.searchString = this.updateRiskForm.controls.Rsfna.value;
+      this.someMethod(this.searchString);
+    }
+  }
+
+  someMethod(event: string) {
+    if (this.modalCommonDataArr.length == 0) {
+      if (this.colName == 'Allergen') {
+        this.modalCommonDataArr = this.allergenValues;
+      } else {
+        this.modalCommonDataArr = this.riskValues;
+      }
+    } else {
+      if (event == '') {
+        if (this.colName == 'Allergen') {
+          this.modalCommonDataArr = this.allergenValues;
+        } else {
+          this.modalCommonDataArr = this.riskValues;
+        }
+      } else {
+        this.modalCommonDataArr = this.modalCommonDataArr.filter(
+          (item: any) => {
+            if (item.hasOwnProperty('Bcpname')) {
+              return item.Bcpname.toLowerCase().includes(event.toLowerCase());
+            } else {
+              return item.Rsfna.toLowerCase().includes(event.toLowerCase());
+            }
+          }
+        );
+      }
+    }
+  }
+  selectedDataForUpdate: any;
+  riskJson: any = [];
+  selectValueFromRiskTable(item) {
+    this.isRiskUpdate = true;
+    this.selectedDataForUpdate = item;
+    this.updateRiskForm.controls.Rsfnr.setValue(item.Rsfnr);
+    this.updateRiskForm.controls.Rsfna.setValue(item.Rsfna);
+    this.updateRiskForm.controls.Rsfkb.setValue(item.Rsfkb);
+    this.updateRiskForm.controls.Rsfsn.setValue(item.Rsfsn);
+    this.updateRiskForm.controls.Repdt.setValue(item.Repdt);
+  }
+
+
+  confirmationForRiskDelete(status, item) {
+    Swal.fire({
+      text: 'Are you sure you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup',
+    }).then((result) => {
+      if (result.value) {
+        this.deleteRiskJson(item);
+      }
+    });
+  }
+
+  deleteRiskJson(item) {
+    this.riskJson = [];
+    this.riskJson = [
+      {
+        Patnr: this.selectedERList.Patnr,
+        Lfdnr: item.Lfdnr,
+        Rsfnr: item.Rsfnr,
+        Rsfna: item.Rsfna,
+        Rsfkb: item.Rsfkb,
+        Rsfsn: item.Rsfsn,
+        Mode: 'D',
+      },
+    ];
+    // this.saveRiskList();
+  }
+
+  saveRiskJsonFormat() {
+    this.isFormValidError = true;
+    this.riskJson = [];
+    let mode = '';
+    if (this.isRiskUpdate) {
+      mode = 'U';
+    } else {
+      mode = 'I';
+    }
+    let finallfdnrValue;
+    if (mode == 'I') {
+      finallfdnrValue = '000';
+    } else {
+      finallfdnrValue = this.selectedDataForUpdate.Lfdnr;
+    }
+    let reportedon = '';
+    if (this.updateRiskForm.controls.Repdt.value !== '') {
+      reportedon =
+        this.updateRiskForm.controls.Repdt.value.getDate() +
+        '.' +
+        this.updateRiskForm.controls.Repdt.value.getMonth(
+          this.updateRiskForm.controls.Repdt.value.setMonth(
+            this.updateRiskForm.controls.Repdt.value.getMonth() + 1
+          )
+        ) +
+        '.' +
+        this.updateRiskForm.controls.Repdt.value.getFullYear();
+    }
+    this.riskJson = [
+      {
+        Patnr: this.selectedERList.Patnr,
+        Lfdnr: this.selectedERList.Lfdbw,
+        Rsfnr: this.updateRiskForm.controls.Rsfnr.value,
+        Rsfna: this.updateRiskForm.controls.Rsfna.value,
+        Rsfkb: this.updateRiskForm.controls.Rsfkb.value,
+        Rsfsn: this.updateRiskForm.controls.Rsfsn.value,
+        Mode: mode,
+      },
+    ];
+    if (this.updateRiskForm.controls.Repdt.value !== '') {
+      const repdt = this.updateRiskForm.controls.Repdt.value;
+      (reportedon =
+        repdt.getFullYear() +
+        '-' +
+        String(repdt.getMonth()).padStart(2, '0') +
+        '-' +
+        String(repdt.getDate()).padStart(2, '0') +
+        'T00:00:00'),
+        (this.riskJson[0]['Repdt'] = reportedon);
+    }
+    this.saveRiskList();
+  }
+  saveRiskList() {
+    if (this.riskJson[0]['Mode'] !== 'D') {
+      if (this.updateRiskForm.controls.Rsfna.value == '') {
+        Swal.fire({
+          text: 'Risk Code is Mandatory',
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup',
+        });
+      } else {
+        const json = {
+          Patnr: this.selectedERList.Patnr,
+          PatRiskHdrToItmNav: {
+            results: this.riskJson,
+          },
+        };
+        this.emergencyService.saveRiskList(json).subscribe(
+          (_success: any) => {
+            this.resetRiskForm();
+            this.resetUpdateRiskForm();
+            this.getRiskList(this.selectedERList);
+            Swal.fire({
+              text: 'Saved successfully',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup',
+            });
+            this.isFormValidError = false;
+          },
+          (_error: any) => { }
+        );
+      }
+    } else if (this.riskJson[0]['Mode'] == 'D') {
+      const json = {
+        Patnr: this.selectedERList.Patnr,
+        PatRiskHdrToItmNav: {
+          results: this.riskJson,
+        },
+      };
+      this.emergencyService.saveRiskList(json).subscribe(
+        (_success: any) => {
+          this.resetRiskForm();
+          this.resetUpdateRiskForm();
+          this.getRiskList(this.selectedERList);
+          Swal.fire({
+            text: 'Deleted successfully',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup',
+          });
+        },
+        (_error: any) => { }
+      );
+    } else {
+      const json = {
+        Patnr: this.selectedERList.Patnr,
+        PatRiskHdrToItmNav: {
+          results: this.riskJson,
+        },
+      };
+      this.emergencyService.saveRiskList(json).subscribe(
+        (_success: any) => {
+          this.resetRiskForm();
+          this.resetUpdateRiskForm();
+          this.getRiskList(this.selectedERList);
+          Swal.fire({
+            text: 'Saved successfully',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: 'myalertpopup',
+          });
+        },
+        (_error: any) => { }
+      );
+    }
+  }
+  riskItemsArr: any = []
+  resetRiskForm() {
+    this.riskFormitems = this.riskform.get('riskFormitems') as FormArray;
+    this.riskform.reset();
+    this.riskFormitems.clear();
+    this.riskItemsArr = [];
+  }
+
+  resetUpdateRiskForm() {
+    this.updateRiskForm.patchValue({
+      Rsfnr: '',
+      Rsfna: '',
+      Rsfkb: '',
+      Rsfsn: '',
+      Repdt: '',
+    });
+    this.isRiskUpdate = false;
+    this.isFormValidError = false;
+  }
+
+
+  selectValueFromList(item) {
+    if (this.colName == 'Allergen') {
+      this.updateAllergyForm.controls.Allergen.setValue(item.Bcpname);
+      this.updateAllergyForm.controls.Allrgyid.setValue(item.Bcpid);
+      this.updateAllergyForm.controls.Allrgycatlog.setValue(item.Bchid);
+      this.updateAllergyForm.controls.AllergenGrp.setValue(item.BcpnameGroup);
+      this.updateAllergyForm.controls.AllrgyidAgr.setValue(item.BcpidGroup);
+      this.updateAllergyForm.controls.AllrgycatlogAgr.setValue(item.Bchid);
+    }
+    if (this.colName == 'Allergen group') {
+      this.updateAllergyForm.controls.AllergenGrp.setValue(item.Bcpname);
+      this.updateAllergyForm.controls.AllrgyidAgr.setValue(item.Bcpid);
+      this.updateAllergyForm.controls.AllrgycatlogAgr.setValue(item.Bchid);
+    }
+    if (this.colName == 'Certainty') {
+      this.updateAllergyForm.controls.CerText.setValue(item.CerText);
+      this.updateAllergyForm.controls.Cert.setValue(item.Cer);
+    }
+    if (this.colName == 'Evaluation') {
+      this.updateAllergyForm.controls.EvalTxt.setValue(item.EvalTxt);
+      this.updateAllergyForm.controls.Eval.setValue(item.Eval);
+    }
+    if (this.colName == 'Allergic reaction') {
+      this.updateAllergyForm.controls.ReaText.setValue(item.ReaText);
+      this.updateAllergyForm.controls.Rea.setValue(item.Rea);
+    }
+    if (this.colName == 'Severity') {
+      this.updateAllergyForm.controls.SoaText.setValue(item.SoaText);
+      this.updateAllergyForm.controls.Soa.setValue(item.Soa);
+    }
+    if (this.colName == 'Allergy type') {
+      this.updateAllergyForm.controls.TypText.setValue(item.TypText);
+      this.updateAllergyForm.controls.Typ.setValue(item.Typ);
+    }
+    if (this.colName == 'Comments') {
+      this.updateAllergyForm.controls.Adcomment.setValue(item.Adcomment);
+      this.updateAllergyForm.controls.AdcommentLt.setValue(item.Adcomment);
+    }
+    if (this.colName == 'RiskCode') {
+      this.updateRiskForm.controls.Rsfnr.setValue(item.Rsfnr);
+      this.updateRiskForm.controls.Rsfna.setValue(item.Rsfna);
+      this.updateRiskForm.controls.Rsfkb.setValue(item.Rsfkb);
+    }
+    this.modalRef.hide();
+  }
 }

@@ -14,6 +14,7 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { GlosGowCommaScalePopupComponent } from './glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
 import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric-rating-scale-popup.component';
 import { SharedService } from '@services/shared.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-confusion-assessment-method',
@@ -26,7 +27,7 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
   @ViewChild('bradenScaleTemp') bradenScaleTemp: BradenScaleComponent;
   @ViewChild('scalesGlosgow') scalesGlosgow: GlosGowCommaScalePopupComponent;
   @ViewChild('scalesNumericRating') scalesNumericRating: NumericRatingScalePopupComponent;
-  MorsefallForm: FormGroup<any>;
+  confusionForm: FormGroup<any>;
   CurrentDateAndTime: Date = new Date();
   realized: string;
   realizedDescription: string;
@@ -71,30 +72,55 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
   ];
 
   morseFallScaleData;
+
+  private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   modalRefScales: BsModalRef;
   toScaleArr: any[];
   selectedScales: any[] = [];
+  paramsObject: any;
+  encounterId: any;
+  docKey: any;
 
-
-  constructor(private fb: FormBuilder, private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService, private dataShareService: DataShareService, private storageService: StorageService,
-    private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, private sharedService: SharedService
+  constructor(private fb: FormBuilder, private emergencyService: EmergencyService, private dataShareService: DataShareService, private storageService: StorageService,
+    private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, private sharedService: SharedService, private _route: ActivatedRoute
   ) {
-    // this.getDocData();
-    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-      if (data != null) {
-        if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
-          this.getDocData();
+
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+      if (this.paramsObject.lfdnr) {
+        this.encounterId = this.paramsObject.einri + this.paramsObject.falnr + this.paramsObject.lfdnr;
+      }
+      this.storageService.setEinri(this.paramsObject.einri);
+      this.storageService.setFalnr(this.paramsObject.falnr);
+      this.storageService.setLfdnr(this.paramsObject.lfdnr);
+      this.storageService.setPatnr(this.paramsObject.patnr);
+    });
+
+    this.initForm();
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getDocData();
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getDocData();
+          }
         }
       }
-    });
+    );
   }
 
   getDocData() {
-    this.emergencyService.getMFSDoc(this.patientDocService.latestMorseFallScaleData?.Dockey).subscribe((data: any) => {
+    this.emergencyService.fetchConfusionDocument(this.docKey).subscribe((data: any) => {
       if (data.d) {
-        this.MorsefallForm.patchValue(data.d);
-        this.calculateTotal();
+        this.confusionForm.patchValue(data?.d?.results[0]);
       }
     }, (error) => {
       console.error(error)
@@ -102,62 +128,37 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.MorsefallForm = this.fb.group({
-      HistoryFalls: new FormControl('A'),
-      SecondaryDiagnosis: new FormControl('A'),
-      AmbulatoryAid: new FormControl('A'),
-      IvAccess: new FormControl('A'),
-      Gait: new FormControl('A'),
-      MentalStatus: new FormControl('A'),
-      Comments: new FormControl(''),
-      AttendPhy: new FormControl(''),
-    })
-
-    this.realized = this.storageService.getUserProfile().Gpart;
-    this.realizedDescription = this.storageService.getUserProfile().GpartName;
-
-    this.MorsefallForm.controls['AttendPhy'].patchValue(this.realized);
-
-    this.calculateTotal();
-
   }
 
-  getFormData() {
-    return this.MorsefallForm.value;
-  }
-
-  calculateTotal() {
-    const formValues = this.MorsefallForm.value;
-
-    const scores = {
-      HistoryFalls: { 'A': null, '1': 25, '0': 0 },
-      SecondaryDiagnosis: { 'A': null, '1': 15, '0': 0 },
-      AmbulatoryAid: { 'A': null, 'F': 30, 'C': 15, 'N': 0 },
-      IvAccess: { 'A': null, '1': 20, '0': 0 },
-      Gait: { 'A': null, 'I': 20, 'W': 10, 'N': 0 },
-      MentalStatus: { 'A': null, 'F': 15, 'O': 0 }
-    };
-
-    Object.keys(scores).forEach(key => {
-      const value = formValues[key];
-      this['ch_mfs_' + key.toLowerCase()] = scores[key][value];
+  initForm() {
+    this.confusionForm = this.fb.group({
+      Dockey: [''],
+      Dtid: ['ZSCA_CAM'],
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
+      DocStatus: [''],
+      F1IsThePatient: [false],
+      F1HasThePatient: [false],
+      F1Present: [false],
+      F2IfNumber: [false],
+      F2Present: [false],
+      F3Present: [false],
+      F41WillStone: [''],
+      F42AreThere: [''],
+      F43Does1Pound: [''],
+      F44CanYou: [''],
+      F4IfCombined: [false],
+      F4Present: [false],
+      DeliriumPresent: [false],
+      DeliriumAbsent: [false],
+      Comments: [''],
     });
-
-
-    this.totalScore = Object.keys(scores).reduce((acc, key) => acc + (scores[key][formValues[key]] || 0), 0);
-
-    if (this.totalScore <= 24) {
-      this.description = 'Low risk. Basic nursing care.';
-    } else if (this.totalScore < 45) {
-      this.description = 'Moderate risk. Standard fall prevention indicators.';
-    }
-    else if (!this.totalScore || this.totalScore == undefined) {
-      this.totalScore = 0
-      this.description = 'Low risk. Basic nursing care.';
-    } else {
-      this.description = 'High risk. High risk fall prevention indicators.';
-    }
   }
+
 
   isDockeyAvailable(): boolean {
     return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
@@ -316,6 +317,58 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
     //   });
     // });
     this.modalRefScales.hide();
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
+
+  createNursingAssessmentDoc(docStatus: any, actiontype?: string) {
+    return new Promise((resolve, reject) => {
+      // this.isFormValidError = true;
+      // paylaod.TOSCALE = this.scalesList.filter((res: any) => {
+      //   delete res.value;
+      //   res.LastScore = res?.LastScore.toString();
+      //   if (res.LastScore) {
+      //     return res;
+      //   }
+      // });
+      let paylaod = this.confusionForm.value;
+      paylaod.DocStatus = docStatus;
+      paylaod['TOSCALE'] = [];
+      console.log(paylaod);
+      // return
+      // paylaod.Orgdo = this.storageService?.patientData?.deptOrgUnit;
+      this.subscription = this.emergencyService
+        .saveConfusionDocument(paylaod)
+        .subscribe({
+          next: (data: any) => { },
+          error: (err: any) => {
+            this.sharedService.waringSwallModel(`Error ${err}`);
+            this.sharedService.waringSwallModel(
+              `PUT Error at Confusion Assessment Method for ICU PMD Doc : ${err}`
+            );
+          },
+          complete: () => {
+            resolve(true);
+            if (actiontype === 'edit') {
+              this.sharedService.successSwallModel(
+                'Confusion Assessment Method for ICU PMD Doc updated successfully'
+              );
+            } else {
+              this.sharedService.successSwallModel(
+                'Confusion Assessment Method for ICU PMD Doc created successfully'
+              );
+            }
+          },
+        });
+    });
   }
 
 

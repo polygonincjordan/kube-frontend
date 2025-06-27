@@ -67,7 +67,7 @@
           <td colspan="4">{{ phyOrder.Maktx }}</td>
           <td colspan="1">{{ phyOrder.Meins }}</td>
           <td colspan="1">{{ phyOrder?.Menge }}</td>
-          <td colspan="1">{{ getDate(phyOrder.Erdat) | date : "d.MM.y" }}</td>
+          <td colspan="1">{{ getDate(phyOrder.Erdat) | date : "d.MM.y" }} / {{getTime(phyOrder.CreatedAt)}}</td>
           <td colspan="1">{{ phyOrder.Sloc }}</td>
           <td colspan="1">{{ phyOrder.Erusr }}</td>
           <td colspan="1">{{ phyOrder.Batch }}</td>

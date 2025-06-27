@@ -104,6 +104,7 @@ export interface ConsumablesHistoryResult {
   Erdat: string
   Erusr: string
   NonBillable: string
+  CreatedAt?: string
 }
 
 

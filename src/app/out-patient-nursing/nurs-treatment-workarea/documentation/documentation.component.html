@@ -357,7 +357,7 @@ min-width: 15%;">
                   <div class="col-md-2 status-color pr-0" (click)="getPatientProfileData(member)">{{ member.DokstText ?
                     member.DokstText : "N/A" }}</div>
                   <div class="col-md-2" (click)="getPatientProfileData(member)">{{ getDate(member.Dodat) | date:
-                    "dd-MM-y"}}</div>
+                    "dd-MM-y"}}/{{getTime(member?.CreatedAt)}}</div>
                   <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                   <div class="col-md-1 p-0">
                     <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">

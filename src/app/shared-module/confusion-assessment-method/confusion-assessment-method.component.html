@@ -1,5 +1,5 @@
 <div class="haemodialysis-main">
-    <form [formGroup]="MorsefallForm">
+    <form [formGroup]="confusionForm">
         <div class="haemodialysis-info">
             <div class="container-fluid" style="padding: 0px;">
                 <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
@@ -9,7 +9,8 @@
                             <div class="col-6 px-0 mb-2">
                                 <div class="row align-items-center w-100 custom-input">
                                     <label for="" class="text-nowrap m-0 col-2">Scale Name</label>
-                                    <input type="text" class="col-6" value="Confusion Assessment Method for ICU (CAM-ICU)" style="width: 100%;"
+                                    <input type="text" class="col-6"
+                                        value="Confusion Assessment Method for ICU (CAM-ICU)" style="width: 100%;"
                                         disabled>
                                 </div>
                             </div>
@@ -44,8 +45,7 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="F1IsThePatient">
                                             <label for="" class="mx-3">Is the patient’s mental status different than
                                                 his/her
                                                 baseline?</label>
@@ -55,8 +55,7 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="F1HasThePatient">
                                             <label for="" class="mx-3">Has the patient had any fluctuation in mental
                                                 status
                                                 in the past 24 hours as evidenced by fluctuation on a sedation scale
@@ -69,8 +68,7 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="F1Present">
                                             <label for="" class="mx-3">Present</label>
                                         </div>
                                     </div>
@@ -83,8 +81,7 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox">
                                             <label for="" class="mx-3">Tell the patient: “I am going to read you a
                                                 series of
                                                 10 letters. Whenever you hear the letter ‘A,’ squeeze my hand.”
@@ -99,8 +96,7 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="F2IfNumber">
                                             <label for="" class="mx-3">If number of errors > 2</label>
                                         </div>
                                     </div>
@@ -108,8 +104,7 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="F2Present">
                                             <label for="" class="mx-3">Present</label>
                                         </div>
                                     </div>
@@ -156,15 +151,14 @@
                                                                 <td>{{ item.ScoreDesc }}</td>
                                                                 <td>{{ item.Datetimee }}</td>
                                                                 <td>
-                                                                    <a >Create</a>
+                                                                    <a>Create</a>
                                                                 </td>
                                                                 <td>
-                                                                    <a >View</a>
+                                                                    <a>View</a>
                                                                 </td>
                                                                 <td>
                                                                     <img src="assets/img/Delete.svg" title="Delete"
-                                                                        class="cursor-pointer ml-1"
-                                                                        />
+                                                                        class="cursor-pointer ml-1" />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -175,8 +169,7 @@
                                         <div class="d-flex my-3 risk-wrap">
                                             <div class="d-flex align-items-center custom-input mr-5 ">
                                                 <div class="d-flex align-items-center ">
-                                                    <input type="checkbox"
-                                                        (change)="calculateTotal()">
+                                                    <input type="checkbox" formControlName="F3Present">
                                                     <label for="" class="mx-3">Present (If Richmond Scale NE 0 or
                                                         Sedation Scale NE 4)</label>
                                                 </div>
@@ -195,11 +188,11 @@
                                     <label for="" class="col-md-3">1. Will a stone float on water?</label>
                                     <div class="col-md-2 row m-0">
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F41WillStone" value="1" />
                                             <label for="" class="m-0 ml-2">Yes</label>
                                         </div>
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F41WillStone" value="0" />
                                             <label for="" class="m-0 ml-2">No</label>
                                         </div>
                                     </div>
@@ -208,11 +201,11 @@
                                     <label for="" class="col-md-3">2. Are there fish in the sea?</label>
                                     <div class="col-md-2 row m-0">
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F42AreThere" value="1" />
                                             <label for="" class="m-0 ml-2">Yes</label>
                                         </div>
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F42AreThere" value="0" />
                                             <label for="" class="m-0 ml-2">No</label>
                                         </div>
                                     </div>
@@ -221,11 +214,11 @@
                                     <label for="" class="col-md-3">3. Does 1 pound weigh more than 2 pounds?</label>
                                     <div class="col-md-2 row m-0">
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F43Does1Pound" value="1" />
                                             <label for="" class="m-0 ml-2">Yes</label>
                                         </div>
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F43Does1Pound" value="0" />
                                             <label for="" class="m-0 ml-2">No</label>
                                         </div>
                                     </div>
@@ -234,11 +227,11 @@
                                     <label for="" class="col-md-3">4. Can you use a hammer to pound a nail?</label>
                                     <div class="col-md-2 row m-0">
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F44CanYou" value="1" />
                                             <label for="" class="m-0 ml-2">Yes</label>
                                         </div>
                                         <div class="col-md-6 d-flex align-items-center">
-                                            <input type="radio" />
+                                            <input type="radio" formControlName="F44CanYou" value="0" />
                                             <label for="" class="m-0 ml-2">No</label>
                                         </div>
                                     </div>
@@ -260,8 +253,7 @@
                                     <div class="d-flex my-3 risk-wrap">
                                         <div class="d-flex align-items-center custom-input mr-5 ">
                                             <div class="d-flex align-items-center ">
-                                                <input type="checkbox" 
-                                                    (change)="calculateTotal()">
+                                                <input type="checkbox" formControlName="F4IfCombined">
                                                 <label for="" class="mx-3">If combined number of errors > 1</label>
                                             </div>
                                         </div>
@@ -269,8 +261,7 @@
                                     <div class="d-flex my-3 risk-wrap">
                                         <div class="d-flex align-items-center custom-input mr-5 ">
                                             <div class="d-flex align-items-center ">
-                                                <input type="checkbox" 
-                                                    (change)="calculateTotal()">
+                                                <input type="checkbox" formControlName="F4Present">
                                                 <label for="" class="mx-3">Present</label>
                                             </div>
                                         </div>
@@ -288,13 +279,11 @@
                                 <div class="d-flex my-3 risk-wrap">
                                     <div class="d-flex align-items-center custom-input mr-5 ">
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="DeliriumPresent">
                                             <label for="" class="mx-3">Delirium present</label>
                                         </div>
                                         <div class="d-flex align-items-center ">
-                                            <input type="checkbox"
-                                                (change)="calculateTotal()">
+                                            <input type="checkbox" formControlName="DeliriumAbsent">
                                             <label for="" class="mx-3">Delirium absent</label>
                                         </div>
                                     </div>
@@ -354,8 +343,9 @@
     top: 0;">
                     <tr>
                         <th scope="col" style="    text-align: -webkit-center;">
-                            <input type="checkbox" [checked]="selectedScales.length === toScaleArr.length"
-                                class="form-control" (change)="collectAllScalesData($event)" style="width:20px" />
+                            <input type="checkbox" formControlName=""
+                                [checked]="selectedScales.length === toScaleArr.length" class="form-control"
+                                (change)="collectAllScalesData($event)" style="width:20px" />
                         </th>
                         <th>Scale Type</th>
                         <th style="width: 270px;">Last Score</th>
@@ -371,8 +361,9 @@
                         <td style="text-align: -webkit-center;"> <span
                                 class="input-text-field d-inline-block align-top w-100">
                                 <ng-container>
-                                    <input type="checkbox" class="form-control" [checked]="item.isSelected"
-                                        (change)="collectScalesIData($event,item, i)" style="width:20px" />
+                                    <input type="checkbox" formControlName="" class="form-control"
+                                        [checked]="item.isSelected" (change)="collectScalesIData($event,item, i)"
+                                        style="width:20px" />
                                 </ng-container>
                             </span></td>
                         <td>{{item!.Scaletype}}</td>

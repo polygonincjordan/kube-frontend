@@ -66,4 +66,16 @@ export class PatientDiagnoisiHistoryComponent implements OnInit {
     return `(v${parseInt(value)})`
   }
 
+  getTime(value) {
+    if (value) {
+      var str = value;
+      var str = str.replace(/[PT]/g, '');
+      var str = str.replace(/[H]/g, ':');
+      var str = str.replace(/[M]/g, ':');
+      var str = str.replace(/[S]/g, '');
+      return str;
+    }
+  }
+
+
 }

@@ -22,7 +22,7 @@
                 <strong class="color-43aee7" [title]="item.NodocText">{{ item.NodocText ? item.NodocText : item.DokstText }}</strong>
               </div>
               <div class="col-md-2 p-0" (click)="selectDocument(item, i)">
-                <strong class="in-line" [title]="getDate(item.Dodat) | date: 'dd-MM-y'"><span *ngIf="item.Dodat">|</span> {{ item.NodocText ? '' : getDate(item.Dodat) | date: "dd-MM-y" }}</strong>
+                <strong class="in-line" [title]="getDate(item.Dodat) | date: 'dd-MM-y'"><span *ngIf="item.Dodat">|</span> {{ item.NodocText ? '' : getDate(item.Dodat) | date: "dd-MM-y" }}/{{getTime(item?.CreatedAt)}}</strong>
               </div>
               <div class="col-md-3 p-0" (click)="selectDocument(item, i)">
                 <strong class="in-line" [title]="item.MitarbName"><span *ngIf="item.MitarbName">|</span> {{ item.NodocText ? '' : item.MitarbName }}</strong>
@@ -70,7 +70,7 @@
                 <div class="col-md-2 status-color pr-0" (click)="getReleasedPdf(member, labpdfmodal)">
                   {{ member.DokstText ? member.DokstText : "N/A" }}</div>
                 <div class="col-md-2" (click)="getReleasedPdf(member, labpdfmodal)">
-                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}</div>
+                  {{ getDate(member.Dodat) | date: "dd-MM-y"}}/{{getTime(member?.CreatedAt)}}</div>
                 <div class="col-md-3 pr-0" (click)="getReleasedPdf(member, labpdfmodal)">{{ member.MitarbName }}</div>
                 <div class="col-md-1 p-0">
                   <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
