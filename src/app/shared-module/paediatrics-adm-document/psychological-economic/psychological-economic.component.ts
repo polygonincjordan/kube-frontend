@@ -18,7 +18,7 @@ selectedTabName: string = 'Psychological History';
   yesNoList = [
     {
       label: 'Yes',
-      value: 'J'
+      value: 'Y'
     },
     {
       label: 'No',

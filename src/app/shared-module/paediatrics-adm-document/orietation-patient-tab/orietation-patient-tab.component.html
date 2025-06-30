@@ -10,43 +10,43 @@
                         </div>
                         <div class="col-md-10 row m-0">
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOIdBand"/>
                                 <label class="m-0">ID Band </label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOBathroom"/>
                                 <label class="m-0">Bathroom</label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOBatch"/>
                                 <label class="m-0">Batch Call Light</label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpONurseCall"/>
                                 <label class="m-0">Nurse Call</label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOMealTimes"/>
                                 <label class="m-0">Meal Times</label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOVisitingHours"/>
                                 <label class="m-0">Visiting Hours </label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOTvControl"/>
                                 <label class="m-0">TV Control </label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpONonSmoking"/>
                                 <label class="m-0">No-smoking Policy</label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpOPatientEquipment"/>
                                 <label class="m-0">Patient Equipment</label>
                             </div>
                             <div class="col-md-2 d-flex">
-                                <input type="checkbox" />
+                                <input type="checkbox"/>
                                 <label class="m-0">Telephone</label>
                             </div>
                         </div>
@@ -57,12 +57,10 @@
                         </div>
                         <div class="col-md-9 row m-0">
                             <div class="col-md-2">
-                                <ng-select>
-                                    <ng-option *ngFor="let item of patientHandbook">{{ item.label }}</ng-option>
-                                </ng-select>
+                                <ng-select [items]="patientHandbook" bindLabel="label" bindValue="value"  formControlName="OpPatientHandbook"></ng-select>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="OpPatientHandbookTxt"/>
                             </div>
                         </div>
                     </div>
@@ -74,23 +72,21 @@
                             <div class="col-md-12 d-flex">
                                 <label class="m-0"> Valuables / Equipement brought to hospital by patient /
                                     family</label>
-                                <ng-select class="w-20 ml-3">
-                                    <ng-option *ngFor="let item of valueableList">{{ item.label }}</ng-option>
-                                </ng-select>
+                                <ng-select [items]="valueableList" bindLabel="label" bindValue="value"  class="w-20 ml-3" formControlName="OpVValuables"></ng-select>
                             </div>
                             <div class="col-md-12 row m-0 mt-2">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpVPatent"/>
                                 <label class="m-0">Patient</label>
                             </div>
                             <div class="col-md-12 row m-0 mt-2">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpVSentHome"/>
                                 <label class="m-0 ml-2">Sent Home with</label>
-                                <input class="form-control w-30 ml-2" />
+                                <input class="form-control w-30 ml-2" formControlName="OpVSentHomeTxt" />
                             </div>
                             <div class="col-md-12 row m-0 mt-2">
-                                <input type="checkbox" />
+                                <input type="checkbox" formControlName="OpVGivenBy" />
                                 <label class="m-0 ml-2">Given by</label>
-                                <input class="form-control w-30 ml-2" />
+                                <input class="form-control w-30 ml-2" formControlName="OpVGivenByTxt"/>
                             </div>
                         </div>
                     </div>

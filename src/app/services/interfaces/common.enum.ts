@@ -41,6 +41,7 @@ export enum WordType {
   EditEA = 'EditEducationAssessment',
   EditNE = 'EditNurseEndorsment',
   EditEND = 'EditEmergencyNursingDocument',
+  EditPEAA = 'EditPediatricsAdmissionAssessDocument',
   CopyEA = 'CopyEducationAssessment',
   CopyHC = 'CopyhomeCathe',
   CopyICB = 'CopyICbundle',
@@ -51,6 +52,7 @@ export enum WordType {
   CopyBS = 'CopyBradenScale',
   CopyPFR = 'CopyPFR',
   CopyEND = 'CopyEmergencyNursingDocument',
+  CopyPEAA = 'CopyPediatricsAdmissionAssessDocument'
 }
 
 export enum FilterType {

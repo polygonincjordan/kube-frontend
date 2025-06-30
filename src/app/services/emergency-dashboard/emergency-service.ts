@@ -1366,6 +1366,15 @@ export class EmergencyService {
       }
     );
   }
+   //working on here (Pediatrics Admission Assessment) bottom one
+  deletePediatricAdmAssesDoc(json): Observable<any> {
+    return this.http.delete(
+      this.url + `deletePediatricAdmAssesDoc?Dockey=${json}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 
   getPainAssessmentPDF(dockey: string) {
     return this.http.get(this.url + `getPainAssessmentPDF?Dockey=${dockey}`, {
@@ -1476,35 +1485,35 @@ export class EmergencyService {
 
   getHistoryReservationList(fromDate?: any,toDate?: any,sloc?: any,matnr?: any,moveType?: any,costCtr?: any) {
     let queryParams = [];
-  
+
     if (fromDate && toDate) {
       queryParams.push(`Erdat=${fromDate}`);
       queryParams.push(`Erdat1=${toDate}`);
     }
-  
+
     if (sloc) {
       queryParams.push(`Sloc=${sloc}`);
     }
-  
+
     if (matnr) {
       queryParams.push(`Matnr=${matnr}`);
     }
-  
+
     if (moveType) {
       queryParams.push(`MoveType=${moveType}`);
     }
-  
+
     if (costCtr) {
       queryParams.push(`CostCtr=${costCtr}`);
     }
-  
+
     const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-    
+
     return this.http.get(this.url + `getHistoryReservationList${queryString}`, {
       withCredentials: true,
     });
   }
-  
+
 
   callHistoryList() {
     this.formValuesSubject.next(null);
@@ -1623,7 +1632,7 @@ export class EmergencyService {
     });
   }
 
-  
+
   ioChartCategoryList() {
     const url = `${environment.eKardexApiUrl}/ioChartCategorySet`;
     return this.http.get(url, {
@@ -1701,6 +1710,13 @@ export class EmergencyService {
     });
   }
 
+  //this API if finalized! (to get perticular 'Pediatrics Admission Assessment ' doc)
+  getPediatricAdmAssesDocDetails(Dockey) {
+    return this.http.get(this.url + `getPediatricAdmAssesDocDetails?Dockey=${Dockey}`, {
+      withCredentials: true,
+    });
+  }
+
   fallRiskAssessmentLatestDoc(json) {
     return this.http.get(
       this.url + `fallRiskAssessmentLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
@@ -1736,6 +1752,15 @@ export class EmergencyService {
   stampLatestDoc(json) {
     return this.http.get(
       this.url + `fallStampLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  //this API if finalized! (to get the latest Pediatrics Admission Assessment doc)
+  getPediatricAdmAssesLatestDoc(json) {
+    return this.http.get(
+      this.url + `getPediatricAdmAssesLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
         withCredentials: true,
       }
     );
@@ -1832,6 +1857,13 @@ export class EmergencyService {
    // Nursing Initial Assessment Gyno Obstetrics PMD Doc
   saveApgarScaleDoc(json) {
     return this.http.post(this.url + 'saveApgarScaleDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  //this API if finalized! (to Create Pediatrics Admission Assessment Doc)
+  CreatePediatricAdmAssesDoc(json) {
+    return this.http.post(this.url + 'CreatePediatricAdmAssesDoc', json, {
       withCredentials: true,
     });
   }

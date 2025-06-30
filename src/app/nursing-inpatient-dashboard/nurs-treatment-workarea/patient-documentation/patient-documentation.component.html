@@ -96,6 +96,12 @@
               Release
             </button>
           </div>
+          <!-- working on here (Pediatrics Admission Assessment) bottom one -->
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pediatrics Admission Assessment'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedPediatricsAdmissionlAsses()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'SBAR Nursing Endorsement'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleasedSBAR()">
               Release
@@ -219,8 +225,8 @@
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openGlasgowComaScale || openFacePainScale || openMalnutritionAss || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument 
-        || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument 
+        *ngIf="openGlasgowComaScale || openFacePainScale || openMalnutritionAss || openNumericRatingScale || openBradenScale || openMorseFallScale || openModifiedAldreteDocument
+        || openNewScaleDocumentDocument || openNIPSDocumentDocument || openRamsaySedationDocument || openConfusionAssessmentDocument || openICAdultVentilatorDocument
         || openisPediatricsFallDocument || openObstetricFallRiskAssessmentDocument || openRichmondScale"
         style="justify-content: space-between;">
         <div>
@@ -392,7 +398,7 @@
                   </div>
               </div>
             </div>
-             
+
               <!-- Education Assessment -->
               <div
                 [ngClass]="isEducationAssement ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -475,7 +481,7 @@
                     </div>
                 </div>
               </div>
-              
+
               <!-- Attachments Documents -->
               <div class="box-col d-flex mt-2 docs-event"
                 [ngClass]="attachments ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -552,7 +558,7 @@
               </div>
 
             <!-- Pain Assessment -->
-            <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;" 
+            <div [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
              *ngIf="!selectedDocument || selectedDocument == 'PAA'" (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
               <div class="col-md-4">Pain Assessment {{painAssessmentLaestDoc[0]?.Zversion ?
                 dockVer(painAssessmentLaestDoc[0]?.Zversion) : ''}} :</div>
@@ -597,7 +603,7 @@
               </div>
             </div>
 
-            
+
 
               <!-- Nurse Endorsement -->
 
@@ -851,7 +857,7 @@
                     *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
-              
+
               <!-- Nursing Intra-Operative Record -->
             <div [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'NIOR'" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
@@ -1121,15 +1127,15 @@
                  </div>
               </div>
 
-              <!--  Pediatric Admission Assessment -->
+              <!--  Pediatrics Admission Assessment (working on) -->
                <div
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
                 style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'PEAA'" (click)="selectAssessment('isPediatricsAdmission',latestPediatricAdmissionList[0])">
                 <div class="col-md-4"> Pediatrics Admission Assessment {{latestPediatricAdmissionList[0]?.Zversion ?
-                  dockVer(latestPediatricAdmissionList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                  dockVer(latestPediatricAdmissionList[0]?.Zversion) : ''}}</div>
                 <div class="col-md-2 status-color">{{latestPediatricAdmissionList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestPediatricAdmissionList[0]?.DocTime)}}">
-                  {{getDate(latestPediatricAdmissionList[0]?.DocDate) | date: "dd.MM.y" || '-'}} / {{getTime(latestPediatricAdmissionList[0]?.DocTime)}}
+                  {{(getDate(latestPediatricAdmissionList[0]?.DocDate) | date: "dd.MM.y") || '-'}} / {{getTime(latestPediatricAdmissionList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestPediatricAdmissionList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
@@ -1297,7 +1303,26 @@
              </div>
            </div>
 
-           
+           <!-- Richmond Scale -->
+           <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+            *ngIf="!selectedDocument || selectedDocument == 'RS'" (click)="selectAssessment('isRichmondScale',richmondList[0])">
+             <div class="col-md-4" >Richmond Scale {{richmondList[0]?.Zversion ?
+               dockVer(richmondList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+             <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
+             <div class="col-md-2" title="{{getTime(richmondList[0]?.DocTime)}}">
+               {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+             </div>
+             <div class="col-md-3">{{richmondList[0]?.PhyNm || '-'}}</div>
+             <div class="col-md-1 d-flex">
+                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                 (click)="openNurseAssMainsPdf(richmondList[0]?.Dockey)"
+                 *ngIf="richmondList[0]?.StatusTxt == 'Released'"></i>
+                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(richmondList[0]?.Dockey, richmondList[0])">
+                   <select *ngIf="richmondList.length && richmondList[0]?.StatusTxt !='N/A' && richmondList[0]?.Zversion != '00'" class="mr-2" name=""
+                     id=""></select>
+                 </div>
+             </div>
+           </div>
            <!-- Dying Patient -->
            <div [ngClass]="isDyingPatient ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
             *ngIf="!selectedDocument || selectedDocument == 'DPA'" (click)="selectAssessment('isDyingPatient',sbarNurEndList[0])">
@@ -1411,7 +1436,7 @@
               </div>
               <div class="col-md-3">{{latestCorrespondenceList[0]?.PhyNm || '-'}}</div>
               <div class="col-md-1">
-              
+
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCorrespondenceDocumentPdf(latestCorrespondenceList[0]?.Dockey)"
                 *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
@@ -1451,7 +1476,7 @@
               </div>
             </div> -->
         </div>
-        </div> 
+        </div>
       </div>
       <div class="col-md-6">
         <div class="box-col document-overflow">
@@ -1535,7 +1560,7 @@
     <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
     <app-correspondence-document *ngIf="openCorrespondenceDocument"></app-correspondence-document>
     <app-modified-aldrete-document *ngIf="openModifiedAldreteDocument"></app-modified-aldrete-document>
-    <app-paediatrics-adm-document *ngIf="openPediatricAdmissionDocument"></app-paediatrics-adm-document>
+    <app-paediatrics-adm-document *ngIf="openPediatricAdmissionDocument"></app-paediatrics-adm-document> <!-- working here -->
     <app-neonatal-disch-document *ngIf="openNeonatalDischDocument"></app-neonatal-disch-document>
     <app-time-out-checklist *ngIf="openTimeoutCheckDocument"></app-time-out-checklist>
     <app-obs-fall-risk-assessment *ngIf="openObstetricFallRiskAssessmentDocument" [isReadOnly]="false"></app-obs-fall-risk-assessment>

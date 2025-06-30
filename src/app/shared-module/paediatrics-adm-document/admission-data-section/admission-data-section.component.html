@@ -28,7 +28,7 @@
             <label>Date</label>
           </div>
           <div class="col-md-4">
-            <input class="form-control" formControlName="ADate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+            <input class="form-control" formControlName="Datee" style="font-weight: 800; color: #000" [minDate]="" [maxDate]="" #dp="bsDatepicker"
               bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"/>
           </div>
         </div>
@@ -37,7 +37,7 @@
             <label>Time</label>
           </div>
           <div class="col-md-4">
-            <input type="time" class="form-control" style="height: 33px" formControlName="ATime" />
+            <input type="time" formControlName="Timee" class="form-control" style="height: 33px"/>
           </div>
         </div>
       </div>
@@ -46,12 +46,10 @@
           <label>Admission Mode</label>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="AAdmissionMode" (change)="selectAdmissionMode($event, 'admissionMode')">
-            <ng-option *ngFor="let item of admissionModeList" [value]="item.value">{{ item.label }}</ng-option>
-          </ng-select>
+          <ng-select [items]="admissionModeList" bindLabel="label" bindValue="value"  formControlName="AdmissionMode" (change)="selectAdmissionMode($event, 'admissionMode')"></ng-select>
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" [disabled]="isInputDisabled('AAdmissionMode', '5')" [readOnly]="isInputDisabled('AAdmissionMode', '5')" formControlName="AAdmissionModeT" />
+          <input type="text" class="form-control" [disabled]="isInputDisabled('AdmissionMode', '5')" [readOnly]="isInputDisabled('AdmissionMode', '5')" formControlName="AdmissionModeTxt" />
         </div>
       </div>
       <div class="row create-form-inputs align-items-center">
@@ -59,13 +57,11 @@
           <label>Accompanied By</label>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="AAccompaniedBy" (change)="selectAdmissionMode($event, 'accompanied')">
-            <ng-option *ngFor="let item of accompaniedbyList" [value]="item.value">{{ item.label }}</ng-option>
-          </ng-select>
+          <ng-select [items]="accompaniedbyList" bindLabel="label" bindValue="value"  formControlName="Accompanied" (change)="selectAdmissionMode($event, 'accompanied')"></ng-select>
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" [disabled]="isInputDisabled('AAccompaniedBy', '6')" [readOnly]="isInputDisabled('AAccompaniedBy', '6')"
-            formControlName="AAccompaniedByT" />
+          <input type="text" class="form-control" [disabled]="isInputDisabled('Accompanied', '6')" [readOnly]="isInputDisabled('Accompanied', '6')"
+            formControlName="AccompaniedTxt" />
         </div>
       </div>
       <div class="row create-form-inputs align-items-center">
@@ -73,13 +69,11 @@
           <label>Info. Obtained from</label>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="AInfoObtained" (change)="selectAdmissionMode($event, 'obtained')">
-            <ng-option *ngFor="let item of infoObtainedList" [value]="item.value">{{ item.label }}</ng-option>
-          </ng-select>
+          <ng-select [items]="infoObtainedList" bindLabel="label" bindValue="value" formControlName="InfoObtained" (change)="selectAdmissionMode($event, 'obtained')"></ng-select>
         </div>
         <div class="col-md-3">
-          <input type="text" class="form-control" [disabled]="isInputDisabled('AInfoObtained', '3')" [readOnly]="isInputDisabled('AInfoObtained', '3')"
-            formControlName="AInfoObtainedT" />
+          <input type="text" class="form-control" [disabled]="isInputDisabled('InfoObtained', '3')" [readOnly]="isInputDisabled('InfoObtained', '3')"
+            formControlName="InfoObtainedTxt" />
         </div>
       </div>
       <div class="row create-form-inputs align-items-center">
@@ -87,11 +81,8 @@
           <label>Language Spoken</label>
         </div>
         <div class="col-md-3">
-          <!-- <input type="text" class="form-control" formControlName="ALanguageSpoken" [disabled]="true" [readOnly]="true" /> -->
-          <ng-select formControlName="ALanguageSpoken">
-            <ng-option  value="English">English</ng-option>
-            <ng-option  value="Arabic">Arabic</ng-option>
-          </ng-select>
+          <!-- <input type="text" class="form-control" formControlName="LanguageSpoken" [disabled]="true" [readOnly]="true" /> -->
+          <ng-select [items]="languageList" bindLabel="label" bindValue="value" formControlName="LanguageSpoken"></ng-select>
         </div>
         <!-- <div class="col-md-7 row create-form-inputs">
           <div class="col-md-5 row m-0 align-items-center">
@@ -99,7 +90,7 @@
               <label>Date</label>
             </div>
             <div class="col-md-7">
-              <input class="form-control" formControlName="ADate" style="font-weight: 800; color: #000" [minDate]="" [maxDate]="" #dp="bsDatepicker"
+              <input class="form-control" formControlName="Datee" style="font-weight: 800; color: #000" [minDate]="" [maxDate]="" #dp="bsDatepicker"
                 bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"/>
             </div>
           </div>
@@ -118,14 +109,10 @@
           <label>Schoole Grade</label>
         </div>
         <div class="col-md-3">
-          <ng-select formControlName="AEducated" (change)="selectSchool($event)">
-            <ng-option *ngFor="let item of schoolGradeList" [value]="item.value">{{ item.label }}</ng-option>
-          </ng-select>
+          <ng-select [items]="schoolGradeList" bindLabel="label" bindValue="value" formControlName="SchoolGrade" (change)="selectSchool($event)"></ng-select>
         </div>
         <div class="col-md-3">
-          <ng-select [readonly]="isInputDisabled('AEducated', '0')" >
-            <ng-option *ngFor="let item of schoolGradeEduList" [value]="item.value">{{ item.label }}</ng-option>
-          </ng-select>
+          <ng-select [items]="schoolGradeEduList" bindLabel="label" bindValue="value"  [readonly]="isInputDisabled('SchoolGrade', '0')" ></ng-select>
         </div>
       </div>
       <div class="row create-form-inputs align-items-center">
@@ -133,7 +120,7 @@
           <label>Favourite Toy / Hobbies</label>
         </div>
         <div class="col-md-4">
-          <input type="text" class="form-control" formControlName="AFavouriteToy" />
+          <input type="text" class="form-control" formControlName="FavouriteToy" />
         </div>
       </div>
       <div class="row create-form-inputs">
@@ -141,14 +128,14 @@
           <label>Reason for Visit/Admission</label>
         </div>
         <div class="col-md-5">
-          <input type="text" class="form-control" formControlName="AReasonVisit" />
+          <input type="text" class="form-control" formControlName="ReasonVisit" />
         </div>
       </div>
     </div>
     <div>
       <div class="chief-complain mt-3 ml-2 mb-3 mr-3">
         <span class="text-area-label">Chief Complaint</span>
-        <textarea class="form-control" formControlName="AChiefComplaint" [ngClass]="nursingAdmissionForm.get('AChiefComplaint').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
+        <textarea class="form-control" formControlName="ChiefComplaint" [ngClass]="nursingAdmissionForm.get('ChiefComplaint').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
       </div>
     </div>
   </form>

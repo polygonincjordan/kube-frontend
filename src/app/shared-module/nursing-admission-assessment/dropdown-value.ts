@@ -110,6 +110,11 @@ export const schoolGradeEduList = [
   },
 ];
 
+export const languageList = [
+  { label: 'English', value: 'English' },
+  { label: 'Arabic', value: 'Arabic' }
+];
+
 // Assessment Section
 export const musculoskeletalList = [
   {

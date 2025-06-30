@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-medication-substances-section',
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class MedicationSubstancesSectionComponent implements OnInit {
   noMedication: boolean = false;
   medicationList: any[] = [];
+  @Input() nursingAdmissionForm: FormGroup;
   constructor() {}
 
   ngOnInit(): void {}

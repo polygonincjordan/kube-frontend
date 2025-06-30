@@ -59,6 +59,7 @@ import { DeliveryRecordDocComponent } from './delivery-record-doc/delivery-recor
 import { NursingInitialAssessmentComponent } from './nursing-initial-assessment/nursing-initial-assessment.component';
 import { NIPSDocumentComponent } from 'src/app/shared-module/nips-document/nips-document.component';
 import { ConfusionAssessmentMethodComponent } from 'src/app/shared-module/confusion-assessment-method/confusion-assessment-method.component';
+import { PaediatricsAdmDocumentComponent } from 'src/app/shared-module/paediatrics-adm-document/paediatrics-adm-document.component';
 import { RichmondScaleComponent } from './richmond-scale/richmond-scale.component';
 import { RamsaySedationScaleComponent } from 'src/app/shared-module/ramsay-sedation-scale/ramsay-sedation-scale.component';
 
@@ -109,9 +110,9 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingInitialAssessmentComponent) NursingInitialAssessmentComp: NursingInitialAssessmentComponent;
   @ViewChild(NIPSDocumentComponent) NIPSDocumentComp: NIPSDocumentComponent;
   @ViewChild(ConfusionAssessmentMethodComponent) ConfusionAssessmentMethodComp: ConfusionAssessmentMethodComponent;
+  @ViewChild(PaediatricsAdmDocumentComponent) PaediatricsAdmDocumentComp: PaediatricsAdmDocumentComponent; // working on here
   @ViewChild(RichmondScaleComponent) RichmondScaleComp: RichmondScaleComponent;
   @ViewChild(RamsaySedationScaleComponent) RamsaySedationScaleComp: RamsaySedationScaleComponent;
-
 
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
@@ -230,7 +231,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   public isPediatricAdmission: boolean = false;
   public openPediatricAdmissionDocument: boolean = false;
-  latestPediatricAdmissionList = [];
+  latestPediatricAdmissionList = [];  //working on
 
   public isObstetricFallRiskAssessment: boolean = false;
   public openObstetricFallRiskAssessmentDocument: boolean = false;
@@ -644,7 +645,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getLatestAssessmentPA();
     // this.getTriageLatestDocuments(); not using this document
     // this.getPhyAssessment(); not using this document
-    // this.getMedLatestAssessment(); 
+    // this.getMedLatestAssessment();
     this.getNurseEndorsement()
     this.getSurgicalPass()
     this.getNewBorn();
@@ -676,6 +677,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNewbornDocument();
     this.getObsFallRiskDoc();
     this.getDeliveryRecordDoc();
+    this.getPediatricAdmAssesLatestDoc();
     this.getNursingInitalGynoDoc();
     this.getConfusionAssessmentList();
     this.richmondLatestDocument();
@@ -1066,13 +1068,25 @@ export class PatientDocumentationComponent implements OnInit {
       next: (_success: any) => {
         this.latestNursingInitialList = _success.d.results
       },
+      error: (err : any) => {
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      }
+    })
+  }
+
+  //  Pediatric Admission Assessment (getting) //working here
+  getPediatricAdmAssesLatestDoc() {
+    this.emergencyService.getPediatricAdmAssesLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestPediatricAdmissionList = _success.d.results
+      },
       error: (err: any) => {
         console.error('Error  Data:', err);
         this.sharedService.waringSwallModel(`GET Error : ${err}`);
       },
     });
   }
-
 
   // Stamp Document Latest
   getStampDocDetails() {
@@ -2363,6 +2377,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
     this.getConfusionAssessmentList();
+    this.getPediatricAdmAssesLatestDoc(); //working here
     this.richmondLatestDocument();
     this.ramsayLatestDocument();
   }
@@ -2508,7 +2523,7 @@ export class PatientDocumentationComponent implements OnInit {
         });;
       }
     }
-    // pediatric early warning 
+    // pediatric early warning
 
     // attachment...
     else if (this.attachments) {
@@ -3699,7 +3714,7 @@ export class PatientDocumentationComponent implements OnInit {
 
     }
 
-    // pediatric early warning 
+    // pediatric early warning
     if (this.pediatricEarlyWarningScale) {
       if (action == 'create') {
         this.openPediatricEarlyWarningScale = true;
@@ -4338,11 +4353,12 @@ export class PatientDocumentationComponent implements OnInit {
     else if (this.isPediatricsAdmission) {
       if (action == 'create') {
         this.openPediatricAdmissionDocument = true;
+        this.dataShareService.sendActionType(ActionType.Add$, false, this.selectedDocData);
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
           this.openPediatricAdmissionDocument = true;
           let valueObj = {
-            type: WordType.EditBS,
+            type: WordType.EditPEAA,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
@@ -4355,26 +4371,26 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteCVCInsertionPlan(this.selectedDocData.Dockey);
+          this.deletePediatricAdmAssesDoc(this.selectedDocData.Dockey);
         }
       } else if (action == 'release') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseCVCInsertionDoc();
+          this.directReleasePediatricAdmAssesDoc();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.openPediatricAdmissionDocument = true;
           let valueObj = {
-            type: WordType.CopyBS,
+            type: WordType.CopyPEAA,
             docKey: this.selectedDocData.Dockey
           }
           this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
         }
       } else if (action == 'createandrelease') {
         this.openPediatricAdmissionDocument = true;
-        this.CvcInsertionDocumentComp.createCvcInsertionDocument('4').then((formValue) => {
+        this.PaediatricsAdmDocumentComp.CreatePediatricAdmAssesDoc('4').then((formValue) => {
           if (formValue) {
             this.refresh()
           }
@@ -4993,6 +5009,35 @@ export class PatientDocumentationComponent implements OnInit {
             },
             complete: () => {
               this.sharedService.successSwallModel('Neonatal Discharge Summary released successfully');
+              this.refresh();
+            }
+          });
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(
+            `POST Error at Nurse Endorsment : ${err}`
+          );
+        }
+      });
+  }
+
+//  Pediatric Admission Assessment (getting) //working here
+  directReleasePediatricAdmAssesDoc() {
+    this.subscription = this.emergencyService
+      .getPediatricAdmAssesDocDetails(this.selectedDocData.Dockey).subscribe({
+        next: (data: any) => {
+          let paylaod = data.d.results[0];
+          delete paylaod.__metadata
+          paylaod.DocStatus = '2';
+          this.subscription = this.emergencyService.CreatePediatricAdmAssesDoc({ d: paylaod }).subscribe({
+            next: (data: any) => { },
+            error: (err: any) => {
+              this.sharedService.waringSwallModel(`Error ${err}`);
+              this.sharedService.waringSwallModel(`POST Error at Pediatrics Admission Assessment : ${err}`);
+            },
+            complete: () => {
+              this.sharedService.successSwallModel('Pediatrics Admission Assessment released successfully');
               this.refresh();
             }
           });
@@ -5850,6 +5895,18 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.NIPSDocumentComp.createNIPSDocument(docStatus).then((formValue: any) => {
+         if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
+      if (this.openPediatricAdmissionDocument) { //working on here (create Pediatrics Admission Assessment with status 1)
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.PaediatricsAdmDocumentComp.CreatePediatricAdmAssesDoc(docStatus).then((formValue: any) => {
           if (formValue) {
             if (btnType == 'close') this.refresh();
           }
@@ -6325,6 +6382,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         });
       }
+      if (this.openPediatricAdmissionDocument) {
+        let docStatus = '1';
+        // //working on here (create Pediatrics Admission Assessment with status 1)
+         this.PaediatricsAdmDocumentComp.CreatePediatricAdmAssesDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Glasgow coma scale:', error);
+        });
+      }
 
       if (this.openConfusionAssessmentDocument) {
         let docStatus = '1';
@@ -6351,6 +6420,16 @@ export class PatientDocumentationComponent implements OnInit {
       }
       if (this.openBradenScale) {
         this.BradenScaleComp.copyBradeScale().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error copy numeric rating Scale:', error);
+        });
+      }
+      //  Pediatric Admission Assessment (getting) //working here
+      if (this.openPediatricAdmissionDocument) {
+        this.PaediatricsAdmDocumentComp.CreatePediatricAdmAssesDoc('3').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -6874,6 +6953,24 @@ export class PatientDocumentationComponent implements OnInit {
       }, (_error: any) => {
         Swal.fire({
           text: `Education assessment has error, contact your administrator`,
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+      });
+    } else if (this.isPediatricsAdmission) {
+      this.PaediatricsAdmDocumentComp.CreatePediatricAdmAssesDoc('2').then((res: any) => {
+        Swal.fire({
+          text: "Pediatrics Admission Assessment is created successfully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: 'myalertpopup'
+        })
+        this.refresh();
+        this.refresh();
+      }, (_error: any) => {
+        Swal.fire({
+          text: `Pediatrics Admission Assessment has error, contact your administrator`,
           icon: 'warning',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup'
@@ -8170,6 +8267,42 @@ export class PatientDocumentationComponent implements OnInit {
       }
     });
   }
+     //working on here (Pediatrics Admission Assessment) bottom one
+   deletePediatricAdmAssesDoc(docKey: string) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deletePediatricAdmAssesDoc(docKey)).subscribe({
+          next: (_success: any) => {
+                Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          error: (_error: any) => {
+                Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        }
+        );
+      }
+    });
+  }
 
   // Delete Neonatal Discharge Document
   async deleteNeonatalDischarge(docKey: string) {
@@ -8645,6 +8778,18 @@ export class PatientDocumentationComponent implements OnInit {
 
   newVersionDirectReleasedSurgical() {
     this.SurgicalPassComp.copySurgicalPassDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Glasgow coma scale:', error);
+    });
+  }
+
+  //working on here (Pediatrics Admission Assessment) bottom one
+  newVersionDirectReleasedPediatricsAdmissionlAsses() {
+    this.PaediatricsAdmDocumentComp.CreatePediatricAdmAssesDoc('5').then((formValue: any) => {
       if (formValue) {
         this.refresh();
       }
