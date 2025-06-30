@@ -141,6 +141,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   ErHistoryPatientCount: any;
   labReceivedData: any;
   filterStatusList: any[];
+  vacantBedList: any[];
   dropdownSettings = {};
   dropdownSettingsForSpecialtyConfig = {};
   filterBehpersonList: any;
@@ -1909,6 +1910,25 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       class: 'modal-dialog-centered patient-info-modal-size',
     };
     this.modalRef = this.modalService.show(template, config);
+  }
+  openVacantBedModal(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered patient-info-modal-size',
+    };
+    this.modalRef = this.modalService.show(template, config);
+    this.getVacantBedList();
+  }
+
+  getVacantBedList() {
+    this.emergencyService.getVacantBedsList().subscribe({
+      next: (_success: any) => {
+        console.log(_success, "_success");
+        this.vacantBedList = _success?.d?.results; 
+      },
+      error: (err: any) => {
+        // this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
+      }
+    });
   }
 
   commaSeparatForSpecialtyConf(value: any) {

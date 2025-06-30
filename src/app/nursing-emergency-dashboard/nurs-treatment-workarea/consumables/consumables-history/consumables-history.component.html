@@ -39,7 +39,7 @@
               [ngClass]="{'fa-sort': sortColumn !== 'Menge', 'fa-sort-up': sortColumn === 'Menge' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Menge' && sortDirection === 'desc'}"
               aria-hidden="true"></i>
           </th>
-          <th colspan="1" scope="col" (click)="sortTable('Erdat')">Date & Time
+          <th class="w-15" colspan="1" scope="col" (click)="sortTable('Erdat')">Date & Time
             <i class="fa"
               [ngClass]="{'fa-sort': sortColumn !== 'Erdat', 'fa-sort-up': sortColumn === 'Erdat' && sortDirection === 'asc', 'fa-sort-down': sortColumn === 'Erdat' && sortDirection === 'desc'}"
               aria-hidden="true"></i>

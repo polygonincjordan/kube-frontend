@@ -2,68 +2,30 @@
   <div class="scale-container p-2">
     <h6 class="scale-result">Scale Information</h6>
     <div class="row">
-      <label>Scale Name</label>
-      <input
-        class="col-md-5 form-control"
-        type="text"
-        value="Richmond Scale"
-        disabled
-      />
-    </div>
-    <div class="row">
       <label>Date</label>
-      <input
-        type="text"
-        class="col-2 form-control"
-        bsDatepicker
-        [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
-        [bsValue]="CurrentDateAndTime"
-        disabled
-      />
-      <input
-        type="text"
-        class="col-2 form-control ml-2"
-        bsDatepicker
-        [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"
-        [bsValue]="CurrentDateAndTime"
-        disabled
-      />
+      <input type="text" class="col-2 form-control" bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime"
+        disabled />
+      <input type="text" class="col-2 form-control ml-2" bsDatepicker
+        [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime" disabled />
     </div>
     <div class="row">
       <label>Realized by </label>
-      <input
-        class="col-md-3 form-control"
-        type="text"
-        [value]="realized"
-        disabled
-      />
-      <input
-        class="col-md-5 form-control ml-2"
-        type="text"
-        [value]="realizedDescription"
-        disabled
-      />
+      <input class="col-md-3 form-control" type="text" [value]="realized" disabled />
+      <input class="col-md-5 form-control ml-2" type="text" [value]="realizedDescription" disabled />
     </div>
 
     <h6 class="scale-result">Richmond</h6>
     <div class="total-sec">
-      <div
-        *ngFor="let score of scoreDescriptions"
-        class="form-check rass-option"
-      >
-      <div class="col-md-1">
-          <input
-            class="form-check-input"
-            type="radio"
-            [id]="'rass' + score.key"
-            formControlName="rassScore"
-            [value]="score.key"
-          />
+      <div *ngFor="let score of scoreDescriptions" class="form-check rass-option">
+        <div class="col-md-1">
+          <input class="form-check-input" type="radio" [id]="'rass' + score.key" formControlName="Score"
+            [value]="score.key" />
           {{ score.key }}
 
-      </div>
+        </div>
         <label class="form-check-label rass-label" [for]="'rass' + score.key">
-            {{ score.value }}
+          {{ score.value }}
         </label>
       </div>
     </div>
@@ -73,26 +35,13 @@
     <h6 class="scale-result">Scale Result</h6>
     <div class="row">
       <label>Total Score</label>
-      <input
-        class="col-md-1 form-control"
-        type="text"
-        formControlName="TotalScore"
-        readonly
-      />
-      <input
-        class="col-md-3 form-control ml-2"
-        type="text"
-        [value]="getDescription()"
-        readonly
-      />
+      <input class="col-md-1 form-control" type="text" formControlName="TotalScore" readonly />
+      <input class="col-md-3 form-control ml-2" type="text" [value]="getDescription()" readonly />
     </div>
 
     <div class="row">
       <label>Comments</label>
-      <input
-        class="col-md-6 form-control"
-        type="text"
-      />
+      <input class="col-md-6 form-control" type="text" formControlName="Comments"/>
     </div>
   </div>
 </form>

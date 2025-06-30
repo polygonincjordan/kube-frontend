@@ -157,6 +157,11 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
       DeliriumAbsent: [false],
       Comments: [''],
     });
+
+    this.realized = this.storageService.getUserProfile().Gpart;
+    this.realizedDescription = this.storageService.getUserProfile().GpartName;
+
+    // this.MorsefallForm.controls['AttendPhy'].patchValue(this.realized);
   }
 
 

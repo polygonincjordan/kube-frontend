@@ -1,5 +1,5 @@
 <div class="haemodialysis-main">
-    <form [formGroup]="MorsefallForm">
+    <form [formGroup]="ramsaySedationForm">
         <div class="haemodialysis-info">
             <div class="container-fluid" style="padding: 0px;">
                 <div class="haemodialysis-dialysis-info position-relative p-3 mb-4 mt-4">
@@ -48,7 +48,7 @@
                             <label for="" class="common-label m-0">0</label>
                             <div class="custom-input mr-5 ">
                                 <div class="d-flex align-items-center ">
-                                    <input type="radio" value="0" name="HistoryFalls" formControlName="HistoryFalls"
+                                    <input type="radio" value="0" name="Responsiveness" formControlName="Responsiveness"
                                         (change)="calculateTotal(0)">
                                     <label for="" class="mx-3">Not answered</label>
                                 </div>
@@ -58,8 +58,8 @@
                             <label for="" class="common-label m-0">1</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="1" name="HistoryFalls"
-                                        formControlName="HistoryFalls" (change)="calculateTotal(1)">
+                                    <input type="radio" value="1" name="Responsiveness"
+                                        formControlName="Responsiveness" (change)="calculateTotal(1)">
                                     <label for="" class="mx-3">Patient is anxious and agitated and/or restless</label>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                             <label for="" class="common-label m-0">2</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="2" name="HistoryFalls" formControlName="HistoryFalls"
+                                    <input type="radio" value="2" name="Responsiveness" formControlName="Responsiveness"
                                         (change)="calculateTotal(2)">
                                     <label for="" class="mx-3">Patient is cooperative, oriented and quiet</label>
                                 </div>
@@ -78,7 +78,7 @@
                             <label for="" class="common-label m-0">3</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="3" name="HistoryFalls" formControlName="HistoryFalls"
+                                    <input type="radio" value="3" name="Responsiveness" formControlName="Responsiveness"
                                         (change)="calculateTotal(3)">
                                     <label for="" class="mx-3">Patient responds to commands only</label>
                                 </div>
@@ -88,7 +88,7 @@
                             <label for="" class="common-label m-0">4</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="4" name="HistoryFalls" formControlName="HistoryFalls"
+                                    <input type="radio" value="4" name="Responsiveness" formControlName="Responsiveness"
                                         (change)="calculateTotal(4)">
                                     <label for="" class="mx-3">Patient exhibits brisk response to light glabellar tap</label>
                                 </div>
@@ -98,7 +98,7 @@
                             <label for="" class="common-label m-0">5</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="5" name="HistoryFalls" formControlName="HistoryFalls"
+                                    <input type="radio" value="5" name="Responsiveness" formControlName="Responsiveness"
                                         (change)="calculateTotal(5)">
                                     <label for="" class="mx-3">Patient exhibits a sluggish response to light glabellar tap</label>
                                 </div>
@@ -108,7 +108,7 @@
                             <label for="" class="common-label m-0">6</label>
                             <div class="custom-input mr-5">
                                 <div class="d-flex align-items-center">
-                                    <input type="radio" value="6" name="HistoryFalls" formControlName="HistoryFalls"
+                                    <input type="radio" value="6" name="Responsiveness" formControlName="Responsiveness"
                                         (change)="calculateTotal(6)">
                                     <label for="" class="mx-3">Patient exhibits no response</label>
                                 </div>
@@ -122,8 +122,8 @@
                         <div class="col-6 px-0">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-2">Total score</label>
-                                <input type="text" class="col-2" [value]="totalScore" readonly>
-                                <input type="text" class="col-7" [value]="description" readonly>
+                                <input type="text" class="col-2" formControlName="TotalScore" readonly>
+                                <input type="text" class="col-7" formControlName="ScoreDesc" readonly>
                             </div>
                         </div>
                     </div>

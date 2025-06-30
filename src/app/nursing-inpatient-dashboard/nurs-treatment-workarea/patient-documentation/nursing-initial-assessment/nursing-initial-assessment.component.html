@@ -1758,7 +1758,7 @@
           <div class="col-md-1"></div>
           <div class="col-md-1"><label>Delivery Time</label></div>
           <div class="col-md-1">
-            <input type="time" placeholder="00:00" [value]="currentTime" class="form-control" naria-label="24hr format"
+            <input type="time" placeholder="00:00" step="2" [value]="currentTime" class="form-control" naria-label="24hr format"
               style="width: 180px !important" formControlName="SMDeliveryTime" />
           </div>
         </div>
@@ -1928,9 +1928,9 @@
               *ngFor=" let item of nursingFormGroup.get('TOBABY')['controls']; let i = index">
               <tr [formGroupName]="i" class="c-pointer">
                 <!-- <td></td> -->
-                <td><input type="text" class="form-control" formControlName="No" /></td>
+                <td class="w-5"><input type="text" class="form-control" formControlName="No" [disabled]="true" /></td>
                 <td><input type="time" step="2" class="form-control" formControlName="Time" /></td>
-                <td>
+                <td class="w-10">
                   <!-- <input type="text" class="form-control" formControlName="Sex" /> -->
                   <ng-select [items]="gender" bindLabel="label" bindValue="value" placeholder="Select"
                     style="width: 100%" formControlName="Sex"></ng-select>

@@ -43,7 +43,7 @@
                   <input type="text" class="form-control" [(ngModel)]="element.createdBy" disabled="true" />
                 </td> -->
               <td colspan="1">
-                <input class="form-control "  type="text" [disabled]="true"/>
+                <input class="form-control "  type="text" [(ngModel)]="element.Imeng" [title]="element.Imeng"/>
               </td>
                 <td class="align-middle border-0" >
                   <div class="trash-icon" (click)="feeListService.onDeleteOrder(element)">

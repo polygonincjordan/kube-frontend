@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
+import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
 
@@ -14,97 +16,159 @@ import { Subscription } from 'rxjs';
 })
 export class RamsaySedationScaleComponent implements OnInit {
 
- MorsefallForm: FormGroup<any>;
+  ramsaySedationForm: FormGroup<any>;
   CurrentDateAndTime: Date = new Date();
   realized: string;
   realizedDescription: string;
-  ch_mfs_history_falls: number | null; 
-  ch_mfs_secondary_diagnosis: number | null; 
-  ch_mfs_ambulatory_aid: number | null; 
-  ch_mfs_IV_acess: number | null; 
-  ch_mfs_gait: number | null; 
-  ch_mfs_mental_status  : number | null; 
+  ch_mfs_history_falls: number | null;
+  ch_mfs_secondary_diagnosis: number | null;
+  ch_mfs_ambulatory_aid: number | null;
+  ch_mfs_IV_acess: number | null;
+  ch_mfs_gait: number | null;
+  ch_mfs_mental_status: number | null;
   totalScore: number = 0;
   description: string = 'Not answered';
 
   ramsayList = [
     {
-      label : 'Not answered',
-      value : 0
+      label: 'Not answered',
+      value: 0
     },
     {
-      label : 'Patient is anxious and agitated and/or restless',
-      value : 1
+      label: 'Patient is anxious and agitated and/or restless',
+      value: 1
     },
     {
-      label : 'Patient is cooperative, oriented and quiet',
-      value : 2
+      label: 'Patient is cooperative, oriented and quiet',
+      value: 2
     },
     {
-      label : 'Patient responds to commands only',
-      value : 3
+      label: 'Patient responds to commands only',
+      value: 3
     },
     {
-      label : 'Patient exhibits brisk response to light glabellar tap',
-      value : 4
+      label: 'Patient exhibits brisk response to light glabellar tap',
+      value: 4
     },
     {
-      label : 'Patient exhibits a sluggish response to light glabellar tap',
-      value : 5
+      label: 'Patient exhibits a sluggish response to light glabellar tap',
+      value: 5
     },
     {
-      label : 'Patient exhibits no response',
-      value : 6
+      label: 'Patient exhibits no response',
+      value: 6
     },
   ]
 
   morseFallScaleData;
+  docKey: any;
+  public paramsObject: any;
+  private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
 
-  constructor(private fb: FormBuilder,private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService,private dataShareService:DataShareService,private storageService:StorageService) {
-    // this.getDocData();
-    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-      if (data != null) {       
-        if (data.type == ActionType.Copy$ && data.isAllow == true && data.value) {
-           this.getDocData();
+  constructor(private fb: FormBuilder, private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService, private dataShareService: DataShareService,
+    private storageService: StorageService, private _route: ActivatedRoute, private sharedService: SharedService) {
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+      this.storageService.setEinri(this.paramsObject.einri);
+      this.storageService.setFalnr(this.paramsObject.falnr);
+      this.storageService.setLfdnr(this.paramsObject.lfdnr);
+      this.storageService.setPatnr(this.paramsObject.patnr);
+    });
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          if (data.type == ActionType.Add$ && data.value == '') {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getDocData();
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getDocData();
+          }
         }
       }
-    });
+    );
   }
 
-  getDocData(){
-    this.emergencyService.getMFSDoc(this.patientDocService.latestMorseFallScaleData?.Dockey).subscribe((data:any)=>{
-      if(data.d){
-        this.MorsefallForm.patchValue(data.d);
+  getDocData() {
+    this.emergencyService.fetchRamsayDocument(this.docKey).subscribe((data: any) => {
+      if (data.d) {
+        this.ramsaySedationForm.patchValue(data?.d?.results[0]);
       }
-    }, (error)=>{
+    }, (error) => {
       console.error(error)
     })
   }
 
   ngOnInit(): void {
-    this.MorsefallForm = this.fb.group({
-      HistoryFalls: new FormControl('0'),
-      Comments: new FormControl(''),
-      AttendPhy: new FormControl(''),
+    this.ramsaySedationForm = this.fb.group({
+      Dockey: "",
+      Dtid: "SCA_RMS",
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
+      DocStatus: "",
+      Responsiveness: "",
+      TotalScore: "",
+      ScoreDesc: "",
+      Comments: ""
     })
 
     this.realized = this.storageService.getUserProfile().Gpart;
     this.realizedDescription = this.storageService.getUserProfile().GpartName;
-
-    this.MorsefallForm.controls['AttendPhy'].patchValue(this.realized);
-
-    
+    this.ramsaySedationForm.controls['AttendPhy'].patchValue(this.realized)
   }
 
-  getFormData(){
-    return this.MorsefallForm.value;
+  getFormData() {
+    return this.ramsaySedationForm.value;
   }
 
   calculateTotal(value: any) {
-      this.description = this.ramsayList[value].label
-      this.totalScore = this.ramsayList[value].value
+    this.ramsaySedationForm.patchValue({
+      TotalScore: this.ramsayList[value].value,
+      ScoreDesc: this.ramsayList[value].label,
+    });
   }
 
+
+  createRamsaySedation(docStatus): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let formData = this.ramsaySedationForm.value;
+      formData.DocStatus = docStatus;
+      formData.TotalScore = formData.TotalScore.toString();
+      let payload = {
+        d: this.ramsaySedationForm.value
+      };
+      this.subscription = this.emergencyService.saveRamsayScaleDoc(payload).subscribe({
+        next: (data: any) => {
+
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`POST Error at Richmond Scale : ${err}`);
+        },
+        complete: () => {
+          resolve(true);
+          this.sharedService.successSwallModel('Ramsay Sedation Scale created successfully');
+        }
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.actionTypeSubscription$) {
+      this.actionTypeSubscription$.unsubscribe();
+      this.dataShareService.sendActionType(null);
+    }
+  }
 
 }
