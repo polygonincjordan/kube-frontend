@@ -1077,6 +1077,50 @@
                 </div>
               </div>
 
+              <!--  Ramsay Sedation Scale -->
+               <div
+                [ngClass]="isRamsaySedation ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'RSS'" (click)="selectAssessment('isRamsaySedation',latestRamsaySedationList[0])">
+                <div class="col-md-4"> Ramsay Sedation Scale {{latestRamsaySedationList[0]?.Zversion ?
+                  dockVer(latestRamsaySedationList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{latestRamsaySedationList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestRamsaySedationList[0]?.DocTime)}}">
+                  {{getDate(latestRamsaySedationList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{latestRamsaySedationList[0]?.PhyNm || '-'}}</div>
+                 <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(latestRamsaySedationList[0],RedirectionType.BRADEN$)"
+                    *ngIf="latestRamsaySedationList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestRamsaySedationList[0]?.Dockey, latestRamsaySedationList[0])">
+                      <select *ngIf="latestRamsaySedationList.length && latestRamsaySedationList[0]?.StatusTxt !='N/A' && latestRamsaySedationList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Richmond Scale -->
+              <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+               *ngIf="!selectedDocument || selectedDocument == 'RS'" (click)="selectAssessment('isRichmondScale',richmondList[0])">
+                <div class="col-md-4" >Richmond Scale {{richmondList[0]?.Zversion ?
+                  dockVer(richmondList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(richmondList[0]?.DocTime)}}">
+                  {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{richmondList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                     <img src="assets/img/document-html.png" width="18px" height="18px"
+                       (click)="getScaleDetails(richmondList[0],RedirectionType.BRADEN$)"
+                       *ngIf="richmondList[0]?.StatusTxt == 'Released'" />
+                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(richmondList[0]?.Dockey, richmondList[0])">
+                         <select *ngIf="richmondList.length && richmondList[0]?.StatusTxt !='N/A' && richmondList[0]?.Zversion != '00'" class="mr-2" name=""
+                           id=""></select>
+                     </div>
+                 </div>
+              </div>
+
               <!--  Pediatric Admission Assessment -->
                <div
                 [ngClass]="isPediatricsAdmission ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -1165,27 +1209,6 @@
                 </div>
               </div>
 
-              <!--  Ramsay Sedation Scale -->
-               <div
-                [ngClass]="isRamsaySedation ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'RSS'" (click)="selectAssessment('isRamsaySedation',latestRamsaySedationList[0])">
-                <div class="col-md-4"> Ramsay Sedation Scale {{latestRamsaySedationList[0]?.Zversion ?
-                  dockVer(latestRamsaySedationList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-                <div class="col-md-2 status-color">{{latestRamsaySedationList[0]?.StatusTxt || 'N/A'}}</div>
-                <div class="col-md-2" title="{{getTime(latestRamsaySedationList[0]?.DocTime)}}">
-                  {{getDate(latestRamsaySedationList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                </div>
-                <div class="col-md-3">{{latestRamsaySedationList[0]?.PhyNm || '-'}}</div>
-                 <div class="col-md-1 d-flex">
-                  <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(latestRamsaySedationList[0],RedirectionType.BRADEN$)"
-                    *ngIf="latestRamsaySedationList[0]?.StatusTxt == 'Released'" />
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestRamsaySedationList[0]?.Dockey, latestRamsaySedationList[0])">
-                      <select *ngIf="latestRamsaySedationList.length && latestRamsaySedationList[0]?.StatusTxt !='N/A' && latestRamsaySedationList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                  </div>
-                </div>
-              </div>
 
               <!--  Confusion Assessment Method for ICU (CAM-ICU) -->
                <div
@@ -1274,26 +1297,6 @@
              </div>
            </div>
 
-           <!-- Richmond Scale -->
-           <div [ngClass]="isRichmondScale ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-            *ngIf="!selectedDocument || selectedDocument == 'RS'" (click)="selectAssessment('isRichmondScale',richmondList[0])">
-             <div class="col-md-4" >Richmond Scale {{richmondList[0]?.Zversion ?
-               dockVer(richmondList[0]?.Zversion) : ''}} :</div>
-             <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(richmondList[0]?.DocTime)}}">
-               {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{richmondList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                  <img src="assets/img/document-html.png" width="18px" height="18px"
-                    (click)="getScaleDetails(richmondList[0],RedirectionType.BRADEN$)"
-                    *ngIf="richmondList[0]?.StatusTxt == 'Released'" />
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(richmondList[0]?.Dockey, richmondList[0])">
-                      <select *ngIf="richmondList.length && richmondList[0]?.StatusTxt !='N/A' && richmondList[0]?.Zversion != '00'" class="mr-2" name=""
-                        id=""></select>
-                  </div>
-              </div>
-           </div>
            
            <!-- Dying Patient -->
            <div [ngClass]="isDyingPatient ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
