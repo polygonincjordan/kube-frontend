@@ -555,7 +555,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
               ApgarScore1: item.Bwert,
               ApgarScore5: item.Bwert5,
               ApgarScore10: item.Bwert10,
-              StatusDesc: item.Kztxt
+              StatusDesc: ''
             };
             this.addBaby(convertedItem);
           });
@@ -1685,6 +1685,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
           };
         });
       formData.Datee = this.sanitizeSAPDateFormat(formData.Datee) || '',
+      formData.NPatientRiskResult = formData.NPatientRiskResult ? formData.NPatientRiskResult.toString() : '',
         formData.PhDateLastCs = this.sanitizeSAPDateFormat(formData.PhDateLastCs) || '',
         formData.SMDeliveryDate = this.sanitizeSAPDateFormat(formData.SMDeliveryDate) || '',
         formData.PhEdd = this.sanitizeSAPDateFormat(formData.PhEdd) || '',

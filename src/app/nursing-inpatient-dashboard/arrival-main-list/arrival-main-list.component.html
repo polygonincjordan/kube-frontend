@@ -23,6 +23,8 @@
                                     (click)="commanSorting('Gbdat')"></i></th> -->
                             <th scope="col" class="set-width-3">Attending Physician <i class="fa fa-sort"
                                     aria-hidden="true" (click)="commanSorting('BehArztName')"></i></th>
+                            <th scope="col" style="padding-left: 0px;">
+                                Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="commanSorting('patientStatus')"></i></th>
                             <th scope="col">Departmental OU <i class="fa fa-sort" aria-hidden="true"
                                     (click)="commanSorting('Orgfakb')"></i></th>
                             <th scope="col">Financial Category <i class="fa fa-sort" aria-hidden="true"
@@ -57,6 +59,7 @@
                             <td>{{item.Datetime}}</td>
                             <!-- <td>{{getDate(item.Gbdat) | date: 'dd/MM/yyyy'}}</td> -->
                             <td>{{item.BehArztName}}</td>
+                            <td style="padding-left: 0px" [title]="item?.AdmissionStatus" class="border-top-none"> {{ item?.AdmissionStatus }}</td>
                             <td>{{item.Orgfakb}}</td>
                             <td>{{item.ZzfinCat}}</td>
                             <td>{{item.Bwatx}}</td>
@@ -255,12 +258,12 @@
         <div class="risk-history-main">
             <ul class="allergy-header-ul d-flex">
                 <li class="allergy-header-item" style="margin-left: 10%">
-                    Patient Name : <span>{{ admissionStatusModel.Patname }}</span>
+                    Patient Name : <span>{{ admissionStatusModel.Pnamec }}</span>
                 </li>
                 <li class="allergy-header-item">MRN: {{ admissionStatusModel.Mrn }}</li>
                 <li class="allergy-header-item">
                     Admission date:
-                    {{ getDate(admissionStatusModel.AdmissionDate) | date : "dd.MM.y" }}
+                    {{ getDate(admissionStatusModel.Bwidt) | date : "dd.MM.y" }}
                 </li>
                 <li class="close-icon allergy-header-item">
                     <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />

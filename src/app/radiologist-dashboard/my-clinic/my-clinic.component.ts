@@ -9,6 +9,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-my-clinic',
@@ -81,13 +83,14 @@ export class MyClinicComponent implements OnInit {
   dateorder = '';
   maxDate = new Date()
   constructor(
-    private _dataServices: EEmrService, private modalService: BsModalService,
-    private storageService: StorageService,private datePipe: DatePipe) { 
+    private _dataServices: EEmrService, private modalService: BsModalService, private emergencyService: EmergencyService, private sharedService: SharedService,
+    private storageService: StorageService, private datePipe: DatePipe) {
 
-      
-    }
+
+  }
 
   ngOnInit() {
+   
     this.filterMovementTypeConf();
     if (this.attendingPerson == '') {
       this.attendingPerson = this.storageService.getGpart();
@@ -126,6 +129,19 @@ export class MyClinicComponent implements OnInit {
       'DateRange': new FormControl([new Date(), new Date()]),
     });
   }
+
+  getRadiologyList() {
+    var date1 = this.sharedService.getDateRangeFormat(this.formDetailGroup.get("DateRange").value[0]);
+    var date2 = this.sharedService.getDateRangeFormat(this.formDetailGroup.get("DateRange").value[1]);
+    this.emergencyService.getRadiologyWorkList(date1, date2).subscribe({
+      next: (apiResponse: any) => {
+        console.log(apiResponse, "apiResponse");
+
+      }
+    })
+  }
+
+
   showFilterFn($event) {
     $event.stopPropagation();
     if (this.attendingPerson == '') {
@@ -140,99 +156,99 @@ export class MyClinicComponent implements OnInit {
     }
   }
 
-  handleGetChangeDate(event){
-    if(!event) {
+  handleGetChangeDate(event) {
+    if (!event) {
       this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     }
-    this.filterDataConf()    
+    this.filterDataConf()
   }
 
-  handleGetChangeDateForCheckOut(event){
-    if(!event) {
+  handleGetChangeDateForCheckOut(event) {
+    if (!event) {
       this.checkOutForm.get("DateRange").patchValue([new Date(), new Date()]);
     }
-    this.forCheckOutList()    
+    this.forCheckOutList()
   }
 
-  previousDate(){
-    if(+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]){
+  previousDate() {
+    if (+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]) {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
-      this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate()-1))), new Date(date2.setDate((date2.getDate()-1)))]);
+      this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() - 1))), new Date(date2.setDate((date2.getDate() - 1)))]);
       // this.ErHistoryComponent.getErList(this.formgroupData.DateRange);
-    }else{
+    } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      date1 = new Date(date1.setDate(date1.getDate()-diffDays));
-      date2 = new Date(date2.setDate(date2.getDate()-diffDays));
+      date1 = new Date(date1.setDate(date1.getDate() - diffDays));
+      date2 = new Date(date2.setDate(date2.getDate() - diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
       // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
     }
 
 
   }
-  onTodayEventData(){
+  onTodayEventData() {
     this.formDetailGroup.get("DateRange").patchValue([new Date(), new Date()]);
     // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
   }
 
-  onTodayEventDataForCheckout(){
+  onTodayEventDataForCheckout() {
     this.checkOutForm.get("DateRange").patchValue([new Date(), new Date()]);
     // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
   }
-  upcomingDate(){
-    if(+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]){
+  upcomingDate() {
+    if (+this.formDetailGroup.get("DateRange").value[0] == +this.formDetailGroup.get("DateRange").value[1]) {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
-      this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate()+1))), new Date(date2.setDate((date2.getDate()+1)))]);
+      this.formDetailGroup.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() + 1))), new Date(date2.setDate((date2.getDate() + 1)))]);
       // this.ErHistoryComponent.getErList(this.formgroupData.DateRange);
-    }else{
+    } else {
       var date1 = this.formDetailGroup.get("DateRange").value[0];
       var date2 = this.formDetailGroup.get("DateRange").value[1];
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      date1 = new Date(date1.setDate(date1.getDate()+diffDays));
-      date2 = new Date(date2.setDate(date2.getDate()+diffDays));
+      date1 = new Date(date1.setDate(date1.getDate() + diffDays));
+      date2 = new Date(date2.setDate(date2.getDate() + diffDays));
       this.formDetailGroup.get("DateRange").patchValue([date1, date2]);
       // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
     }
-    
+
   }
 
-  upcomingDateForCheckout(){
-    if(+this.checkOutForm.get("DateRange").value[0] == +this.checkOutForm.get("DateRange").value[1]){
+  upcomingDateForCheckout() {
+    if (+this.checkOutForm.get("DateRange").value[0] == +this.checkOutForm.get("DateRange").value[1]) {
       var date1 = this.checkOutForm.get("DateRange").value[0];
       var date2 = this.checkOutForm.get("DateRange").value[1];
-      this.checkOutForm.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate()+1))), new Date(date2.setDate((date2.getDate()+1)))]);
+      this.checkOutForm.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() + 1))), new Date(date2.setDate((date2.getDate() + 1)))]);
       // this.ErHistoryComponent.getErList(this.formgroupData.DateRange);
-    }else{
+    } else {
       var date1 = this.checkOutForm.get("DateRange").value[0];
       var date2 = this.checkOutForm.get("DateRange").value[1];
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      date1 = new Date(date1.setDate(date1.getDate()+diffDays));
-      date2 = new Date(date2.setDate(date2.getDate()+diffDays));
+      date1 = new Date(date1.setDate(date1.getDate() + diffDays));
+      date2 = new Date(date2.setDate(date2.getDate() + diffDays));
       this.checkOutForm.get("DateRange").patchValue([date1, date2]);
       // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
     }
-    
+
   }
 
-  previousDateForCheckout(){
-    if(+this.checkOutForm.get("DateRange").value[0] == +this.checkOutForm.get("DateRange").value[1]){
+  previousDateForCheckout() {
+    if (+this.checkOutForm.get("DateRange").value[0] == +this.checkOutForm.get("DateRange").value[1]) {
       var date1 = this.checkOutForm.get("DateRange").value[0];
       var date2 = this.checkOutForm.get("DateRange").value[1];
-      this.checkOutForm.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate()-1))), new Date(date2.setDate((date2.getDate()-1)))]);
+      this.checkOutForm.get("DateRange").patchValue([new Date(date1.setDate((date1.getDate() - 1))), new Date(date2.setDate((date2.getDate() - 1)))]);
       // this.ErHistoryComponent.getErList(this.formgroupData.DateRange);
-    }else{
+    } else {
       var date1 = this.checkOutForm.get("DateRange").value[0];
       var date2 = this.checkOutForm.get("DateRange").value[1];
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      date1 = new Date(date1.setDate(date1.getDate()-diffDays));
-      date2 = new Date(date2.setDate(date2.getDate()-diffDays));
+      date1 = new Date(date1.setDate(date1.getDate() - diffDays));
+      date2 = new Date(date2.setDate(date2.getDate() - diffDays));
       this.checkOutForm.get("DateRange").patchValue([date1, date2]);
       // this.ErHistoryComponent.getSelectedDates(this.formgroupData.DateRange);
     }
@@ -310,7 +326,7 @@ export class MyClinicComponent implements OnInit {
         const DataShift = Data.shift();
         if (Data && Data.length) {
           Data.forEach((element) => {
-            if(element) PayloadData.push(this.dropdownListForMovType.findIndex(d => d.Valuekey === element))
+            if (element) PayloadData.push(this.dropdownListForMovType.findIndex(d => d.Valuekey === element))
           })
           jsonObj.ConfigHeaderItem.push({ Variantid: "", Fieldname: `MovementType-${PayloadData.join(",")}` })
         }
@@ -319,7 +335,7 @@ export class MyClinicComponent implements OnInit {
 
         const Data: any = this.selectedItemsForStatusConf.split(";");
         const DataShift = Data.shift();
-        let remove = Data.join(",").replace(/^[\s,]+/,"").replace(/[\s,]+$/,"").replace(/\s*,+\s*(,+\s*)*/g,",")
+        let remove = Data.join(",").replace(/^[\s,]+/, "").replace(/[\s,]+$/, "").replace(/\s*,+\s*(,+\s*)*/g, ",")
         jsonObj.ConfigHeaderItem.push({ Variantid: "", Fieldname: `Status-${remove}` })
       }
     }
@@ -334,6 +350,7 @@ export class MyClinicComponent implements OnInit {
 
 
   getConfigTools() {
+     this.getRadiologyList();
     this.AttendingPhysician = false;
     this.Diagnosis = false;
     this.Case = false;
@@ -342,8 +359,8 @@ export class MyClinicComponent implements OnInit {
     let jsonObj = {
       Compid: 'MYCLINIC01',
     };
-    this.selectedItemsForMovTypeConf='';
-    this.selectedItemsForStatusConf='';
+    this.selectedItemsForMovTypeConf = '';
+    this.selectedItemsForStatusConf = '';
     this._dataServices.getConfigTools(jsonObj).subscribe(
       (success: any) => {
         this.Variantid = success.d.results[0].Variantid;
@@ -368,38 +385,38 @@ export class MyClinicComponent implements OnInit {
                   }
                 })
                 let result = this.ColumnType.filter(item => item.isSelected);
-                result.forEach((res: any)=> {
-                  if(res.Desc == "Attending Physician") this.AttendingPhysician = true;
-                  if(res.Desc == "Diagnosis") this.Diagnosis = true;
-                  if(res.Desc == "Case") this.Case = true;
-                  if(res.Desc == "Visit Type") this.VisitType = true;
-                  if(res.Desc == "Comment") this.comment = true;
+                result.forEach((res: any) => {
+                  if (res.Desc == "Attending Physician") this.AttendingPhysician = true;
+                  if (res.Desc == "Diagnosis") this.Diagnosis = true;
+                  if (res.Desc == "Case") this.Case = true;
+                  if (res.Desc == "Visit Type") this.VisitType = true;
+                  if (res.Desc == "Comment") this.comment = true;
                 })
               } else if (DataType === "MovementType") {
                 this.defaultSelectedItemsForMovType = [];
                 this.defaultSelectedItemsForMovTypeConf = [];
                 DataValue.forEach((element) => {
-                  if(element != 0) {
-                    let mvtTtypVal=this.dropdownListForMovType[parseInt(element)];
-                    if(mvtTtypVal){
-                    this.defaultSelectedItemsForMovTypeConf.push({ Valuekey: mvtTtypVal.Valuekey, Valuedescr: mvtTtypVal.Valuedescr });
-                    this.defaultSelectedItemsForMovType=this.defaultSelectedItemsForMovTypeConf;                  
-                    this.selectedItemsForMovTypeConf = this.selectedItemsForMovTypeConf.concat(';',mvtTtypVal.Valuekey);
+                  if (element != 0) {
+                    let mvtTtypVal = this.dropdownListForMovType[parseInt(element)];
+                    if (mvtTtypVal) {
+                      this.defaultSelectedItemsForMovTypeConf.push({ Valuekey: mvtTtypVal.Valuekey, Valuedescr: mvtTtypVal.Valuedescr });
+                      this.defaultSelectedItemsForMovType = this.defaultSelectedItemsForMovTypeConf;
+                      this.selectedItemsForMovTypeConf = this.selectedItemsForMovTypeConf.concat(';', mvtTtypVal.Valuekey);
+                    }
                   }
-                }
                 })
               } else if (DataType === "Status") {
                 this.defaultSelectedItemsForStatus = [];
                 this.defaultSelectedItemsForStatusConf = [];
                 DataValue.forEach((element) => {
-                  if(element) {
-                    let statusTtypVal=this.dropdownListForStatus.find(d => d.Valuekey === element);
-                    if(statusTtypVal){
-                    this.defaultSelectedItemsForStatusConf.push({ Valuekey: statusTtypVal.Valuekey, Valuedescr: statusTtypVal.Valuedescr });
-                    this.defaultSelectedItemsForStatus=this.defaultSelectedItemsForStatusConf;                  
-                    this.selectedItemsForStatusConf = this.selectedItemsForStatusConf.concat(';',statusTtypVal.Valuekey);
+                  if (element) {
+                    let statusTtypVal = this.dropdownListForStatus.find(d => d.Valuekey === element);
+                    if (statusTtypVal) {
+                      this.defaultSelectedItemsForStatusConf.push({ Valuekey: statusTtypVal.Valuekey, Valuedescr: statusTtypVal.Valuedescr });
+                      this.defaultSelectedItemsForStatus = this.defaultSelectedItemsForStatusConf;
+                      this.selectedItemsForStatusConf = this.selectedItemsForStatusConf.concat(';', statusTtypVal.Valuekey);
+                    }
                   }
-                }
                 })
               }
             }
@@ -797,7 +814,7 @@ export class MyClinicComponent implements OnInit {
         _success = JSON.parse(_success._body);
         if (_success) {
           this.dropdownListForMovType = _success.d.FLDPROPTOVHELP.results;
-     
+
           this.movementTypeConfig = _success.d.FLDPROPTOVHELP.results;
           this.movementTypeConfig.forEach((data: any) => {
             data.isSelected = false
@@ -815,7 +832,7 @@ export class MyClinicComponent implements OnInit {
       (_success: any) => {
         _success = JSON.parse(_success._body);
         if (_success) {
-          
+
 
           this.dropdownListForStatus = _success.d.FLDPROPTOVHELP.results;
           this.statustypeConfig = _success.d.FLDPROPTOVHELP.results;
@@ -823,7 +840,7 @@ export class MyClinicComponent implements OnInit {
             data.isSelected = false
           });
           this.getConfigTools();
-         }
+        }
       },
       (_error: any) => { }
     );
@@ -838,8 +855,8 @@ export class MyClinicComponent implements OnInit {
         "<?xml version='1.0'?><asx:abap><asx:values><OUTPUT><RSPARAMS><SELNAME>DATE_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>DATE_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>GR_OSTAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>G_SELAKT</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BESANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BPFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BRFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20221027</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20220601</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_EWFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_LSTANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_MAFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_PANUEC</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TEFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TMNANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_VRMANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>235959</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZYKLLE</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEFA</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEPF</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>AM</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>DO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>EA</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FR</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FU</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PD</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PT</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>TL</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>WI</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>SE</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BHPER</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>9000000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>30</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>00</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>58</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOKAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DSPTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_EINRI</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>1000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_ETRGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALL</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CAROPAMC</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTGR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTTX</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_PAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_RAUM</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRPAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRTGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_SEL_AP</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>0</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>1</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>2</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>3</LOW><HIGH/></RSPARAMS></OUTPUT></asx:values></asx:abap>",
 
       Barnr: this.attendingPerson,
-      Datefrom:this.formDetailGroup.get("DateRange").value[0].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
-      Dateto:this.formDetailGroup.get("DateRange").value[1].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
+      Datefrom: this.formDetailGroup.get("DateRange").value[0].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
+      Dateto: this.formDetailGroup.get("DateRange").value[1].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
       // Datefrom: this.dateFrom.getFullYear() + '-' + String(this.dateFrom.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateFrom.getDate()).padStart(2, '0') + 'T00:00:00',
       // Dateto: this.dateTo.getFullYear() + '-' + String(this.dateTo.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateTo.getDate()).padStart(2, '0') + 'T00:00:00',
       Bwart: '',
@@ -886,7 +903,7 @@ export class MyClinicComponent implements OnInit {
   }
 
   filterDataConf() {
-    let selectedItemsForStatus='';
+    let selectedItemsForStatus = '';
     this.defaultSelectedItemsForStatus.forEach(element => {
       selectedItemsForStatus = selectedItemsForStatus.concat(
         ';',
@@ -894,13 +911,13 @@ export class MyClinicComponent implements OnInit {
       );
     });
 
-    let selectedItemsForMovType='';
-     this.defaultSelectedItemsForMovType.forEach(element => {
-            selectedItemsForMovType = selectedItemsForMovType.concat(
-              ';',
-              element.Valuekey
-            );
-          });
+    let selectedItemsForMovType = '';
+    this.defaultSelectedItemsForMovType.forEach(element => {
+      selectedItemsForMovType = selectedItemsForMovType.concat(
+        ';',
+        element.Valuekey
+      );
+    });
 
     let jsonObj = {
       Widgetid: 'MYCLINIC01',
@@ -908,8 +925,8 @@ export class MyClinicComponent implements OnInit {
         "<?xml version='1.0'?><asx:abap><asx:values><OUTPUT><RSPARAMS><SELNAME>DATE_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>DATE_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>GR_OSTAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>G_SELAKT</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BESANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BPFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BRFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20221027</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20220601</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_EWFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_LSTANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_MAFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_PANUEC</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TEFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TMNANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_VRMANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>235959</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZYKLLE</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEFA</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEPF</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>AM</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>DO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>EA</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FR</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FU</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PD</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PT</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>TL</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>WI</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>SE</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BHPER</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>9000000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>30</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>00</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>58</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOKAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DSPTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_EINRI</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>1000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_ETRGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALL</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CAROPAMC</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTGR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTTX</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_PAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_RAUM</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRPAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRTGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_SEL_AP</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>0</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>1</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>2</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>3</LOW><HIGH/></RSPARAMS></OUTPUT></asx:values></asx:abap>",
 
       Barnr: this.attendingPerson,
-      Datefrom:this.formDetailGroup.get("DateRange").value[0].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
-      Dateto:this.formDetailGroup.get("DateRange").value[1].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
+      Datefrom: this.formDetailGroup.get("DateRange").value[0].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
+      Dateto: this.formDetailGroup.get("DateRange").value[1].getFullYear() + '-' + String(this.formDetailGroup.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.formDetailGroup.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
       // Datefrom: this.dateFrom.getFullYear() + '-' + String(this.dateFrom.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateFrom.getDate()).padStart(2, '0') + 'T00:00:00',
       // Dateto: this.dateTo.getFullYear() + '-' + String(this.dateTo.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateTo.getDate()).padStart(2, '0') + 'T00:00:00',
       Bwart: selectedItemsForMovType,
@@ -999,20 +1016,20 @@ export class MyClinicComponent implements OnInit {
     const eventArray = this.dataOnTable;
     const mappedEvents = eventArray.map(event => {
       return {
-          DATUM: this.convertTimestampToDate(event.DATUM),
-          ZEIT_INTERN: event.ZEIT_INTERN,
-          BESUCHSARTTEXT: event.BESUCHSARTTEXT,
-          BESSTATTEXT: event.BESSTATTEXT,
-          PATNR: event.PATNR,
-          FALNR: event.FALNR,
-          PATIENT: event.PATIENT,
-          BEHPERSNAME: event.BEHPERSNAME,
-          ZZFIN_CAT: event.ZZFIN_CAT,
-          ANFDIAGNOSE: event.ANFDIAGNOSE,
-          BEMERKUNG: event.BEMERKUNG,
+        DATUM: this.convertTimestampToDate(event.DATUM),
+        ZEIT_INTERN: event.ZEIT_INTERN,
+        BESUCHSARTTEXT: event.BESUCHSARTTEXT,
+        BESSTATTEXT: event.BESSTATTEXT,
+        PATNR: event.PATNR,
+        FALNR: event.FALNR,
+        PATIENT: event.PATIENT,
+        BEHPERSNAME: event.BEHPERSNAME,
+        ZZFIN_CAT: event.ZZFIN_CAT,
+        ANFDIAGNOSE: event.ANFDIAGNOSE,
+        BEMERKUNG: event.BEMERKUNG,
       };
-  });
-    let Heading = [['Date', 'Time' , 'Visit Type','Visit Status','MRN','Case','Patient','Attn. Phy.','Financial Category','Diagnosis','Comment']];
+    });
+    let Heading = [['Date', 'Time', 'Visit Type', 'Visit Status', 'MRN', 'Case', 'Patient', 'Attn. Phy.', 'Financial Category', 'Diagnosis', 'Comment']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, Heading);
@@ -1022,87 +1039,87 @@ export class MyClinicComponent implements OnInit {
   }
   convertTimestampToDate(timestamp: any): string {
     if (typeof timestamp === 'string' && timestamp.startsWith('/Date(') && timestamp.endsWith(')/')) {
-        const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);
-        const date = new Date(milliseconds);
-        return this.datePipe.transform(date, 'dd.MM.y');
+      const milliseconds = parseInt(timestamp.substring(6, timestamp.length - 2), 10);
+      const date = new Date(milliseconds);
+      return this.datePipe.transform(date, 'dd.MM.y');
     } else {
-        return timestamp; // Return the original value if it's not in the expected format
+      return timestamp; // Return the original value if it's not in the expected format
     }
-}
-dataOnTableForCheckOut: any;
-forCheckOutList() {
-  let selectedItemsForStatus='';
-  this.defaultSelectedItemsForStatus.forEach(element => {
-    selectedItemsForStatus = selectedItemsForStatus.concat(
-      ';',
-      element.Valuekey
-    );
-  });
+  }
+  dataOnTableForCheckOut: any;
+  forCheckOutList() {
+    let selectedItemsForStatus = '';
+    this.defaultSelectedItemsForStatus.forEach(element => {
+      selectedItemsForStatus = selectedItemsForStatus.concat(
+        ';',
+        element.Valuekey
+      );
+    });
 
-  let selectedItemsForMovType='';
-   this.defaultSelectedItemsForMovType.forEach(element => {
-          selectedItemsForMovType = selectedItemsForMovType.concat(
-            ';',
-            element.Valuekey
-          );
-        });
+    let selectedItemsForMovType = '';
+    this.defaultSelectedItemsForMovType.forEach(element => {
+      selectedItemsForMovType = selectedItemsForMovType.concat(
+        ';',
+        element.Valuekey
+      );
+    });
 
-  let jsonObj = {
-    Widgetid: 'MYCLINIC01',
-    FilterXml:
-      "<?xml version='1.0'?><asx:abap><asx:values><OUTPUT><RSPARAMS><SELNAME>DATE_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>DATE_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>GR_OSTAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>G_SELAKT</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BESANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BPFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BRFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20221027</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20220601</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_EWFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_LSTANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_MAFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_PANUEC</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TEFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TMNANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_VRMANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>235959</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZYKLLE</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEFA</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEPF</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>AM</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>DO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>EA</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FR</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FU</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PD</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PT</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>TL</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>WI</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>SE</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BHPER</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>9000000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>30</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>00</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>58</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOKAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DSPTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_EINRI</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>1000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_ETRGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALL</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CAROPAMC</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTGR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTTX</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_PAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_RAUM</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRPAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRTGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_SEL_AP</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>0</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>1</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>2</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>3</LOW><HIGH/></RSPARAMS></OUTPUT></asx:values></asx:abap>",
+    let jsonObj = {
+      Widgetid: 'MYCLINIC01',
+      FilterXml:
+        "<?xml version='1.0'?><asx:abap><asx:values><OUTPUT><RSPARAMS><SELNAME>DATE_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>DATE_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>GR_OSTAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>G_SELAKT</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BESANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BPFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_BRFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20221027</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_DATUMV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>20220601</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_EWFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_LSTANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_MAFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_PANUEC</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TEFEHL</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_TMNANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_VRMANZ</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITB</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>235959</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZEITV</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_ZYKLLE</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEFA</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_AOEPF</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>AM</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>DO</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>EA</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FR</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>FU</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PD</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>PT</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>TL</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>WI</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BEWAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>SE</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BHPER</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>9000000000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>30</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>00</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_BSSTA</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>58</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOCTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DOKAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_DSPTY</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_EINRI</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>1000</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_ETRGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALL</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LEIST</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>CAROPAMC</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTGR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTST</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_LSTTX</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_PAT</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_RAUM</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRPAR</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_TRTGP</SELNAME><KIND>S</KIND><SIGN/><OPTION/><LOW/><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FIX</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>TIME_FX1</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>P_SEL_AP</SELNAME><KIND>P</KIND><SIGN/><OPTION/><LOW>X</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>0</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>1</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>2</LOW><HIGH/></RSPARAMS><RSPARAMS><SELNAME>SE_FALAR</SELNAME><KIND>S</KIND><SIGN>I</SIGN><OPTION>EQ</OPTION><LOW>3</LOW><HIGH/></RSPARAMS></OUTPUT></asx:values></asx:abap>",
 
-    Barnr: this.attendingPerson,
-    Datefrom:this.checkOutForm.get("DateRange").value[0].getFullYear() + '-' + String(this.checkOutForm.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.checkOutForm.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
-    Dateto:this.checkOutForm.get("DateRange").value[1].getFullYear() + '-' + String(this.checkOutForm.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.checkOutForm.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
-    // Datefrom: this.dateFrom.getFullYear() + '-' + String(this.dateFrom.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateFrom.getDate()).padStart(2, '0') + 'T00:00:00',
-    // Dateto: this.dateTo.getFullYear() + '-' + String(this.dateTo.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateTo.getDate()).padStart(2, '0') + 'T00:00:00',
-    Bwart: '',
-    Status: '70',
-    New: "X"
-  };
-  this._dataServices.widgetDataFilter(jsonObj).subscribe(
-    (_success: any) => {
-      this.showfilter = false;
-      let v = converter.xml2js(_success.d.DataXml, { compact: true });
-      let _dataArray = [];
-      let _output = v['asx:abap']['asx:values'].OUTPUT;
-      console.log('_output', typeof _output);
-      let _parsedDataKeys = Object.keys(v['asx:abap']['asx:values'].OUTPUT);
-      _.forEach(_parsedDataKeys, function (dataObj) {
-        let _dataValues = [];
+      Barnr: this.attendingPerson,
+      Datefrom: this.checkOutForm.get("DateRange").value[0].getFullYear() + '-' + String(this.checkOutForm.get("DateRange").value[0].getMonth() + 1).padStart(2, '0') + '-' + String(this.checkOutForm.get("DateRange").value[0].getDate()).padStart(2, '0') + 'T00:00:00',
+      Dateto: this.checkOutForm.get("DateRange").value[1].getFullYear() + '-' + String(this.checkOutForm.get("DateRange").value[1].getMonth() + 1).padStart(2, '0') + '-' + String(this.checkOutForm.get("DateRange").value[1].getDate()).padStart(2, '0') + 'T00:00:00',
+      // Datefrom: this.dateFrom.getFullYear() + '-' + String(this.dateFrom.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateFrom.getDate()).padStart(2, '0') + 'T00:00:00',
+      // Dateto: this.dateTo.getFullYear() + '-' + String(this.dateTo.getMonth() + 1).padStart(2, '0') + '-' + String(this.dateTo.getDate()).padStart(2, '0') + 'T00:00:00',
+      Bwart: '',
+      Status: '70',
+      New: "X"
+    };
+    this._dataServices.widgetDataFilter(jsonObj).subscribe(
+      (_success: any) => {
+        this.showfilter = false;
+        let v = converter.xml2js(_success.d.DataXml, { compact: true });
+        let _dataArray = [];
+        let _output = v['asx:abap']['asx:values'].OUTPUT;
+        console.log('_output', typeof _output);
+        let _parsedDataKeys = Object.keys(v['asx:abap']['asx:values'].OUTPUT);
+        _.forEach(_parsedDataKeys, function (dataObj) {
+          let _dataValues = [];
 
-        let outputDataValues = _output[dataObj];
-        if (outputDataValues.length > 0) {
-          _dataValues = outputDataValues;
-        } else if (typeof outputDataValues == 'object') {
-          _dataValues.push(outputDataValues);
-        }
+          let outputDataValues = _output[dataObj];
+          if (outputDataValues.length > 0) {
+            _dataValues = outputDataValues;
+          } else if (typeof outputDataValues == 'object') {
+            _dataValues.push(outputDataValues);
+          }
 
-        console.log('data', _dataValues);
+          console.log('data', _dataValues);
 
-        _.forEach(_dataValues, function (dataKeyValue) {
-          let _obj = {};
-          _.forEach(Object.keys(dataKeyValue), function (key) {
-            _obj[key] = _.toString(dataKeyValue[key]._text);
+          _.forEach(_dataValues, function (dataKeyValue) {
+            let _obj = {};
+            _.forEach(Object.keys(dataKeyValue), function (key) {
+              _obj[key] = _.toString(dataKeyValue[key]._text);
+            });
+            console.log('obj', _obj);
+
+            _dataArray.push(_obj);
           });
-          console.log('obj', _obj);
 
-          _dataArray.push(_obj);
+          console.log('asd', _dataArray);
         });
-
-        console.log('asd', _dataArray);
-      });
-      this.dataOnTableForCheckOut = _dataArray;
-      this.dataOnTableForCheckOut.sort((a, b) => {
-        const timeA = new Date(`1970-01-01T${a.ZEIT_INTERN}`).getTime();
-        const timeB = new Date(`1970-01-01T${b.ZEIT_INTERN}`).getTime();
-        return timeA - timeB;
-      });
-      // this.dataCount.emit(this.dataOnTableForCheckOut.length);
-    },
-    (_error: any) => { }
-  );
-}
+        this.dataOnTableForCheckOut = _dataArray;
+        this.dataOnTableForCheckOut.sort((a, b) => {
+          const timeA = new Date(`1970-01-01T${a.ZEIT_INTERN}`).getTime();
+          const timeB = new Date(`1970-01-01T${b.ZEIT_INTERN}`).getTime();
+          return timeA - timeB;
+        });
+        // this.dataCount.emit(this.dataOnTableForCheckOut.length);
+      },
+      (_error: any) => { }
+    );
+  }
 }
 

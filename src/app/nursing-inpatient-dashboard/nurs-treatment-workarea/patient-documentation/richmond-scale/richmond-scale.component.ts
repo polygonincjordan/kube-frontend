@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { DataShareService } from '@services/data-share.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
@@ -34,16 +35,16 @@ export class RichmondScaleComponent implements OnInit {
     { key: '+3', value: 'Very agitated: pulls on or removes tube or catheter or has aggressive behaviour' },
     { key: '+2', value: 'Agitated: frequent non purposeful movement or patient–ventilator dyssynchrony' },
     { key: '+1', value: 'Restless: anxious or apprehensive but movements not aggressive or vigorous' },
-    { key: '0',  value: 'Alert and calm: spontaneously pays attention to caregiver' },
+    { key: '0', value: 'Alert and calm: spontaneously pays attention to caregiver' },
     { key: '-1', value: 'Not fully alert, but sustained awakening to voice (eye opening & contact >10sec)' },
     { key: '-2', value: 'Light sedation: Briefly awakens to voice (eyes open & contact <10 sec)' },
     { key: '-3', value: 'Moderate sedation, any movement (but no eye contact) to voice' },
     { key: '-4', value: 'Deep sedation, no response to voice, but any movement to physical stimulation' },
     { key: '-5', value: 'No response to voice or physical stimulation' }
   ];
-  
 
-  
+
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,6 +52,7 @@ export class RichmondScaleComponent implements OnInit {
     public storageService: StorageService,
     public admissionService: AdmissionService,
     private sharedService: SharedService,
+    private emergencyService: EmergencyService,
     private dataShareService: DataShareService
   ) {
     this._route.queryParams.subscribe((params) => {
@@ -85,25 +87,34 @@ export class RichmondScaleComponent implements OnInit {
     this.initForm();
     this.realized = this.storageService.getUserProfile().Gpart;
     this.realizedDescription = this.storageService.getUserProfile().GpartName;
-    this.richmondForm.get('rassScore')?.valueChanges.subscribe((score) => {
+    this.richmondForm.get('Score')?.valueChanges.subscribe((score) => {
       this.richmondForm.patchValue({
         TotalScore: score,
       });
     });
   }
   getDescription() {
-    const selectedKey = this.richmondForm.get('rassScore')?.value;
+    const selectedKey = this.richmondForm.get('Score')?.value;
     const score = this.scoreDescriptions.find(item => item.key === selectedKey);
-    if (score  && score.value.includes(':')) {
+    if (score && score.value.includes(':')) {
       const beforeColon = score.value.split(':')[0]?.trim() || '';
-       return `${beforeColon}`;
+      this.richmondForm.patchValue({
+        ScoreDesc: beforeColon
+      })
+      return `${beforeColon}`;
     }
-    if (score && score.value.includes(',') ) {
+    if (score && score.value.includes(',')) {
       const afterComma = score.value.includes(',') ? score.value.split(',')[0]?.trim() : '';
-       return `${afterComma}`;
+      this.richmondForm.patchValue({
+        ScoreDesc: afterComma
+      })
+      return `${afterComma}`;
     }
-    if (selectedKey == '-5' ) {
-       return `${'No response'}`;
+    if (selectedKey == '-5') {
+      this.richmondForm.patchValue({
+        ScoreDesc: 'No response'
+      })
+      return `${'No response'}`;
     }
     return '';
 
@@ -119,13 +130,40 @@ export class RichmondScaleComponent implements OnInit {
     }
   }
 
-  getDocument(data?) {}
+  getDocument(data?) {
+    // Subscribe using an object to define handlers
+    this.subscription = this.emergencyService.fetchRichmondDocument(this.docKey).subscribe({
+      next: (data: any) => {
+        this.richmondForm.patchValue(data?.d?.results[0]);
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error fetching Richmond Scale Data:', err);
+        this.sharedService.waringSwallModel(`GET Error at Richmond Scale : ${err}`);
+      },
+      complete: () => {
+        // Handle completion (optional), invoked when the observable completes
+        console.log('Richmond Scale Data retrieval complete');
+      }
+    });
+  }
 
   initForm(data?) {
     this.richmondForm = this.formBuilder.group({
-      rassScore: [''],
-      TotalScore: [data?.TotalScore || ''],
-    });
+      Dockey: [''],
+      Dtid: ['SCA_RCM'],
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
+      DocStatus: ['1'],
+      Score: [''],
+      TotalScore: [''],
+      ScoreDesc: [''],
+      Comments: ['']
+    })
   }
 
   onRassChange(event: any) {
@@ -133,6 +171,28 @@ export class RichmondScaleComponent implements OnInit {
     const numericValue = Number(value);
     this.richmondForm.patchValue({
       TotalScore: numericValue,
+    });
+  }
+
+  createRichmond(docStatus): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let formData = this.richmondForm.value;
+      formData.DocStatus = docStatus;
+      let payload = {
+        d: this.richmondForm.value
+      };
+      this.subscription = this.emergencyService.saveRichmondScaleDoc(payload).subscribe({
+        next: (data: any) => {
+        
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`POST Error at Richmond Scale : ${err}`);
+        },
+        complete: () => {
+          resolve(true); // Resolve the promise with formValue
+          this.sharedService.successSwallModel('Richmond Scale created successfully');
+        }
+      });
     });
   }
 }

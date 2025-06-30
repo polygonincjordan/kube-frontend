@@ -711,15 +711,15 @@ export class ArrivalMainListComponent implements OnInit {
     };
     this.modalRefForRisk = this.modalService.show(template, config);
     this.changeStatusForm = this.formBuilder.group({
-      Einri: [this.admissionStatusModel?.Institute],
-      Falnr: [this.admissionStatusModel?.CaseNumber],
+      Einri: [this.admissionStatusModel?.Einri],
+      Falnr: [this.admissionStatusModel?.Falnr],
       Lfdnr: [this.admissionStatusModel?.Lfdnr],
       AdmStatusCode: [''],
       Bwidt: [new Date()],
       Bwizt: [''],
       Kztxt: [''],
       Bwart: [''],
-      Pernr: [this.admissionStatusModel?.AttendingDoctorName],
+      Pernr: [this.admissionStatusModel?.BehArztName],
     });
 
     this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
@@ -732,11 +732,11 @@ export class ArrivalMainListComponent implements OnInit {
 
   getStatusValue() {
     let currentStatus = this.admissionStatusModel.AdmissionStatus;
-    if (currentStatus === 'Planned Arrival') {
+    if (currentStatus.toLowerCase() == 'planned arrival') {
       return 'Actual Arrival';
-    } else if (currentStatus === 'Actual Arrival') {
+    } else if (currentStatus.toLowerCase() === 'actual arrival') {
       return 'Planned Discharge';
-    } else if (currentStatus === 'Planned Discharge') {
+    } else if (currentStatus.toLowerCase() === 'planned discharge') {
       return 'Actual Discharge';
     } else {
       return '';
@@ -745,7 +745,6 @@ export class ArrivalMainListComponent implements OnInit {
 
   changeStatus(visitStat: string) {
     let visitStatCode: number;
-
     switch (visitStat.toLowerCase()) {
       case 'planned arrival':
         visitStatCode = 97;
@@ -765,10 +764,10 @@ export class ArrivalMainListComponent implements OnInit {
     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     const json = {
-      Einri: this.changeStatusForm.value.Einri,
+      Einri: '1000',
       Falnr: this.changeStatusForm.value.Falnr,
       Lfdnr: this.changeStatusForm.value.Lfdnr,
-      AdmStatusCode: visitStatCode.toString(),
+      AdmStatusCode: visitStatCode?.toString(),
       Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
       Bwizt: createTime,
       Kztxt: this.changeStatusForm.value.Kztxt,

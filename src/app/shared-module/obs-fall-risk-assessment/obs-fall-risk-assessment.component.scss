@@ -15,8 +15,9 @@ label {
 
 .disabled-form {
     img {
-      pointer-events: none !important;
+        pointer-events: none !important;
     }
+
     input[type="checkbox"],
     input[type="radio"],
     input[type="text"],

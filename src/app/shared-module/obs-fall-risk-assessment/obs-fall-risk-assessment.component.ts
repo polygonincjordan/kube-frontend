@@ -102,6 +102,11 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
     if(this.isReadOnly){
       this.getDocData(this.admissionService.selectedCurrentDocDetails.Dockey)
     }
+    if (this.isReadOnly) {
+      this.obsFallRiskForm.disable(); // disables all controls
+    } else {
+      this.obsFallRiskForm.enable(); // enables all controls
+    }
   }
 
   initForm() {

@@ -59,6 +59,8 @@ import { DeliveryRecordDocComponent } from './delivery-record-doc/delivery-recor
 import { NursingInitialAssessmentComponent } from './nursing-initial-assessment/nursing-initial-assessment.component';
 import { NIPSDocumentComponent } from 'src/app/shared-module/nips-document/nips-document.component';
 import { ConfusionAssessmentMethodComponent } from 'src/app/shared-module/confusion-assessment-method/confusion-assessment-method.component';
+import { RichmondScaleComponent } from './richmond-scale/richmond-scale.component';
+import { RamsaySedationScaleComponent } from 'src/app/shared-module/ramsay-sedation-scale/ramsay-sedation-scale.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -107,6 +109,8 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NursingInitialAssessmentComponent) NursingInitialAssessmentComp: NursingInitialAssessmentComponent;
   @ViewChild(NIPSDocumentComponent) NIPSDocumentComp: NIPSDocumentComponent;
   @ViewChild(ConfusionAssessmentMethodComponent) ConfusionAssessmentMethodComp: ConfusionAssessmentMethodComponent;
+  @ViewChild(RichmondScaleComponent) RichmondScaleComp: RichmondScaleComponent;
+  @ViewChild(RamsaySedationScaleComponent) RamsaySedationScaleComp: RamsaySedationScaleComponent;
 
 
 
@@ -674,6 +678,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
     this.getConfusionAssessmentList();
+    this.richmondLatestDocument();
+    this.ramsayLatestDocument();
   }
 
   LatestMFSSet() {
@@ -691,6 +697,36 @@ export class PatientDocumentationComponent implements OnInit {
     }, (error) => {
       console.error(error);
     })
+  }
+
+  richmondLatestDocument() {
+    this.emergencyService.RichmondLatestDocument(this.apiJson).subscribe({
+      next: (_success: any) => {
+        if (_success?.d?.results) {
+          this.richmondList = _success.d.results;
+        }
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  ramsayLatestDocument() {
+    this.emergencyService.RamsayLatestDocument(this.apiJson).subscribe({
+      next: (_success: any) => {
+        if (_success?.d?.results) {
+          this.latestRamsaySedationList = _success.d.results;
+        }
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
   }
 
   getLatestAssessmentPA() {
@@ -2210,7 +2246,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openRichmondScale) {
-      this.NurseAssMainComp?.ngOnDestroy();
+      this.RichmondScaleComp?.ngOnDestroy();
     }
     if (this.openisDeliverRecord) {
       this.DeliveryRecordDocComp?.ngOnDestroy();
@@ -2327,6 +2363,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.getDeliveryRecordDoc();
     this.getNursingInitalGynoDoc();
     this.getConfusionAssessmentList();
+    this.richmondLatestDocument();
+    this.ramsayLatestDocument();
   }
 
   openDocument(action) {
@@ -2971,7 +3009,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openRichmondScale = true;
-        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+        this.RichmondScaleComp.createRichmond('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
@@ -4639,13 +4677,13 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openRamsaySedationDocument = true;
-        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+        this.RamsaySedationScaleComp.createRamsaySedation('4').then((formValue) => {
           if (formValue) {
             this.refresh()
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
+          console.error('Error creating Ramsay Sedation Scale:', error);
         });
       }
     }
@@ -5416,13 +5454,24 @@ export class PatientDocumentationComponent implements OnInit {
       // }
       if (this.openRichmondScale) {
         let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
+        this.RichmondScaleComp.createRichmond(docStatus).then((formValue: any) => {
           if (formValue) {
             if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+      if (this.openRamsaySedationDocument) {
+        let docStatus = '1';
+        this.RamsaySedationScaleComp.createRamsaySedation(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Ramsay Sedation Scale:', error);
         })
       }
       if (this.openisDeliverRecord) {
@@ -6004,13 +6053,24 @@ export class PatientDocumentationComponent implements OnInit {
       //   });
       // }
       if (this.openRichmondScale) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
+        this.RichmondScaleComp.createRichmond('1').then((formValue: any) => {
           if (formValue) {
             if (btnType == 'close') this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error modifying Glasgow coma scale:', error);
         });
+      }
+      if (this.openRamsaySedationDocument) {
+        let docStatus = '1';
+        this.RamsaySedationScaleComp.createRamsaySedation(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Ramsay Sedation Scale:', error);
+        })
       }
       if (this.openisDeliverRecord) {
         this.DeliveryRecordDocComp.createDeliveryRecordDoc('1', 'edit').then((formValue: any) => {
@@ -6449,13 +6509,24 @@ export class PatientDocumentationComponent implements OnInit {
       //   });
       // }
       if (this.openRichmondScale) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
+        this.RichmondScaleComp.createRichmond('3').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
         });
+      }
+      if (this.openRamsaySedationDocument) {
+        let docStatus = '3';
+        this.RamsaySedationScaleComp.createRamsaySedation(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Ramsay Sedation Scale:', error);
+        })
       }
       if (this.openisDeliverRecord) {
         this.DeliveryRecordDocComp.createDeliveryRecordDoc('3', 'copy').then((formValue: any) => {
@@ -7044,7 +7115,7 @@ export class PatientDocumentationComponent implements OnInit {
     //   });
     // }
     else if (this.openRichmondScale) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
+      this.RichmondScaleComp.createRichmond('2').then((formValue: any) => {
         if (formValue) {
           this.refresh();
         }
@@ -7052,7 +7123,16 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Glasgow coma scale:', error);
       });
-    }
+    } else if (this.openRamsaySedationDocument) {
+        this.RamsaySedationScaleComp.createRamsaySedation('2').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating Ramsay Sedation Scale:', error);
+        })
+      }
     else if (this.openNIPSDocumentDocument) {
       this.NIPSDocumentComp.createNIPSDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
@@ -9223,7 +9303,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openDailyNurseAss ||
       // this.openMalnutritionAss ||
       this.openPostAnesthesia ||
-      this.openRichmondScale ||
+      // this.openRichmondScale ||
       this.openisDeliverRecord ||
       this.openSbarNursingEnd ||
       this.openDyingPatient ||

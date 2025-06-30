@@ -2719,6 +2719,7 @@ export class FeeListService {
           Ktxt1: element.text,
           Fprice: `${element.newprice}`,
           Funit: element.Unit,
+          Imeng: element.Imeng,
           Ibgdt:
             this.datePipe.transform(element.date, 'yyyy-MM-dd') +
             'T' +

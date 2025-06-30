@@ -1947,6 +1947,59 @@ export class EmergencyService {
     );
   }
 
+  getRadiologyWorkList(fromDate ,toDate) {
+    return this.http.get(this.url + `getRadiologyWorkList?fromDate=${fromDate}&toDate=${toDate}`, {
+      withCredentials: true,
+    });
+  }
+  getVacantBedsList() {
+    return this.http.get(this.url + `getVacantBedsList`, {
+      withCredentials: true,
+    });
+  }
+
+// Richmond Scale PMD Doc
+  saveRichmondScaleDoc(json) {
+    return this.http.post(this.url + 'saveRichmondScaleDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchRichmondDocument(dockey) {
+    return this.http.get(this.url + `fetchRichmondDocument?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  RichmondLatestDocument(json) {
+    return this.http.get(
+      this.url + `RichmondLatestDocument?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+// Ramsay Sedation Scale
+  saveRamsayScaleDoc(json) {
+    return this.http.post(this.url + 'saveRamsayScaleDoc', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetchRamsayDocument(dockey) {
+    return this.http.get(this.url + `fetchRamsayDocument?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  RamsayLatestDocument(json) {
+    return this.http.get(
+      this.url + `RamsayLatestDocument?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
   createAssessment(data: any) {
     console.log(data);
 
