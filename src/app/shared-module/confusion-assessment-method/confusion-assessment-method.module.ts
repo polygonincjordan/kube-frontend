@@ -8,6 +8,8 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { GlosGowCommaScalePopupComponent } from './glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
 import { MorseFallScaleComponent } from './morse-fall-scale/morse-fall-scale.component';
 import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric-rating-scale-popup.component';
+import { RamsaySedationScaleComponent } from './ramsay-sedation-scale/ramsay-sedation-scale.component';
+import { RichmondScaleComponent } from './richmond-scale/richmond-scale.component';
 
 
 
@@ -17,7 +19,9 @@ import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric
     BradenScaleComponent,
     GlosGowCommaScalePopupComponent,
     MorseFallScaleComponent,
-    NumericRatingScalePopupComponent
+    NumericRatingScalePopupComponent,
+    RamsaySedationScaleComponent,
+    RichmondScaleComponent
   ],
   imports: [
     CommonModule,

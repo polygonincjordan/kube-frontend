@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
@@ -7,6 +8,7 @@ import { ActionType } from '@services/interfaces/common.enum';
 import { PatientDocumentationService } from '@services/patient-documentation.service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,6 +17,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./ramsay-sedation-scale.component.scss']
 })
 export class RamsaySedationScaleComponent implements OnInit {
+  @ViewChild('scaleRamsaySedationModal', { static: true }) scaleRamsaySedationModal: TemplateRef<any>;
+  @Output() scaleStoreValue = new EventEmitter<any>();
 
   ramsaySedationForm: FormGroup<any>;
   CurrentDateAndTime: Date = new Date();
@@ -66,8 +70,8 @@ export class RamsaySedationScaleComponent implements OnInit {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
 
-  constructor(private fb: FormBuilder, private patientDocService: PatientDocumentationService, private emergencyService: EmergencyService, private dataShareService: DataShareService,
-    private storageService: StorageService, private _route: ActivatedRoute, private sharedService: SharedService) {
+  constructor(private fb: FormBuilder, private emergencyService: EmergencyService, private dataShareService: DataShareService, private datePipe: DatePipe,
+    private storageService: StorageService, private _route: ActivatedRoute, private sharedService: SharedService, private modalService: BsModalService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(this.paramsObject.einri);
@@ -95,7 +99,7 @@ export class RamsaySedationScaleComponent implements OnInit {
   }
 
   getDocData() {
-    this.emergencyService.fetchRamsayDocument(this.docKey).subscribe((data: any) => {
+    this.emergencyService.fetchRamsayDocument(this.dockeyValue).subscribe((data: any) => {
       if (data.d) {
         this.ramsaySedationForm.patchValue(data?.d?.results[0]);
       }
@@ -104,7 +108,31 @@ export class RamsaySedationScaleComponent implements OnInit {
     })
   }
 
+  public dockeyValue: any = null;
+  modalRef: BsModalRef;
+
+  openModalForRamsaySedation(dockKey) {
+    this.dockeyValue = null;
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered modal-xl glasgow-scale-size',
+      ignoreBackdropClick: true
+    };
+    this.modalRef = this.modalService.show(this.scaleRamsaySedationModal, config);
+    this.dockeyValue = dockKey ? dockKey : null;
+    if (this.dockeyValue) {
+      this.getDocData();
+    }
+  }
+
+
   ngOnInit(): void {
+    this.initForm();
+    this.realized = this.storageService.getUserProfile().Gpart;
+    this.realizedDescription = this.storageService.getUserProfile().GpartName;
+    this.ramsaySedationForm.controls['AttendPhy'].patchValue(this.realized)
+  }
+
+  initForm() {
     this.ramsaySedationForm = this.fb.group({
       Dockey: "",
       Dtid: "SCA_RMS",
@@ -121,9 +149,6 @@ export class RamsaySedationScaleComponent implements OnInit {
       Comments: ""
     })
 
-    this.realized = this.storageService.getUserProfile().Gpart;
-    this.realizedDescription = this.storageService.getUserProfile().GpartName;
-    this.ramsaySedationForm.controls['AttendPhy'].patchValue(this.realized)
   }
 
   getFormData() {
@@ -132,9 +157,9 @@ export class RamsaySedationScaleComponent implements OnInit {
 
   calculateTotal(value: any) {
     let labelName: string
-    if(value == 4) {
+    if (value == 4) {
       labelName = 'Patient exhibits brisk response to light';
-    } else if(value == 5) {
+    } else if (value == 5) {
       labelName = 'Patient exhibits a sluggish response to light';
     } else {
       labelName = this.ramsayList[value].label;
@@ -156,9 +181,21 @@ export class RamsaySedationScaleComponent implements OnInit {
       };
       this.subscription = this.emergencyService.saveRamsayScaleDoc(payload).subscribe({
         next: (data: any) => {
-
+          let currentTime = this.datePipe.transform(new Date(), 'HH:mm:ss');
+          let formValue = {
+            totalScore: this.ramsaySedationForm.value.TotalScore,
+            description: this.ramsaySedationForm.value.ScoreDesc,
+            dockey: data?.d.Dockey,
+            time: currentTime,
+             date: this.dateConvertToString(new Date())
+          }
+          this.scaleStoreValue.next(formValue);
+          this.modalRef.hide();
+          this.initForm();
         },
         error: (err: any) => {
+          console.log(err, "err");
+
           this.sharedService.waringSwallModel(`POST Error at Richmond Scale : ${err?.error?.error?.message?.value}`);
         },
         complete: () => {
@@ -179,4 +216,20 @@ export class RamsaySedationScaleComponent implements OnInit {
     }
   }
 
+
+  closeGlosgowModel() {
+    this.modalRef.hide();
+  }
+
+  dateConvertToString(date: Date) {
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    let year = date.getFullYear();
+
+    let hours = String(date.getHours()).padStart(2, '0');
+    let minutes = String(date.getMinutes()).padStart(2, '0');
+    let seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${day}.${month}.${year}/${hours}:${minutes}:${seconds}`;
+  }
 }

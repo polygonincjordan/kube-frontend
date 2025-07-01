@@ -142,6 +142,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   labReceivedData: any;
   filterStatusList: any[];
   vacantBedList: any[];
+  vacantBedListClone: any[];
+  fetchNursingOUForVacant: any[];
   dropdownSettings = {};
   dropdownSettingsForSpecialtyConfig = {};
   filterBehpersonList: any;
@@ -173,6 +175,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   showConfiguration: boolean = false;
   singleformgroupData: any;
   wardSelectForConfig: any[] = [];
+  selectNursingOUForVacant: any[] = [];
   getKubeRule: any = this.storageService.getKubeRule();
   constructor(
     private orderDashboardService: OrdersDashboardService,
@@ -1923,12 +1926,25 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.emergencyService.getVacantBedsList().subscribe({
       next: (_success: any) => {
         console.log(_success, "_success");
-        this.vacantBedList = _success?.d?.results; 
+        this.vacantBedListClone = _success?.d?.results;
+        this.vacantBedList = _success?.d?.results;;
+        let uniqueRoyustextArray:any[] = [...new Set(this.vacantBedListClone.map(item => item.royustext))];
+        this.fetchNursingOUForVacant = uniqueRoyustextArray
       },
       error: (err: any) => {
         // this.sharedService.errorSwallModel(`Error :${err.error.error.message.value}`).then((result) => { })
       }
     });
+  }
+
+  selectNursingOU() {
+    if(this.selectNursingOUForVacant.length) {    
+      this.vacantBedList = this.vacantBedListClone.filter(item =>
+        this.selectNursingOUForVacant.includes(item.royustext)
+      );
+    } else {
+      this.vacantBedList = this.vacantBedListClone;
+    }
   }
 
   commaSeparatForSpecialtyConf(value: any) {
@@ -1962,6 +1978,41 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         this.showConfiguration = false;
         this.clinicConfigGet();
       })
+    }
+  }
+
+  asc: boolean;
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.vacantBedList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.vacantBedList.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); // ignore upper and lowercase
+        const nameB = b[keyName].toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        // names must be equal
+        return 0;
+      });
     }
   }
 }
