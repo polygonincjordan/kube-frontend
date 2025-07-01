@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-er-physician',
@@ -21,17 +22,22 @@ export class ErPhysicianComponent implements OnInit {
   PhyAssessmentForm: FormGroup;
   createDate: any;
   chiefTemplate: any;
+  paramsObject: any;
   DispositionData=[];
-  constructor(private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private emergencyService:EmergencyService,private patientHistoryService:PatientHistoryService) {
+  constructor(private modalService: BsModalService,private formBuilder: FormBuilder,private storageService:StorageService,private emergencyService:EmergencyService,private patientHistoryService:PatientHistoryService, private _route: ActivatedRoute) {
+    this._route.queryParams.subscribe((params) => {
+      this.paramsObject = params;
+    });
     this.PhyAssessmentForm = this.formBuilder.group({
       "ZdocNr": [""],
       "Dockey": [""],
       "Dtid": ["ZMED_ERPHY"],
-      "Einri": [""],
-      "Patnr": [""],
-      "Falnr": [""],
-      "Orgdo": [""],
-      "Lfdnr": [""],
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Orgdo: [this.storageService.patientData.deptOrgUnit],
+      AttendPhy: [this.storageService.getUserProfile().Gpart],      
       "AdmDate": [""],
       "AdmTime": [""],
       "DiscDate": [""],
@@ -59,7 +65,6 @@ export class ErPhysicianComponent implements OnInit {
       "Na": [false],
       "Hr24": [false],
       "Hr48": [false],
-      "AttendPhy": [this.storageService.getGpart()],
       "PastObgyn": [false],
       "NaObgyn": [false],
       "FollowUp": [''],
@@ -83,11 +88,12 @@ export class ErPhysicianComponent implements OnInit {
         "ZdocNr": this.docDetails[0].ZdocNr,
         "Dockey": this.docDetails[0].Dockey,
         "Dtid": "ZMED_ERPHY",
-        "Einri": this.docDetails[0].Einri,
-        "Patnr": this.docDetails[0].Patnr,
-        "Falnr": this.docDetails[0].Falnr,
-        "Orgdo": this.docDetails[0].Orgdo,
-        "Lfdnr": this.docDetails[0].Lfdnr,
+        Einri: this.paramsObject.einri,
+        Patnr: this.paramsObject.patnr,
+        Falnr: this.paramsObject.falnr,
+        Lfdnr: this.paramsObject.lfdnr,
+        Orgdo: [this.storageService.patientData.deptOrgUnit],
+        AttendPhy: [this.storageService.getUserProfile().Gpart],  
         "AdmDate": this.getDate(this.docDetails[0].AdmDate),
         "AdmTime": createTime,
         "DiscDate": this.getDate(this.docDetails[0].DiscDate),
@@ -115,7 +121,6 @@ export class ErPhysicianComponent implements OnInit {
         "Na": this.docDetails[0].Na,
         "Hr24": this.docDetails[0].Hr24,
         "Hr48": this.docDetails[0].Hr48,
-        "AttendPhy": this.storageService.getGpart(),
         "PastObgyn": this.docDetails[0].PastObgyn,
         "NaObgyn": this.docDetails[0].NaObgyn,
         "FollowUp": this.docDetails[0].FollowUp,

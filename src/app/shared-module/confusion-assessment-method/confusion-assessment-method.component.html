@@ -151,10 +151,10 @@
                                                                 <td>{{ item.ScoreDesc }}</td>
                                                                 <td>{{ item.Datetimee }}</td>
                                                                 <td>
-                                                                    <a>Create</a>
+                                                                    <a (click)="openScaleModel(item)">Create</a>
                                                                 </td>
                                                                 <td>
-                                                                    <a>View</a>
+                                                                    <a (click)="viewGlosgowModel(item)">View</a>
                                                                 </td>
                                                                 <td>
                                                                     <img src="assets/img/Delete.svg" title="Delete"
@@ -386,3 +386,8 @@
     (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-scale-popup>
 <app-morse-fall-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-scale>
 <app-braden-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-scale>
+
+<app-ramsay-sedation-scale #ramsayScaleTemp
+    (scaleStoreValue)="scaleStoreInTable($event, 'ramsay')"></app-ramsay-sedation-scale>
+<app-richmond-scale #richmondScaleTemp
+    (scaleStoreValue)="scaleStoreInTable($event, 'richmond')"></app-richmond-scale>

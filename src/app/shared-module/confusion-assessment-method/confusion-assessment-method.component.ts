@@ -15,6 +15,8 @@ import { GlosGowCommaScalePopupComponent } from './glos-gow-comma-scale/glos-gow
 import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric-rating-scale-popup.component';
 import { SharedService } from '@services/shared.service';
 import { ActivatedRoute } from '@angular/router';
+import { RamsaySedationScaleComponent } from './ramsay-sedation-scale/ramsay-sedation-scale.component';
+import { RichmondScaleComponent } from './richmond-scale/richmond-scale.component';
 
 @Component({
   selector: 'app-confusion-assessment-method',
@@ -27,6 +29,9 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
   @ViewChild('bradenScaleTemp') bradenScaleTemp: BradenScaleComponent;
   @ViewChild('scalesGlosgow') scalesGlosgow: GlosGowCommaScalePopupComponent;
   @ViewChild('scalesNumericRating') scalesNumericRating: NumericRatingScalePopupComponent;
+  @ViewChild('ramsayScaleTemp') ramsayScaleTemp: RamsaySedationScaleComponent;
+  @ViewChild('richmondScaleTemp') richmondScaleTemp: RichmondScaleComponent;
+
   confusionForm: FormGroup<any>;
   CurrentDateAndTime: Date = new Date();
   realized: string;
@@ -190,7 +195,7 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
         //this.configurationData = resp.body.d.results;
         // this.toScaleArr = resp.body.d.results;
         if (resp.body?.d?.results.length) {
-          let requiredScales = ["Glasgow Coma Scale", "Morse Fall Scale (MFS)", "Braden scale for predicting pressure ulcers"];
+          let requiredScales = ["Richmond Scale", "Ramsay Sedation Scale"];
           this.toScaleArr = resp.body.d.results.filter(scale => requiredScales.includes(scale.Scaletype)).map(scale => ({ ...scale, isSelected: false }));
         }
         // this.medicationImportDrugArray=[];
@@ -226,7 +231,7 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
 
 
   public scaleStoreInTable(event: any, scaleType: string) {
-    if (scaleType == 'morseFall') {
+    if (scaleType == 'ramsay') {
       this.scalesList[1].LastScore = event?.totalScore;
       this.scalesList[1].ScoreDesc = event?.description;
       this.scalesList[1].Dockey = event?.dockey;
@@ -236,7 +241,7 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
       this.scalesList[2].ScoreDesc = event?.description;
       this.scalesList[2].Dockey = event?.dockey;
       this.scalesList[2].Datetimee = event?.date;
-    } else if (scaleType == 'glosgow') {
+    } else if (scaleType == 'richmond') {
       this.scalesList[0].LastScore = event?.totalScore;
       this.scalesList[0].ScoreDesc = event?.description;
       this.scalesList[0].Dockey = event?.dockey;
@@ -277,9 +282,9 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
 
   openSelectedModalScale(item) {
     if (item.value == '1') {
-      this.scalesGlosgow.openModalForGlosgow('');
+      this.richmondScaleTemp.openModalForRichmond('');
     } else if (item.value == '2') {
-      this.morseFallScale.openMorseFallScaleModal('');
+      this.ramsayScaleTemp.openModalForRamsaySedation('');
     } else if (item.value == '3') {
       this.bradenScaleTemp.openBradenScaleModal('');
     }
@@ -289,7 +294,14 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
     if (this.noScaleAppicable) return;
     if (item.value == '1') {
       if (item.Dockey) {
-        this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+        this.richmondScaleTemp.openModalForRichmond(item.Dockey);
+      } else {
+        this.sharedService.waringSwallModel('No data found');
+      }
+    }
+    if (item.value == '2') {
+      if (item.Dockey) {
+        this.ramsayScaleTemp.openModalForRamsaySedation(item.Dockey);
       } else {
         this.sharedService.waringSwallModel('No data found');
       }
@@ -337,16 +349,16 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
   createNursingAssessmentDoc(docStatus: any, actiontype?: string) {
     return new Promise((resolve, reject) => {
       // this.isFormValidError = true;
-      // paylaod.TOSCALE = this.scalesList.filter((res: any) => {
-      //   delete res.value;
-      //   res.LastScore = res?.LastScore.toString();
-      //   if (res.LastScore) {
-      //     return res;
-      //   }
-      // });
       let paylaod = this.confusionForm.value;
+      paylaod['TOSCALE'] = this.scalesList.filter((res: any) => {
+        delete res.value;
+        res.LastScore = res?.LastScore.toString();
+        if (res.LastScore) {
+          return res;
+        }
+      });
       paylaod.DocStatus = docStatus;
-      paylaod['TOSCALE'] = [];
+      // paylaod['TOSCALE'] = [];
       console.log(paylaod);
       // return
       // paylaod.Orgdo = this.storageService?.patientData?.deptOrgUnit;

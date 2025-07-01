@@ -1,0 +1,69 @@
+<ng-template #scaleRichmondModal>
+  <div>
+    <div class="allergy-header">
+      <div class="allergy-header-title">
+        <span>Richmond Scale</span>
+      </div>
+      <div class="allergy-header-details">
+        <ul class="allergy-header-ul d-flex">
+          <li class="close-icon">
+            <img width="20" src="assets/img/CloseTab.svg" class="img-size cursor-pointer"
+              (click)="closeGlosgowModel()" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="richmondForm">
+    <div class="scale-container p-2">
+      <h6 class="scale-result">Scale Information</h6>
+      <div class="row">
+        <label>Date</label>
+        <input type="text" class="col-2 form-control" bsDatepicker
+          [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime"
+          disabled />
+        <input type="text" class="col-2 form-control ml-2" bsDatepicker
+          [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }" [bsValue]="CurrentDateAndTime"
+          disabled />
+      </div>
+      <div class="row">
+        <label>Realized by </label>
+        <input class="col-md-3 form-control" type="text" [value]="realized" disabled />
+        <input class="col-md-5 form-control ml-2" type="text" [value]="realizedDescription" disabled />
+      </div>
+
+      <h6 class="scale-result">Richmond</h6>
+      <div class="total-sec">
+        <div *ngFor="let score of scoreDescriptions" class="form-check rass-option">
+          <div class="col-md-1">
+            <input class="form-check-input" type="radio" [id]="'rass' + score.key" formControlName="Score"
+              [value]="score.key" />
+            {{ score.key }}
+
+          </div>
+          <label class="form-check-label rass-label" [for]="'rass' + score.key">
+            {{ score.value }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-2">
+      <h6 class="scale-result">Scale Result</h6>
+      <div class="row">
+        <label>Total Score</label>
+        <input class="col-md-1 form-control" type="text" formControlName="TotalScore" readonly />
+        <input class="col-md-3 form-control ml-2" type="text" [value]="getDescription()" readonly />
+      </div>
+
+      <div class="row">
+        <label>Comments</label>
+        <input class="col-md-6 form-control" type="text" formControlName="Comments" />
+      </div>
+    </div>
+  </form>
+  <div class="col-md-12 mt-4" style="text-align: end" *ngIf="!dockeyValue">
+    <button class="triage-model-btn" (click)="closeGlosgowModel()">Cancel</button>
+    <button class="triage-model-btn" (click)="createRichmond('1')">Save</button>
+  </div>
+</ng-template>
