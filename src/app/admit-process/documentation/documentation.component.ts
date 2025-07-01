@@ -205,11 +205,35 @@ export class DocumentationComponent implements OnInit {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
             this.deleteNeonatalDischarge();
           }
+          if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_PDASM') {
+            this.deletePediatricAdmAssess(this.admissionService.selectedCurrentDocDetails.Dockey);
+          }
         }
       });
     }
   }
-
+     //working on here (Pediatrics Admission Assessment) bottom one
+   deletePediatricAdmAssess(docKey: string) {
+      this.emergencyService.deletePediatricAdmAssesDoc(docKey).subscribe({
+          next: (_success: any) => {
+                Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+          },
+          error: (_error: any) => {
+                Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+          }
+        }
+        );
+  }
   directReleaseNeonatalDischargeDoc() {
      this.dayCaseDashboardService
       .fetcNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe({
@@ -384,10 +408,13 @@ export class DocumentationComponent implements OnInit {
       this.directReleaseNeonatalDischargeDoc();
     }
      if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_TRFAS') {
-       this.releasePhysicianDoc()     
+       this.releasePhysicianDoc()
+    }
+     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_PDASM') {
+       this.releasePediatricAdmAssesDoc()
     }
      if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_OPERT') {
-       this.releaseSurgaryDoc()    
+       this.releaseSurgaryDoc()
     }
   }
 
@@ -400,6 +427,24 @@ export class DocumentationComponent implements OnInit {
       };
       d.d.DocStatus = '2';
       this.admissionService.saveEducationData(d).subscribe(
+        (result) => {
+          this.admissionService.isRealoadData.next(true);
+        }
+      );
+    })
+  }
+
+  //working on here
+  releasePediatricAdmAssesDoc() {
+    this.emergencyService.getPediatricAdmAssesDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((res: any) => {
+      console.log(res, "--");
+
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+
+       this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
         }
@@ -640,7 +685,7 @@ export class DocumentationComponent implements OnInit {
       !this.admissionService.isAddEditNeonatalMR &&
       !this.admissionService.isAddEditTransferAssestForm &&
       !this.admissionService.isAddEditDocPaediatricsAdmissionForm &&
-      !this.admissionService.isAddEditNeonatalDischarge && 
+      !this.admissionService.isAddEditNeonatalDischarge &&
       !this.admissionService.isAddNicuForm
 
     ) {
@@ -720,7 +765,7 @@ export class DocumentationComponent implements OnInit {
         }
       });
   }
-  // 
+  //
   // neo natal
   deleteNeoNatalDoc() {
     this.admissionService
@@ -787,7 +832,7 @@ export class DocumentationComponent implements OnInit {
       });
   }
   //
-  // physician assessment 
+  // physician assessment
   deletePhysicianAssessDoc() {
     this.admissionService
       .deletePhysicianAssessDoc(this.admissionService.selectedCurrentDocDetails)

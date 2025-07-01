@@ -113,7 +113,7 @@ export class AdmissionService {
   public isAddEditSurgeryOprationNoteForm: boolean = false;
   public isClonePaediatricsAdmissionForm: boolean = false;
   public isCloneSurgeryOprationNoteForm: boolean = false;
-  public isEditPaediatricsAdmissionForm: boolean = false;
+  public isEditPaediatricsAdmissionForm: boolean = false; //workign on here
   public isEditSurgeryOprationNoteForm: boolean = false;
 
   public isAddEditTransferAssestForm: boolean = false;
@@ -802,6 +802,7 @@ export class AdmissionService {
           this.isCloneNewBornForm = false;
         }
       }
+      //Pediatrics Physician Admission Assessment
       else if (this.selectedCurrentDocDetails.Dtid == 'ZMED_PDASM') {
         if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') {
           return;
@@ -814,6 +815,8 @@ export class AdmissionService {
         }
 
         if (actionType == 'clone' && this.selectedCurrentDocDetails.DokstText != 'Released') return;
+
+        //this is an oprning proccess of the document (Peduatric admission assessment)
         this.isAddEditDocPaediatricsAdmissionForm = !this.isAddEditDocPaediatricsAdmissionForm;
         if (actionType == 'clone') {
           this.isClonePaediatricsAdmissionForm = true;
@@ -902,7 +905,7 @@ export class AdmissionService {
     this.isEditBornForm = false;
     this.isCloneNewBornForm = false;
 
-    this.isEditPaediatricsAdmissionForm = false;
+    this.isEditPaediatricsAdmissionForm = false; //working on here
     this.isEditSurgeryOprationNoteForm = false;
     this.isAddEditDocPaediatricsAdmissionForm = false;
     this.isAddEditSurgeryOprationNoteForm = false;
@@ -950,7 +953,7 @@ export class AdmissionService {
     this.isEditNeonatalDischarge = false;
     this.isAddEditNeonatalDischarge = false;
 
-    this.isEditPaediatricsAdmissionForm = false;
+    this.isEditPaediatricsAdmissionForm = false; //working on here
     this.isEditSurgeryOprationNoteForm = false;
     this.isAddEditDocPaediatricsAdmissionForm = false;
     this.isAddEditSurgeryOprationNoteForm = false;

@@ -1,3 +1,4 @@
+<form [formGroup]="nursingAdmissionForm">
 <div class="end-container">
     <div class="scale-box-main">
         <label class="box-label">Psychological / Economic History</label>
@@ -22,43 +23,43 @@
                     <div *ngIf="selectedTabName == 'Psychological History'" class="row tab-content scale-box mt-3" style="border-radius: 7px">
                         <div class="col-md-12 row m-0">
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsNoProblem"/>
                                 <label class="ml-2 m-0">No Problem identified</label>
                             </div>
                         </div>
                         <div class="col-md-12 row m-0">
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsAnxious"/>
                                 <label class="ml-2 m-0">Anxious</label>
                             </div>
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsUncooperative"/>
                                 <label class="ml-2 m-0">Uncoorperative</label>
                             </div>
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsDepressed" />
                                 <label class="ml-2 m-0">Depressed</label>
                             </div>
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsAngry"/>
                                 <label class="ml-2 m-0">Angry</label>
                             </div>
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsAgitated" />
                                 <label class="ml-2 m-0">Agitated</label>
                             </div>
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsCombative"/>
                                 <label class="ml-2 m-0">Combative</label>
                             </div>
                             <div class="col-md-2 row m-0">
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="PsOther"/>
                                 <label class="ml-2 m-0">Other</label>
                             </div>
                         </div>
                         <div class="col-md-12 row m-0 ml-2 mt-3">
                             <label class="m-0 mr-2">Comments</label>
-                            <input class="form-control w-70" />
+                            <input class="form-control w-70" formControlName="PsComments"/>
                         </div>
                     </div>
                     <div *ngIf="selectedTabName == 'Economic History'">
@@ -67,26 +68,30 @@
                                 <label class="m-0">Living with</label>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="EcLivingWith"/>
                             </div>
                             <div class="col-md-1">
                                 <label class="m-0">No. People</label>
                             </div>
                             <div class="col-md-1">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="EcFatherJob"/>
                             </div>
                         </div>
                         <div class="row m-0 mt-2">
                             <div class="col-md-2">
                                 <label class="m-0">Relationship</label>
                             </div>
+                           <div class="col-md-2">
+                              <ng-select
+                                [items]="patientRelationList"
+                                bindLabel="label"
+                                bindValue="value"
+                                formControlName="EcRelationship"
+                                placeholder="Select relationship">
+                              </ng-select>
+                        </div>
                             <div class="col-md-2">
-                                <ng-select>
-                                    <ng-option *ngFor="let item of patientRelationList">{{ item.label }}</ng-option>
-                                </ng-select>
-                            </div>
-                            <div class="col-md-2">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="EcRelationshipTxt" />
                             </div>
                         </div>
                         <div class="row m-0 mt-2">
@@ -94,7 +99,7 @@
                                 <label class="m-0">Phone</label>
                             </div>
                             <div class="col-md-4">
-                                <input class="form-control" />
+                                <input class="form-control" formControlName="EcPhone"/>
                             </div>
                         </div>
                         <div class="row m-0 mt-2">
@@ -102,7 +107,7 @@
                                 <label class="m-0">Father's job</label>
                             </div>
                             <div class="col-md-6">
-                                <input class="form-control" />
+                                <input class="form-control" type="text" formControlName="EcFatherJob"/>
                             </div>
                         </div>
                         <div class="row m-0 mt-2">
@@ -110,9 +115,7 @@
                                 <label class="m-0">Insurance</label>
                             </div>
                             <div class="col-md-2">
-                                <ng-select>
-                                    <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                </ng-select>
+                                <ng-select [items]="yesNoList" bindLabel="label" bindValue="value" formControlName="EcInsurance"></ng-select>
                             </div>
                         </div>
                     </div>
@@ -121,3 +124,4 @@
         </div>
     </div>
 </div>
+</form>

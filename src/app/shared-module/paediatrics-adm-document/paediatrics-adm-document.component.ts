@@ -20,6 +20,7 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { Subscription } from 'rxjs';
 import { ErVitalsComponent } from './er-vitals/er-vitals.component';
 import { AdmissionService } from '@services/admission/admission.service';
+import { ActionType } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-paediatrics-adm-document',
@@ -28,8 +29,6 @@ import { AdmissionService } from '@services/admission/admission.service';
 })
 export class PaediatricsAdmDocumentComponent implements OnInit {
   public nursingAdmissionForm: FormGroup;
-  public TOINFECTION: FormArray;
-  public TOMEDICATION: FormArray;
   @Input() soapFormEvent: string;
   @Output() reloadTableList = new EventEmitter();
   toAllergyArr: any = [];
@@ -67,13 +66,15 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   ];
 
   public psychologicalHistoryList: commonKeyValuePariExt4[] = [
-    { value: '01', label: 'Anxious', controlname: 'PsyAnxious' },
-    { value: '02', label: 'Uncooperative', controlname: 'PsyUncooperative' },
-    { value: '03', label: 'Depressed', controlname: 'PsyDepressed' },
-    { value: '04', label: 'Angry', controlname: 'PsyAngry' },
-    { value: '05', label: 'Agitated', controlname: 'PsyAgitated' },
-    { value: '06', label: 'Combative', controlname: 'PsyCombative' },
-    { value: '07', label: 'Other', controlname: 'PsyOther' },
+    { value: '01', label: 'Anxious', controlname: 'PsAnxious' },
+    { value: '02', label: 'Uncooperative', controlname: 'PsUncooperative' },
+    { value: '03', label: 'Depressed', controlname: 'PsDepressed' },
+    { value: '04', label: 'Angry', controlname: 'PsAngry' },
+    { value: '05', label: 'Agitated', controlname: 'PsAgitated' },
+    { value: '06', label: 'Combative', controlname: 'PsCombative' },
+
+
+    { value: '07', label: 'Other', controlname: 'PsOther' },
   ];
 
   public currentOccupationList = [
@@ -203,10 +204,13 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   duplicates: any[];
   selectedScales: any[] = [];
   scalesArray: any[] = [];
+  private actionTypeSubscription$: Subscription;
+  private subscription: Subscription;
   toScaleArr: any[];
   modalRefScales: BsModalRef;
   isChecked: any;
   public toVitalsArr: any = [];
+  private actionTypeData!: any
 
   constructor(
     private sharedService: SharedService,
@@ -233,23 +237,25 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     });
     this.initForm();
 
-    // this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
-    //   (data) => {
-    //     if (data != null) {
-    //       if (data.type == ActionType.Add$ && data.value == '') {
-    //         this.docKey = data.value.Dockey;
-    //       }
-    //       if (data.type == ActionType.Update$ && data.value) {
-    //         this.docKey = data.value.docKey;
-    //         this.getNursingAdmissionDocDetails(data.value.docKey);
-    //       }
-    //       if (data.type == ActionType.Copy$ && data.value) {
-    //         this.docKey = data.value.docKey;
-    //         this.getNursingAdmissionDocDetails(data.value.docKey);
-    //       }
-    //     }
-    //   }
-    // );
+
+    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe(
+      (data) => {
+        if (data != null) {
+          this.actionTypeData = data;
+          if (data.type == ActionType.Add$ && data.value) {
+            this.docKey = data.value.Dockey;
+          }
+          if (data.type == ActionType.Update$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getPediatricAdmAssesDocDetails(data.value.docKey);
+          }
+          if (data.type == ActionType.Copy$ && data.value) {
+            this.docKey = data.value.docKey;
+            this.getPediatricAdmAssesDocDetails(data.value.docKey);
+          }
+        }
+      }
+    );
   }
 
 
@@ -287,304 +293,669 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
 
   initForm() {
-    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss a');
+    // let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss a');
     this.nursingAdmissionForm = this.formBuilder.group({
+
+      Dtid: 'ZMED_PDASM',
       Dockey: '',
-      Dtid: 'ZMED_NRADM',
       Einri: this.paramsObject.einri,
       Patnr: this.paramsObject.patnr,
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
       Orgdo: this.storageService?.patientData?.deptOrgUnit,
-      AAdmittedWard: '',
-      ADate: [new Date()],
-      ATime: "",
-      ARoom: '',
-      AReferralType: '',
-      AAdmissionMode: '',
-      AAdmissionModeT: '',
-      AAccompaniedBy: '',
-      AAccompaniedByT: '',
-      AInfoObtained: '',
-      AInfoObtainedT: '',
-      ALanguageSpoken: 'English',
-      // ASchoolGrade: '',
-      AEducated: '',
-      AFavouriteToy: '',
-      AReasonVisit: '',
-      AChiefComplaint: ['', Validators.required],
-      Substances: '',
-      Vaccinated: '',
-      InfectionStatus: '',
-      PsyNoProblem: false,
-      PsyAnxious: false,
-      PsyUncooperative: false,
-      PsyDepressed: false,
-      PsyAngry: false,
-      PsyAgitated: false,
-      PsyCombative: false,
-      PsyOther: false,
-      PsyComments: '',
-      OccOccupationalStatus: '',
-      OccOccupationalStatusTxt: '',
-      OccJobNature: '',
-      OccHealthProblems: '',
-      OccHealthProblemsTxt: '',
-      OccHealthInjury: '',
-      OccHealthInjuryTxt: '',
-      OccJob: '',
-      OccJobTxt: '',
-      OccDailyNeeds: '',
-      OccDailyNeedsTxt: '',
-      OccSpouseWork: '',
-      OccSpouseWorkTxt: '',
-      OccComments: '',
-      EcoLiving: '',
-      EcoNoPeople: '',
-      EcoRelationship: '',
-      EcoRelationshipTxt: '',
-      EcoPhone: '',
-      EcoFatherJob: '',
-      EcoInsurance: '',
-      GgRectalPain: false,
-      GgIndigestion: false,
-      GbAbsent: false,
-      GbPresent: false,
-      GbHypoactive: false,
-      GbHyperactive: false,
-      GaSoft: false,
-      GaDistendend: false,
-      GaFirm: false,
-      GaTenderness: false,
-      GeEnema: false,
-      GeLaxatives: false,
-      GeOstomyType: false,
-      GeOstomyTypeTxt: '',
-      GeOther: false,
-      GeOtherTxt: '',
-      RmProstate: false,
-      RmLesions: false,
-      RmDischarge: false,
-      RmScrotal: false,
-      RmDescr: '',
-      RfPregnant: false,
-      RfLmp: null,
-      RfDischarge: false,
-      RfLesions: false,
-      RfItching: false,
-      RfPelvic: false,
-      RfMenarcheAge: '',
-      RfNotReached1: false,
-      RfMenopauseAge: '',
-      RfNotReached2: false,
-      RfBirthCont: false,
-      RfBirthContTxt: '',
-      RbTenderness: false,
-      RbDischarge: false,
-      RbSwelling: false,
-      RbProsthesis: false,
-      RbLumps: false,
-      GPainful: false,
-      GIncontinence: false,
-      GBurning: false,
-      GHematuria: false,
-      GOliguria: false,
-      GDysuria: false, //
-      GPolyuria: false,
-      GDribbling: false,
-      GNocturia: false,
-      GRetention: false,
-      GStraining: false,
-      GUrineColour: '',
-      GUrineClarity: '',
-      GCatheterType: false,
-      GCatheterTypeTxt: '',
-      GMicturition: '',
-      GOther: false,
-      GOtherTxt: '',
-      SSkinColor: '',
-      SSkinColorTxt: '',
-      STemperature: '',
-      SMoisture: '',
-      SLesions: '',
-      SLocation: '',
-      NnHeadache: false,
-      NnDizziness: false,
-      NnNumbness: false,
-      NnNumbnessLoc: '',
-      NnTingling: false,
-      NnTinglingLoc: '',
-      NnParalysis: false,
-      NnParalysisLoc: '',
-      NnTremors: false,
-      NnTremorsLoc: '',
-      NLevelConscious: '',
-      NoPlace: false,
-      NoTime: false,
-      NoPresent: false,
-      NResponsiveness: '',
-      CgChestPain: false,
-      CgPalpitations: false,
-      CgPacemaker: false,
-      CgPainCalves: false,
-      CpRegular: false,
-      CpIrregular: false,
-      CpStrong: false,
-      CpWeak: false,
-      CPedalPulses: '',
-      CeYes: false,
-      CeNo: false,
-      CePitting: false,
-      CeNonPitting: false,
-      CeLocation: '',
-      CNailBed: '',
-      CCapillaryRefill: '',
-      EeHardHearing: '',
-      EePain: '',
-      EeDrainage: '',
-      EeDeaf: '',
-      EnEpistaxis: false,
-      EnCongestion: false,
-      EnDrainage: false,
-      EnType: '',
-      EtDysphagia: false,
-      EtBleeding: false,
-      EtSwollenGlands: false,
-      EtSwollenGums: false,
-      EtPain: false,
-      EtLesions: false,
-      EtLocation: '',
-      OGlassEye: '',
-      ORedness: '',
-      OPain: '',
-      ODischarge: '',
-      OBlind: '',
-      OComments: '',
-      RChestAppearance: '',
-      RbDyspneaRest: false,
-      RbDyspneaExertion: false,
-      RbNonLabored: false,
-      RBbreathSounds: '',
-      RRhonchi: '',
-      RCough: '',
-      RColor: '',
-      RAmount: '',
-      RTracheostomy: false,
-      RTubeSize: '',
-      RO2: false,
-      RBy: '',
-      ROtherTxt: '', //
-      RAt: "",
-      FunSelfNoProblem: false,
-      FunSelfNeedsSuper: false,
-      FunSelfNeedsFeeding: false,
-      FunSelfNeedsHygiene: false,
-      FunSelfNeedsToileting: false,
-      FunSelfNeedsAmulation: false,
-      FunMusNoProblem: false,
-      FunMusProblemIdentified: false,
-      FunMusProblems: '',
-      FunAssEquipmentNone: false,
-      FunAssEquipmentUseOf: false,
-      FunAssEquipmentUseOfTyp: '',
-      FunAssEquipmentUseOfTxt: '',
-      FunDrNotification: '',
-      FunNotified: '',
-      ImpairedNutritional0: false,
-      ImpairedNutritional1: false,
-      ImpairedNutritional2: false,
-      ImpairedNutritional3: false,
-      ImpairedNutritionalScore: ['', Validators.required],
-      SeverityDisease0: false,
-      SeverityDisease1: false,
-      SeverityDisease2: false,
-      SeverityDisease3: false,
-      SeverityDiseaseScore: ['', Validators.required],
-      TotalScore: ['', Validators.required],
-      AgeAdjustedScore: '',
-      PhysicianInformed: '',
-      NamePhysician: '',
-      PComments: '',
-      SSleepRest: '',
-      SSleepTime: '',
-      SNumberHours: '',
-      SComments: '',
-      OIdBand: false,
-      OBathroom: false,
-      OBatchCallLight: false,
-      ONurseCall: false,
-      OMealTimes: false,
-      OVisitingHours: false,
-      OTvControl: false,
-      ONonSmokingPolicy: false,
-      OEqual: false,
-      OTelephone: false,
-      OFallRiskScore: false,
-      MaritalStatus: '',
-      Since: '',
-      NumberSpouse: '',
-      HComments: '',
       AttendPhy: this.storageService.getUserProfile()?.Gpart,
       DocStatus: '1',
-      TOMEDICATION: new FormArray([]),
-      TOINFECTION: new FormArray([]),
-      disabledAllPhy: false
+      Vaccinated: '',
+      Accompanied: '',
+      AccompaniedTxt: '',
+      AdmissionMode: '',
+      AdmissionModeTxt: '',
+      ChiefComplaint: ['', Validators.required],
+      Datee: [new Date()],
+      FavouriteToy: '',
+      InfoObtained: '',
+      InfoObtainedTxt: '',
+      LanguageSpoken: '',
+      ReasonVisit: '',
+      EcFatherJob: '',
+      EcInsurance: '',
+      EcNoPeople: '',
+      EcPhone: '',
+      EcRelationship :'',
+      EcRelationshipTxt: '',
+      EneChangeHearing: false,
+      EneDizziness: false,
+      EnmBleedingGums: false,
+      FaNotified: '',
+      GHeartburn: false,
+      GwMToiletTraining: false,
+      NSwollenGlands: false,
+      SrNumberHours: '',
+      SrSleep: '',
+      SrSleepTime: '',
+      UDribbling: false,
+      Substances: '',
+      SdComments: '',
+      SComments: '',
+      EComments: '',
+      NComments: '',
+      BComments: '',
+      RComments: '',
+      GComments: '',
+      UComments: '',
+      MComments: '',
+      HeComments: '',
+      NuComments: '',
+      EdComments: '',
+      PComments: '',
+      PsComments1: '',
+      PsComments: '',
+      SrComments: '',
+      GwComments: '',
+    SchoolGrade: '',
+    EcLivingWith: '',
+    STypeRash: '',
+    HNoReportedAbnorm: false,
+    HHeadInjury: false,
+    HHeadCircumference: '0.00', // only positive numbers (int or float)
+    ENoReportedAbnorm: false,
+    EGlassesContacts: false,
+    EChangeVision: false,
+    EEyePain: false,
+    EDoubleVision: false,
+    EFlashingLights: false,
+    EGlaucomaCataracts: false,
+    ELastEyeExam: false,
+    NLumps: false,
+    NGoiter: false,
+    NStiffness: false,
+    BNoReportedAbnorm: false,
+    BPain: false,
+    BLumps: false,
+    BNippleDischarge: false,
+    BSkinAbnormalities: false,
+    EneNoReportedAbnorma: false,
+    EneTympanicMembrane: false,
+    EneEarDischarge: false,
+    EneRinging: false ,
+    EnnNoReportedAbnorm: false,
+    EnnNoseBleeds: false,
+    EnnNasalStuffiness: false,
+    EnnNasalFlaring: false,
+    EnnFrequentColds: false,
+    NNoReportedAbnorm: false,
+    EnmSoreTongue: false,
+    EnmLipColor: '',
+    GNoReportedAbnorm:false,
+    GChangeAppetiteWeight: false,
+    GProblemsSwallowing: false,
+    GNausea: false,
+    GVomiting: false,
+    GVomitingBlood: false,
+    GConstipation: false,
+    GDiarrhea: false,
+    GChangeBowelHabits: false,
+    GAbdominalPain: false,
+    GExcessiveBelching: false,
+    GExcessiveFlatus:false,
+    GYellowColourSkin: false,
+    GFoodIntolerance: false,
+    GRectalBleedingHemo: false,
+    GToiletTrained: false,
+    GTfreq: '',
+    GUsesDiaper: false,
+    GUfreq: '',
+    UNoReportedAbnorm: false,
+    UDifficultyUrination:false,
+    UPainBurningUrination: false,
+    UFrequentUrinationNight: false,
+    UUrgentNeedUrinate: false,
+    UIncontinenceUrine: false,
+    UDecreasedUrineStream:false,
+    UBloodUrine: false,
+    UUtiStonesProstate: false,
+    MNoReportedAbnorm: false,
+    MPain: false,
+    MSwelling: false,
+    MStiffness: false,
+    MDecreasedJointMotion: false,
+    MBrokenBone: false,
+    MSeriousSprains: false,
+    MArthritis: false,
+    MGout: false,
+    NuNoReportedAbnorm: false,
+    NuHeadaches: false,
+    NuLossConsciousness: false,
+    NuParalysis: false,
+    NuLossMuscleSize: false,
+    NuMuscleSpasm: false,
+    NuInvoluntaryMovement: false,
+    NuIncoordination: false,
+    NuNumbness: false,
+    NuFeelingPinsNeedles: false,
+    HeNoReportedAbnorm: false,
+    HeAnemia: false,
+    HeEasyBruisingBleeding: false,
+    EdNoReportedAbnorm: false,
+    EdAbnormalGrowth: false,
+    EdIncreasedAppetite: false,
+    EdIncreasedThirst: false,
+    EdIncreaseUrineProduction: false,
+    EdThyroidTrouble: false,
+    EdHeatColdIntolerance: false,
+    EdExcessingSweating: false,
+    EdDiabetes: false,
+    SdInOtherTxt: '',
+    SdToOtherTxt: '',
+    SdPrOtherTxt: '',
+    FaInfantLess: false,
+    FaRecentChanges: '',
+    FaRequiresDr: '',
+    GwMSocialSmile: false,
+    GwMTeething: false,
+    GwMSetAlone: false,
+    GwMWalked: false,
+    GwMUsedWords: false,
+    GwMUsedSentences: false,
+    GwMPuberity: false,
+    GwMOther: false,
+    GwMOtherTxt: '',
+    GwStatus: '',
+    SsOthersTxt: '',
+    OpPatientHandbook: '',
+    OpPatientHandbookTxt: '',
+    OpVValuables: '',
+    OpVSentHomeTxt: '',
+    OpVGivenByTxt: '',
+    EnmNoReportedAbnorm: false,
+    NuSeizures: false,
+    NuTremor: false,
+    NuWeakness: false,
+    OpOBatch: false,
+    OpOBathroom: false,
+    OpOIdBand: false,
+    OpOMealTimes: false,
+    OpONonSmoking: false,
+    OpONurseCall: false,
+    OpOPatientEquipment: false,
+    OpOTelephone: false,
+    OpOTvControl: false,
+    OpOVisitingHours: false,
+    OpVGivenBy: false,
+    OpVPatent: false,
+    OpVSentHome: false,
+    PClotsVeins: false,
+    PLegCramps: false,
+    PNoReportedAbnorm: false,
+    PsAgitated: false,
+    PsAngry: false,
+    PsAnxious: false,
+    PsChangeMood: false,
+    PsCombative: false,
+    PsDepressed: false,
+    PsDepressionSuicide: false,
+    PsMemoryProblems: false,
+    PsNoProblem: false,
+    PsNoReportedAbnorm: false,
+    PsOther: false,
+    PsPastTreatmentPsychiatri: false,
+    PsSleepProblems: false,
+    PsTensionAnxiety: false,
+    PsUncooperative: false,
+    PsUnusualProblems: false,
+    PVaricoseVeins: false,
+    RBlueFingersToes: false,
+    RBronchitisEmphysema: false,
+    RChestPain: false,
+    RCough: false,
+    RCoughingBlood: false,
+    RHeartMurmur: false,
+    RHxHeartMedication: false,
+    RNightSweats: false,
+    RNoReportedAbnorm: false,
+    RProductionPhlegm: false,
+    RShortnessBreath: false,
+    RSkippingHeartBeats: false,
+    RSwellingHandsFeet: false,
+    RWheezing: false,
+    SChangeHairNails: false,
+    SdInHypertrophy: false,
+    SdInOther: false,
+    SdInSwollen: false,
+    SdInVaginal: false,
+    SdNoReported: false,
+    SdPrDelayed: false,
+    SdPrEarly: false,
+    SdPrOther: false,
+    SdToEarly: false,
+    SdToOther: false,
+    SItching: false,
+    SNoReportedAbnorm: false,
+    SRashes: false,
+    SsInadequateCoping: false,
+    SsInadequateFamily: false,
+    SsInadequateFinancial: false,
+    SsNoSocial: false,
+    SsOthers: false,
+    SsPatient: false,
+    SsSocialWorker: false,
+    SsSuspected: false,
+    Timee: '',
+
+    AdmittedWard: '', // AdmittedWard (not binded) >>> ? keep it unbind
+    Room: '',  // Room (not binded) >>> ? keep it unbind
+    From:'', // Not binded (keep it unbind)
+    HComments: '', // not clear (from new payload)  if not found witha anyone then bind this -> HComments -> Physical Assessment (Review of Systems) -> Head
+    EnmComments: '', // not clear (not sure wich key is)
+    RFever: false, // not clear (not sure wich key is)
+    EnmHoarseness: false, // not clear (not sure wich key is)
+    FaComments: '', // not clear (not sure wich key is)
+
+
+  TOADMMED: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    EventDesc: '',
+    Dose: ''
+  })
+]),
+
+
+TOALLERGY: this.formBuilder.array([
+  this.formBuilder.group({
+    Agroup: '',
+    Description: '',
+    Dockey: ''
+  })
+]),
+
+TOFUNASS: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    Describe: '',
+    Functions: '',
+    Score: ''
+  })
+]),
+
+TOINFECTIONS: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    InfectiousDiesease: '',
+    Status: '',
+    TypeIsolation: ''
+  })
+]),
+
+   TOPHYEXAM: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    PhyComments: '',
+    PhyDate: '',
+    PhyTime: '',
+    PhyDescription: '',
+    PhyMode: ''
+      })
+]),
+
+     TOSCALE: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    Datetimee: '',
+    LastScore: '',
+    ScaleType: '',
+    ScoreDesc: ''
+  })
+]),
+
+  TOVACCINATION: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    Other: '',
+    Status: '',
+    UptoDate: false,
+    Vaccination: ''
+  })
+]),
+
+TOVITALSIGN: this.formBuilder.array([
+  this.formBuilder.group({
+    Dockey: '',
+    DateTime: '',
+    MeasuredValue: '',
+    NormalRange: '',
+    Vdescription: '',
+    Vunit: ''
+  })
+]),
+
+
     });
     this.defaultAddRow();
-    this.defaultAddRowInfectious();
+    this.defaultAddRowforTOINFECTIONS();
 
   }
 
-  addItemRowInfectious() {
-    this.TOINFECTION = this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
-    this.TOINFECTION.push(this.itemFormArrayFieldForInfectious());
+
+  // testing logic ------ from down ---------
+  getPediatricAdmAssesDocDetails(docKey?) {
+    this.subscription = this.emergencyService
+      .getPediatricAdmAssesDocDetails(docKey)
+      .subscribe({
+        next: (data: any) => {
+          const result = data?.d?.results?.[0];
+          if (!result) return;
+
+          const {
+            TOADMMED, TOALLERGY, TOFUNASS, TOINFECTIONS, TOPHYEXAM,
+            TOSCALE, TOVACCINATION, TOVITALSIGN, Timee, Datee,
+            ...flatFields
+          } = result;
+
+          this.nursingAdmissionForm.patchValue(flatFields);
+          this.nursingAdmissionForm.patchValue({Datee : this.convertDateFormat(Datee)})
+          this.nursingAdmissionForm.patchValue({Timee : this.convertTimeFormat(Timee)})
+
+          // Patch the form arrays
+          this.patchFormArray('TOADMMED', TOADMMED, this.createTOADMMEDGroup.bind(this));
+          this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
+          this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
+          this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
+          this.patchFormArray('TOPHYEXAM', TOPHYEXAM, this.createTOPHYEXAMGroup.bind(this));
+          this.patchFormArray('TOSCALE', TOSCALE, this.createTOSCALEGroup.bind(this));
+          this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
+          this.patchFormArray('TOVITALSIGN', TOVITALSIGN, this.createTOVITALSIGNGroup.bind(this));
+
+        },
+        error: (err: any) => {
+          this.sharedService.waringSwallModel(`Error ${err}`);
+        }
+    });
+}
+
+createTOADMMEDGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    EventDesc: item?.EventDesc || '',
+    Dose: item?.Dose || ''
+  });
+}
+
+createTOALLERGYGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Agroup: item?.Agroup || '',
+    Description: item?.Description || '',
+    Dockey: item?.Dockey || ''
+  });
+}
+
+createTOFUNASSGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    Describe: item?.Describe || '',
+    Functions: item?.Functions || '',
+    Score: item?.Score || ''
+  });
+}
+
+createTOINFECTIONSGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    InfectiousDiesease: item?.InfectiousDiesease || '',
+    Status: item?.Status || '',
+    TypeIsolation: item?.TypeIsolation || ''
+  });
+}
+
+createTOPHYEXAMGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    PhyComments: item?.PhyComments || '',
+    PhyDate: this.convertDateFormat(item?.PhyDate) || '',
+    PhyTime: this.convertTimeFormat(item?.PhyTime) || '',
+    PhyDescription: item?.PhyDescription || '',
+    PhyMode: item?.PhyMode || ''
+  });
+}
+
+createTOSCALEGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    Datetimee: item?.Datetimee || '',
+    LastScore: item?.LastScore || '',
+    ScaleType: item?.ScaleType || '',
+    ScoreDesc: item?.ScoreDesc || ''
+  });
+}
+
+createTOVACCINATIONGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    Other: item?.Other || '',
+    Status: item?.Status || '',
+    UptoDate: item?.UptoDate || false,
+    Vaccination: item?.Vaccination || ''
+  });
+}
+
+createTOVITALSIGNGroup(item): FormGroup {
+  return this.formBuilder.group({
+    Dockey: item?.Dockey || '',
+    DateTime: item?.DateTime || '',
+    MeasuredValue: item?.MeasuredValue || '',
+    NormalRange: item?.NormalRange || '',
+    Vdescription: item?.Vdescription || '',
+    Vunit: item?.Vunit || ''
+  });
+}
+
+patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) {
+  const formArray = this.nursingAdmissionForm.get(key) as FormArray;
+  formArray.clear();
+
+  const results = Array.isArray(data?.results) ? data.results : [];
+
+  results.forEach(item => {
+    formArray.push(createGroupFn(item));
+  });
+}
+
+
+// testing logic ------ to top ---------
+
+
+     CreatePediatricAdmAssesDoc(status): Promise<any> {
+    return new Promise((resolve, reject) => {
+
+      // here need to make the final pylaod
+
+      let payload = {
+        d: this.nursingAdmissionForm.value
+      };
+
+      payload.d.DocStatus = status;
+      payload.d.Datee = this.convertDateFormat(payload.d.Datee);
+      payload.d.Timee = this.convertTimeFormat(payload.d.Timee);
+      payload.d.SrSleepTime = ''; // this si temparary madded as free text fiels because backend side change is pending
+
+      if( this.actionTypeData.type === ActionType.Update$){
+        payload.d.Dockey = this.actionTypeData.value.docKey;
+      }
+
+       payload.d.TOADMMED.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOALLERGY.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOFUNASS.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOINFECTIONS.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOPHYEXAM.forEach(item => {
+        item.PhyDate = this.convertDateFormat(item.PhyDate);
+        item.PhyTime = this.convertTimeFormat(item.PhyTime);
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOSCALE.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOVACCINATION.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      payload.d.TOVITALSIGN.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+      //Setting DocKey blank on create new version & release
+      if(status === '5'){
+        payload.d.Dockey = '';
+      }
+
+      this.subscription = this.emergencyService.CreatePediatricAdmAssesDoc(payload).subscribe({
+        next: (data: any) => {
+          // Handle successful data retrieva
+          // resolve(formValue); // Resolve the promise with formValue
+        },
+        error: (err: any) => {
+          // Handle errors if the request fails
+          this.sharedService.waringSwallModel(`Error ${err}`);
+          this.sharedService.waringSwallModel(`POST Error at Pediatrics Admission Assessment : ${err}`);
+        },
+        complete: () => {
+          // Handle completion (optional), invoked when the observable completes
+          resolve(true); // Resolve the promise with formValue
+          if(status === '1') {
+            this.sharedService.successSwallModel('Pediatrics Admission Assessment created successfully');
+          } else if (status === '5') {
+            this.sharedService.successSwallModel('Pediatrics Admission Assessment New version Created & Released successfully');
+          }else if (status === '1'){
+            this.sharedService.successSwallModel('Pediatrics Admission Assessment Released successfully');
+          }
+        }
+      });
+    });
   }
 
 
+ private convertDateFormat(dateInput) {
+
+    // If input is a Date object, convert to /Date(timestamp)/
+    if (dateInput instanceof Date) {
+        return `/Date(${dateInput.getTime()})/`;
+    }
+
+    // If input is an ISO date string (e.g. "2025-06-30T05:07:07.976Z")
+    if (typeof dateInput === 'string' && dateInput.includes('T')) {
+        const date = new Date(dateInput);
+        if (!isNaN(date.getTime())) {
+            return `/Date(${date.getTime()})/`;
+        }
+    }
+
+    // If input is in /Date(timestamp)/ format
+    const match = /\/Date\((\d+)\)\//.exec(dateInput);
+    if (match) {
+        const timestamp = parseInt(match[1], 10);
+        return new Date(timestamp);
+    }
+    return null;
+
+}
+
+
+ private convertTimeFormat(timeInput) {
+
+    // If format is HH:mm
+    if (typeof timeInput === 'string' && /^\d{1,2}:\d{2}$/.test(timeInput)) {
+        const [hours, minutes] = timeInput.split(':').map(Number);
+        return `PT${hours}H${minutes}M0S`;
+    }
+
+    // If format is ISO 8601 duration (e.g. PT15H51M25S)
+    const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(timeInput);
+    if (match) {
+        const hours = match[1] ? parseInt(match[1], 10) : 0;
+        const minutes = match[2] ? parseInt(match[2], 10) : 0;
+        // You can choose to include or ignore seconds
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    }
+    return null;
+}
+
+
+
+
+
+
+
+
+
+// this function is updatted one dont not remove it
+  addItemRowforTOINFECTIONS() {
+    const control  = this.nursingAdmissionForm.get('TOINFECTIONS') as FormArray;
+    control.push(this.itemFormArrayFieldForInfectious());
+  }
+
+  // this function is updatted one dont not remove it
+ itemFormArrayFieldForInfectious(): FormGroup {
+    return this.formBuilder.group({
+    Dockey: '',
+    InfectiousDiesease: '',
+    Status: '',
+    TypeIsolation: ''
+  })
+  }
+
+// this function is updatted one dont not remove it
   defaultAddRow() {
     for (let index = 0; index < 3; index++) {
       this.addItemRow();
     }
   }
-
-  defaultAddRowInfectious() {
-    for (let index = 0; index < 3; index++) {
-      this.addItemRowInfectious();
+// this function is updatted one dont not remove it
+  defaultAddRowforTOINFECTIONS() {
+    for (let index = 0; index < 2; index++) {
+      this.addItemRowforTOINFECTIONS();
     }
   }
 
-  addItemRow() {
-    this.TOMEDICATION = this.nursingAdmissionForm.get('TOMEDICATION') as FormArray;
-    this.TOMEDICATION.push(this.itemFormArrayFieldForMedication());
-  }
+  // this function is updatted one dont not remove it
+addItemRow() {
+  const control = this.nursingAdmissionForm.get('TOVACCINATION') as FormArray;
+  control.push(this.itemFormArrayFieldForTOVACCINATION());
+}
 
-  itemFormArrayFieldForMedication(): FormGroup {
-    return this.formBuilder.group({
-      Dockey: [''],
-      vaccination: [''],
-      othervaccination: [''],
-      status: [''],
-      date: [false],
-    });
+// this function is updatted one dont not remove it
+  itemFormArrayFieldForTOVACCINATION(): FormGroup {
+    return    this.formBuilder.group({
+    Dockey: '',
+    Other: '',
+    Status: '',
+    UptoDate: false,
+    Vaccination: ''
+  })
   }
-
+// this function is updatted one dont not remove it
   addTableRow(event: any) {
     if (event == 'Vaccination History') {
       this.addItemRow();
     } else {
-      this.addItemRowInfectious()
+      this.defaultAddRowforTOINFECTIONS()
     }
   }
 
 
-  itemFormArrayFieldForInfectious(): FormGroup {
-    return this.formBuilder.group({
-      Dockey: [''],
-      InfectiousDiesease: [''],
-      Status: [''],
-      TypeIsolation: [''],
-    });
-  }
+
   public importAllergyData(data) {
     data.forEach((el) => {
       this.toAllergyArr = this.toAllergyArr.concat({

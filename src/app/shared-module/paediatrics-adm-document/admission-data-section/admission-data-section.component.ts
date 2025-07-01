@@ -6,6 +6,7 @@ import {
   infoObtainedList,
   schoolGradeEduList,
   schoolGradeList,
+  languageList
 } from '../../nursing-admission-assessment/dropdown-value';
 
 @Component({
@@ -22,7 +23,7 @@ export class AdmissionDataSectionComponent implements OnInit {
   infoObtainedList = infoObtainedList;
   schoolGradeList = schoolGradeList;
   schoolGradeEduList = schoolGradeEduList;
-
+  languageList = languageList
   constructor() {}
 
   ngOnInit(): void {}

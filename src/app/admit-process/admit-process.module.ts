@@ -60,7 +60,6 @@ import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { NicuAssessmentDocumentComponent } from './documentation/documentation-list/nicu-assessment-document/nicu-assessment-document.component';
 import { NicuErVitalsComponent } from './documentation/documentation-list/nicu-assessment-document/er-vitals/er-vitals.component';
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
-import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
 import { CompanionMealOrderingComponentNew } from './diet-meal-order-new/companion-meal-ordering/companion-meal-ordering.component';
 import { DislikePreferenceComponentNew } from './diet-meal-order-new/dislike-preference/dislike-preference.component';
@@ -68,6 +67,7 @@ import { PatientsDietMealComponentNew } from './diet-meal-order-new/patients-die
 import { DietMealOrderComponentNew } from './diet-meal-order-new/diet-meal-order.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SurgeryOperationNoteModule } from '../shared-module/surgery-operation-note/surgery-operation-note.module';
+import { PaediatricsAdmDocumentModule } from '../shared-module/physician-dashboard/paediatrics-adm-document/paediatrics-adm-document.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -139,7 +139,8 @@ export const ePrescriptionRoutes: Routes = [
     VitalSignModule,
     NeonatalDischDocumentModule,
     PaediatricPhysicianAssessmentModule,
-    SurgeryOperationNoteModule
+    SurgeryOperationNoteModule,
+    PaediatricsAdmDocumentModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

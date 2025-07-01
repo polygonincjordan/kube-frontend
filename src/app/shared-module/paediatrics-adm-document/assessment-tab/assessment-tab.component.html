@@ -19,56 +19,45 @@
                     <div class="tab-content pl-2 mb-3" style="border-radius: 7px">
                         <div *ngIf="selectedTabName == 'Functional Assessment'">
                             <div>
-                                <input type="checkbox" class="m-0" />
+                                <input type="checkbox" class="m-0" formControlName="FaInfantLess"/>
                                 <label class="ml-2 m-0">Infant less than 1 year</label>
                             </div>
                             <div>
                                 <strong>Assessment of dependence level-reflect status prior to admission :</strong>
                             </div>
-                            <table class="table table-bordered past-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Functions</th>
-                                        <th scope="col">Assessment Score</th>
-                                        <th scope="col">Describe</th>
-                                        <th scope="col">Comments</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <ng-container formArrayName="TOMEDICATION" *ngFor="
-                                      let item of nursingAdmissionForm.get('TOMEDICATION')[
-                                        'controls'
-                                      ];
-                                      let i = index
-                                    ">
-                                        <tr [formGroupName]="i">
-                                            <td class="w-10">
-                                                <ng-select>
-                                                    <ng-option *ngFor="let item of functionalAssessment">{{ item.label
-                                                        }}</ng-option>
-                                                </ng-select>
-                                            </td>
-                                            <td class="w-10">
-                                                <input class="form-control" />
-                                            </td>
-                                            <td>
-                                                <input class="form-control" />
-                                            </td>
-                                            <td class="text-center w-10">
-                                                <input class="form-control" />
-                                            </td>
-                                        </tr>
-                                    </ng-container>
-                                </tbody>
-                            </table>
+<table class="table table-bordered past-table">
+  <thead>
+    <tr>
+      <th scope="col">Functions</th>
+      <th scope="col">Assessment Score</th>
+      <th scope="col">Describe</th>
+      <th scope="col">Comments</th>
+    </tr>
+  </thead>
+  <tbody formArrayName="TOFUNASS">
+    <tr *ngFor="let group of nursingAdmissionForm.get('TOFUNASS')['controls']; let i = index" [formGroupName]="i">
+      <td class="w-10">
+        <ng-select [items]="functionalAssessment" bindLabel="label" bindValue="value" formControlName="Functions"></ng-select>
+      </td>
+      <td class="w-10">
+        <input class="form-control" formControlName="Score" />
+      </td>
+      <td>
+        <input class="form-control" formControlName="Describe" />
+      </td>
+      <td class="text-center w-10">
+        <input class="form-control"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
                             <div class="row m-0 mt-3">
                                 <div class="col-md-2">
                                     <label class="m-0">Recent changes in mobility needs </label>
                                 </div>
                                 <div class="col-md-1">
-                                    <ng-select>
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
+                                    <ng-select [items]="yesNoList" bindLabel="label" bindValue="value"  formControlName="FaRecentChanges"></ng-select>
                                 </div>
                             </div>
                             <div class="row m-0 mt-3">
@@ -76,17 +65,13 @@
                                     <label class="m-0">Requires Dr. Notification</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <ng-select>
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
+                                    <ng-select [items]="yesNoList" bindLabel="label" bindValue="value"  formControlName="FaRequiresDr"></ng-select>
                                 </div>
                                 <div class="col-md-2 text-right">
                                     <label class="m-0">Notified</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <ng-select>
-                                        <ng-option *ngFor="let item of yesNoList">{{ item.label }}</ng-option>
-                                    </ng-select>
+                                    <ng-select [items]="yesNoList" bindLabel="label" bindValue="value"  formControlName="FaRequiresDr"></ng-select>
                                 </div>
                             </div>
                             <div class="row m-0 mt-3">
@@ -104,10 +89,7 @@
                                     <label>Sleep/Rest</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <ng-select>
-                                        <ng-option *ngFor="let item of sleepRest">{{ item.label
-                                            }}</ng-option>
-                                    </ng-select>
+                                    <ng-select [items]="sleepRest" bindLabel="label" bindValue="value"  formControlName="SrSleep"></ng-select>
                                 </div>
                             </div>
                             <div class="row m-0 mt-2">
@@ -115,7 +97,7 @@
                                     <label>Sleep Time</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="time" class="form-control" />
+                                    <input type="time" class="form-control" formControlName="SrSleepTime"/>
                                 </div>
                             </div>
                             <div class="row m-0 mt-2">
@@ -123,7 +105,7 @@
                                     <label>Number of hours</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input class="form-control" />
+                                    <input class="form-control" formControlName="SrNumberHours"/>
                                 </div>
                             </div>
                             <div class="row m-0 mt-4">
@@ -131,121 +113,131 @@
                                     <label>Comments</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input class="form-control" />
+                                    <input class="form-control" formControlName="SrComments"/>
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="selectedTabName == 'Growth & Development'">
-                            <div class="row m-0 mb-3">
-                                <div class="col-md-2 row m-0">
-                                    <div class="col-md-2">
-                                        <label class="m-0">Milestones</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-10 row m-0">
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Social Smile</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Teething</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Set alone unsupported</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Walked alone</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Used words</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Used sentences</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Toilet training</label>
-                                    </div>
-                                    <div class="col-md-2 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Puberity</label>
-                                    </div>
-                                    <div class="col-md-3 d-flex">
-                                        <input type="checkbox" />
-                                        <label class="m-0">Other</label>
-                                        <input class="form-control w-30 ml-2" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row m-0 mb-3">
-                                <div class="col-md-2 row m-0">
-                                    <div class="col-md-2">
-                                        <label class="m-0">Status</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-10 row m-0">
-                                    <ng-select class="w-20">
-                                        <ng-option *ngFor="let item of growthStatus">{{ item.label
-                                            }}</ng-option>
-                                    </ng-select>
-                                </div>
-                            </div>
-                            <div class="row m-0 mb-3">
-                                <div class="col-md-2 row m-0">
-                                    <div class="col-md-2">
-                                        <label class="m-0">Comments</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-10 row m-0">
-                                    <input class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div *ngIf="selectedTabName == 'Social Screening'">
-                            <div class="row m-0">
-                                <input type="checkbox" class="m-0" />
-                                <label class="ml-2 m-0">No social factor can be identified</label>
-                            </div>
-                            <div class="row m-0 mt-3">
-                                <div class="col-md-6 row m-0" style="border: 1px solid #cacaca; padding: 20px;">
-                                    <h4>Screening Factors: (if any selected inform social worker)</h4>
-                                    <div class="col-md-12">
-                                        <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Inadequate Family/Social Support</label>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Suspected abuse/ neglect</label>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Patient/ Family lifestyle change due to illness</label>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Inadequate financial support </label>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Inadequate coping with hospitalization</label>
-                                    </div>
-                                    <div class="col-md-12 d-flex align-items-center">
-                                        <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Others</label>
-                                        <input class="m-0 ml-2 w-40 form-control" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6 hospitalization">
-                                    <input type="checkbox" class="m-0" />
-                                        <label class="ml-2 m-0">Social Worker Notified</label>
-                                </div>
-                            </div>
-                        </div>
+                       <div *ngIf="selectedTabName == 'Growth & Development'">
+  <!-- Milestones -->
+  <div class="row m-0 mb-3">
+    <div class="col-md-2 row m-0">
+      <div class="col-md-2">
+        <label class="m-0">Milestones</label>
+      </div>
+    </div>
+    <div class="col-md-10 row m-0">
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMSocialSmile" />
+        <label class="m-0">Social Smile</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMTeething" />
+        <label class="m-0">Teething</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMSetAlone" />
+        <label class="m-0">Set alone unsupported</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMWalked" />
+        <label class="m-0">Walked alone</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMUsedWords" />
+        <label class="m-0">Used words</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMUsedSentences" />
+        <label class="m-0">Used sentences</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMToiletTraining" />
+        <label class="m-0">Toilet training</label>
+      </div>
+      <div class="col-md-2 d-flex">
+        <input type="checkbox" formControlName="GwMPuberity" />
+        <label class="m-0">Puberity</label>
+      </div>
+      <div class="col-md-3 d-flex">
+        <input type="checkbox" formControlName="GwMOther" />
+        <label class="m-0">Other</label>
+        <input class="form-control w-30 ml-2" formControlName="GwMOtherTxt" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="row m-0 mb-3">
+    <div class="col-md-2 row m-0">
+      <div class="col-md-2">
+        <label class="m-0">Status</label>
+      </div>
+    </div>
+    <div class="col-md-10 row m-0">
+      <ng-select class="w-20" [items]="growthStatus" bindLabel="label" bindValue="value"  formControlName="GwStatus"></ng-select>
+    </div>
+  </div>
+
+  <!-- Comments -->
+  <div class="row m-0 mb-3">
+    <div class="col-md-2 row m-0">
+      <div class="col-md-2">
+        <label class="m-0">Comments</label>
+      </div>
+    </div>
+    <div class="col-md-10 row m-0">
+      <input class="form-control" formControlName="GwComments" />
+    </div>
+  </div>
+</div>
+
+                      <div *ngIf="selectedTabName == 'Social Screening'">
+  <!-- No social factor -->
+  <div class="row m-0">
+    <input type="checkbox" class="m-0" formControlName="SsNoSocial" />
+    <label class="ml-2 m-0">No social factor can be identified</label>
+  </div>
+
+  <!-- Screening Factors -->
+  <div class="row m-0 mt-3">
+    <div class="col-md-6 row m-0" style="border: 1px solid #cacaca; padding: 20px;">
+      <h4>Screening Factors: (if any selected inform social worker)</h4>
+
+      <div class="col-md-12">
+        <input type="checkbox" class="m-0" formControlName="SsInadequateFamily" />
+        <label class="ml-2 m-0">Inadequate Family/Social Support</label>
+      </div>
+      <div class="col-md-12">
+        <input type="checkbox" class="m-0" formControlName="SsSuspected" />
+        <label class="ml-2 m-0">Suspected abuse/ neglect</label>
+      </div>
+      <div class="col-md-12">
+        <input type="checkbox" class="m-0" formControlName="SsPatient" />
+        <label class="ml-2 m-0">Patient/ Family lifestyle change due to illness</label>
+      </div>
+      <div class="col-md-12">
+        <input type="checkbox" class="m-0" formControlName="SsInadequateFinancial" />
+        <label class="ml-2 m-0">Inadequate financial support</label>
+      </div>
+      <div class="col-md-12">
+        <input type="checkbox" class="m-0" formControlName="SsInadequateCoping" />
+        <label class="ml-2 m-0">Inadequate coping with hospitalization</label>
+      </div>
+      <div class="col-md-12 d-flex align-items-center">
+        <input type="checkbox" class="m-0" formControlName="SsOthers" />
+        <label class="ml-2 m-0">Others</label>
+        <input class="m-0 ml-2 w-40 form-control" formControlName="SsOthersTxt" />
+      </div>
+    </div>
+
+    <!-- Social Worker Notified -->
+    <div class="col-md-6 hospitalization">
+      <input type="checkbox" class="m-0" formControlName="SsSocialWorker" />
+      <label class="ml-2 m-0">Social Worker Notified</label>
+    </div>
+  </div>
+</div>
+
                     </div>
                 </div>
             </div>

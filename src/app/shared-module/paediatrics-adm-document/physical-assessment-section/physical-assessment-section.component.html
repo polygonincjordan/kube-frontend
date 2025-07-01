@@ -4,7 +4,7 @@
       <label class="box-label">Physical Assessment (Review of Systems)</label>
       <div class="container-fluid">
         <div class="row m-0 mb-4 ml-3">
-          <input type="checkbox" formControlName="disabledAllPhy" (change)="disabledAllValue()" />
+          <input type="checkbox" (change)="disabledAllValue()" />
           <label class="m-0">Cannot be Assessed</label>
         </div>
         <div class="tab-navigation-part">
@@ -24,38 +24,36 @@
               <div class="row m-0">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-4">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="SNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">No reported abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-4">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="SRashes" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Rashes</label>
                   </div>
                   <div class="col-md-4 row m-0">
                     <label class="m-0">Type of Rash</label>
-                    <ng-select formControlName="GMicturition" class="w-40 ml-2" [readonly]="isDisabled()">
-                      <ng-option *ngFor="let item of typeOfRash" [value]="item.value">{{ item.label }}</ng-option>
-                    </ng-select>
+                    <ng-select [items]="typeOfRash" bindLabel="label" bindValue="value"   formControlName="STypeRash" class="w-40 ml-2" [readonly]="isDisabled()"></ng-select>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-4">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="SItching" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Itching</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-4">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="SChangeHairNails" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Change in hair or nails</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0 mt-3">
                   <div class="col-md-8 d-flex">
                     <label class="m-0">Comments</label>
-                    <input class="form-control w-70 ml-3" [disabled]="isDisabled()" />
+                    <input class="form-control w-70 ml-3" [disabled]="isDisabled()" formControlName="SComments"/>
                   </div>
                 </div>
               </div>
@@ -64,20 +62,20 @@
               <div class="row m-0">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-4">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="HNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">No reported abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-4">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="HHeadInjury" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Head Injury</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0 mt-3">
                   <div class="col-md-4 d-flex">
                     <label class="m-0" style="white-space: nowrap;">Head Circumference (cm)</label>
-                    <input class="form-control ml-3 w-70" [disabled]="isDisabled()"/>
+                    <input class="form-control ml-3 w-70" formControlName="HHeadCircumference" [disabled]="isDisabled()"/>
                   </div>
                 </div>
               </div>
@@ -86,43 +84,43 @@
               <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="ENoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">No reported abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="EGlassesContacts" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Glasses or contacts</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="EChangeVision" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Change in vision</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="EEyePain" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Eye pain</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="EDoubleVision" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Double vision</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="EFlashingLights" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Flashing lights</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="EGlaucomaCataracts" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Glaucoma/Cataracts</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="ELastEyeExam" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Last Eye exam </label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0 ml-2 mt-3">
                   <label class="m-0 mr-3">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
+                  <input class="form-control w-70" [disabled]="isDisabled()" formControlName="EComments"/>
                 </div>
               </div>
             </div>
@@ -135,31 +133,31 @@
                 </div>
                 <div class="col-md-10 row m-0">
                   <div class="col-md-12">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="EneNoReportedAbnorma" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">No reported abnormalities</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgRectalPain"
+                    <input type="checkbox" formControlName="EneChangeHearing"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Change in hearing</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EneTympanicMembrane"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Tymapanic Membrane</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EneEarDischarge"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Ear discharge</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EneRinging"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Ringing</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EneDizziness"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Dizziness</label>
                   </div>
@@ -173,26 +171,26 @@
                 </div>
                 <div class="col-md-10 row m-0">
                   <div class="col-md-12">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="EnnNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">No reported abnormalities</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgRectalPain"
+                    <input type="checkbox" formControlName="EnnNoseBleeds"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Nose bleeds</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EnnNasalStuffiness"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Nasal stuffiness</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EnnNasalFlaring"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Nasal Flaring</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EnnFrequentColds"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Frequent colds</label>
                   </div>
@@ -206,22 +204,22 @@
                 </div>
                 <div class="col-md-10 row m-0">
                   <div class="col-md-12">
-                    <input type="checkbox" [attr.disabled]="isDisabled() ? true : null"/>
+                    <input type="checkbox" formControlName="EnmNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null"/>
                     <label class="m-0">No reported abnormalities</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgRectalPain"
+                    <input type="checkbox" formControlName="EnmBleedingGums"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Bleeding gums</label>
                   </div>
                   <div class="col-md-2 d-flex">
-                    <input type="checkbox" formControlName="GgIndigestion"
+                    <input type="checkbox" formControlName="EnmSoreTongue"
                       [attr.disabled]="isDisabled() ? true : null" />
                     <label class="m-0">Sore tongue</label>
                   </div>
                   <div class="col-md-3 d-flex">
                     <label class="m-0 w-30">Lip Color</label>
-                    <input class="form-control ml-3" [disabled]="isDisabled()"/>
+                    <input class="form-control ml-3" formControlName="EnmLipColor" [disabled]="isDisabled()"/>
                   </div>
                 </div>
               </div>
@@ -230,31 +228,31 @@
               <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0"formControlName="NNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">No reported abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" formControlName="NLumps" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Lumps</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="NSwollenGlands" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Swollen Glands</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="NGoiter" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Goiter</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="NStiffness" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Stiffiness</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0 mt-3 ml-2">
                   <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
+                  <input class="form-control w-70" [disabled]="isDisabled()" formControlName="NComments"/>
                 </div>
               </div>
             </div>
@@ -262,31 +260,31 @@
               <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="BNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">No reported abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="BLumps" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Lumps</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="BPain" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Pain</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="BNippleDischarge" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Nipple discharge</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="BSkinAbnormalities" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Skin Abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0 mt-3 ml-2">
                   <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
+                  <input class="form-control w-70" [disabled]="isDisabled()" formControlName="BComments"/>
                 </div>
               </div>
             </div>
@@ -294,473 +292,479 @@
               <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">No reported abnormalities</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0">
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RShortnessBreath" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Shotness of breath</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RCough" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Cough</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RWheezing" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Wheezing</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RCoughingBlood" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Coughing up blood</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RProductionPhlegm" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Production of phlegm, color</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RChestPain" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Chest pain</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RNightSweats" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Night sweats</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RBlueFingersToes" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Blue fingers/toes</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RSwellingHandsFeet" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Swelling in hands/feet</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RBronchitisEmphysema" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Bronchitis/Emphysema</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RHeartMurmur" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Heart muemur</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RHxHeartMedication" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">HX of heart medication</label>
                   </div>
                   <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                    <input type="checkbox" class="m-0" formControlName="RSkippingHeartBeats" [attr.disabled]="isDisabled() ? true : null" />
                     <label class="ml-2 m-0">Skipping heart beats</label>
                   </div>
                 </div>
                 <div class="col-md-12 row m-0 mt-3 ml-2">
                   <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()" />
+                  <input class="form-control w-70" [disabled]="isDisabled()" formControlName="RComments"/>
                 </div>
               </div>
             </div>
-            <div *ngIf="selectedTabName == 'Gestrointestinal'">
-              <div class="row m-0 mb-2">
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">No reported abnormalities</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Change in appetite or weight</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Problems swallowing</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Nausea</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Heartburn</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Vomiting</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Vomiting blood</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Constipation</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Diarrhea</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Change in bowel habits</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Abdominal pain</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Excessive belching</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Excessive flatus</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Food intolerance</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Rectal bleeding/Hemarrhoids</label>
-                  </div>
-                  <div class="col-md-3 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Yellow colour of skin(jaundice/hepatitis)</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3">
-                  <div class="col-md-2 row m-0">
-                    <label class="ml-2 m-0">ELIMINATION</label>
-                  </div>
-                  <div class="col-md-10 row m-0">
-                    <div class="col-md-12 row m-0 p-0">
-                      <div class="col-md-2 row m-0 p-0">
-                        <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                        <label class="ml-2 m-0">Toilet Trained</label>
-                      </div>
-                      <div class="col-md-2 row m-0">
-                        <label class="m-0" >Freq.</label>
-                        <input type="text" class="form-control m-0 w-60 ml-2" />
-                      </div>
-                    </div>
-                    <div class="col-md-12 row m-0 p-0">
-                      <div class="col-md-2 row m-0 p-0">
-                        <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                        <label class="ml-2 m-0">Uses Diaper</label>
-                      </div>
-                      <div class="col-md-2 row m-0">
-                        <label class="m-0">Freq.</label>
-                        <input type="text" class="form-control m-0 w-60 ml-2" [disabled]="isDisabled()"/>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3 ml-2">
-                  <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" />
-                </div>
-              </div>
-            </div>
+<div *ngIf="selectedTabName == 'Gestrointestinal'">
+  <div class="row m-0 mb-2">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">No reported abnormalities</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GChangeAppetiteWeight" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Change in appetite or weight</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GProblemsSwallowing" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Problems swallowing</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GNausea" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Nausea</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GHeartburn" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Heartburn</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GVomiting" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Vomiting</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GVomitingBlood" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Vomiting blood</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GConstipation" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Constipation</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GDiarrhea" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Diarrhea</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GChangeBowelHabits" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Change in bowel habits</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GAbdominalPain" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Abdominal pain</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GExcessiveBelching" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Excessive belching</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GExcessiveFlatus" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Excessive flatus</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GFoodIntolerance" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Food intolerance</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GRectalBleedingHemo" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Rectal bleeding/Hemarrhoids</label>
+      </div>
+      <div class="col-md-3 row m-0">
+        <input type="checkbox" class="m-0" formControlName="GYellowColourSkin" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Yellow colour of skin(jaundice/hepatitis)</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3">
+      <div class="col-md-2 row m-0">
+        <label class="ml-2 m-0">ELIMINATION</label>
+      </div>
+      <div class="col-md-10 row m-0">
+        <div class="col-md-12 row m-0 p-0">
+          <div class="col-md-2 row m-0 p-0">
+            <input type="checkbox" class="m-0" formControlName="GToiletTrained" [attr.disabled]="isDisabled() ? true : null" />
+            <label class="ml-2 m-0">Toilet Trained</label>
+          </div>
+          <div class="col-md-2 row m-0">
+            <label class="m-0">Freq.</label>
+            <input type="text" class="form-control m-0 w-60 ml-2" formControlName="GTfreq" />
+          </div>
+        </div>
+        <div class="col-md-12 row m-0 p-0">
+          <div class="col-md-2 row m-0 p-0">
+            <input type="checkbox" class="m-0" formControlName="GUsesDiaper" [attr.disabled]="isDisabled() ? true : null" />
+            <label class="ml-2 m-0">Uses Diaper</label>
+          </div>
+          <div class="col-md-2 row m-0">
+            <label class="m-0">Freq.</label>
+            <input type="text" class="form-control m-0 w-60 ml-2" formControlName="GUfreq" [disabled]="isDisabled()" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3 ml-2">
+      <label class="m-0 mr-2">Comments</label>
+      <input class="form-control w-70" formControlName="GComments" />
+    </div>
+  </div>
+</div>
+
             <div *ngIf="selectedTabName == 'Urinary'">
-              <div class="row m-0 mb-2">
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">No reported abnormalities</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Difficulty of urination</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Pain or burning on urination</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Frequent urination at night</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Urgent need to urinate</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Incontinence of urine</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Dribbling</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Decreased urine stream</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Blood in urine</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">UTI/Stones/Prostate infection</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3 ml-3">
-                  <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
-                </div>
-              </div>
-            </div>
+  <div class="row m-0 mb-2">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">No reported abnormalities</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UDifficultyUrination" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Difficulty of urination</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UPainBurningUrination" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Pain or burning on urination</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UFrequentUrinationNight" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Frequent urination at night</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UUrgentNeedUrinate" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Urgent need to urinate</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UIncontinenceUrine" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Incontinence of urine</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Dribbling</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UDecreasedUrineStream" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Decreased urine stream</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UBloodUrine" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Blood in urine</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="UUtiStonesProstate" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">UTI/Stones/Prostate infection</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3 ml-3">
+      <label class="m-0 mr-2">Comments</label>
+      <input class="form-control w-70" [disabled]="isDisabled()" formControlName="UCommentsf"/>
+    </div>
+  </div>
+</div>
+
             <div *ngIf="selectedTabName == 'Peripheral Vascular'">
               <div class="row m-0">
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="PNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">No reported abnormalities</label>
                 </div>
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="PLegCramps" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">Leg cramps</label>
                 </div>
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="PVaricoseVeins" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">Vericose veins</label>
                 </div>
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="PClotsVeins" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">Clots in veins</label>
                 </div>
                 <div class="col-md-12 row m-0 mt-3">
                   <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70"  [disabled]="isDisabled()" />
+                  <input class="form-control w-70" formControlName="PComments" [disabled]="isDisabled()"/>
                 </div>
               </div>
             </div>
             <div *ngIf="selectedTabName == 'Musculoskeletal'">
-              <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">No reported abnormalities</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Pain</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Swelling</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Stiffness</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Decreased joint motion</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Broken bone</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Serious Sprains</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Arthritis</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Gout</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3 ml-3">
-                  <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="selectedTabName == 'Neurologic'">
-              <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">No reported abnormalities</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Headaches</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Seizures</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Paralysis</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Weekness</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Loss of consciousness / Fainting</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Loss of muscle size</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Muscle spasm</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Tremor</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Involuntary movement</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Incoordination</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Numbness</label>
-                  </div>
-                  <div class="col-md-3 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Feeling of 'pins and needles/tingles'</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3 ml-3">
-                  <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
-                </div>
-              </div>
-            </div>
+  <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">No reported abnormalities</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MPain" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Pain</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MSwelling" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Swelling</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MStiffness" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Stiffness</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MDecreasedJointMotion" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Decreased joint motion</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MBrokenBone" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Broken bone</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MSeriousSprains" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Serious Sprains</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MArthritis" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Arthritis</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="MGout" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Gout</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3 ml-3">
+      <label class="m-0 mr-2">Comments</label>
+      <input class="form-control w-70" [disabled]="isDisabled()" formControlName="MComments" />
+    </div>
+  </div>
+</div>
+
+           <div *ngIf="selectedTabName == 'Neurologic'">
+  <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">No reported abnormalities</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuHeadaches" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Headaches</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuSeizures" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Seizures</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuParalysis" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Paralysis</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuWeakness" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Weekness</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuLossConsciousness" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Loss of consciousness / Fainting</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuLossMuscleSize" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Loss of muscle size</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuMuscleSpasm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Muscle spasm</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuTremor" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Tremor</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuInvoluntaryMovement" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Involuntary movement</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuIncoordination" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Incoordination</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuNumbness" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Numbness</label>
+      </div>
+      <div class="col-md-3 row m-0">
+        <input type="checkbox" class="m-0" formControlName="NuFeelingPinsNeedles" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Feeling of 'pins and needles/tingles'</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3 ml-3">
+      <label class="m-0 mr-2">Comments</label>
+      <input class="form-control w-70" [disabled]="isDisabled()" formControlName="NuComments" />
+    </div>
+  </div>
+</div>
+
             <div *ngIf="selectedTabName == 'Hematolo'">
               <div class="row m-0">
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="HeNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">No reported abnormalities</label>
                 </div>
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="HeAnemia" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">Anemia</label>
                 </div>
                 <div class="col-md-12">
-                  <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
+                  <input type="checkbox" class="m-0" formControlName="HeEasyBruisingBleeding" [attr.disabled]="isDisabled() ? true : null" />
                   <label class="ml-2 m-0">Easy bruising/bleeding</label>
                 </div>
                 <div class="col-md-12 row m-0 mt-3">
                   <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()" />
+                  <input class="form-control w-70" [disabled]="isDisabled()" formControlName="HeComments" />
                 </div>
               </div>
             </div>
             <div *ngIf="selectedTabName == 'Endocrine'">
-              <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">No reported abnormalities</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Abnormal growth</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Increased appetite</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Increased thirst</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Increased urine production</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Thyroid trouble</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Heat/Cold intolerance</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Excessing sweating</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Diabetes</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3 ml-3">
-                  <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()"/>
-                </div>
-              </div>
-            </div>
+  <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">No reported abnormalities</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdAbnormalGrowth" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Abnormal growth</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdIncreasedAppetite" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Increased appetite</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdIncreasedThirst" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Increased thirst</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdIncreaseUrineProduction" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Increased urine production</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdThyroidTrouble" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Thyroid trouble</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdHeatColdIntolerance" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Heat/Cold intolerance</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdExcessingSweating" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Excessing sweating</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="EdDiabetes" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Diabetes</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3 ml-3">
+      <label class="m-0 mr-2">Comments</label>
+      <input class="form-control w-70" [disabled]="isDisabled()" formControlName="Endocrine" />
+    </div>
+  </div>
+</div>
+
             <div *ngIf="selectedTabName == 'Psychiatric'">
-              <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">No reported abnormalities</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0">
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Tension/Anxiety</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Depression/Suicide ideation</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Memory problems</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Past treatment with Psychiatrist</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Sleep problems</label>
-                  </div>
-                  <div class="col-md-2 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Unusual problems</label>
-                  </div>
-                  <div class="col-md-5 row m-0">
-                    <input type="checkbox" class="m-0" [attr.disabled]="isDisabled() ? true : null" />
-                    <label class="ml-2 m-0">Change in mood / change in attitude towards family/friends</label>
-                  </div>
-                </div>
-                <div class="col-md-12 row m-0 mt-3 ml-3">
-                  <label class="m-0 mr-2">Comments</label>
-                  <input class="form-control w-70" [disabled]="isDisabled()" />
-                </div>
-              </div>
-            </div>
+  <div class="row tab-content scale-box mt-3 m-0" style="border-radius: 7px">
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsNoReportedAbnorm" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">No reported abnormalities</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0">
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsTensionAnxiety" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Tension/Anxiety</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsDepressionSuicide" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Depression/Suicide ideation</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsMemoryProblems" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Memory problems</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsPastTreatmentPsychiatri" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Past treatment with Psychiatrist</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsSleepProblems" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Sleep problems</label>
+      </div>
+      <div class="col-md-2 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsUnusualProblems" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Unusual problems</label>
+      </div>
+      <div class="col-md-5 row m-0">
+        <input type="checkbox" class="m-0" formControlName="PsChangeMood" [attr.disabled]="isDisabled() ? true : null" />
+        <label class="ml-2 m-0">Change in mood / change in attitude towards family/friends</label>
+      </div>
+    </div>
+    <div class="col-md-12 row m-0 mt-3 ml-3">
+      <label class="m-0 mr-2">Comments</label>
+      <input class="form-control w-70" [disabled]="isDisabled()" formControlName="PsComments1" />
+    </div>
+  </div>
+</div>
+
           </div>
         </div>
       </div>
