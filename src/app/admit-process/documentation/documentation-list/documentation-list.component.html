@@ -142,9 +142,18 @@
 <div *ngIf="admissionService.isAddNicuForm">
   <app-nicu-assessment-document [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded" (realodEducationList)="realodEducationList($event)"></app-nicu-assessment-document>
 </div>
-<div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
+
+<!--Pediatric admission assessment (workin on here, old)--> <!-- soapFormEvent = the event of action = (click)="addEditForm('save')" or  (click)="addEditForm('edit')" or (click)="addEditForm('release')">Release from the documentations tmeplate -->
+<!-- <div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
   <app-paediatric-physician-assessment [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatric-physician-assessment>
+</div> -->
+
+
+<div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm"> <!--Pediatric admission assessment (workin on here, old)-->
+  <!-- soapFormEvent = the event of action = (click)="addEditForm('save')" or  (click)="addEditForm('edit')" or (click)="addEditForm('release')">Release from the documentations tmeplate -->
+  <app-paediatrics-adm-document [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatrics-adm-document>
 </div>
+
 <div *ngIf="admissionService.isAddEditSurgeryOprationNoteForm">
   <app-surgery-operation-note [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-surgery-operation-note>
 </div>

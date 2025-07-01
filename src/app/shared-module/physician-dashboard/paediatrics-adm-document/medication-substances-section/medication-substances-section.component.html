@@ -1,0 +1,53 @@
+<form [formGroup]="nursingAdmissionForm">
+  <div class="end-container">
+    <div class="scale-box-main">
+      <label class="box-label">Medication & Substances</label>
+      <div class="container-fluid">
+        <div class="row create-form-inputs">
+          <div class="scale-box">
+            <div class="scale-box-checkbox">
+              <div class="no-medication">
+                <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noMedication"
+                  [ngModelOptions]="{ standalone: true }" />
+                <label class="admitting-physician" for="noMedication">No medication & substance applicable</label>
+              </div>
+              <img src="assets/img/file1.svg" title="Create Import" class="img-size">
+            </div>
+            <div class="row m-0">
+              <div class="col-md-8 mt-3 p-0">
+                <div class="scale-box-table">
+                  <table class="table table-bordered past-table" [formGroup]="nursingAdmissionForm">
+                    <thead>
+                      <tr>
+                        <th scope="col">Event description</th>
+                        <th class="w-30" scope="col">Dose</th>
+                        <th class="w-15" scope="col">EMAR View</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="TOADMMED">
+                      <tr *ngFor="let item of nursingAdmissionForm.get('TOADMMED')['controls']; let i = index"
+                        [formGroupName]="i">
+                        <td><input type="text" class="form-control" formControlName="EventDesc"></td>
+                        <td><input type="text" class="form-control" formControlName="Dose"></td>
+                        <td>
+                          <!-- <a (click)="viewEmar(i)">View</a> -->
+                          <a>View</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="chief-complain">
+                  <span class="text-area-label">Substances</span>
+                  <textarea class="form-control" formControlName="Substances"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

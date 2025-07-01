@@ -1,0 +1,204 @@
+<form [formGroup]="nursingAdmissionForm">
+  <div class="end-container">
+    <div class="sph-box">
+      <label class="box-label">Assessment</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part">
+          <div class="tab-navigate">
+            <div class="tab-nav w-100">
+              <ul class="m-0 p-0 d-flex mb-2 tab-ui">
+                <li *ngFor="let tab of tabList" class="d-flex m-0 align-items-center" (click)="assessmentTabSelect(tab)"
+                  [ngClass]="selectedTabName == tab ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">{{ tab }}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="tab-content pl-2 mb-3" style="border-radius: 7px">
+            <div *ngIf="selectedTabName == 'Functional Assessment'">
+              <div>
+                <input type="checkbox" class="m-0" formControlName="FaInfantLess" />
+                <label class="ml-2 m-0">Infant less than 1 year</label>
+              </div>
+              <div>
+                <strong>Assessment of dependence level-reflect status prior to admission :</strong>
+              </div>
+              <table class="table table-bordered past-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Functions</th>
+                    <th scope="col">Assessment Score</th>
+                    <th scope="col">Describe</th>
+                    <th scope="col">Comments</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="TOFUNASS">
+                  <tr *ngFor="let group of nursingAdmissionForm.get('TOFUNASS')['controls']; let i = index"
+                    [formGroupName]="i">
+                    <td class="w-10">
+                      <ng-select [items]="functionalAssessment" bindLabel="label" bindValue="value"
+                        formControlName="Functions"></ng-select>
+                    </td>
+                    <td class="w-10">
+                      <input class="form-control" formControlName="Score" />
+                    </td>
+                    <td>
+                      <input class="form-control" formControlName="Describe" />
+                    </td>
+                    <td class="text-center w-10">
+                      <input class="form-control" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="row m-0 mt-3">
+                <div class="col-md-2">
+                  <label class="m-0">Recent changes in mobility needs </label>
+                </div>
+                <div class="col-md-1">
+                  <ng-select [items]="yesNoList" bindLabel="label" bindValue="value"
+                    formControlName="FaRecentChanges"></ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mt-3">
+                <div class="col-md-2">
+                  <label class="m-0">Requires Dr. Notification</label>
+                </div>
+                <div class="col-md-1">
+                  <ng-select [items]="yesNoList" bindLabel="label" bindValue="value"
+                    formControlName="FaRequiresDr"></ng-select>
+                </div>
+                <div class="col-md-2 text-right">
+                  <label class="m-0">Notified</label>
+                </div>
+                <div class="col-md-1">
+                  <ng-select [items]="yesNoList" bindLabel="label" bindValue="value"
+                    formControlName="FaRequiresDr"></ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mt-3">
+                <div class="col-md-2">
+                  <label class="m-0">Comments</label>
+                </div>
+                <div class="col-md-1">
+                  <input class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Sleep/Rest'">
+              <div class="row m-0">
+                <div class="col-md-2">
+                  <label>Sleep/Rest</label>
+                </div>
+                <div class="col-md-3">
+                  <ng-select [items]="sleepRest" bindLabel="label" bindValue="value"
+                    formControlName="SrSleep"></ng-select>
+                </div>
+              </div>
+              <div class="row m-0 mt-2">
+                <div class="col-md-2">
+                  <label>Sleep Time</label>
+                </div>
+                <div class="col-md-1">
+                  <input type="time" class="form-control" formControlName="SrSleepTime" />
+                </div>
+              </div>
+              <div class="row m-0 mt-2">
+                <div class="col-md-2">
+                  <label>Number of hours</label>
+                </div>
+                <div class="col-md-1">
+                  <input class="form-control" formControlName="SrNumberHours" />
+                </div>
+              </div>
+              <div class="row m-0 mt-4">
+                <div class="col-md-2">
+                  <label>Comments</label>
+                </div>
+                <div class="col-md-8">
+                  <input class="form-control" formControlName="SrComments" />
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedTabName == 'Growth & Development'">
+              <!-- Milestones -->
+              <div class="row m-0 mb-3">
+                <div class="col-md-2 row m-0">
+                  <div class="col-md-2">
+                    <label class="m-0">Milestones</label>
+                  </div>
+                </div>
+                <div class="col-md-10 row m-0">
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMSocialSmile" />
+                    <label class="m-0">Social Smile</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMTeething" />
+                    <label class="m-0">Teething</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMSetAlone" />
+                    <label class="m-0">Set alone unsupported</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMWalked" />
+                    <label class="m-0">Walked alone</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMUsedWords" />
+                    <label class="m-0">Used words</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMUsedSentences" />
+                    <label class="m-0">Used sentences</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMToiletTraining" />
+                    <label class="m-0">Toilet training</label>
+                  </div>
+                  <div class="col-md-2 d-flex">
+                    <input type="checkbox" formControlName="GwMPuberity" />
+                    <label class="m-0">Puberity</label>
+                  </div>
+                  <div class="col-md-3 d-flex">
+                    <input type="checkbox" formControlName="GwMOther" />
+                    <label class="m-0">Other</label>
+                    <input class="form-control w-30 ml-2" formControlName="GwMOtherTxt" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div class="row m-0 mb-3">
+                <div class="col-md-2 row m-0">
+                  <div class="col-md-2">
+                    <label class="m-0">Status</label>
+                  </div>
+                </div>
+                <div class="col-md-10 row m-0">
+                  <ng-select class="w-20" [items]="growthStatus" bindLabel="label" bindValue="value"
+                    formControlName="GwStatus"></ng-select>
+                </div>
+              </div>
+
+              <!-- Comments -->
+              <div class="row m-0 mb-3">
+                <div class="col-md-2 row m-0">
+                  <div class="col-md-2">
+                    <label class="m-0">Comments</label>
+                  </div>
+                </div>
+                <div class="col-md-10 row m-0">
+                  <input class="form-control" formControlName="GwComments" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
