@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,7 @@ export class ExaminationTabComponent implements OnInit {
 
   @Input() nursingAdmissionForm: FormGroup;
   selectedTabName: string = 'Physical Examination';
+  @Output() addTableRow = new EventEmitter<any>();
 
   tabList = [
     'Physical Examination',
@@ -64,6 +65,29 @@ export class ExaminationTabComponent implements OnInit {
   assessmentTabSelect(tabName: string) {
     this.selectedTabName = tabName;
   }
+  addRow() {
+    if (this.selectedTabName == "Physical Examination") {
+    this.addTableRow.emit(this.selectedTabName);
+    }
+  }
+
+  //managint 'SdPrEarly', 'SdPrDelayed' and 'SdPrOther' radior button and enableing on click on other
+onSelectOption(selected: 'SdPrEarly' | 'SdPrDelayed' | 'SdPrOther') {
+  this.nursingAdmissionForm.patchValue({
+    SdPrEarly: selected === 'SdPrEarly',
+    SdPrDelayed: selected === 'SdPrDelayed',
+    SdPrOther: selected === 'SdPrOther'
+  });
+
+  const otherText = this.nursingAdmissionForm.get('SdPrOtherTxt');
+
+  if (selected === 'SdPrOther') {
+    otherText?.enable();
+  } else {
+    otherText?.disable();
+    otherText?.reset();
+  }
+}
 
 
 }

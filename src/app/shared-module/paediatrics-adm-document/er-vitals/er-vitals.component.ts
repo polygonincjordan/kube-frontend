@@ -356,7 +356,7 @@ export class ErVitalsComponent implements OnInit {
       patnr: this.erListSelectedData.Patnr,
       falnr: this.erListSelectedData.Falnr,
       einri: this.erListSelectedData.Einri,
-      lfdnr: this.erListSelectedData.Lfdbw
+      lfdnr: this.erListSelectedData.Lfdnr
     }
     this.emergencyService.getVitalList(json).subscribe(
       (_success: any) => {

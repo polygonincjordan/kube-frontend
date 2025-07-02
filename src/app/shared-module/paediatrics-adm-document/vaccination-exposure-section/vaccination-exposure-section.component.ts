@@ -55,9 +55,9 @@ export class VaccinationExposureSectionComponent implements OnInit {
     this.selectedTabName = tabName;
   }
 
-  addRow() {
-    this.addTableRow.emit(this.selectedTabName);
-  }
+  // addRow() {
+  //   this.addTableRow.emit(this.selectedTabName);
+  // }
 
   passDataInPerantComponent() {
     // this.vaccinationDataPass.emit(this.selectedTabName);

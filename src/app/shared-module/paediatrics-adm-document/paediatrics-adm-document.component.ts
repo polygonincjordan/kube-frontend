@@ -310,8 +310,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       AccompaniedTxt: '',
       AdmissionMode: '',
       AdmissionModeTxt: '',
-      ChiefComplaint: ['', Validators.required],
-      Datee: [new Date()],
+      ChiefComplaint: [''],
+      Datee: [this.convertDateFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionDate)],
       FavouriteToy: '',
       InfoObtained: '',
       InfoObtainedTxt: '',
@@ -540,7 +540,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     SsPatient: false,
     SsSocialWorker: false,
     SsSuspected: false,
-    Timee: '',
+    Timee: [this.convertTimeFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionTime)],
 
     AdmittedWard: '', // AdmittedWard (not binded) >>> ? keep it unbind
     Room: '',  // Room (not binded) >>> ? keep it unbind
@@ -587,6 +587,7 @@ TOINFECTIONS: this.formBuilder.array([
   })
 ]),
 
+  //this PHYEXAM and all it's function is mendator
    TOPHYEXAM: this.formBuilder.array([
   this.formBuilder.group({
     Dockey: '',
@@ -647,22 +648,30 @@ TOVITALSIGN: this.formBuilder.array([
           if (!result) return;
 
           const {
-            TOADMMED, TOALLERGY, TOFUNASS, TOINFECTIONS, TOPHYEXAM,
+            TOADMMED, TOALLERGY, TOFUNASS, TOINFECTIONS, TOPHYEXAM, //TOPHYEXAM is mendatory here
             TOSCALE, TOVACCINATION, TOVITALSIGN, Timee, Datee,
             ...flatFields
           } = result;
 
+          this.toAllergyArr = TOALLERGY && TOALLERGY.length ? TOALLERGY : [];
+
+          this.toScaleArr = TOSCALE && TOSCALE.length ? TOSCALE : [];;
+          if(this.toScaleArr && this.toScaleArr.length){
+            this.toScaleArr.forEach(item => {
+              item.Datetimee = this.convertTimeFormat(item?.Datetimee)
+            });
+          }
           this.nursingAdmissionForm.patchValue(flatFields);
           this.nursingAdmissionForm.patchValue({Datee : this.convertDateFormat(Datee)})
           this.nursingAdmissionForm.patchValue({Timee : this.convertTimeFormat(Timee)})
 
           // Patch the form arrays
           this.patchFormArray('TOADMMED', TOADMMED, this.createTOADMMEDGroup.bind(this));
-          this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
+          // this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
           this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
           this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
           this.patchFormArray('TOPHYEXAM', TOPHYEXAM, this.createTOPHYEXAMGroup.bind(this));
-          this.patchFormArray('TOSCALE', TOSCALE, this.createTOSCALEGroup.bind(this));
+          // this.patchFormArray('TOSCALE', TOSCALE, this.createTOSCALEGroup.bind(this));
           this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
           this.patchFormArray('TOVITALSIGN', TOVITALSIGN, this.createTOVITALSIGNGroup.bind(this));
 
@@ -681,7 +690,7 @@ createTOADMMEDGroup(item): FormGroup {
   });
 }
 
-createTOALLERGYGroup(item): FormGroup {
+createTOALLERGYGroup(item?): FormGroup {
   return this.formBuilder.group({
     Agroup: item?.Agroup || '',
     Description: item?.Description || '',
@@ -689,7 +698,7 @@ createTOALLERGYGroup(item): FormGroup {
   });
 }
 
-createTOFUNASSGroup(item): FormGroup {
+createTOFUNASSGroup(item?): FormGroup {
   return this.formBuilder.group({
     Dockey: item?.Dockey || '',
     Describe: item?.Describe || '',
@@ -707,7 +716,7 @@ createTOINFECTIONSGroup(item): FormGroup {
   });
 }
 
-createTOPHYEXAMGroup(item): FormGroup {
+createTOPHYEXAMGroup(item?): FormGroup {
   return this.formBuilder.group({
     Dockey: item?.Dockey || '',
     PhyComments: item?.PhyComments || '',
@@ -768,7 +777,6 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
     return new Promise((resolve, reject) => {
 
       // here need to make the final pylaod
-
       let payload = {
         d: this.nursingAdmissionForm.value
       };
@@ -782,13 +790,29 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
         payload.d.Dockey = this.actionTypeData.value.docKey;
       }
 
+      payload.d.TOALLERGY = this.toAllergyArr && this.toAllergyArr?.length ?  this.toAllergyArr : [];
+      payload.d.TOALLERGY.forEach(item => {
+        item.Dockey = this.docKey;
+      });
+
+
+      payload.d.TOSCALE = this.toScaleArr && this.toScaleArr?.length ? this.toScaleArr : [];
+       if(payload.d.TOSCALE.length) {
+         payload.d.TOSCALE.forEach(item => {
+           item.Dockey = this.docKey;
+           item.Datetimee = this.convertTimeFormat(item?.Datetimee)
+         });
+       }
+
+
+
+
+
        payload.d.TOADMMED.forEach(item => {
         item.Dockey = this.docKey;
       });
 
-      payload.d.TOALLERGY.forEach(item => {
-        item.Dockey = this.docKey;
-      });
+
 
       payload.d.TOFUNASS.forEach(item => {
         item.Dockey = this.docKey;
@@ -804,9 +828,6 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
         item.Dockey = this.docKey;
       });
 
-      payload.d.TOSCALE.forEach(item => {
-        item.Dockey = this.docKey;
-      });
 
       payload.d.TOVACCINATION.forEach(item => {
         item.Dockey = this.docKey;
@@ -893,12 +914,18 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
 }
 
 
-
-
-
-
-
-
+// this function is updatted one dont not remove it (this is in use during form creation)
+  defaultAddRow() {
+    for (let index = 0; index < 3; index++) {
+      this.addItemRow();
+    }
+  }
+// this function is updatted one dont not remove it (this is in use during form creation)
+  defaultAddRowforTOINFECTIONS() {
+    for (let index = 0; index < 2; index++) {
+      this.addItemRowforTOINFECTIONS();
+    }
+  }
 
 // this function is updatted one dont not remove it
   addItemRowforTOINFECTIONS() {
@@ -906,7 +933,7 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
     control.push(this.itemFormArrayFieldForInfectious());
   }
 
-  // this function is updatted one dont not remove it
+// this function is updatted one dont not remove it
  itemFormArrayFieldForInfectious(): FormGroup {
     return this.formBuilder.group({
     Dockey: '',
@@ -916,24 +943,22 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
   })
   }
 
-// this function is updatted one dont not remove it
-  defaultAddRow() {
-    for (let index = 0; index < 3; index++) {
-      this.addItemRow();
-    }
-  }
-// this function is updatted one dont not remove it
-  defaultAddRowforTOINFECTIONS() {
-    for (let index = 0; index < 2; index++) {
-      this.addItemRowforTOINFECTIONS();
-    }
-  }
-
   // this function is updatted one dont not remove it
 addItemRow() {
   const control = this.nursingAdmissionForm.get('TOVACCINATION') as FormArray;
   control.push(this.itemFormArrayFieldForTOVACCINATION());
 }
+
+addItemRowForTOPHYEXAM() {
+  const control = this.nursingAdmissionForm.get('TOPHYEXAM') as FormArray;
+  control.push(this.createTOPHYEXAMGroup());
+}
+
+addItemRowForTOFUNASS() {
+  const control = this.nursingAdmissionForm.get('TOFUNASS') as FormArray;
+  control.push(this.createTOFUNASSGroup());
+}
+
 
 // this function is updatted one dont not remove it
   itemFormArrayFieldForTOVACCINATION(): FormGroup {
@@ -945,16 +970,29 @@ addItemRow() {
     Vaccination: ''
   })
   }
-// this function is updatted one dont not remove it
+
+
   addTableRow(event: any) {
-    if (event == 'Vaccination History') {
-      this.addItemRow();
-    } else {
-      this.defaultAddRowforTOINFECTIONS()
+    if (event == "Physical Examination") {
+      this.addItemRowForTOPHYEXAM();
+    } else if (event == 'Functional Assessment') {
+        this.addItemRowForTOFUNASS()
     }
+    //  else {
+    //   this.defaultAddRowforTOINFECTIONS()
+    // }
   }
 
 
+
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
+
+//------------ Alergey managemenet  (start) ------------
+  public openModalForAllergy() {
+    this.createAllergyId.openModalForAllergy();
+  }
 
   public importAllergyData(data) {
     data.forEach((el) => {
@@ -975,9 +1013,6 @@ addItemRow() {
     }
   }
 
-  public openModalForAllergy() {
-    this.createAllergyId.openModalForAllergy();
-  }
   private errorMsgForDuplicatesAllergy() {
     let codeArr = [];
     this.duplicates.forEach((element) => {
@@ -1005,10 +1040,104 @@ addItemRow() {
     );
   }
 
-
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
   }
+//------------ Alergey managemenet  (ends) ------------
+
+
+
+
+//------------ Scal section  (starts) ------------
+  openModalForScales(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefScales = this.modalService.show(template, config);
+    this.loadScalesData();
+    // this.medicationImportDrugArray=[];
+  }
+
+  scalesImport() {
+
+    this.selectedScales.forEach((element) => {
+      this.scalesList.forEach((res: any) => {
+        if (element.Scaletype == res.ScaleType && element.Score) {
+          res.Datetimee = element.DateTime,
+            // res.Dockey = element.Dockey, //this is commented because we are not getting it from the backendside
+            res.Dockey = this.docKey; // manually patching doc form stored in vaiable
+            res.ScoreDesc = element.ScoreDesc,
+            res.LastScore = element.Score,
+            res.ScaleType = element.Scaletype
+        }
+      })
+    })
+    // this.selectedScales.forEach(element => {
+    //   console.log(element)
+    //   this.scalesArray = this.scalesArray.concat({
+    //     "Dockey": "",
+    //     "ScaleType": element.Scaletype ,
+    //     "ScoreDesc": element.ScoreDesc ,
+    //     "Datetimee": element.DateTime,
+    //     "LastScore": element.Score,
+    //   });
+    // });
+    this.modalRefScales.hide();
+  }
+
+  removeScale(index: number) {
+    this.scalesList[index].LastScore = "";
+    this.scalesList[index].ScoreDesc = "";
+    this.scalesList[index].Dockey = "";
+    this.scalesList[index].Datetimee = "";
+  }
+
+  // Note : old function
+  // public viewGlosgowModel(item) {
+  //   debugger
+  //   if (this.noScaleAppicable) return;
+  //   if (item.value == '1') {
+  //     if (item.Dockey) {
+  //       this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+  //     } else {
+  //       this.sharedService.waringSwallModel('No data found');
+  //     }
+  //   }
+  // }
+
+  //New function
+  public viewGlosgowModel(item) {
+    if (this.noScaleAppicable) return;
+    if (item.value == '1') {
+      if (item.Dockey) {
+        this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+      } else {
+        this.sharedService.waringSwallModel('No data found');
+      }
+    }
+  }
+
+  collectScalesIData(event, item, i) {
+    if (event.target.checked) {
+      this.toScaleArr[i].isSelected = true;
+      this.selectedScales.push(item);
+    } else {
+      this.toScaleArr[i].isSelected = false;
+      const indexOf = this.selectedScales.findIndex(x => x.Scaletype == item.Scaletype);
+      if (indexOf !== -1)
+        this.selectedScales.splice(indexOf, 1);
+    }
+  }
+
+  collectAllScalesData(event: any) {
+    if (event.target.checked) {
+      this.selectedScales = (Object.assign([], this.toScaleArr));
+    } else {
+      this.selectedScales = [];
+    }
+  }
+
 
   public openScaleModel(item: any) {
     if (this.noScaleAppicable) return;
@@ -1044,19 +1173,48 @@ addItemRow() {
     }
   }
 
-  isDockeyAvailable(): boolean {
-    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+
+//------------ Scal section  (ends) ------------
+
+
+
+
+
+//------------ Medication & Substance section  (starts) ------------
+
+
+  public handleCheckboxVitals(event) {
+    this.isChecked = event.target.checked;
   }
 
-  openModalForScales(template: TemplateRef<any>) {
-    const config: ModalOptions = {
-      class:
-        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+  public openModalVital() {
+    if (this.isChecked) return;
+    const item = {
+      Einri: this.paramsObject.einri,
+      Patnr: this.paramsObject.patnr,
+      Falnr: this.paramsObject.falnr,
+      Lfdnr: this.paramsObject.lfdnr,
+      Patient: this.storageService?.patientData?.name,
+      admissionDate: this.storageService.patientData.periodStart,
     };
-    this.modalRefScales = this.modalService.show(template, config);
-    this.loadScalesData();
-    // this.medicationImportDrugArray=[];
+    debugger
+    this.erVitalsModal.openModalForErVital(item);
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   loadScalesData() {
     // this.selectedScales = [];
@@ -1066,87 +1224,20 @@ addItemRow() {
     const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${patnr}`, false, false, false, false).subscribe((resp: any) => {
       console.log(resp)
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
-        //this.configurationData = resp.body.d.results;
-        // this.toScaleArr = resp.body.d.results;
         if (resp.body?.d?.results.length) {
           let requiredScales = ["Glasgow Coma Scale", "Morse Fall Scale (MFS)", "Braden scale for predicting pressure ulcers"];
           this.toScaleArr = resp.body.d.results.filter(scale => requiredScales.includes(scale.Scaletype)).map(scale => ({ ...scale, isSelected: false }));
         }
-        // this.medicationImportDrugArray=[];
-        //http://http://192.168.193.9:6051:8000/sap/opu/odata/sap/ZN_TRANSFER_ASSES_SRV/PatScalesSet?$filter=Patnr
       }
       //   this.filterEvents();
     }, () => { scalesOrders.unsubscribe(); });
   }
 
-  scalesImport() {
-
-    this.selectedScales.forEach((element) => {
-      this.scalesList.forEach((res: any) => {
-        if (element.Scaletype == res.ScaleType && element.Score) {
-          res.Datetimee = element.DateTime,
-            res.Dockey = element.Dockey,
-            res.ScoreDesc = element.ScoreDesc,
-            res.LastScore = element.Score,
-            res.ScaleType = element.Scaletype
-        }
-      })
-    })
-    // this.selectedScales.forEach(element => {
-    //   console.log(element)
-    //   this.scalesArray = this.scalesArray.concat({
-    //     "Dockey": "",
-    //     "ScaleType": element.Scaletype ,
-    //     "ScoreDesc": element.ScoreDesc ,
-    //     "Datetimee": element.DateTime,
-    //     "LastScore": element.Score,
-    //   });
-    // });
-    this.modalRefScales.hide();
-  }
 
 
-  collectAllScalesData(event: any) {
-    if (event.target.checked) {
-      this.selectedScales = (Object.assign([], this.toScaleArr));
-    } else {
-      this.selectedScales = [];
-    }
-  }
-
-  collectScalesIData(event, item, i) {
-    if (event.target.checked) {
-      this.toScaleArr[i].isSelected = true;
-      this.selectedScales.push(item);
-    } else {
-      this.toScaleArr[i].isSelected = false;
-      const indexOf = this.selectedScales.findIndex(x => x.Scaletype == item.Scaletype);
-      if (indexOf !== -1)
-        this.selectedScales.splice(indexOf, 1);
-    }
-  }
-
-  public viewGlosgowModel(item) {
-    if (this.noScaleAppicable) return;
-    if (item.value == '1') {
-      if (item.Dockey) {
-        this.scalesGlosgow.openModalForGlosgow(item.Dockey);
-      } else {
-        this.sharedService.waringSwallModel('No data found');
-      }
-    }
-  }
-
-  removeScale(index: number) {
-    this.scalesList[index].LastScore = "";
-    this.scalesList[index].ScoreDesc = "";
-    this.scalesList[index].Dockey = "";
-    this.scalesList[index].Datetimee = "";
-  }
-
-  get items(): FormArray {
-    return this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
-  }
+  // get items(): FormArray {
+  //   return this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
+  // }
 
 
   public scaleStoreInTable(event: any, scaleType: string) {
@@ -1168,23 +1259,9 @@ addItemRow() {
     }
   }
 
-  public handleCheckboxVitals(event) {
-    this.isChecked = event.target.checked;
-  }
 
 
-  public openModalVital() {
-    if (this.isChecked) return;
-    const item = {
-      Einri: this.paramsObject.einri,
-      Patnr: this.paramsObject.patnr,
-      Falnr: this.paramsObject.falnr,
-      Lfdnr: this.paramsObject.lfdnr,
-      Patient: this.storageService?.patientData?.name,
-      admissionDate: this.storageService.patientData.periodStart,
-    };
-    this.erVitalsModal.openModalForErVital(item);
-  }
+
 
   public deleteVitalsFromTable(index: number) {
     if (index > -1) {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -9,6 +9,7 @@ import { FormGroup } from '@angular/forms';
 export class AssessmentTabComponent implements OnInit {
 
   @Input() nursingAdmissionForm: FormGroup;
+  @Output() addTableRow = new EventEmitter<any>();
   selectedTabName: string = 'Functional Assessment';
 
   tabList = [
@@ -74,7 +75,7 @@ export class AssessmentTabComponent implements OnInit {
     },
   ]
 
-  
+
   functionalAssessment = [
     {
       label: 'Feeding',
@@ -114,5 +115,9 @@ export class AssessmentTabComponent implements OnInit {
     this.selectedTabName = tabName;
   }
 
-
+  addRow() {
+    if (this.selectedTabName == 'Functional Assessment') {
+    this.addTableRow.emit(this.selectedTabName);
+    }
+  }
 }

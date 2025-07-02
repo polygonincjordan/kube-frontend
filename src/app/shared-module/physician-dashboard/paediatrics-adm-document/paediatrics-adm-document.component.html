@@ -178,78 +178,6 @@
     </div>
   </div>
 
-  <!-- Diagnosis section from  -->
-  <div class="end-container">
-    <div class="scale-box-main">
-      <label class="box-label">Diagnosis</label>
-      <div class="container-fluid">
-        <div class="tab-navigation-part p-0">
-          <div class="container-fluid">
-            <div class="allergy-box d-flex justify-content-between py-3">
-              <div class="allergy-checkbox-section d-flex align-items-center">
-                <input type="checkbox" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)"
-                  style="width: 24px; height: 20px" [attr.disabled]="toDiagnosisArr?.length > 0 ? true : null" />
-                <label class="admitting-physician" for="noDiagnosisApplicable">&nbsp;&nbsp;No Diagnosis
-                  Applicable</label>
-              </div>
-              <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
-                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
-              </div>
-            </div>
-            <div style="max-height: 296px; overflow: auto">
-              <form style="max-height: 296px;
-                                      overflow: auto;">
-                <table class="table table-bordered past-table">
-                  <thead style="background-color: #e4edf5; color: black; text-align: center;">
-                    <tr>
-
-                      <th scope="col">Code</th>
-                      <th scope="col">Description </th>
-                      <th scope="col">Remarks</th>
-                      <th scope="col">Administion Diag.</th>
-                      <th scope="col">Surgery Diag.</th>
-                      <th scope="col">Preop Diag.</th>
-                      <th scope="col">Discharge Diag.</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody style="background-color: #fbfcff;">
-                    <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
-                      <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
-                      <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
-                      <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
-                          src="assets/img/Delete.svg" style="position: relative;
-                                              top: 6px;" /></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Diagnosis section till  -->
-
-  <!-- impression and plan of care section from (textarea)-->
-  <div class="end-container" [formGroup]="nursingAdmissionForm">
-    <div class="scale-box-main">
-      <label class="box-label">Impression and Plan of Care</label>
-      <textarea class="form-control" formControlName="IPcare"
-        [ngClass]="nursingAdmissionForm.get('IPcare').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
-    </div>
-  </div>
-  <!-- impression and plan of care section till -->
 
   <!-- surgical history tab, medical history tab, family history tab under Medical History section from-->
 
@@ -488,6 +416,82 @@
   <div>
     <app-orietation-patient-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-orietation-patient-tab>
   </div>
+
+
+
+  <!-- Diagnosis section from  -->
+  <div class="end-container">
+    <div class="scale-box-main">
+      <label class="box-label">Diagnosis</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part p-0">
+          <div class="container-fluid">
+            <div class="allergy-box d-flex justify-content-between py-3">
+              <div class="allergy-checkbox-section d-flex align-items-center">
+                <input type="checkbox" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)"
+                  style="width: 24px; height: 20px" [attr.disabled]="toDiagnosisArr?.length > 0 ? true : null" />
+                <label class="admitting-physician" for="noDiagnosisApplicable">&nbsp;&nbsp;No Diagnosis
+                  Applicable</label>
+              </div>
+              <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
+                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+              </div>
+            </div>
+            <div style="max-height: 296px; overflow: auto">
+              <form style="max-height: 296px;
+                                      overflow: auto;">
+                <table class="table table-bordered past-table">
+                  <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                    <tr>
+
+                      <th scope="col">Code</th>
+                      <th scope="col">Description </th>
+                      <th scope="col">Remarks</th>
+                      <th scope="col">Administion Diag.</th>
+                      <th scope="col">Surgery Diag.</th>
+                      <th scope="col">Preop Diag.</th>
+                      <th scope="col">Discharge Diag.</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: #fbfcff;">
+                    <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                      <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                      <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                      <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
+                          src="assets/img/Delete.svg" style="position: relative;
+                                              top: 6px;" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Diagnosis section till  -->
+
+    <!-- impression and plan of care section from (textarea)-->
+  <div class="end-container" [formGroup]="nursingAdmissionForm">
+    <div class="scale-box-main">
+      <label class="box-label">Impression and Plan of Care</label>
+      <textarea class="form-control" formControlName="IPcare"
+        [ngClass]="nursingAdmissionForm.get('IPcare').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
+    </div>
+  </div>
+  <!-- impression and plan of care section till -->
+
 </div>
 
 <app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>
