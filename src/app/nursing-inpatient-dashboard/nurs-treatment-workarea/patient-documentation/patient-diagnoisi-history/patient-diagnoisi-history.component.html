@@ -3,7 +3,7 @@
     configurationData.length">
     <div *ngFor="let data of configurationData" class="detail_row" (click)="onOpenAttachmentInpatient(data)">
       <div class="d-flex align-items-center w-100" (click)="onOpenModelInpatient(data)">
-        <span>{{ formatDate(data.Erdattim) }}</span>
+        <span style="white-space: nowrap;">{{ formatDate(data.Erdattim) }} / {{ emergencyService.getDate(data.Erdattim) | date:'HH:mm a' }}</span>
         <p class="attending-section" style="width: 100%"> {{ data.Mitarbname }}
         </p>
         <span class="fix-width mw-135 version-class">{{

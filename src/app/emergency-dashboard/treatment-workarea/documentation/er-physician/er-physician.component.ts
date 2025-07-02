@@ -28,6 +28,7 @@ export class ErPhysicianComponent implements OnInit {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
+    
     this.PhyAssessmentForm = this.formBuilder.group({
       "ZdocNr": [""],
       "Dockey": [""],
@@ -92,8 +93,8 @@ export class ErPhysicianComponent implements OnInit {
         Patnr: this.paramsObject.patnr,
         Falnr: this.paramsObject.falnr,
         Lfdnr: this.paramsObject.lfdnr,
-        Orgdo: [this.storageService.patientData.deptOrgUnit],
-        AttendPhy: [this.storageService.getUserProfile().Gpart],  
+        Orgdo: this.storageService.patientData.deptOrgUnit,
+        AttendPhy: this.storageService.getUserProfile().Gpart,  
         "AdmDate": this.getDate(this.docDetails[0].AdmDate),
         "AdmTime": createTime,
         "DiscDate": this.getDate(this.docDetails[0].DiscDate),
@@ -179,6 +180,8 @@ export class ErPhysicianComponent implements OnInit {
   }
 
   async createPhyDoc(){
+        console.log(this.storageService.patientData, "this.storageService.patientData");
+
     if (this.PhyAssessmentForm.controls.ChiefComplaint.value == '') {
       Swal.fire({
         text: "Chief Complaint is mandatory",
@@ -240,6 +243,7 @@ export class ErPhysicianComponent implements OnInit {
    
     let createJson = this.PhyAssessmentForm.value;
     createJson['AdmDate'] = createAdmDate;
+    createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['AdmTime'] = createAdmTime;
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
@@ -313,6 +317,7 @@ export class ErPhysicianComponent implements OnInit {
     }
     let updateJson = this.PhyAssessmentForm.value;
     updateJson['AdmDate'] = createAdmDate;
+    updateJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     updateJson['AdmTime'] = createAdmTime;
     updateJson['DiscTime'] = createDiscTime
     updateJson['DateDisp'] = createDateDisp;
@@ -379,6 +384,7 @@ export class ErPhysicianComponent implements OnInit {
    let updateJson = this.PhyAssessmentForm.value;
     updateJson['AdmDate'] = createAdmDate;
     updateJson['AdmTime'] = createAdmTime;
+    updateJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     updateJson['DiscTime'] = createDiscTime;
     updateJson['DateDisp'] = createDateDisp;
     updateJson['DiscDate'] = createDiscDate;
@@ -463,6 +469,7 @@ export class ErPhysicianComponent implements OnInit {
    
     let createJson = this.PhyAssessmentForm.value;
     createJson['Einri'] = this.storageService.einri;
+    createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['Patnr'] = this.storageService.patnr;
     createJson['Falnr'] = this.storageService.falnr;
     createJson['Lfdnr'] = this.storageService.lfdnr;
@@ -541,6 +548,7 @@ export class ErPhysicianComponent implements OnInit {
    
     let createJson = this.PhyAssessmentForm.value;
     createJson['AdmDate'] = createAdmDate;
+    createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['AdmTime'] = createAdmTime;
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;

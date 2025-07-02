@@ -18,8 +18,10 @@
                 <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
                 <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
                 <td>{{item.SurgeonName}}</td>
+                <td><span *ngIf="item.Wbgdt">{{emergencyService.getDate(item.Wbgdt) | date:'dd/MM/yyyy'}}/{{getTime(item.Wbgzt)}}</span></td>
                 <td>{{item.TrtoeText}}</td>
                 <td>{{item.OrgfaText}}</td>
+                <td><input type="checkbox" id="PRN" [checked]="item.Anerf" disabled/></td>
                 <td>{{item.AddInfo}}</td>
                
               </tr>
