@@ -735,7 +735,7 @@ export class ArrivalMainListComponent implements OnInit {
     if (currentStatus.toLowerCase() == 'planned arrival') {
       return 'Actual Arrival';
     } else if (currentStatus.toLowerCase() === 'actual arrival') {
-      return 'Planned Discharge';
+      return 'Actual Admission';
     } else if (currentStatus.toLowerCase() === 'planned discharge') {
       return 'Actual Discharge';
     } else {
@@ -747,10 +747,10 @@ export class ArrivalMainListComponent implements OnInit {
     let visitStatCode: number;
     switch (visitStat.toLowerCase()) {
       case 'planned arrival':
-        visitStatCode = 97;
+        visitStatCode = 96;
         break;
       case 'actual arrival':
-        visitStatCode = 98;
+        visitStatCode = 97;
         break;
       case 'planned discharge':
         visitStatCode = 99;

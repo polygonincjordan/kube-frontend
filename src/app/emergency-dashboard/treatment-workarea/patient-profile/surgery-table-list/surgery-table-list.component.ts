@@ -18,11 +18,13 @@ export class SurgeryTableListComponent implements OnInit,OnChanges {
   modalRef: BsModalRef;
   columnList: any[] = [
     'Service Description',
-    'Date',
-    'Time',
+    'Order Date',
+    'Order Time',
     'Surgeon Name',
+    'Surgery Date/Time',
     'Treatment OU',
     'Department OU',
+    'Anesthesia Required',
     'Additional Info'
   ];
   isCollpseOpen: boolean;
@@ -42,6 +44,17 @@ export class SurgeryTableListComponent implements OnInit,OnChanges {
       this.isCollpseOpen = true;
     } else {
       this.isCollpseOpen = false;
+    }
+  }
+
+  getTime(value) {
+    if (value) {
+      var str = value;
+      var str = str.replace(/[PT]/g, '');
+      var str = str.replace(/[H]/g, ':');
+      var str = str.replace(/[M]/g, ':');
+      var str = str.replace(/[S]/g, '');
+      return str;
     }
   }
 }

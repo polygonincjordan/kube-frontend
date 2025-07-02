@@ -13,9 +13,13 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { PhysicianOrdersComponent } from './consultations-orders/progress-notes-kardex/physician-orders/physician-orders.component';
+import { ProgressNoteListComponent } from './consultations-orders/progress-notes-kardex/progress-notes/progress-note-list/progress-note-list.component';
+import { ProgressNotesComponent } from './consultations-orders/progress-notes-kardex/progress-notes/progress-notes.component';
+import { ProgressNotesKardexComponent } from './consultations-orders/progress-notes-kardex/progress-notes-kardex.component';
 
 @NgModule({
-  declarations: [ConsultationsOrdersComponent],
+  declarations: [ConsultationsOrdersComponent, PhysicianOrdersComponent, ProgressNoteListComponent, ProgressNotesComponent, ProgressNotesKardexComponent],
   imports: [
     CommonModule,
     NgSelectModule,
@@ -32,6 +36,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgbCollapseModule,
     NgxMaterialTimepickerModule,
   ],
-   exports: [ConsultationsOrdersComponent],
+  exports: [ConsultationsOrdersComponent],
 })
-export class ConsultationsOrdersModule {}
+export class ConsultationsOrdersModule { }

@@ -18,8 +18,8 @@ export class SurgeryTableListComponent implements OnInit,OnChanges {
   modalRef: BsModalRef;
   columnList: any[] = [
     'Service Description',
-    'Date',
-    'Time',
+    'Order Date',
+    'Order Time',
     'Surgeon Name',
     'Surgery Date/Time',
     'Treatment OU',

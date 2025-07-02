@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit {
   form: FormGroup;
   searchString!: string;
   isPhysician: boolean = false;
+  isLabReception: boolean = false;
   checked: boolean;
   @Output() redirectCheckInData = new EventEmitter<any>();
 
@@ -187,6 +188,8 @@ export class HeaderComponent implements OnInit {
       this.outpatientlistdata = false;
     } else if (getKubeRule == UserType.SeniorNurse) {
       this.isSeniorNurse = true;
+    } else if (getKubeRule == UserType.LabReception) {
+      this.isLabReception = true;
     } else {
       this.outpatientlistdata = true;
     }

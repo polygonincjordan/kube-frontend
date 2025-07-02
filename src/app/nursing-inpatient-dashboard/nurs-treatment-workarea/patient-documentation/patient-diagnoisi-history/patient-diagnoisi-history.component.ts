@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 
@@ -17,7 +18,7 @@ export class PatientDiagnoisiHistoryComponent implements OnInit {
 
   public configurationData: any;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService, public emergencyService: EmergencyService) { }
 
   ngOnInit(): void {
   }

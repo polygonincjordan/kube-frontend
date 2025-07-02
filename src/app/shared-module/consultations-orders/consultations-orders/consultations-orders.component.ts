@@ -6,6 +6,7 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -17,6 +18,7 @@ import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ProgressNotesKardexComponent } from './progress-notes-kardex/progress-notes-kardex.component';
 
 @Component({
   selector: 'app-consultations-orders',
@@ -25,6 +27,7 @@ import Swal from 'sweetalert2';
 })
 export class ConsultationsOrdersComponent implements OnInit {
   @Output() reloadTableData = new EventEmitter();
+  @ViewChild('progressNotesKardexId') progressNotesKardex: ProgressNotesKardexComponent;
 
   @Input() consultationsOrdersList: any;
   @Input() searchString: any;
@@ -39,7 +42,7 @@ export class ConsultationsOrdersComponent implements OnInit {
     'Requested by',
     'Request Date',
     'Request Time',
-    'Action',
+    // 'Action',
   ];
   progressEntryForm: FormGroup;
   phyOrderform1: FormGroup;
@@ -166,6 +169,10 @@ export class ConsultationsOrdersComponent implements OnInit {
         this.copyProgressEntry = false;
       }
     });
+  }
+
+   openModalForProgressNotes() {
+    this.progressNotesKardex.openProgressNotesModal('consultation');
   }
 
   occupationalGroupList() {

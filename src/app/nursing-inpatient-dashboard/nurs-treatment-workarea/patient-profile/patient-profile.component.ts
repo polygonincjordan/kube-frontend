@@ -101,7 +101,7 @@ export class PatientProfileComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.getPatientCaseStepperData();
     this.getPatientTableList('', '', this.storageService.falnr);
-    this.initialPatientList();
+    // this.initialPatientList();
     if(this.administrationService.durationUnitList) {
       this.durationUnit = this.patientCaseDetails?.Pduru !== null && this.patientCaseDetails?.Pduru !== "" ? this.administrationService?.durationUnitList.find(d => d.Unit == this.patientCaseDetails?.Pduru)?.Text : "";
     }
@@ -171,6 +171,7 @@ export class PatientProfileComponent implements OnInit, OnChanges {
         this.radiologyList = result?.d?.results[0]?.ToRad?.results;
         this.madicationList = result?.d?.results[0]?.ToMed?.results;
         this.surgeryList = result?.d?.results[0]?.ToSurg?.results;
+        this.consultationsOrdersList = result?.d?.results[0]?.ToConsult?.results;
         if(this.madicationList.length) {
           this.isCollpseOpen = true;
         } else {
