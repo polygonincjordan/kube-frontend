@@ -14,6 +14,9 @@
                                     <p class="d-inline-block m-0">{{ tab }}</p>
                                 </li>
                             </ul>
+                            <div>
+                              <img style="height: 25px;" src="./assets/img/add.png" (click)="addRow()" />
+                            </div>
                         </div>
                     </div>
                     <div class="tab-content pl-2 mb-3" style="border-radius: 7px">
@@ -104,17 +107,17 @@
     </div>
     <div class="col-md-10 row m-0">
       <div class="col-md-3 d-flex">
-        <input type="radio" formControlName="SdPrEarly" />
+        <input type="radio" [checked]="nursingAdmissionForm.get('SdPrEarly')?.value"  (change)="onSelectOption('SdPrEarly')" formControlName="SdPrEarly" />
         <label class="m-0">Early puberty</label>
       </div>
       <div class="col-md-3 d-flex">
-        <input type="radio" formControlName="SdPrDelayed" />
+        <input type="radio"  [checked]="nursingAdmissionForm.get('SdPrDelayed')?.value" (change)="onSelectOption('SdPrDelayed')" formControlName="SdPrDelayed" />
         <label class="m-0">Delayed Puberty</label>
       </div>
       <div class="col-md-4 d-flex">
-        <input type="radio" formControlName="SdPrOther" />
+        <input type="radio"  [checked]="nursingAdmissionForm.get('SdPrOther')?.value" (change)="onSelectOption('SdPrOther')" formControlName="SdPrOther" />
         <label class="m-0">Other</label>
-        <input class="form-control ml-2" formControlName="SdPrOtherTxt" />
+        <input class="form-control ml-2"  [disabled]="!nursingAdmissionForm.get('SdPrOther')?.value" formControlName="SdPrOtherTxt" />
       </div>
     </div>
   </div>

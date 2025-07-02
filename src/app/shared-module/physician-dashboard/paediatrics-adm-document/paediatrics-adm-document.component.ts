@@ -281,7 +281,6 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    debugger
     if (changes.soapFormEvent.currentValue == 'add') {
       if (this.admissionService.isClonePaediatricsAdmissionForm) {
         this.CreatePediatricAdmAssesDoc('3')
@@ -312,9 +311,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
 
   initForm() {
-    debugger
+
     const check = this.storageService.getGpart()
-    debugger
 
     this.nursingAdmissionForm = this.formBuilder.group({
 
@@ -889,7 +887,6 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
 
 
      CreatePediatricAdmAssesDoc(status): Promise<any> {
-      debugger
     return new Promise((resolve, reject) => {
 
       // here need to make the final pylaod
