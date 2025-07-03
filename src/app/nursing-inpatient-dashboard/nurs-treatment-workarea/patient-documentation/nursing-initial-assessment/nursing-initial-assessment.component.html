@@ -537,44 +537,67 @@
         </div>
       </div>
 
-
       <div *ngIf="activeTab === 'sleep'">
         <div class="row">
           <div class="col-md-2">
             <label>Sleep Problem</label>
           </div>
+        
+          <!-- No Problem -->
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" name="" value="0" formControlName="SSleepProblem" />
+              <input type="radio" class="mr-2 ml-0" value="0" name="SSleepProblem" formControlName="SSleepProblem" />
               <div class="label">No Problem</div>
             </div>
           </div>
+        
+          <!-- Problem -->
           <div class="col-md-2">
             <div class="form-group">
-              <input type="radio" class="mr-2 ml-0" name="" value="1" formControlName="SSleepProblem" />
+              <input type="radio" class="mr-2 ml-0" value="1" name="SSleepProblem" formControlName="SSleepProblem" />
               <div class="label">Problem</div>
             </div>
           </div>
+        
+          <!-- Checkboxes: Conditionally disabled in template -->
           <div class="col-md-2">
             <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" formControlName="SSleepingDifficulty" />
+              <input
+                type="checkbox"
+                class="mr-1"
+                formControlName="SSleepingDifficulty"
+                [disabled]="nursingFormGroup.get('SSleepProblem')?.value !== '1'"
+              />
               <div class="label">Sleeping Difficulty</div>
             </div>
           </div>
+        
           <div class="col-md-2">
             <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" formControlName="SAwakeFrequently" />
+              <input
+                type="checkbox"
+                class="mr-1"
+                formControlName="SAwakeFrequently"
+                [disabled]="nursingFormGroup.get('SSleepProblem')?.value !== '1'"
+              />
               <div class="label">Awake Frequently</div>
             </div>
           </div>
+        
           <div class="col-md-2">
             <div class="form-group">
-              <input type="checkbox" class="mr-1" name="" formControlName="SSleepingAids" />
+              <input
+                type="checkbox"
+                class="mr-1"
+                formControlName="SSleepingAids"
+                [disabled]="nursingFormGroup.get('SSleepProblem')?.value !== '1'"
+              />
               <div class="label">Sleeping Aids</div>
             </div>
           </div>
         </div>
       </div>
+
 
       <div *ngIf="activeTab === 'nutritionalScreening'">
         <div class="row">
@@ -584,13 +607,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NDiabetic" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NDiabetic" value="3" />
-              <div class="label">(3)No</div>
+              <div class="label">(3)Yes</div>
             </div>
           </div>
         </div>
@@ -602,13 +625,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NSevereAnorexia" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NSevereAnorexia" value="3" />
-              <div class="label">(3)No</div>
+              <div class="label">(3)Yes</div>
             </div>
           </div>
         </div>
@@ -620,13 +643,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NLactating" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NLactating" value="2" />
-              <div class="label">(2)No</div>
+              <div class="label">(2)Yes</div>
             </div>
           </div>
         </div>
@@ -638,13 +661,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NVitamins" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NVitamins" value="2" />
-              <div class="label">(2)No</div>
+              <div class="label">(2)Yes</div>
             </div>
           </div>
         </div>
@@ -656,13 +679,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NSwallowing" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NSwallowing" value="3" />
-              <div class="label">(3)No</div>
+              <div class="label">(3)Yes</div>
             </div>
           </div>
         </div>
@@ -674,13 +697,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NSpecialDiet" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NSpecialDiet" value="2" />
-              <div class="label">(2)No</div>
+              <div class="label">(2)Yes</div>
             </div>
           </div>
         </div>
@@ -692,13 +715,13 @@
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NGiDisturbance" value="0" />
-              <div class="label">(0)Yes</div>
+              <div class="label">(0)No</div>
             </div>
           </div>
           <div class="col-md-1">
             <div class="form-group">
               <input type="radio" class="mr-2 ml-0" formControlName="NGiDisturbance" value="2" />
-              <div class="label">(2)No</div>
+              <div class="label">(2)Yes</div>
             </div>
           </div>
         </div>
@@ -1683,7 +1706,7 @@
               <label class="admitting-physician">No Risk Factors</label>
             </div>
             <div>
-              <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+              <img src="assets/img/file1.svg" title="Create & Import" class="img-size" (click)="openModalForRisk(riskModal)"/>
             </div>
 
           </div>
@@ -1699,23 +1722,10 @@
                 </tr>
               </thead>
               <tbody style="background-color: #fbfcff;">
-                <tr class="past-med-input">
-                  <!-- <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input style="width: 30% !important; height: 15px;" type="checkbox"/></td> -->
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                </tr>
-                <tr class="past-med-input">
-                  <!-- <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input type="checkbox"  style="width: 30% !important; height: 15px;"/></td> -->
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                </tr>
-                <tr class="past-med-input">
-                  <!-- <td style="padding: 10px !important;width: 2%;pointer-events: none;"><input type="checkbox"  style="width: 30% !important; height: 15px;"/></td> -->
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
-                  <td style="padding: 10px !important;width: 15%;pointer-events: none;"></td>
+                <tr class="past-med-input" *ngFor="let item of selectedRiskList ">
+                  <td style="padding: 10px !important;width: 15%;pointer-events: none;">{{ item.Id }}</td>
+                  <td style="padding: 10px !important;width: 15%;pointer-events: none;">{{ item.Desc }}</td>
+                  <td style="padding: 10px !important;width: 15%;pointer-events: none;">{{ item.Code }}</td>
                 </tr>
               </tbody>
             </table>
@@ -3244,6 +3254,7 @@
           </div>
           <div class="col-md-4"></div>
           <div class="col-md-4" style="text-align: end">
+            <button class="update-risk-save-btn" (click)="importRiskFormat()">Import</button>
             <button class="update-risk-save-btn" (click)="saveRiskJsonFormat()">Save</button>
             <button class="update-risk-save-btn" (click)="resetUpdateRiskForm()">Cancel</button>
           </div>
@@ -3254,6 +3265,7 @@
       <table class="table table-bordered risk-table">
         <thead style="background-color: #e4edf5; color: black; text-align: center">
           <tr>
+            <th></th>
             <th scope="col">Risk Code</th>
             <th scope="col">Short Description</th>
             <th scope="col">Risk Description</th>
@@ -3265,6 +3277,9 @@
           <ng-container formArrayName="riskFormitems">
             <ng-container *ngFor="let item of riskform.get('riskFormitems')['controls']; let i = index">
               <tr [formGroupName]="i">
+                <td>
+                  <input type="checkbox" formControlName="isChecked" />
+                </td>
                 <td class="risk-item-rsfnr">
                   <ng-select appendTo="body" placeholder="Search" formControlName="Rsfnr">
                     <ng-option *ngFor="let riskV of riskValues" [value]="riskV.Rsfnr">

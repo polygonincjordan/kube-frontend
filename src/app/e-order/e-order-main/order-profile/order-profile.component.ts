@@ -158,6 +158,8 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
         this.radiologyList = result?.d?.results[0]?.ToRad?.results;
         this.madicationList = result?.d?.results[0]?.ToMed?.results;
         this.surgeryList = result?.d?.results[0]?.ToSurg?.results;
+        this.consultationsOrdersList = result?.d?.results[0]?.ToConsult?.results;
+
         if(this.madicationList.length) {
           this.isCollpseOpen = true;
         } else {

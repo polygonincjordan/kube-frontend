@@ -442,14 +442,14 @@ export class DeliveryRecordDocComponent implements OnInit {
         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at Post Delivery Record : ${err}`);
+          this.sharedService.waringSwallModel(`PUT Error at Delivery Record : ${err}`);
         },
         complete: () => {
           resolve(true);
           if (status === 'edit') {
-            this.sharedService.successSwallModel('Post Delivery Record updated successfully');
+            this.sharedService.successSwallModel('Delivery Record updated successfully');
           } else {
-            this.sharedService.successSwallModel('Post Delivery Record created successfully');
+            this.sharedService.successSwallModel('Delivery Record created successfully');
           }
           // this.successEvent.next(true)
         }
