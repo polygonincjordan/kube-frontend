@@ -747,10 +747,10 @@ export class ArrivalMainListComponent implements OnInit {
     let visitStatCode: number;
     switch (visitStat.toLowerCase()) {
       case 'planned arrival':
-        visitStatCode = 96;
+        visitStatCode = 97;
         break;
       case 'actual arrival':
-        visitStatCode = 97;
+        visitStatCode = 96;
         break;
       case 'planned discharge':
         visitStatCode = 99;

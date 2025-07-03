@@ -102,6 +102,7 @@ export class AdministeredDosesComponent implements OnInit{
       '4THFLVIP',
       '6FL-NURS',
       '6FL-OROU',
+      '6FL-NICU',
       'CATTUAMC',
       'F9GOTAMC',
       'LDRASMTU',

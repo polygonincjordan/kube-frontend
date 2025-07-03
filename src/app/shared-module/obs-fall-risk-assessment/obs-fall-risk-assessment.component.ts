@@ -43,7 +43,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
   // Medication
   medicationOptions = [
     { label: '(1) IV / IM Narcotics w in 30 min', value: 1, checked: false },
-    { label: '(3) Anti-hypertensives', value: 3, checked: false },
+    { label: '(2) Anti-hypertensives', value: 2, checked: false },
     { label: '(0) None', value: 0, checked: false }
   ];
 

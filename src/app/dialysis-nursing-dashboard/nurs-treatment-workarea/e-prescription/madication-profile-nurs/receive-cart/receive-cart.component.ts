@@ -28,6 +28,7 @@ export class ReceiveCartComponent implements OnInit {
     { code: "4THFLVIP", description: "4th Floor-Zone B-VIP" },
     { code: "6FL-NURS", description: "6th Floor Nursery Unit" },
     { code: "6FL-OROU", description: "6th Floor LDR Operation Rooms" },
+    { code: "6FL-NICU", description: "6th Floor NICU" },
     { code: "CATTUAMC", description: "Cath Lab Unit" },
     { code: "F9GOTAMC", description: "Major OT (GRAL)" },
     { code: "LDRASMTU", description: "6th Floor LDR Birthing Unit" },

@@ -64,7 +64,6 @@ export class NursingInitialAssessmentComponent implements OnInit {
     { id: 6, label: '7' },
     { id: 7, label: '8' },
     { id: 8, label: '9' },
-    { id: 9, label: '10' }
   ];
 
   status = [
@@ -172,7 +171,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
 
     // Optional: Set risk category
     let riskText = '';
-     if (total <= 4) {
+    if (total <= 4) {
       riskText = 'No Nutritional Risk';
     } else {
       riskText = 'High Nutritional Risk';
@@ -182,6 +181,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
   }
 
   initForm() {
+    console.log(this.storageService, "--")
     this.nursingFormGroup = this.fb.group({
       Dockey: [''],
       Dtid: ['ZMED_NIAGO'],
@@ -210,7 +210,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
       PLUniversity: [false],
       PLOther: [false],
       PLOtherTxt: [''],
-      PMaritalStatus: [''],
+      PMaritalStatus: [this.storageService.patientData.maritalStatus],
 
       PBSentFamily: [false],
       POBedControls: [false],
@@ -531,6 +531,40 @@ export class NursingInitialAssessmentComponent implements OnInit {
     }
 
     this.getPatientDeliveryDetails();
+
+    this.nursingFormGroup.get('SSleepProblem')?.valueChanges.subscribe(val => {
+      const disabled = val !== '1';
+      ['SSleepingDifficulty', 'SAwakeFrequently', 'SSleepingAids'].forEach(control => {
+        if (disabled) {
+          this.nursingFormGroup.get(control)?.disable();
+          this.nursingFormGroup.get(control)?.setValue(false);
+        } else {
+          this.nursingFormGroup.get(control)?.enable();
+        }
+      });
+    });
+    this.nursingFormGroup.get('SkSkinProblem')?.valueChanges.subscribe(val => {
+      const disabled = val !== '1';
+      ['SkPale', 'SkCyanosis', 'SkRashes', 'SkWound', 'SkPressureUlcer', 'SkDry'].forEach(control => {
+        if (disabled) {
+          this.nursingFormGroup.get(control)?.disable();
+          this.nursingFormGroup.get(control)?.setValue(false);
+        } else {
+          this.nursingFormGroup.get(control)?.enable();
+        }
+      });
+    });
+    this.nursingFormGroup.get('FaFunctional')?.valueChanges.subscribe(val => {
+      const disabled = val !== '1';
+      ['FaParalysis', 'FaMuscularWeakness', 'FaWithWalkingAids', 'FaSensoryImpairment'].forEach(control => {
+        if (disabled) {
+          this.nursingFormGroup.get(control)?.disable();
+          this.nursingFormGroup.get(control)?.setValue(false);
+        } else {
+          this.nursingFormGroup.get(control)?.enable();
+        }
+      });
+    });
   }
 
   getPatientDeliveryDetails() {
@@ -1029,6 +1063,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
         this.toAllergyArr = response.TOALLERGY?.results;
         this.toVitalsArr = response.TOVITALSIGN?.results;
         this.medicationImportDrugArray = response.TOMEDICATION?.results;
+        this.selectedRiskList = response.TORISKFACTOR?.results;
 
         if (response.TOBABY.results.length) {
           (this.nursingFormGroup.get('TOBABY') as FormArray).clear();
@@ -1675,6 +1710,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
       });
       formData['TOVITALSIGN'] = checkVitalList;
       formData['TOALLERGY'] = this.toAllergyArr;
+      formData['TORISKFACTOR'] = this.selectedRiskList;
       formData['TOBABY'] = formData.TOBABY
         .filter(res => res.Time || res.Sex || res.Wt || res.ApgarScore1 || res.ApgarScore5 || res.ApgarScore10 || res.StatusDesc)
         .map(res => {
@@ -1685,7 +1721,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
           };
         });
       formData.Datee = this.sanitizeSAPDateFormat(formData.Datee) || '',
-      formData.NPatientRiskResult = formData.NPatientRiskResult ? formData.NPatientRiskResult.toString() : '',
+        formData.NPatientRiskResult = formData.NPatientRiskResult ? formData.NPatientRiskResult.toString() : '',
         formData.PhDateLastCs = this.sanitizeSAPDateFormat(formData.PhDateLastCs) || '',
         formData.SMDeliveryDate = this.sanitizeSAPDateFormat(formData.SMDeliveryDate) || '',
         formData.PhEdd = this.sanitizeSAPDateFormat(formData.PhEdd) || '',
@@ -1779,24 +1815,26 @@ export class NursingInitialAssessmentComponent implements OnInit {
   updateAllergyForm: FormGroup;
 
 
-  public openModalForRisk(template: TemplateRef<any>, data?: any) {
+  public openModalForRisk(template: TemplateRef<any>) {
     // const config = ModalOptions = {
-    //   class: 'modal-dialog-centered modal-xl risk-modal-size',
+    //   class: 'modal-dialog-centered modal-xl risk-modal-size'
     // };
-    // data.Einri = this.paramsObject.einri;
-    // data.Patnr = this.paramsObject.patnr;
-    // data.Falnr = this.paramsObject.falnr;
-    // data.Lfdnr = this.paramsObject.lfdnr;
-    // this.modalRefForRisk = this.modalService.show(template, config);
-    // this.selectedERList = data;
-    // this.getRiskList(data);
-    // this.getRiskValues();
-    // this.isRiskUpdate = false;
-    // this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
-    //   if (reason === 'backdrop-click') {
-    //     this.closeRiskModal();
-    //   }
-    // });
+    const config: ModalOptions = { class: 'modal-dialog-centered modal-xl risk-modal-size' };
+    let data: any = {};
+    data['Einri'] = this.paramsObject.einri;
+    data['Patnr'] = this.paramsObject.patnr;
+    data['Falnr'] = this.paramsObject.falnr;
+    data['Lfdnr'] = this.paramsObject.lfdnr;
+    this.modalRefForRisk = this.modalService.show(template, config);
+    this.selectedERList = data;
+    this.getRiskList(data);
+    this.getRiskValues();
+    this.isRiskUpdate = false;
+    this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
+      if (reason === 'backdrop-click') {
+        this.closeRiskModal();
+      }
+    });
   }
 
   closeRiskModal() {
@@ -1990,6 +2028,28 @@ export class NursingInitialAssessmentComponent implements OnInit {
       },
     ];
     // this.saveRiskList();
+  }
+
+  selectedRiskList: any = [];
+  importRiskFormat() {
+    const formArray = this.riskform.get('riskFormitems') as FormArray;
+    let fullData: any[] = formArray.getRawValue();
+    console.log(fullData);
+    console.log(this.riskform.value.riskFormitems,this.selectedRiskList,  "this.riskform.value.riskFormitems")
+    let selectedData:any[] = fullData
+      .filter(item => item.isChecked)
+      .map((item, index) => ({
+        Dockey: '',
+        Id: (index + 1).toString().padStart(3, '0'), // "001", "002", etc.
+        Desc: item.Rsfna || '',                     // Fallback to empty string if Desc is missing
+        Code: item.Rsfnr
+      }));
+      selectedData.forEach((res: any, index) => {
+        res.Id = (this.selectedRiskList.length + 1).toString().padStart(3, '0')
+        this.selectedRiskList.push(res);
+      })
+      this.selectedRiskList.concat(selectedData);
+      this.modalRefForRisk.hide();
   }
 
   saveRiskJsonFormat() {

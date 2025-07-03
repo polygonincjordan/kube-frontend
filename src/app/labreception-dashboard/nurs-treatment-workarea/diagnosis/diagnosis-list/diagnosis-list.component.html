@@ -2,10 +2,9 @@
     overflow: hidden;">
   <div class="content-header">
     <h4 style="margin-left: 1em;">Diagnosis</h4>
-    <div *ngIf="checkCounterPatient.isEnCounterCheck" style="margin-right: 1em;">
+    <!-- <div *ngIf="checkCounterPatient.isEnCounterCheck" style="margin-right: 1em;">
       <button (click)="saveDiagnosis(conformationModal)" class="create-diagnosis">Create  <i class="fa fa-plus" aria-hidden="true" (click)="addRow()" class="cursor-pointer" title="Add row"></i></button>
       <span class="header-icons">
-      <!-- <img (click)="addRow()" class="cursor-pointer" title="Add row" src="assets/img/Inside_patient.svg" style="width: 22px;" /> -->
       <i class="fa fa-plus c-pointer" aria-hidden="true" style="color: white;    font-size: 23px;
       position: relative;
       top: 5px;" (click)="addRow()" title="Add row"></i>
@@ -16,7 +15,7 @@
   <span class="header-icons">
       <img (click)="openModalForSaveDiagnosis(saveDiagnosisModal)" title="Import" class="cursor-pointer" src="assets/img/Import.svg" style="width: 22px;" />
     </span>
-    </div>
+    </div> -->
   </div>
   <Form *ngIf="this.checkCounterPatient.isEnCounterCheck" class="diagnosis-form mt-1" [formGroup]="diagnosisForm">
     <ng-container formArrayName="diagnosisFormList" *ngFor=" let item of diagnosisForm.get('diagnosisFormList')['controls']; let i = index" >
@@ -77,7 +76,7 @@
               </div>
             </div>
             <div  class="w-8 d-flex align-items-center mt-2">
-              <img *ngIf="item.value.Favorite" class="ml-1 h-20 cursor-pointer" src="assets/img/Star.svg" (click)="diagnosisFavCreateAction(item, 'D', i)" style="width: 25px;
+              <!-- <img *ngIf="item.value.Favorite" class="ml-1 h-20 cursor-pointer" src="assets/img/Star.svg" (click)="diagnosisFavCreateAction(item, 'D', i)" style="width: 25px;
               margin-left: 10px;
               border: 1px solid;
               padding: 4px;
@@ -94,7 +93,7 @@
               border: 1px solid;
               padding: 4px;
               background-color: #fff9f9;
-              border-radius: 6px;"/>
+              border-radius: 6px;"/> -->
             </div>
           </div>
           <div class="d-flex">
