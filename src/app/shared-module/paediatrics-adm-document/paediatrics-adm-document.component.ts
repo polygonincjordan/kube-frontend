@@ -30,6 +30,7 @@ import { ActionType } from '@services/interfaces/common.enum';
 export class PaediatricsAdmDocumentComponent implements OnInit {
   public nursingAdmissionForm: FormGroup;
   @Input() soapFormEvent: string;
+
   @Output() reloadTableList = new EventEmitter();
   toAllergyArr: any = [];
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
@@ -207,10 +208,14 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   private actionTypeSubscription$: Subscription;
   private subscription: Subscription;
   toScaleArr: any[];
+  toADMMED
+  toADMMEDImportedData: any
+  toPHYEXAMmportedData: any
   modalRefScales: BsModalRef;
   isChecked: any;
   public toVitalsArr: any = [];
   private actionTypeData!: any
+  physicianForm: FormGroup;
 
   constructor(
     private sharedService: SharedService,
@@ -467,6 +472,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     OpVValuables: '',
     OpVSentHomeTxt: '',
     OpVGivenByTxt: '',
+    UCommentsf:'',
+    Endocrine:'',
     EnmNoReportedAbnorm: false,
     NuSeizures: false,
     NuTremor: false,
@@ -632,6 +639,7 @@ TOVITALSIGN: this.formBuilder.array([
 
 
     });
+    // this.initPhyExamForm();
     this.defaultAddRow();
     this.defaultAddRowforTOINFECTIONS();
 
@@ -648,31 +656,46 @@ TOVITALSIGN: this.formBuilder.array([
           if (!result) return;
 
           const {
-            TOADMMED, TOALLERGY, TOFUNASS, TOINFECTIONS, TOPHYEXAM, //TOPHYEXAM is mendatory here
+            TOADMMED, TOALLERGY, TOFUNASS, TOINFECTIONS, TOPHYEXAM,
             TOSCALE, TOVACCINATION, TOVITALSIGN, Timee, Datee,
             ...flatFields
           } = result;
 
           this.toAllergyArr = TOALLERGY && TOALLERGY.length ? TOALLERGY : [];
 
-          this.toScaleArr = TOSCALE && TOSCALE.length ? TOSCALE : [];;
+          this.toScaleArr = TOSCALE && TOSCALE.length ? TOSCALE : [];
           if(this.toScaleArr && this.toScaleArr.length){
             this.toScaleArr.forEach(item => {
               item.Datetimee = this.convertTimeFormat(item?.Datetimee)
             });
           }
+
+          this.toVitalsArr = TOVITALSIGN && TOVITALSIGN?.length ? TOVITALSIGN : [];
+
+
           this.nursingAdmissionForm.patchValue(flatFields);
           this.nursingAdmissionForm.patchValue({Datee : this.convertDateFormat(Datee)})
           this.nursingAdmissionForm.patchValue({Timee : this.convertTimeFormat(Timee)})
 
           // Patch the form arrays
-          this.patchFormArray('TOADMMED', TOADMMED, this.createTOADMMEDGroup.bind(this));
+          // this.patchFormArray('TOADMMED', TOADMMED, this.createTOADMMEDGroup.bind(this));
+          this.toADMMEDImportedData = TOADMMED;
+          this.toPHYEXAMmportedData = TOPHYEXAM;
           // this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
           this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
           this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
-          this.patchFormArray('TOPHYEXAM', TOPHYEXAM, this.createTOPHYEXAMGroup.bind(this));
+          // this.patchFormArray('TOPHYEXAM', TOPHYEXAM, this.createTOPHYEXAMGroup.bind(this));
           // this.patchFormArray('TOSCALE', TOSCALE, this.createTOSCALEGroup.bind(this));
-          this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
+
+
+          if(TOVACCINATION && TOVACCINATION?.length){
+            this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
+          } else {
+            for (let index = 0; index < 2; index++) {
+              this.addItemRow();
+            }
+          }
+
           this.patchFormArray('TOVITALSIGN', TOVITALSIGN, this.createTOVITALSIGNGroup.bind(this));
 
         },
@@ -777,6 +800,7 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
     return new Promise((resolve, reject) => {
 
       // here need to make the final pylaod
+
       let payload = {
         d: this.nursingAdmissionForm.value
       };
@@ -796,52 +820,55 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
       });
 
 
-      payload.d.TOSCALE = this.toScaleArr && this.toScaleArr?.length ? this.toScaleArr : [];
+      payload.d.TOSCALE = this.scalesList && this.scalesList?.length ? this.scalesList : [];
        if(payload.d.TOSCALE.length) {
          payload.d.TOSCALE.forEach(item => {
            item.Dockey = this.docKey;
-           item.Datetimee = this.convertTimeFormat(item?.Datetimee)
+         });
+       }
+
+       payload.d.TOADMMED = this.toADMMEDImportedData && this.toADMMEDImportedData?.length ? this.toADMMEDImportedData : [];
+       if(payload.d.TOADMMED.length){
+         payload.d.TOADMMED.forEach(item => {
+           item.Dockey = this.docKey;
+          });
+       }
+
+
+       payload.d.TOPHYEXAM = this.toPHYEXAMmportedData && this.toPHYEXAMmportedData.length ? this.toPHYEXAMmportedData : [];
+       if(payload.d.TOPHYEXAM){
+         payload.d.TOPHYEXAM.forEach(item => {
+           item.Dockey = this.docKey;
          });
        }
 
 
 
+        payload.d.TOFUNASS.forEach(item => {
+          item.Dockey = this.docKey;
+        });
 
+        payload.d.TOINFECTIONS.forEach(item => {
+          item.Dockey = this.docKey;
+        });
 
-       payload.d.TOADMMED.forEach(item => {
-        item.Dockey = this.docKey;
-      });
-
-
-
-      payload.d.TOFUNASS.forEach(item => {
-        item.Dockey = this.docKey;
-      });
-
-      payload.d.TOINFECTIONS.forEach(item => {
-        item.Dockey = this.docKey;
-      });
-
-      payload.d.TOPHYEXAM.forEach(item => {
-        item.PhyDate = this.convertDateFormat(item.PhyDate);
-        item.PhyTime = this.convertTimeFormat(item.PhyTime);
-        item.Dockey = this.docKey;
-      });
 
 
       payload.d.TOVACCINATION.forEach(item => {
         item.Dockey = this.docKey;
       });
 
-      payload.d.TOVITALSIGN.forEach(item => {
-        item.Dockey = this.docKey;
-      });
+        payload.d.TOVITALSIGN = this.toVitalsArr && this.toVitalsArr?.length ? this.toVitalsArr : [];
+       if(payload.d.TOVITALSIGN.length) {
+         payload.d.TOVITALSIGN.forEach(item => {
+           item.Dockey = this.docKey;
+         });
+       }
 
       //Setting DocKey blank on create new version & release
       if(status === '5'){
         payload.d.Dockey = '';
       }
-
       this.subscription = this.emergencyService.CreatePediatricAdmAssesDoc(payload).subscribe({
         next: (data: any) => {
           // Handle successful data retrieva
@@ -1095,7 +1122,7 @@ addItemRowForTOFUNASS() {
 
   // Note : old function
   // public viewGlosgowModel(item) {
-  //   debugger
+  //
   //   if (this.noScaleAppicable) return;
   //   if (item.value == '1') {
   //     if (item.Dockey) {
@@ -1109,12 +1136,17 @@ addItemRowForTOFUNASS() {
   //New function
   public viewGlosgowModel(item) {
     if (this.noScaleAppicable) return;
-    if (item.value == '1') {
-      if (item.Dockey) {
+    if (item.Dockey) {
+
+      if (item.value == '1') {
         this.scalesGlosgow.openModalForGlosgow(item.Dockey);
-      } else {
-        this.sharedService.waringSwallModel('No data found');
+      } else if (item.value == '2'){
+        this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+      } else if(item.value == '3'){
+        this.bradenScaleTemp.openBradenScaleModal(item.Dockey);
       }
+    } else {
+      this.sharedService.waringSwallModel('No data found');
     }
   }
 
@@ -1197,7 +1229,6 @@ addItemRowForTOFUNASS() {
       Patient: this.storageService?.patientData?.name,
       admissionDate: this.storageService.patientData.periodStart,
     };
-    debugger
     this.erVitalsModal.openModalForErVital(item);
   }
 
@@ -1319,4 +1350,16 @@ addItemRowForTOFUNASS() {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
     return null;
   }
+medicationImportDrugArrayListData($event){
+   this.toADMMEDImportedData = $event
+}
+
+physicianExamaminationArrayListData($event){
+   this.toPHYEXAMmportedData = $event
+}
+
+
+
+
+
 }

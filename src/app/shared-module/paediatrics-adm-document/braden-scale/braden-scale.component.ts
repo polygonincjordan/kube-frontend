@@ -156,19 +156,45 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
     ).GpartName;
   }
 
-  public openBradenScaleModal(value: string) {
+  public openBradenScaleModal(dockeyVal: string) {
     this.dockeyValue = '';
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl morse-fall-scale',
       ignoreBackdropClick: true
     };
     this.modalRef = this.modalService.show(this.bradenScaleTemp, config);
-
-    if (value) {
+   this.dockeyValue = dockeyVal ? dockeyVal : '';
+    if (this.dockeyValue) {
       // this.getFacePainDetail(glowgosValue);
+      this.getBradenScaleDetailsForView(this.dockeyValue);
     }
   }
 
+    public getBradenScaleDetailsForView(dockey: string) {
+    // Subscribe using an object to define handlers
+    this.subscription = this.emergencyService.getBradenScaleData(dockey).subscribe({
+      next: (data: any) => {
+        // Handle successful data retrieval
+        this.Activity = data?.d.Activity;
+        this.Mobility = data?.d.Mobility;
+        this.Moisture = data?.d.Moisture;
+        this.NrsComments = data?.d.NrsComments;
+        this.Nutrition = data?.d.Nutrition;
+        this.Sensoryperception = data?.d.SensoryPerception;
+        this.Frictionandshear = data?.d.FrictionShear;
+        this.totalScoreCalc();
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error fetching Braden Scale Data:', err);
+        this.sharedService.waringSwallModel(`GET Error at braden : ${err}`);
+      },
+      complete: () => {
+        // Handle completion (optional), invoked when the observable completes
+        console.log('Braden Scale Data retrieval complete');
+      }
+    });
+  }
 
   public selectSensoryPerceptionQuestion(event: any, number: any) {
     this.Sensoryperception = number;
@@ -283,8 +309,9 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
           this.sharedService.waringSwallModel(`POST Error at braden scale : ${err}`);
         },
         complete: () => {
-          resolve(true); 
+          resolve(true);
           this.sharedService.successSwallModel('Braden scale created successfully');
+          this.modalRef?.hide();
         }
       });
     });

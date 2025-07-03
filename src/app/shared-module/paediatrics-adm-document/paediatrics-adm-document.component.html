@@ -104,7 +104,7 @@
         </div>
     </div>
     <div>
-        <app-medication-substances-section [nursingAdmissionForm]="nursingAdmissionForm"></app-medication-substances-section>
+        <app-medication-substances-section (medicationImportDrugArrayList)="medicationImportDrugArrayListData($event)" [nursingAdmissionForm]="nursingAdmissionForm" [toADMMEDImportedData]="toADMMEDImportedData"></app-medication-substances-section>
     </div>
     <!-- vital section -->
     <div class="end-container">
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div style="max-height: 296px; overflow: auto">
-                            <table [formGroup]="nursingAdmissionForm" class="table table-bordered past-table">
+                            <table class="table table-bordered past-table">
                                 <thead style="background-color: #e4edf5; color: black">
                                     <tr>
                                         <th scope="col">Description</th>
@@ -136,14 +136,14 @@
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
-                                <tbody formArrayName="TOVITALSIGN" style="background-color: #fbfcff">
-                                    <tr class="past-med-input" *ngFor="let item of nursingAdmissionForm.get('TOVITALSIGN')['controls']; let i = index">
+                                <tbody style="background-color: #fbfcff">
+                                    <tr class="past-med-input" *ngFor="let item of toVitalsArr; let i = index">
                                         <td style="
                                 padding: 10px !important;
                                 width: 15%;
                                 pointer-events: none;
                               ">
-                                            {{ item.Vdescription }}
+                                           {{ item.Vdescription }}
                                         </td>
                                         <td style="
                                 padding: 10px !important;
@@ -194,10 +194,11 @@
             [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-section>
     </div>
     <div>
-        <app-examination-tab (addTableRow)="addTableRow($event)" [nursingAdmissionForm]="nursingAdmissionForm"></app-examination-tab>
+      <!-- (addTableRow)="addTableRow($event)" -->
+        <app-examination-tab  [nursingAdmissionForm]="nursingAdmissionForm" (PhysicianExaminationDrugArrayList)="physicianExamaminationArrayListData($event)" [toPHYEXAMmportedData]="toPHYEXAMmportedData"></app-examination-tab>
     </div>
     <div>
-        <app-assessment-tab (addTableRow)="addTableRow($event)" [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
+        <app-assessment-tab  [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
     </div>
     <div>
         <app-orietation-patient-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-orietation-patient-tab>

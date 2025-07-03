@@ -101,16 +101,33 @@ export class MorseFallScaleComponent implements OnInit {
     this.calculateTotal();
   }
 
-  openMorseFallScaleModal(glowgosValue: any) {
+    getDocDataForView(dockey) {
+    this.emergencyService
+      .getMFSDoc(dockey)
+      .subscribe(
+        (data: any) => {
+          if (data.d) {
+            this.MorsefallForm.patchValue(data.d);
+            this.calculateTotal();
+          }
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+  }
+
+  openMorseFallScaleModal(dockeyVal: string) {
     this.dockeyValue = '';
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl morse-fall-scale',
       ignoreBackdropClick: true,
     };
     this.modalRef = this.modalService.show(this.morseFallScaleModal, config);
-
-    if (glowgosValue) {
+    this.dockeyValue = dockeyVal ? dockeyVal : '';
+    if (this.dockeyValue) {
       // this.getFacePainDetail(glowgosValue);
+      this.getDocDataForView(this.dockeyValue);
     }
   }
 
@@ -185,6 +202,7 @@ export class MorseFallScaleComponent implements OnInit {
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup',
         });
+        this.closeMorseFallScale();
       },
       (error) => {
         this.sharedService.errorSwallModel(error?.error?.error.message.value);
