@@ -17,7 +17,7 @@
                 >No medication & substance applicable</label
               >
             </div>
-            <img src="assets/img/file1.svg" title="Create Import" class="img-size">
+            <img src="assets/img/file1.svg" title="Create Import" (click)="openModal(medicationOrderCase)" class="img-size">
           </div>
           <div class="row m-0">
             <div class="col-md-8 mt-3 p-0">
@@ -30,10 +30,12 @@
                       <th class="w-15" scope="col">EMAR View</th>
                     </tr>
                   </thead>
-                  <tbody formArrayName="TOADMMED">
-                    <tr *ngFor="let item of nursingAdmissionForm.get('TOADMMED')['controls']; let i = index" [formGroupName]="i">
-                      <td><input type="text" class="form-control" formControlName="EventDesc"></td>
-                      <td><input type="text" class="form-control" formControlName="Dose"></td>
+                  <tbody>
+                    <tr *ngFor="let item of  medicationImportDrugArray let i = index">
+                      <td>{{item.Description}}</td>
+                      <td>{{item.Dose}}</td>
+                      <!-- <td><input type="text" class="form-control" formControlName="EventDesc"></td>
+                      <td><input type="text" class="form-control" formControlName="Dose"></td> -->
                       <td>
                         <!-- <a (click)="viewEmar(i)">View</a> -->
                         <a>View</a>
@@ -56,3 +58,79 @@
   </div>
 </div>
 </form>
+
+<ng-template #medicationOrderCase>
+  <div>
+    <!-- <h4 class="modal-title" style="color: white">Consultation Completion</h4> -->
+    <div class="allergy-header">
+      <div style="
+        font-size: 23px;
+        font-weight: bold">
+
+        <span>Import Current Medication Order for {{storageService.patientData.name}}</span>
+      </div>
+
+
+
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <div style="display: flex;
+    justify-content: end;
+    padding-right: 1rem;">
+    <button
+      (click)="medicationImport()"
+      style="border: 1px solid;
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 5px 20px;
+      border-radius: 4px;
+      font-weight: 700;margin-top: 4px;"
+      >
+      Import
+      </button>
+    </div>
+    <form style="max-height: 296px;
+    overflow: auto;">
+      <table class="table table-bordered allergy-table mt-3">
+        <thead style="background-color: #e4edf5;
+    color: black;text-align: center;position: sticky;
+    top: 0;">
+          <tr>
+            <th scope="col" style="    text-align: -webkit-center;">
+              <input type="checkbox" [checked]="selectedMedicationOrder.length === drugArray.length" class="form-control"
+               (change)="collectAllMedicationIData($event)" style="width:20px"/>
+              </th>
+            <th scope="col">Medication Order - Case</th>
+            <th scope="col">Dose</th>
+            <th scope="col">Frequency</th>
+            <th scope="col">Status</th>
+            <th scope="col">Order type</th>
+            <th scope="col">MO Valid</th>
+          </tr>
+        </thead>
+        <tbody style="background: #fbfcff;">
+          <tr *ngFor="let item of drugArray let i = index">
+           <td style="text-align: -webkit-center;"> <span class="input-text-field d-inline-block align-top w-100">
+            <ng-container>
+              <input
+                type="checkbox"
+                class="form-control" [checked]="isChecked(item)"
+                (change)="collectMedicationIData($event,item)"
+                style="width:20px"
+              />
+            </ng-container>
+          </span></td>
+          <td>{{item.Descrlt}} {{item.Quan}} {{item.Quanunit}} {{item.Routedescr}} {{item.N1id}}</td>
+          <td>{{item.Quan}} {{item.Quanunit }}</td>
+          <td></td>
+          <td>{{item.MosidDesc}}</td>
+          <td>{{item.MotypId == '30' ? 'Planned Administration':'Discharge'}}</td>
+          <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+
+  </div>
+</ng-template>

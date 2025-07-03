@@ -14,12 +14,213 @@
                                     <p class="d-inline-block m-0">{{ tab }}</p>
                                 </li>
                             </ul>
-                            <div>
+                            <!-- <div>
                               <img style="height: 25px;" src="./assets/img/add.png" (click)="addRow()" />
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="tab-content pl-2 mb-3" style="border-radius: 7px">
+
+
+
+
+
+
+
+
+    <div  *ngIf="selectedTabName == 'Physical Examination'" class="examination">
+      <div class="main-border mt-5">
+        <!-- <button class="personal-history">Physical Examination </button> -->
+        <div class="row">
+          <div class="col-6">
+            <div class="New-border">
+              <div class="row">
+                <div class="col-6">
+                  <label class="mode-label">Description</label>
+                  <ul class="general-boxes">
+                    <li>General</li>
+                    <li>Head and neck </li>
+                    <li>Eyes</li>
+                    <li>ENT </li>
+                    <li>Respiratory</li>
+                    <li>Cardiovascular</li>
+                    <li>Haematology / Lymphatic / Immunologic </li>
+                  </ul>
+
+                </div>
+                <div class="col-2" style="padding: 0px 5px;">
+                  <label class="mode-label">Mode</label>
+                  <ng-container [formGroup]="generalPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('generalPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="headNeckPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('headNeckPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="eyesPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('eyesPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="entPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('entPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="respiratoryPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('respiratoryPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="cardioPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('cardioPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="haemaPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('haemaPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                </div>
+                <div class="col-4 input-boxes" style=" padding: 0px 15px 0px 5px;">
+                  <label class="mode-label">Comment </label>
+                  <ng-container [formGroup]="generalPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.generalPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="headNeckPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.headNeckPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="eyesPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.eyesPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="entPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.entPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="respiratoryPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.respiratoryPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="cardioPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.cardioPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="haemaPhyExamForm">
+                    <input type="text" formControlName="PhyComments" [title]="this.haemaPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="New-border">
+              <div class="row">
+                <div class="col-6">
+                  <label class="mode-label">Description</label>
+                  <ul class="general-boxes">
+                    <li>Gastrointestinal</li>
+                    <li>Musculoskeletal</li>
+                    <li>Skin</li>
+                    <li>Neurologic</li>
+                    <li>Genitourinary</li>
+                    <li>Breast</li>
+                  </ul>
+
+                </div>
+
+                <div class="col-2" style="padding: 0px 5px;">
+                  <label class="mode-label">Mode</label>
+                  <ng-container [formGroup]="gastroPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode"  (change)="fillCommentBox('gastroPhyExamForm')">
+                      <option  value=""></option>
+                      <option  value="0">Normal </option>
+                      <option  value="1">Abnormal</option>
+                    </select>
+                  </ng-container>
+                  <ng-container [formGroup]="musculoPhyExamForm">
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('musculoPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="skinPhyExamForm" >
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('skinPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="neuroPhyExamForm" >
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('neuroPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="genitPhyExamForm" >
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('genitPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                    <ng-container [formGroup]="breastPhyExamForm" >
+                    <select class="new-slect-box" aria-label="Default select example" formControlName="PhyMode" (change)="fillCommentBox('breastPhyExamForm')">
+                      <option value=""></option>
+                      <option value="0">Normal </option>
+                      <option value="1">Abnormal</option>
+                    </select>
+                    </ng-container>
+                </div>
+
+                <div class="col-4 input-boxes" style=" padding: 0px 15px 0px 5px;">
+                  <label class="mode-label">Comment </label>
+                  <ng-container [formGroup]="gastroPhyExamForm">
+                    <input type="text" formControlName="PhyComments"  [title]="this.gastroPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="musculoPhyExamForm">
+                    <input type="text" formControlName="PhyComments"  [title]="this.musculoPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="skinPhyExamForm">
+                    <input type="text" formControlName="PhyComments"  [title]="this.skinPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="neuroPhyExamForm">
+                    <input type="text" formControlName="PhyComments"  [title]="this.neuroPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="genitPhyExamForm">
+                    <input type="text" formControlName="PhyComments"  [title]="this.genitPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                    <ng-container [formGroup]="breastPhyExamForm">
+                    <input type="text" formControlName="PhyComments"  [title]="this.breastPhyExamForm.controls.PhyComments.value">
+                    </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!--
                         <div *ngIf="selectedTabName == 'Physical Examination'">
                             <table class="table table-bordered past-table">
                                 <thead>
@@ -54,7 +255,11 @@
 </tbody>
 
                             </table>
-                        </div>
+                        </div> -->
+
+
+
+
                         <div *ngIf="selectedTabName == 'Sexual Development'">
   <!-- Infant -->
   <div class="row m-0 mb-3">

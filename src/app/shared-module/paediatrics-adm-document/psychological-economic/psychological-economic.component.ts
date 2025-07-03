@@ -10,7 +10,7 @@ import { InfactiousDrodownList, IsolationList, statusList, vaccinationDrodownLis
 export class PsychologicalEconomicComponent implements OnInit {
 
 selectedTabName: string = 'Psychological History';
-  @Output() addTableRow = new EventEmitter<any>();
+  // @Output() addTableRow = new EventEmitter<any>();
   @Input() nursingAdmissionForm: FormGroup;
 
   tabList = ['Psychological History', 'Economic History'];
@@ -94,9 +94,9 @@ selectedTabName: string = 'Psychological History';
     this.selectedTabName = tabName;
   }
 
-  addRow() {
-    this.addTableRow.emit(this.selectedTabName);
-  }
+  // addRow() {
+  //   this.addTableRow.emit(this.selectedTabName);
+  // }
 
   passDataInPerantComponent() {
     // this.vaccinationDataPass.emit(this.selectedTabName);
