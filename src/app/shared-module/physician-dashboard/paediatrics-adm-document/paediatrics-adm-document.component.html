@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div class="end-container">
+  <!-- <div class="end-container">
     <div class="scale-box-main">
       <label class="box-label">Scales</label>
       <div class="container-fluid">
@@ -96,11 +96,11 @@
         </div>
       </div>
     </div>
-  </div>
-  <div>
+  </div> -->
+  <!-- <div>
     <app-medication-substances-section
       [nursingAdmissionForm]="nursingAdmissionForm"></app-medication-substances-section>
-  </div>
+  </div> -->
   <!-- vital section -->
   <div class="end-container">
     <div class="scale-box-main">
@@ -181,22 +181,22 @@
 
   <!-- surgical history tab, medical history tab, family history tab under Medical History section from-->
 
-  <div class="end-container" [formGroup]="nursingAdmissionForm">
+  <!-- <div class="end-container" [formGroup]="nursingAdmissionForm">
     <div class="scale-box-main">
       <div class="main-border mt-5">
         <div>
-          <ul class="nav nav-pills">
+          <ul class="nav nav-pills mb-3">
             <li class="nav-item">
               <a class="nav-link c-pointer" [ngClass]="(med) ? 'selected' : ''" aria-current="page" data-toggle="tab"
-                (click)="switchTabsForMedical('med')" style="width: 170px;">Past Medical Condition</a>
+                (click)="switchTabsForMedical('med')" style="width: 190px;">Past Medical Condition</a>
             </li>
             <li class="nav-item">
               <a class="nav-link c-pointer" [ngClass]="(surg) ? 'selected' : ''" data-toggle="tab"
-                (click)="switchTabsForMedical('surg')" style="width: 170px;">Past Surgical History</a>
+                (click)="switchTabsForMedical('surg')" style="width: 190px;">Past Surgical History</a>
             </li>
             <li class="nav-item">
               <a class="nav-link c-pointer" [ngClass]="(family) ? 'selected' : ''" data-toggle="tab"
-                (click)="switchTabsForMedical('family')" style="width: 170px;">Family History</a>
+                (click)="switchTabsForMedical('family')" style="width: 190px;">Family History</a>
             </li>
           </ul>
         </div>
@@ -209,15 +209,12 @@
               <div style="display: flex;
        align-items: center;
        gap: 10px;">
-                <!-- <input type="checkbox" style="width: 36px;
-         height: 22px;" formControlName="NoDiagnoses" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toPastMedical.length >0 ? true:null"/> -->
                 <input type="checkbox" style="width: 36px;
          height: 22px;" formControlName="NoMedicalHistory" (change)="handleCheckboxPastMed()"
                   [attr.disabled]="toPastMedical.length >0 ? true:null" />
                 <label class="admitting-physician">No medical history known</label>
               </div>
               <div>
-                <!-- <button class="create-diagnosis" (click)="openModalForAllergy()">Create & Import</button> -->
                 <div class="" (click)="openModalForPastMedical()">
                   <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
                 </div>
@@ -274,15 +271,13 @@
               <div style="display: flex;
           align-items: center;
           gap: 10px;">
-                <!-- <input type="checkbox" style="width: 36px;
-            height: 22px;" formControlName="NoDiagnoses" (change)="handleCheckboxDiagnosis()" [attr.disabled]="toDiagnosisArr.length >0 ? true:null"/> -->
+              
                 <input type="checkbox" style="width: 36px;
             height: 22px;" formControlName="NoSurgeryHistory" (change)="handleCheckboxPastSurg()"
                   [attr.disabled]="toPastSurgical.length >0 ? true:null" />
                 <label class="admitting-physician">No surgery history known</label>
               </div>
               <div>
-                <!-- <button class="create-diagnosis" (click)="openModalForDiagnosis()" [disabled]="enableCreateDiagnosis">Create & Import</button> -->
 
                 <div class="" (click)="openModalForPastSurgical()">
                   <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
@@ -393,7 +388,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- surgical history tab, medical history tab, family history tab under Medical History section till -->
 
 
@@ -408,19 +403,19 @@
     <app-physical-assessment-section [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-section>
   </div>
   <div>
-    <app-examination-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-examination-tab>
+    <app-examination-tab  [nursingAdmissionForm]="nursingAdmissionForm" (PhysicianExaminationDrugArrayList)="physicianExamaminationArrayListData($event)" [toPHYEXAMmportedData]="toPHYEXAMmportedData"></app-examination-tab>
   </div>
   <div>
     <app-assessment-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
   </div>
-  <div>
+  <!-- <div>
     <app-orietation-patient-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-orietation-patient-tab>
-  </div>
+  </div> -->
 
 
 
   <!-- Diagnosis section from  -->
-  <div class="end-container">
+  <!-- <div class="end-container">
     <div class="scale-box-main">
       <label class="box-label">Diagnosis</label>
       <div class="container-fluid">
@@ -479,17 +474,17 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- Diagnosis section till  -->
 
     <!-- impression and plan of care section from (textarea)-->
-  <div class="end-container" [formGroup]="nursingAdmissionForm">
+  <!-- <div class="end-container" [formGroup]="nursingAdmissionForm">
     <div class="scale-box-main">
       <label class="box-label">Impression and Plan of Care</label>
       <textarea class="form-control" formControlName="IPcare"
         [ngClass]="nursingAdmissionForm.get('IPcare').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
     </div>
-  </div>
+  </div> -->
   <!-- impression and plan of care section till -->
 
 </div>

@@ -17,7 +17,7 @@
     </span>
     </div> -->
   </div>
-  <Form *ngIf="this.checkCounterPatient.isEnCounterCheck" class="diagnosis-form mt-1" [formGroup]="diagnosisForm">
+  <!-- <Form *ngIf="this.checkCounterPatient.isEnCounterCheck" class="diagnosis-form mt-1" [formGroup]="diagnosisForm">
     <ng-container formArrayName="diagnosisFormList" *ngFor=" let item of diagnosisForm.get('diagnosisFormList')['controls']; let i = index" >
       <div *ngIf="!item.value.CancelInd" class="diagnosis-list mt-1">
         <div [formGroupName]="i">
@@ -76,7 +76,7 @@
               </div>
             </div>
             <div  class="w-8 d-flex align-items-center mt-2">
-              <!-- <img *ngIf="item.value.Favorite" class="ml-1 h-20 cursor-pointer" src="assets/img/Star.svg" (click)="diagnosisFavCreateAction(item, 'D', i)" style="width: 25px;
+              <img *ngIf="item.value.Favorite" class="ml-1 h-20 cursor-pointer" src="assets/img/Star.svg" (click)="diagnosisFavCreateAction(item, 'D', i)" style="width: 25px;
               margin-left: 10px;
               border: 1px solid;
               padding: 4px;
@@ -93,7 +93,7 @@
               border: 1px solid;
               padding: 4px;
               background-color: #fff9f9;
-              border-radius: 6px;"/> -->
+              border-radius: 6px;"/>
             </div>
           </div>
           <div class="d-flex">
@@ -134,7 +134,7 @@
         </div>
       </div>
     </ng-container>
-  </Form>
+  </Form> -->
   <Form [ngClass]="!this.checkCounterPatient.isEnCounterCheck? 'h-100' : ''" class="diagnosis-form mb-1 border-0 mt-3" >
     <ng-container *ngFor="let diagnosis of diagnosisStaticData | filter: searchString" >
       <div class="diagnosis-list">
@@ -186,7 +186,7 @@
                 </span>
               </div>
             </div>
-            <div class="w-8 d-flex align-items-center mt-1">
+            <!-- <div class="w-8 d-flex align-items-center mt-1">
               <div *ngIf="checkCounterPatient.isEnCounterCheck">
                 <img width="25px" title="Info" (click)="openDiagnosisInfoModal(informationModal, diagnosis)" src="assets/img/information.jfif" class="ml-1 cursor-pointer" style="width: 26px;
                 height: 26px;
@@ -210,7 +210,7 @@
                 border-radius: 6px; margin-left: 3px"/>
               
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="d-flex">
             <div class="w-10 mr-1 mt-2 ">

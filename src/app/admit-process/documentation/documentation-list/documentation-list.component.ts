@@ -1003,6 +1003,7 @@ export class DocumentationListComponent implements OnInit {
   }
 
   realodEducationList(event) {
+    console.log(event, "pppppppppppppppppppppppppp")
     this.selectedIndex = undefined;
     this.getCurrentVisitDetails('1');
     this.getCurrentVisitDetails('2');

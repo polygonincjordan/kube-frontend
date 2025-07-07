@@ -472,8 +472,6 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     OpVValuables: '',
     OpVSentHomeTxt: '',
     OpVGivenByTxt: '',
-    UCommentsf:'',
-    Endocrine:'',
     EnmNoReportedAbnorm: false,
     NuSeizures: false,
     NuTremor: false,
@@ -661,16 +659,23 @@ TOVITALSIGN: this.formBuilder.array([
             ...flatFields
           } = result;
 
-          this.toAllergyArr = TOALLERGY && TOALLERGY.length ? TOALLERGY : [];
+          this.toAllergyArr = TOALLERGY.results && TOALLERGY.results.length ? TOALLERGY.results : [];
 
-          this.toScaleArr = TOSCALE && TOSCALE.length ? TOSCALE : [];
-          if(this.toScaleArr && this.toScaleArr.length){
-            this.toScaleArr.forEach(item => {
-              item.Datetimee = this.convertTimeFormat(item?.Datetimee)
-            });
-          }
+          this.toScaleArr = TOSCALE.results && TOSCALE.results.length ? TOSCALE.results : [];
 
-          this.toVitalsArr = TOVITALSIGN && TOVITALSIGN?.length ? TOVITALSIGN : [];
+          this.toScaleArr.forEach((element) => {
+            this.scalesList.forEach((res: any) => {
+              if (element.ScaleType == res.ScaleType && element.LastScore) {
+                res.Datetimee = element.Datetimee,
+                  res.Dockey = element.Dockey,
+                  res.description = element.ScoreDesc,
+                  res.LastScore = element.LastScore,
+                  res.ScaleType = element.ScaleType
+              }
+            })
+          })
+
+          this.toVitalsArr = TOVITALSIGN.results && TOVITALSIGN?.results.length ? TOVITALSIGN.results : [];
 
 
           this.nursingAdmissionForm.patchValue(flatFields);
@@ -679,8 +684,8 @@ TOVITALSIGN: this.formBuilder.array([
 
           // Patch the form arrays
           // this.patchFormArray('TOADMMED', TOADMMED, this.createTOADMMEDGroup.bind(this));
-          this.toADMMEDImportedData = TOADMMED;
-          this.toPHYEXAMmportedData = TOPHYEXAM;
+          this.toADMMEDImportedData = TOADMMED.results;
+          this.toPHYEXAMmportedData = TOPHYEXAM.results;
           // this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
           this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
           this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
@@ -688,7 +693,7 @@ TOVITALSIGN: this.formBuilder.array([
           // this.patchFormArray('TOSCALE', TOSCALE, this.createTOSCALEGroup.bind(this));
 
 
-          if(TOVACCINATION && TOVACCINATION?.length){
+          if(TOVACCINATION.results && TOVACCINATION?.results?.length){
             this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
           } else {
             for (let index = 0; index < 2; index++) {
@@ -784,6 +789,7 @@ createTOVITALSIGNGroup(item): FormGroup {
 patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) {
   const formArray = this.nursingAdmissionForm.get(key) as FormArray;
   formArray.clear();
+  console.log(data, "------")
 
   const results = Array.isArray(data?.results) ? data.results : [];
 
@@ -819,8 +825,14 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
         item.Dockey = this.docKey;
       });
 
+       let checkScalesList: any[] = this.scalesList.filter((res) => {
+        delete res.description;
+        delete res.value;
+        res.LastScore = res?.LastScore?.toString()
+        if (res.LastScore) return res;
+      });
 
-      payload.d.TOSCALE = this.scalesList && this.scalesList?.length ? this.scalesList : [];
+      payload.d.TOSCALE = checkScalesList;
        if(payload.d.TOSCALE.length) {
          payload.d.TOSCALE.forEach(item => {
            item.Dockey = this.docKey;
@@ -829,9 +841,12 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
 
        payload.d.TOADMMED = this.toADMMEDImportedData && this.toADMMEDImportedData?.length ? this.toADMMEDImportedData : [];
        if(payload.d.TOADMMED.length){
-         payload.d.TOADMMED.forEach(item => {
-           item.Dockey = this.docKey;
-          });
+        let convertedArray: any[] = payload.d.TOADMMED.map(item => ({
+          Dockey: item.Dockey,
+          EventDesc: item.Description,
+          Dose: item.Dose
+        }));
+        payload.d.TOADMMED = convertedArray;
        }
 
 
@@ -843,20 +858,26 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
        }
 
 
-
+      payload.d.TOFUNASS = payload.d.TOFUNASS.filter(item => item.Describe?.trim() !== '' || item.Functions?.trim() !== '');
+      if(payload.d.TOFUNASS.length) {
         payload.d.TOFUNASS.forEach(item => {
           item.Dockey = this.docKey;
         });
+      }
 
+      payload.d.TOINFECTIONS = payload.d.TOINFECTIONS.filter(item => item.InfectiousDiesease?.trim() !== '' || item.Status?.trim() !== '' || item.TypeIsolation?.trim() !== '');
+      if(payload.d.TOINFECTIONS.length) {
         payload.d.TOINFECTIONS.forEach(item => {
           item.Dockey = this.docKey;
         });
+      }
 
-
-
-      payload.d.TOVACCINATION.forEach(item => {
-        item.Dockey = this.docKey;
-      });
+      payload.d.TOVACCINATION = payload.d.TOVACCINATION.filter(item => item.Other?.trim() !== '' || item.Status?.trim() !== '' || item.Vaccination?.trim() !== '');
+      if(payload.d.TOVACCINATION.length) {
+        payload.d.TOVACCINATION.forEach(item => {
+          item.Dockey = this.docKey;
+        });
+      }
 
         payload.d.TOVITALSIGN = this.toVitalsArr && this.toVitalsArr?.length ? this.toVitalsArr : [];
        if(payload.d.TOVITALSIGN.length) {
