@@ -228,7 +228,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
       ],
       medication: [
         { key: 'MeIvImNarcotics', value: 1 },
-        { key: 'MeAntiHypertensives', value: 3 },
+        { key: 'MeAntiHypertensives', value: 2 },
         { key: 'MeNone', value: 0 }
       ]
     };

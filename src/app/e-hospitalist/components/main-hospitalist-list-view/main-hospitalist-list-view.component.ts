@@ -229,6 +229,7 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   }
 
   redirectToeKardex(data) {
+    localStorage.setItem('checkindata', JSON.stringify(data));
     this.openModuleKardex.emit(data);
   }
   redirectLDRToeKardex(data) {

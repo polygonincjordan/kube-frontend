@@ -8691,9 +8691,9 @@ export class PatientDocumentationComponent implements OnInit {
   }
   releseDeliveryRecordMain() {
     this.emergencyService.fetchDeliveryRecordDoc(this.deliverRecordList[0].Dockey).subscribe((res: any) => {
-      delete res?.results[0]?.__metadata;
+      delete res?.d?.results[0]?.__metadata;
       let d: any = {
-        d: res?.results[0],
+        d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
       this.emergencyService.saveDeliveryRecordDoc(d).subscribe(
