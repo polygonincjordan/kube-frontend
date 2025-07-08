@@ -550,12 +550,14 @@
             <div class="col-md-2"></div>
             <div class="col-md-1">
               <div class="form-group">
-                <input type="checkbox" class="mr-1" name="" formControlName="TsAtOther" (change)="onAnesthesiaChange('TsAtOther')"/>
+                <input type="checkbox" class="mr-1" name="" formControlName="TsAtOther"
+                  (change)="onAnesthesiaChange('TsAtOther')" />
                 <div class="label">Other</div>
               </div>
             </div>
             <div class="col-md-3">
-              <input type="text" class="form-control" name="" formControlName="TsAtOtherTxt" [readOnly]="!deliveryRecordeForm.get('TsAtOther').value"/>
+              <input type="text" class="form-control" name="" formControlName="TsAtOtherTxt"
+                [readOnly]="!deliveryRecordeForm.get('TsAtOther').value" />
             </div>
           </div>
           <div class="row">
@@ -594,10 +596,12 @@
                   <ng-container formArrayName="TONEONATAL"
                     *ngFor=" let item of deliveryRecordeForm.get('TONEONATAL')['controls']; let i = index">
                     <tr [formGroupName]="i" class="c-pointer">
-                      <!-- <td></td> -->
-                      <td><input type="text" class="form-control" formControlName="Noo" /></td>
+                      <td class="w-5"><input type="text" class="form-control" formControlName="Noo" [disabled]="true" /></td>
                       <td><input type="time" step="2" class="form-control" formControlName="Timee" /></td>
-                      <td><input type="text" class="form-control" formControlName="Sex" /></td>
+                      <td class="w-10">
+                        <ng-select [items]="gender" bindLabel="label" bindValue="value" placeholder="Select"
+                          style="width: 100%" formControlName="Sex"></ng-select>
+                      </td>
                       <td><input type="text" class="form-control" formControlName="Wt" /></td>
                       <td><input type="text" class="form-control" formControlName="ApgarScore1" /></td>
                       <td><input type="text" class="form-control" formControlName="ApgarScore5" /></td>

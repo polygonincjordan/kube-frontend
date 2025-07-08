@@ -62,6 +62,7 @@ import { ConfusionAssessmentMethodComponent } from 'src/app/shared-module/confus
 import { PaediatricsAdmDocumentComponent } from 'src/app/shared-module/paediatrics-adm-document/paediatrics-adm-document.component';
 import { RichmondScaleComponent } from './richmond-scale/richmond-scale.component';
 import { RamsaySedationScaleComponent } from 'src/app/shared-module/ramsay-sedation-scale/ramsay-sedation-scale.component';
+import { LaborRoomFlowSheetComponent } from './labor-room-flow-sheet/labor-room-flow-sheet.component';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -113,6 +114,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(PaediatricsAdmDocumentComponent) PaediatricsAdmDocumentComp: PaediatricsAdmDocumentComponent; // working on here
   @ViewChild(RichmondScaleComponent) RichmondScaleComp: RichmondScaleComponent;
   @ViewChild(RamsaySedationScaleComponent) RamsaySedationScaleComp: RamsaySedationScaleComponent;
+  @ViewChild(LaborRoomFlowSheetComponent) LaborRoomFlowSheetComp: LaborRoomFlowSheetComponent;
 
 
   @ViewChild('patientDiagnosisHistory', { static: true }) patientDiagnosisHistory: PatientDiagnoisiHistoryComponent;
@@ -682,6 +684,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getConfusionAssessmentList();
     this.richmondLatestDocument();
     this.ramsayLatestDocument();
+    this.laborFlowLatestDocument();
   }
 
   LatestMFSSet() {
@@ -706,6 +709,21 @@ export class PatientDocumentationComponent implements OnInit {
       next: (_success: any) => {
         if (_success?.d?.results) {
           this.richmondList = _success.d.results;
+        }
+      },
+      error: (err: any) => {
+        // Handle errors if the request fails
+        console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  laborFlowLatestDocument() {
+    this.emergencyService.LaborRoomDocumentLatestDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        if (_success?.d?.results) {
+          this.laborRoomFlowList = _success.d.results;
         }
       },
       error: (err: any) => {
@@ -2278,7 +2296,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.NurseAssMainComp?.ngOnDestroy();
     }
     if (this.openLaborRoomFlow) {
-      this.NurseAssMainComp?.ngOnDestroy();
+      this.LaborRoomFlowSheetComp?.ngOnDestroy();
     }
     if (this.openNicuNurFlowSheet) {
       this.NurseAssMainComp?.ngOnDestroy();
@@ -2380,6 +2398,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPediatricAdmAssesLatestDoc(); //working here
     this.richmondLatestDocument();
     this.ramsayLatestDocument();
+    this.laborFlowLatestDocument();
   }
 
   openDocument(action) {
@@ -3273,7 +3292,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'delete') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseAssMainDoc();
+          this.deleteLaborFlowDoc();
         } else {
           this.sharedService.waringSwallModel(`The document is already released`);
         }
@@ -3281,7 +3300,7 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseAssMainDetail();
+          this.releaseLaborFlowDetails();
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -3294,13 +3313,13 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openLaborRoomFlow = true;
-        this.NurseAssMainComp.createDoc('4').then((formValue: any) => {
+        this.LaborRoomFlowSheetComp.createLaborRoomDoc(4).then((formValue: any) => {
           if (formValue) {
-            this.refresh()
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
-          console.error('Error creating education assessment:', error);
+          console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
         });
       }
     }
@@ -5574,17 +5593,7 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Glasgow coma scale:', error);
         })
       }
-      if (this.openLaborRoomFlow) {
-        let docStatus = '1';
-        this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
-          if (formValue) {
-            if (btnType == 'close') this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        })
-      }
+
       if (this.openNicuNurFlowSheet) {
         let docStatus = '1';
         this.NurseAssMainComp.createDoc(docStatus).then((formValue: any) => {
@@ -5927,6 +5936,18 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
         });
       }
+      if (this.openLaborRoomFlow) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.LaborRoomFlowSheetComp.createLaborRoomDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
+        });
+      }
     }
 
     else if (this.actionType == 'edit') {
@@ -6176,15 +6197,6 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
-      if (this.openLaborRoomFlow) {
-        this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
-          if (formValue) {
-            if (btnType == 'close') this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error modifying Glasgow coma scale:', error);
-        });
-      }
       if (this.openNicuNurFlowSheet) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
@@ -6405,6 +6417,18 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
+        });
+      }
+      if (this.openLaborRoomFlow) {
+        let docStatus = '1';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.LaborRoomFlowSheetComp.createLaborRoomDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
         });
       }
     }
@@ -6654,15 +6678,7 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error scale:', error);
         });
       }
-      if (this.openLaborRoomFlow) {
-        this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
-          if (formValue) {
-            this.refresh();
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-        });
-      }
+
       if (this.openNicuNurFlowSheet) {
         this.NurseAssMainComp.createDoc('3', 'copy').then((formValue: any) => {
           if (formValue) {
@@ -6906,6 +6922,18 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
+        });
+      }
+      if (this.openLaborRoomFlow) {
+        let docStatus = '3';
+        // if(this.selectedDocData?.Dockey) docStatus = '3';
+        this.LaborRoomFlowSheetComp.createLaborRoomDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
         });
       }
       if (this.openMorseFallScale) {
@@ -7290,16 +7318,7 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error creating Glasgow coma scale:', error);
       });
     }
-    else if (this.openLaborRoomFlow) {
-      this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
-        if (formValue) {
-          this.refresh();
-        }
-      }).catch((error: any) => {
-        console.error('Error scale:', error);
-        console.error('Error creating Glasgow coma scale:', error);
-      });
-    }
+
     else if (this.openNicuNurFlowSheet) {
       this.CvcInsertionDocumentComp.createCvcInsertionDocument('2', 'edit').then((formValue: any) => {
         if (formValue) {
@@ -7351,7 +7370,17 @@ export class PatientDocumentationComponent implements OnInit {
         console.error('Error scale:', error);
         console.error('Error creating Obstetric Fall Risk Assessment:', error);
       });
-    } else if (this.openConfusionAssessmentDocument) {
+    } else if (this.openLaborRoomFlow) {
+        let docStatus = '3';
+        this.LaborRoomFlowSheetComp.createLaborRoomDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+          console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
+        });
+      } else if (this.openConfusionAssessmentDocument) {
         let docStatus = '3';
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.ConfusionAssessmentMethodComp.createNursingAssessmentDoc(docStatus).then((formValue: any) => {
@@ -7965,6 +7994,40 @@ export class PatientDocumentationComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         (await this.emergencyService.deleteNurseAssMainDoc(this.nurseAssMainList[0].Dockey)).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+  async deleteLaborFlowDoc() {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup'
+    }).then(async (result) => {
+      if (result.value) {
+        (await this.emergencyService.deleteLaborRoomDocument(this.laborRoomFlowList[0].Dockey)).subscribe(
           (_success: any) => {
             Swal.fire({
               text: "Document is deleted successfully",
@@ -8689,6 +8752,21 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  releaseLaborFlowDetails() {
+    this.emergencyService.fetcLaborRoomDocDetails(this.laborRoomFlowList[0].Dockey).subscribe((res: any) => {
+      delete res?.d?.results[0]?.__metadata;
+      let d: any = {
+        d: res?.d?.results[0],
+      };
+      d.d.DocStatus = '2';
+      this.emergencyService.saveLaborRoomDocument(d).subscribe(
+        (result) => {
+          this.sharedService.successSwallModel('Labor Room Flow Sheet PMD Document released successfully');
+          this.refresh();
+        }
+      );
+    })
+  }
   releseDeliveryRecordMain() {
     this.emergencyService.fetchDeliveryRecordDoc(this.deliverRecordList[0].Dockey).subscribe((res: any) => {
       delete res?.d?.results[0]?.__metadata;
@@ -8991,11 +9069,23 @@ export class PatientDocumentationComponent implements OnInit {
   copyDirectReleaseDeliveryRecord() {
     this.DeliveryRecordDocComp.createDeliveryRecordDoc('5', 'copy').then((formValue: any) => {
       if (formValue) {
+        this.sharedService.successSwallModel('Delivery Record Document released successfully');
         this.refresh();
       }
     }).catch((error: any) => {
       console.error('Error scale:', error);
-      console.error('Error creating Nursing assessment document:', error);
+      console.error('Error creating Delivery Record Document:', error);
+    });
+  }
+
+  copyDirectReleaseLaborRoomFlow() {
+    this.LaborRoomFlowSheetComp.createLaborRoomDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error scale:', error);
+      console.error('Error creating Labor Room Flow Sheet document:', error);
     });
   }
 

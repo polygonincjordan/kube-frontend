@@ -688,13 +688,27 @@ TOVITALSIGN: this.formBuilder.array([
           this.toPHYEXAMmportedData = TOPHYEXAM.results;
           // this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
           this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
-          this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
+          // this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
           // this.patchFormArray('TOPHYEXAM', TOPHYEXAM, this.createTOPHYEXAMGroup.bind(this));
           // this.patchFormArray('TOSCALE', TOSCALE, this.createTOSCALEGroup.bind(this));
 
 
+          if(TOINFECTIONS.results && TOINFECTIONS?.results?.length){
+            this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
+            for (let index = TOINFECTIONS?.results?.length; index < 3; index++) {
+              this.addItemRowforTOINFECTIONS();
+            }
+          } else {
+            for (let index = 0; index < 2; index++) {
+              this.addItemRowforTOINFECTIONS();
+            }
+          }
+
           if(TOVACCINATION.results && TOVACCINATION?.results?.length){
             this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
+            for (let index = TOVACCINATION?.results?.length; index < 3; index++) {
+              this.addItemRow();
+            }
           } else {
             for (let index = 0; index < 2; index++) {
               this.addItemRow();
@@ -843,7 +857,7 @@ patchFormArray(key: string, data: any, createGroupFn: (item: any) => FormGroup) 
        if(payload.d.TOADMMED.length){
         let convertedArray: any[] = payload.d.TOADMMED.map(item => ({
           Dockey: item.Dockey,
-          EventDesc: item.Description,
+          EventDesc: item.EventDesc,
           Dose: item.Dose
         }));
         payload.d.TOADMMED = convertedArray;

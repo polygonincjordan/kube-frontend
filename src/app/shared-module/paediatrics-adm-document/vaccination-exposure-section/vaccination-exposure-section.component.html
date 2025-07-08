@@ -6,12 +6,8 @@
         <div class="tab-navigate">
           <div class="tab-nav w-100">
             <ul class="m-0 p-0 d-flex flex-wrap mb-2">
-              <li
-                *ngFor="let item of tabList"
-                class="d-flex m-0 align-items-center"
-                (click)="selectTab(item)"
-                [ngClass]="item == selectedTabName ? 'active' : ''"
-              >
+              <li *ngFor="let item of tabList" class="d-flex m-0 align-items-center" (click)="selectTab(item)"
+                [ngClass]="item == selectedTabName ? 'active' : ''">
                 <img src="./assets/img/grid-icon.svg" />
                 <p class="d-inline-block m-0">{{ item }}</p>
               </li>
@@ -29,16 +25,16 @@
                 <h4 class="p-2" style="border-bottom: 1px solid #cacaca;">Vaccinated</h4>
                 <div class="row m-0 p-2">
                   <div class="col-md-1 d-flex align-items-center ">
-                      <input type="radio" formControlName="Vaccinated" value="0" />
-                      <label class="m-0 ml-2">Yes</label>
+                    <input type="radio" formControlName="Vaccinated" value="0" />
+                    <label class="m-0 ml-2">Yes</label>
                   </div>
                   <div class="col-md-1 d-flex align-items-center">
-                      <input type="radio" formControlName="Vaccinated" value="1" />
-                      <label class="m-0 ml-2">No</label>
+                    <input type="radio" formControlName="Vaccinated" value="1" />
+                    <label class="m-0 ml-2">No</label>
                   </div>
                   <div class="col-md-1 d-flex align-items-center">
-                      <input type="radio" formControlName="Vaccinated" value="2" />
-                      <label class="m-0 ml-2">Unknown</label>
+                    <input type="radio" formControlName="Vaccinated" value="2" />
+                    <label class="m-0 ml-2">Unknown</label>
                   </div>
                 </div>
                 <table class="table table-bordered past-table">
@@ -52,18 +48,18 @@
                   </thead>
                   <tbody>
                     <ng-container formArrayName="TOVACCINATION">
-                      <tr *ngFor="let item of nursingAdmissionForm.get('TOVACCINATION')['controls']; let i = index" [formGroupName]="i">
+                      <tr *ngFor="let item of nursingAdmissionForm.get('TOVACCINATION')['controls']; let i = index"
+                        [formGroupName]="i">
                         <td>
-                          <ng-select [items]="vaccinationDrodownList" bindLabel="label" bindValue="value" formControlName="Vaccination" [appendTo]="'body'"></ng-select>
+                          <ng-select [items]="vaccinationDrodownList" bindLabel="label" bindValue="value"
+                            formControlName="Vaccination" [appendTo]="'body'"></ng-select>
                         </td>
                         <td>
-                          <input
-                            class="form-control"
-                            formControlName="Other"
-                          />
+                          <input class="form-control" formControlName="Other" />
                         </td>
                         <td>
-                          <ng-select [items]="statusListForVaccination" bindLabel="label" bindValue="value"  formControlName="Status" [appendTo]="'body'"></ng-select>
+                          <ng-select [items]="statusListForVaccination" bindLabel="label" bindValue="value"
+                            formControlName="Status" [appendTo]="'body'"></ng-select>
                         </td>
                         <td class="text-center w-10">
                           <input type="checkbox" formControlName="UptoDate" />
@@ -87,19 +83,23 @@
                       <th scope="col">Type of Isolation</th>
                     </tr>
                   </thead>
-<tbody formArrayName="TOINFECTIONS">
-  <tr *ngFor="let group of nursingAdmissionForm.get('TOINFECTIONS')['controls']; let i = index" [formGroupName]="i">
-    <td>
-      <ng-select [items]="InfactiousDrodownList" bindLabel="label" bindValue="value"  formControlName="InfectiousDiesease" [appendTo]="'body'"></ng-select>
-    </td>
-    <td>
-      <ng-select [items]="statusListForVaccination" bindLabel="label" bindValue="value"  formControlName="Status" [appendTo]="'body'"></ng-select>
-    </td>
-    <td>
-      <ng-select [items]="IsolationList" bindLabel="label" bindValue="value"  formControlName="TypeIsolation" [appendTo]="'body'"></ng-select>
-    </td>
-  </tr>
-</tbody>
+                  <tbody formArrayName="TOINFECTIONS">
+                    <tr *ngFor="let group of nursingAdmissionForm.get('TOINFECTIONS')['controls']; let i = index"
+                      [formGroupName]="i">
+                      <td>
+                        <ng-select [items]="InfactiousDrodownList" bindLabel="label" bindValue="value"
+                          formControlName="InfectiousDiesease" [appendTo]="'body'"></ng-select>
+                      </td>
+                      <td>
+                        <ng-select [items]="statusListForVaccination" bindLabel="label" bindValue="value"
+                          formControlName="Status" [appendTo]="'body'"></ng-select>
+                      </td>
+                      <td>
+                        <ng-select [items]="IsolationList" bindLabel="label" bindValue="value"
+                          formControlName="TypeIsolation" [appendTo]="'body'"></ng-select>
+                      </td>
+                    </tr>
+                  </tbody>
 
                 </table>
               </div>

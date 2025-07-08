@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './examination-tab.component.html',
   styleUrls: ['./examination-tab.component.scss']
 })
-export class ExaminationTabComponent implements OnInit {
+export class ExaminationTabComponent implements OnInit, OnChanges {
 
   @Input() nursingAdmissionForm: FormGroup;
     private formSubscriptions: Subscription[] = [];
@@ -114,6 +114,34 @@ export class ExaminationTabComponent implements OnInit {
     //emtting the value to parent on any value change
     this.subscribeToFormChanges();
 
+  }
+
+  ngOnChanges() {
+     if (this.toPHYEXAMmportedData && this.toPHYEXAMmportedData?.length) {
+
+      const phyExamFormMap = {
+        'General': this.generalPhyExamForm,
+        'Head and Neck': this.headNeckPhyExamForm,
+        'Eyes': this.eyesPhyExamForm,
+        'ENT': this.entPhyExamForm,
+        'Respiratory': this.respiratoryPhyExamForm,
+        'Cardiovascular': this.cardioPhyExamForm,
+        'Haematology': this.haemaPhyExamForm,
+        'Gastrointestinal': this.gastroPhyExamForm,
+        'Musculoskeletal': this.musculoPhyExamForm,
+        'Skin': this.skinPhyExamForm,
+        'Neurologic': this.neuroPhyExamForm,
+        'Genitourinary': this.genitPhyExamForm,
+        'Breast': this.breastPhyExamForm,
+      };
+
+      this.toPHYEXAMmportedData.forEach(dataItem => {
+        const formgrop = phyExamFormMap[dataItem?.PhyDescription];
+        if (formgrop) {
+          formgrop.patchValue(dataItem);
+        }
+      });
+    }
   }
 
    subscribeToFormChanges() {
