@@ -18,7 +18,11 @@ export class DeliveryRecordDocComponent implements OnInit {
   deliveryRecordeForm: FormGroup;
   paramsObject: any;
   docKey: any;
-
+  public gender = [
+    { value: '1', label: 'Male' },
+    { value: '2', label: 'Female' },
+    { value: '3', label: 'UnKnown' }
+  ]
   activeTab: string = 'firstStage';
   public CurrentDateAndTime: Date = new Date();
   status = [
@@ -203,7 +207,7 @@ export class DeliveryRecordDocComponent implements OnInit {
             ApgarScore1: item.Bwert,
             ApgarScore5: item.Bwert5,
             ApgarScore10: item.Bwert10,
-            StatusDesc: item.Kztxt
+            StatusDesc: ''
           };
           this.addDrain(convertedItem, index);
         });

@@ -216,6 +216,7 @@ export class DocumentationComponent implements OnInit {
    deletePediatricAdmAssess(docKey: string) {
       this.emergencyService.deletePediatricAdmAssesDoc(docKey).subscribe({
           next: (_success: any) => {
+            this.admissionService.isRealoadData.next(true);
                 Swal.fire({
               text: "Document is deleted successfully",
               icon: 'success',
@@ -446,6 +447,7 @@ export class DocumentationComponent implements OnInit {
 
        this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
         (result) => {
+          
           this.admissionService.isRealoadData.next(true);
         }
       );

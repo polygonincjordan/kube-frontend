@@ -36,7 +36,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
   // Hemorrhage
   hemorrhageOptions = [
     { label: '(3) PP Hemorrhage', value: 3, checked: false },
-    { label: '(3) DX abruption or previa', value: 3, checked: false },
+    { label: '(2) DX abruption or previa', value: 2, checked: false },
     { label: '(0) None', value: 0, checked: false }
   ];
 
@@ -47,11 +47,19 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
     { label: '(0) None', value: 0, checked: false }
   ];
 
+  // Medication
+  neuroAnesthesiaOptions = [
+    { label: '(1) Numbness in thigh', value: 1, checked: false },
+    { label: '(3) Epidural off < 3 hours', value: 3, checked: false },
+    { label: '(0) None', value: 0, checked: false }
+  ];
+
   priorValue = 0;
   cardiovascularValue = 0;
   hemorrhageValue = 0;
   motorValue = 0;
   medicationValue = 0;
+  anesthesiaValue = 0;
 
   totalScore: any;
   paramsObject: any;
@@ -223,13 +231,18 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
       ],
       hemorrhage: [
         { key: 'HPpHemorrhage', value: 3 },
-        { key: 'HDxAbruption', value: 3 },
+        { key: 'HDxAbruption', value: 2 },
         { key: 'HNone', value: 0 }
       ],
       medication: [
         { key: 'MeIvImNarcotics', value: 1 },
         { key: 'MeAntiHypertensives', value: 2 },
         { key: 'MeNone', value: 0 }
+      ],
+      anesthesia: [
+        { key: 'NNumbness', value: 1 },
+        { key: 'NEpiduralOff', value: 3 },
+        { key: 'NNone', value: 0 }
       ]
     };
 
@@ -246,7 +259,16 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
       case 'cardio': this.cardiovascularValue = total; break;
       case 'hemorrhage': this.hemorrhageValue = total; break;
       case 'medication': this.medicationValue = total; break;
+      case 'anesthesia': this.anesthesiaValue = total; break;
     }
+
+    this.obsFallRiskForm.patchValue({
+      PScore: this.priorValue.toString(),
+      CScore: this.cardiovascularValue.toString(),
+      HScore: this.hemorrhageValue.toString(),
+      NScore: this.anesthesiaValue.toString(),
+      MeScore: this.medicationValue.toString(),
+    })
 
     this.calculateTotalScore();
     return total;
@@ -255,6 +277,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
   updateRadioValue(value: number) {
     this.motorValue = value;
     this.obsFallRiskForm.get('Motor')?.setValue(value);
+    this.obsFallRiskForm.get('MoScore')?.setValue(value.toString());
     this.calculateTotalScore();
   }
 
@@ -264,7 +287,8 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
       this.cardiovascularValue +
       this.hemorrhageValue +
       this.motorValue +
-      this.medicationValue;
+      this.medicationValue +
+      this.anesthesiaValue;
 
     this.obsFallRiskForm.get('TotalScore')?.setValue(this.totalScore);
 
@@ -301,7 +325,7 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
   }
 
   calculateTotalScore1() {
-    this.totalScore = this.priorValue + this.cardiovascularValue + this.hemorrhageValue + this.motorValue + this.medicationValue;
+    this.totalScore = this.priorValue + this.cardiovascularValue + this.hemorrhageValue + this.motorValue + this.medicationValue + this.anesthesiaValue;
   }
 
   // For radio

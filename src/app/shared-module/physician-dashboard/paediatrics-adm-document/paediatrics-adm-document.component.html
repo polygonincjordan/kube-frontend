@@ -130,9 +130,8 @@
                     <th scope="col"></th>
                   </tr>
                 </thead>
-                <tbody formArrayName="TOVITALSIGN" style="background-color: #fbfcff">
-                  <tr class="past-med-input"
-                    *ngFor="let item of nursingAdmissionForm.get('TOVITALSIGN')['controls']; let i = index">
+                <tbody style="background-color: #fbfcff">
+                  <tr class="past-med-input" *ngFor="let item of toVitalsArr; let i = index">
                     <td style="
                                 padding: 10px !important;
                                 width: 15%;
@@ -403,7 +402,9 @@
     <app-physical-assessment-section [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-section>
   </div>
   <div>
-    <app-examination-tab  [nursingAdmissionForm]="nursingAdmissionForm" (PhysicianExaminationDrugArrayList)="physicianExamaminationArrayListData($event)" [toPHYEXAMmportedData]="toPHYEXAMmportedData"></app-examination-tab>
+    <app-examination-tab [nursingAdmissionForm]="nursingAdmissionForm"
+      (PhysicianExaminationDrugArrayList)="physicianExamaminationArrayListData($event)"
+      [toPHYEXAMmportedData]="toPHYEXAMmportedData"></app-examination-tab>
   </div>
   <div>
     <app-assessment-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
@@ -477,7 +478,7 @@
   </div> -->
   <!-- Diagnosis section till  -->
 
-    <!-- impression and plan of care section from (textarea)-->
+  <!-- impression and plan of care section from (textarea)-->
   <!-- <div class="end-container" [formGroup]="nursingAdmissionForm">
     <div class="scale-box-main">
       <label class="box-label">Impression and Plan of Care</label>

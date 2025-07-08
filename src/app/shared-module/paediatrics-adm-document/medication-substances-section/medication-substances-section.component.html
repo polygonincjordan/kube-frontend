@@ -27,19 +27,18 @@
                     <tr>
                       <th scope="col">Event description</th>
                       <th class="w-30" scope="col">Dose</th>
-                      <th class="w-15" scope="col">EMAR View</th>
+                      <!-- <th class="w-15" scope="col">EMAR View</th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of  medicationImportDrugArray let i = index">
-                      <td>{{item.Description}}</td>
+                      <td>{{item.EventDesc}}</td>
                       <td>{{item.Dose}}</td>
                       <!-- <td><input type="text" class="form-control" formControlName="EventDesc"></td>
                       <td><input type="text" class="form-control" formControlName="Dose"></td> -->
-                      <td>
-                        <!-- <a (click)="viewEmar(i)">View</a> -->
+                      <!-- <td>
                         <a>View</a>
-                      </td>
+                      </td> -->
                     </tr>
                   </tbody>
                 </table>

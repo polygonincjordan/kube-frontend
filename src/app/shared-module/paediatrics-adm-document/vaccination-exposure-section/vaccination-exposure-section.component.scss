@@ -4,6 +4,7 @@
   background: #ffffff;
   border: 1px solid #cacaca !important;
 }
+
 .form-control:focus {
   box-shadow: none !important;
 }
@@ -14,4 +15,9 @@
     height: 18px;
     margin-top: 10px;
   }
+}
+
+.scale-box-table {
+  max-height: 350px !important;
+  overflow: auto !important;
 }

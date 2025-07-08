@@ -333,7 +333,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       AdmissionMode: '',
       AdmissionModeTxt: '',
       ChiefComplaint: [''],
-      Datee: [new Date()],
+      Datee: [this.convertDateFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionDate)],
       FavouriteToy: '',
       InfoObtained: '',
       InfoObtainedTxt: '',
@@ -930,7 +930,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       if (payload.d.TOADMMED.length) {
         let convertedArray: any[] = payload.d.TOADMMED.map(item => ({
           Dockey: item.Dockey,
-          EventDesc: item.Description,
+          EventDesc: item.EventDesc,
           Dose: item.Dose
         }));
         payload.d.TOADMMED = convertedArray;

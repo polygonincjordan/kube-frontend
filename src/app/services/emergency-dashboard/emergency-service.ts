@@ -2032,6 +2032,33 @@ export class EmergencyService {
     );
   }
 
+// Ramsay Sedation Scale
+  saveLaborRoomDocument(json) {
+    return this.http.post(this.url + 'saveLaborRoomDocument', json, {
+      withCredentials: true,
+    });
+  }
+
+  fetcLaborRoomDocDetails(dockey) {
+    return this.http.get(this.url + `fetcLaborRoomDocDetails?dockey=${dockey}`, {
+      withCredentials: true,
+    });
+  }
+
+  LaborRoomDocumentLatestDoc(json) {
+    return this.http.get(
+      this.url + `LaborRoomDocumentLatestDoc?Einri=${json.Einri}&Patnr=${json.Patnr}&Falnr=${json.Falnr}&Lfdnr=${json.Lfdnr}`, {
+        withCredentials: true,
+      }
+    );
+  }
+
+  deleteLaborRoomDocument(json): Observable<any> {
+    return this.http.delete(this.url + `deleteLaborRoomDocument?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
+
   createAssessment(data: any) {
     console.log(data);
 

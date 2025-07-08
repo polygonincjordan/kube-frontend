@@ -33,7 +33,7 @@ export class MedicationSubstancesSectionComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if(this.toADMMEDImportedData || this.toADMMEDImportedData?.length) {
       this.medicationImportDrugArray = this.toADMMEDImportedData.map(item => ({
-        Description: item.EventDesc,
+        EventDesc: item.EventDesc,
         Dose: item.Dose,
         Dockey: item.Dockey
       }));
@@ -82,7 +82,7 @@ export class MedicationSubstancesSectionComponent implements OnInit, OnChanges {
       this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
         "Dockey": "",
         "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
-        "Description": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
+        "EventDesc": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
         "HomeMedication": false,
         "PatientOwnMed": false,
         "Dose": element.Quan + element.Quanunit,

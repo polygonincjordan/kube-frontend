@@ -21,7 +21,7 @@
             None</label>
         </div>
         <div class="col-md-2">
-          <input class="form-control" [value]="priorValue" readonly />
+          <input class="form-control" formControlName="PScore" readonly />
         </div>
       </div>
 
@@ -39,7 +39,7 @@
             None</label>
         </div>
         <div class="col-md-2">
-          <input class="form-control" [value]="cardiovascularValue" readonly />
+          <input class="form-control" formControlName="CScore" readonly />
         </div>
       </div>
 
@@ -49,13 +49,29 @@
         <div class="col-md-4">
           <label><input type="checkbox" formControlName="HPpHemorrhage" value="3" (change)="updateCheckboxValue('hemorrhage')" />
             (3) PP Hemorrhage</label><br>
-          <label><input type="checkbox" formControlName="HDxAbruption" value="3" (change)="updateCheckboxValue('hemorrhage')" />
-            (3) DX abruption or previa</label><br>
+          <label><input type="checkbox" formControlName="HDxAbruption" value="2" (change)="updateCheckboxValue('hemorrhage')" />
+            (2) DX abruption or previa</label><br>
           <label><input type="checkbox" formControlName="HNone" value="0" (change)="updateCheckboxValue('hemorrhage')" /> (0)
             None</label>
         </div>
         <div class="col-md-2">
-          <input class="form-control" [value]="hemorrhageValue" readonly />
+          <input class="form-control" formControlName="HScore" readonly />
+        </div>
+      </div>
+
+      <!-- Hemorrhage -->
+      <div class="row m-0 mt-3">
+        <div class="col-md-4"><strong>Neuro-function/anesthesia</strong></div>
+        <div class="col-md-4">
+          <label><input type="checkbox" formControlName="NNumbness" value="1" (change)="updateCheckboxValue('anesthesia')" />
+            (1) Numbness in thigh</label><br>
+          <label><input type="checkbox" formControlName="NEpiduralOff" value="3" (change)="updateCheckboxValue('anesthesia')" />
+            (3) Epidural off < 3 hours</label><br>
+          <label><input type="checkbox" formControlName="NNone" value="0" (change)="updateCheckboxValue('anesthesia')" /> (0)
+            None</label>
+        </div>
+        <div class="col-md-2">
+          <input class="form-control" formControlName="NScore" readonly />
         </div>
       </div>
 
@@ -63,14 +79,14 @@
       <div class="row m-0 mt-3">
         <div class="col-md-4"><strong>Motor/Activity</strong></div>
         <div class="col-md-4">
-          <label><input type="radio" name="motor" [value]="1" (change)="updateRadioValue(1)" /> (1) Able to SLR but not
+          <label><input type="radio" name="motor" [value]="1" formControlName="Motor" (change)="updateRadioValue(1)" /> (1) Able to SLR but not
             bridge</label><br>
-          <label><input type="radio" name="motor" [value]="2" (change)="updateRadioValue(2)" /> (2) Unable to
+          <label><input type="radio" name="motor" [value]="2" formControlName="Motor" (change)="updateRadioValue(2)" /> (2) Unable to
             SLR</label><br>
-          <label><input type="radio" name="motor" [value]="0" (change)="updateRadioValue(0)" /> (0) None</label>
+          <label><input type="radio" name="motor" [value]="0" formControlName="Motor" (change)="updateRadioValue(0)" /> (0) None</label>
         </div>
         <div class="col-md-2">
-          <input class="form-control" [value]="motorValue" readonly />
+          <input class="form-control" formControlName="MoScore" readonly />
         </div>
       </div>
 
@@ -81,12 +97,12 @@
           <label><input type="checkbox" formControlName="MeIvImNarcotics"
               value="1" (change)="updateCheckboxValue('medication')" /> (1) IV / IM Narcotics w in 30 min</label><br>
           <label><input type="checkbox" formControlName="MeAntiHypertensives"
-              value="3" (change)="updateCheckboxValue('medication')" /> (2) Anti-hypertensives</label><br>
+              value="2" (change)="updateCheckboxValue('medication')" /> (2) Anti-hypertensives</label><br>
           <label><input type="checkbox" formControlName="MeNone" value="0" (change)="updateCheckboxValue('medication')" /> (0)
             None</label>
         </div>
         <div class="col-md-2">
-          <input class="form-control" [value]="medicationValue" readonly />
+          <input class="form-control" formControlName="MeScore" readonly />
         </div>
       </div>
     </div>
