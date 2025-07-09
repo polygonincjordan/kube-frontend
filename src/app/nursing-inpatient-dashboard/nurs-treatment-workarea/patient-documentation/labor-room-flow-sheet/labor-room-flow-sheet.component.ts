@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
@@ -7,11 +7,14 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { ActionType } from '@services/interfaces/common.enum';
 import { PhysicianAllergyComponent } from 'src/app/shared-module/paediatric-physician-assessment/physician-allergy/physician-allergy.component';
 import Swal from 'sweetalert2';
+import { GlosGowCommaScalePopupComponent } from 'src/app/shared-module/paediatrics-adm-document/glos-gow-comma-scale/glos-gow-comma-scale-popup.component';
+import { MorseFallScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/morse-fall-scale/morse-fall-scale.component';
+import { BradenScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/braden-scale/braden-scale.component';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-labor-room-flow-sheet',
@@ -20,7 +23,9 @@ import Swal from 'sweetalert2';
 })
 export class LaborRoomFlowSheetComponent implements OnInit {
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
-
+  @ViewChild('scalesGlosgow') scalesGlosgow: GlosGowCommaScalePopupComponent;
+  @ViewChild('morseFallScale') morseFallScale: MorseFallScaleComponent;
+  @ViewChild('bradenScaleTemp') bradenScaleTemp: BradenScaleComponent;
   labourForm: FormGroup;
 
   currentTime: string;
@@ -150,8 +155,8 @@ export class LaborRoomFlowSheetComponent implements OnInit {
       NoOfAlive: [''],
       NoOfDead: [''],
       NormalDelivery: [''],
-      Lmp: [''],
-      Edd: [''],
+      Lmp: [new Date()],
+      Edd: [new Date()],
       GestationalAge: [''],
       Height: [''],
       Weight: [''],
@@ -336,7 +341,7 @@ export class LaborRoomFlowSheetComponent implements OnInit {
       Value: [item?.Value ?? ''],
       ValueConfi: [item?.ValueConfi ?? ''],
       Range: [item?.Range ?? ''],
-      DateTime: [item?.DateTime ?? '']
+      DateTime: [this.dateStringNewDate(item?.DateTime) ?? new Date()]
     });
 
     this.TOLABTEST.push(drainGroup);
@@ -363,8 +368,6 @@ export class LaborRoomFlowSheetComponent implements OnInit {
 
         const formArray = this.TONEONATAL;
         formArray.clear();
-
-        // Loop and add each neonatal entry
         neonatalArray.forEach((item, index) => {
           const convertedItem = {
             Dockey: deliveryDetails.Faln1,
@@ -385,21 +388,203 @@ export class LaborRoomFlowSheetComponent implements OnInit {
   getNurseDocDetail() {
     this.subscription = this.emergencyService.fetcLaborRoomDocDetails(this.docKey).subscribe({
       next: (apiResponse: any) => {
-        const data = apiResponse?.d?.results[0] || {};
-        this.labourForm.patchValue(data);
+        let data = apiResponse?.d?.results[0] || {};
+        console.log(data, "----")
         this.labourForm.patchValue({
+          Dockey: data.Dockey,
+          Dtid: data.Dtid,
+          Einri: data.Einri,
+          Patnr: data.Patnr,
+          Falnr: data.Falnr,
+          Lfdnr: data.Lfdnr,
+          Orgdo: data.Orgdo,
+          AttendPhy: data.AttendPhy,
+          DocStatus: data.DocStatus,
           Datee: this.getDate(data.Datee),
           Timee: this.parseTime(data.Timee),
+          Gravida: data.Gravida,
+          Para: data.Para,
+          Abortion: data.Abortion,
+          NoOfAlive: data.NoOfAlive,
+          NoOfDead: data.NoOfDead,
+          NormalDelivery: data.NormalDelivery,
+          Lmp: this.getDate(data.Lmp),
+          Edd: this.getDate(data.Edd),
+          GestationalAge: data.GestationalAge,
+          Height: data.Height,
+          Weight: data.Weight,
+
+          // History
+          HAph: data.HAph,
+          HPph: data.HPph,
+          HPreviousCs: data.HPreviousCs,
+          HVbAfterCs: data.HVbAfterCs,
+          HAbdominalSurgery: data.HAbdominalSurgery,
+          HAbdominalSurgeryTxt: data.HAbdominalSurgeryTxt,
+
+          // Risk Factors
+          RfGrandMultiparity: data.RfGrandMultiparity,
+          RfPih: data.RfPih,
+          RfPolyhydramnios: data.RfPolyhydramnios,
+          RfTwins: data.RfTwins,
+          RfFetalAnomalies: data.RfFetalAnomalies,
+          RfDiabetesMellitus: data.RfDiabetesMellitus,
+          RfPlacentaPrevia: data.RfPlacentaPrevia,
+          RfAbruptioPlacenta: data.RfAbruptioPlacenta,
+          RfOligohydramnios: data.RfOligohydramnios,
+          RfProm: data.RfProm,
+          RfLargeGa: data.RfLargeGa,
+          RfGdm: data.RfGdm,
+          RfSmallGa: data.RfSmallGa,
+          RfHeartDisease: data.RfHeartDisease,
+          RfAntepartum: data.RfAntepartum,
+          RfMedicalProblem: data.RfMedicalProblem,
+          RfMedicalProblemTxt: data.RfMedicalProblemTxt,
+          RfSurgicalProblem: data.RfSurgicalProblem,
+          RfSurgicalProblemTxt: data.RfSurgicalProblemTxt,
+
+          // Reason for Admission
+          RaLabourPain: data.RaLabourPain,
+          RaRupture: data.RaRupture,
+          RaLeaking: data.RaLeaking,
+          RaBleeding: data.RaBleeding,
+          RaInduction: data.RaInduction,
+          RaOther: data.RaOther,
+          RaOtherTxt: data.RaOtherTxt,
+
+          // Reason for Induction
+          RiPostDate: data.RiPostDate,
+          RiNonReassuring: data.RiNonReassuring,
+          RiPatientRequest: data.RiPatientRequest,
+          RiIugr: data.RiIugr,
+          RiOligo: data.RiOligo,
+          RiMedicalReason: data.RiMedicalReason,
+          RiMedicalReasonTxt: data.RiMedicalReasonTxt,
+
+          // Method of Induction
+          MiPge2: data.MiPge2,
+          MiPropess: data.MiPropess,
+          MiSyntocinon: data.MiSyntocinon,
+          MiAugmentation: data.MiAugmentation,
+          MiSyntocinon1: data.MiSyntocinon1,
+          MiArm: data.MiArm,
+
+          // Assessment
+          AaOlSpontaneous: data.AaOlSpontaneous,
+          AaOlAugmentation: data.AaOlAugmentation,
+          AaOlInduced: data.AaOlInduced,
+          AaMmArm: data.AaMmArm,
+          AaMmLeaking: data.AaMmLeaking,
+          AaMmSrom: data.AaMmSrom,
+          AaMmSince: data.AaMmSince,
+          AaMcLight: data.AaMcLight,
+          AaMcStained: data.AaMcStained,
+          AaMcThick: data.AaMcThick,
+          AaLClear: data.AaLClear,
+          AaLBloodStained: data.AaLBloodStained,
+          AaCReactive: data.AaCReactive,
+          AaCNonreactive: data.AaCNonreactive,
+          AaAeCephalic: data.AaAeCephalic,
+          AaAeCephalicTxt: data.AaAeCephalicTxt,
+          AaAeFrom: data.AaAeFrom,
+          AaAeFromTxt: data.AaAeFromTxt,
+          AaAeBreech: data.AaAeBreech,
+          AaAeTransverse: data.AaAeTransverse,
+
+          // Bishop Score
+          BsDilatation: data.BsDilatation,
+          BsEffacement: data.BsEffacement,
+          BsStation: data.BsStation,
+          BsPosition: data.BsPosition,
+          BsConsistency: data.BsConsistency,
+          BsTotalScore: data.BsTotalScore,
+          BsTotalScoreDesc: data.BsTotalScoreDesc,
+          BsPelvicExam: data.BsPelvicExam,
+          BsManagement: data.BsManagement,
+          BsCannula: data.BsCannula,
+          BsIvCannula: data.BsIvCannula,
+          BsCtg: data.BsCtg,
+          BsEpiduralUsed: data.BsEpiduralUsed,
+          BsYes: data.BsYes,
+          BsNo: data.BsNo,
+          BsNoTxt: data.BsNoTxt,
+          BsCatheter: data.BsCatheter,
+          BsRemoved: data.BsRemoved,
+          BsNotRemoved: data.BsNotRemoved,
+
+          // Post Delivery
+          PdTimeDelivery: data.PdTimeDelivery,
+          PdModeDelivery: data.PdModeDelivery,
+          PdNsvd: data.PdNsvd,
+          PdVacuum: data.PdVacuum,
+          PdForceps: data.PdForceps,
+          PdPlacenta: data.PdPlacenta,
+          PdComplete: data.PdComplete,
+          PdIncomplete: data.PdIncomplete,
+          PdPerineum: data.PdPerineum,
+          PdIntact: data.PdIntact,
+          PdEpisiotomy: data.PdEpisiotomy,
+          PdLaceration: data.PdLaceration,
+          PdExtendedTear: data.PdExtendedTear,
+          PdOther: data.PdOther,
+          PdOtherTxt: data.PdOtherTxt,
+          PdBloodLoss: data.PdBloodLoss,
+          PdAverage: data.PdAverage,
+          PdExcessive: data.PdExcessive,
+          PdEstimatedBlood: data.PdEstimatedBlood,
+          PdEstimatedBloodTxt: data.PdEstimatedBloodTxt,
+          PdCervix: data.PdCervix,
+          PdIntact1: data.PdIntact1,
+          PdUterus: data.PdUterus,
+          PdAtony: data.PdAtony,
+          PdContracted: data.PdContracted,
+          PdComments: data.PdComments,
+          PdAnLocal: data.PdAnLocal,
+          PdAnGeneral: data.PdAnGeneral,
+          PdAnEpidural: data.PdAnEpidural,
+          PdAnOther: data.PdAnOther,
+          PdAnOtherTxt: data.PdAnOtherTxt,
+          PdIfPost: data.PdIfPost,
+          PdCervical: data.PdCervical,
+          PdAtonic: data.PdAtonic,
+          PdRetained: data.PdRetained,
+          PdVaginal: data.PdVaginal,
+          PdPerineal: data.PdPerineal,
         });
-        if (data.TONEONATAL.results.length) {
+
+
+        if (data?.TONEONATAL?.results.length) {
           (this.labourForm.get('TONEONATAL') as FormArray).clear();
           data.TONEONATAL.results.forEach((group, i) => this.addDrain(group, i));
         }
 
+
+        if (data.TOLABTEST.results || data.TOLABTEST.results.length) {
+          const labTestList = this.TOLABTEST;
+          labTestList.clear();
+          data?.TOLABTEST?.results.forEach((item, index) => {
+            this.addLabTest(item, index);
+          });
+        }
+        this.toScaleArr = data?.TOSCALE.results && data?.TOSCALE.results.length ? data?.TOSCALE.results : [];
+        this.toAllergyArr = data?.TOALLERGY?.results;
+
+        this.toScaleArr.forEach((element) => {
+          this.scalesList.forEach((res: any) => {
+            if (element.ScaleType == res.ScaleType && element.LastScore) {
+              res.Datetimee = element.Datetimee,
+                res.Dockey = element.Dockey,
+                res.description = element.ScoreDesc,
+                res.LastScore = element.LastScore,
+                res.ScaleType = element.ScaleType
+            }
+          })
+        })
+
       },
       error: (err: any) => {
         this.sharedService.waringSwallModel(`Error ${err}`);
-        this.sharedService.waringSwallModel(`POST Error at Delivery Record : ${err}`);
+        this.sharedService.waringSwallModel(`POST Error at Labor Room Flow Sheet : ${err}`);
       },
     });
   }
@@ -460,11 +645,201 @@ export class LaborRoomFlowSheetComponent implements OnInit {
   }
   //------------ Alergey managemenet  (ends) ------------
 
+  noScaleAppicable: any;
+  modalRefScales: BsModalRef;
+  selectedScales: any[] = [];
+  toScaleArr: any[];
+
+  //------------ Scal section  (starts) ------------
+  openModalForScales(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class:
+        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
+    };
+    this.modalRefScales = this.modalService.show(template, config);
+    this.loadScalesData();
+    // this.medicationImportDrugArray=[];
+  }
+
+  scalesImport() {
+
+    this.selectedScales.forEach((element) => {
+      this.scalesList.forEach((res: any) => {
+        if (element.Scaletype == res.ScaleType && element.Score) {
+          res.Datetimee = element.DateTime,
+            // res.Dockey = element.Dockey, //this is commented because we are not getting it from the backendside
+            res.Dockey = this.docKey; // manually patching doc form stored in vaiable
+          res.ScoreDesc = element.ScoreDesc,
+            res.LastScore = element.Score,
+            res.ScaleType = element.Scaletype
+        }
+      })
+    })
+    // this.selectedScales.forEach(element => {
+    //   console.log(element)
+    //   this.scalesArray = this.scalesArray.concat({
+    //     "Dockey": "",
+    //     "ScaleType": element.Scaletype ,
+    //     "ScoreDesc": element.ScoreDesc ,
+    //     "Datetimee": element.DateTime,
+    //     "LastScore": element.Score,
+    //   });
+    // });
+    this.modalRefScales.hide();
+  }
+
+  removeScale(index: number) {
+    this.scalesList[index].LastScore = "";
+    this.scalesList[index].ScoreDesc = "";
+    this.scalesList[index].Dockey = "";
+    this.scalesList[index].Datetimee = "";
+  }
+
+  // Note : old function
+  // public viewGlosgowModel(item) {
+  //
+  //   if (this.noScaleAppicable) return;
+  //   if (item.value == '1') {
+  //     if (item.Dockey) {
+  //       this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+  //     } else {
+  //       this.sharedService.waringSwallModel('No data found');
+  //     }
+  //   }
+  // }
+
+  //New function
+  public viewGlosgowModel(item) {
+    if (this.noScaleAppicable) return;
+    if (item.Dockey) {
+
+      if (item.value == '1') {
+        this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+      } else if (item.value == '2') {
+        this.scalesGlosgow.openModalForGlosgow(item.Dockey);
+      } else if (item.value == '3') {
+        this.bradenScaleTemp.openBradenScaleModal(item.Dockey);
+      }
+    } else {
+      this.sharedService.waringSwallModel('No data found');
+    }
+  }
+
+  collectScalesIData(event, item, i) {
+    if (event.target.checked) {
+      this.toScaleArr[i].isSelected = true;
+      this.selectedScales.push(item);
+    } else {
+      this.toScaleArr[i].isSelected = false;
+      const indexOf = this.selectedScales.findIndex(x => x.Scaletype == item.Scaletype);
+      if (indexOf !== -1)
+        this.selectedScales.splice(indexOf, 1);
+    }
+  }
+
+  collectAllScalesData(event: any) {
+    if (event.target.checked) {
+      this.selectedScales = (Object.assign([], this.toScaleArr));
+    } else {
+      this.selectedScales = [];
+    }
+  }
+
+
+  public openScaleModel(item: any) {
+    if (this.noScaleAppicable) return;
+    if (item.Dockey) {
+      this.scalesEditConfirmationMsg(item);
+    } else {
+      this.openSelectedModalScale(item);
+    }
+  }
+
+  private scalesEditConfirmationMsg(item: { value: string }) {
+    Swal.fire({
+      text: 'Are you sure you want to edit scale',
+      icon: 'warning',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      customClass: 'myalertpopup',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        this.openSelectedModalScale(item);
+      }
+    });
+  }
+
+  openSelectedModalScale(item) {
+    if (item.value == '1') {
+      this.scalesGlosgow.openModalForGlosgow('');
+    } else if (item.value == '2') {
+      this.morseFallScale.openMorseFallScaleModal('');
+    } else if (item.value == '3') {
+      this.bradenScaleTemp.openBradenScaleModal('');
+    }
+  }
+
+  isDockeyAvailable(): boolean {
+    return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
+  }
+
+
+
+
+  loadScalesData() {
+    // this.selectedScales = [];
+    this.toScaleArr = [];
+    let patnr = this.ePrescriptionService.parameters.patnr;
+    patnr = patnr.padStart(10, '0');
+    const scalesOrders: Subscription = this.ePrescriptionService.loadData(`e-prescription/ScalesList?Patnr=${patnr}`, false, false, false, false).subscribe((resp: any) => {
+      console.log(resp)
+      if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
+        if (resp.body?.d?.results.length) {
+          let requiredScales = ["Glasgow Coma Scale", "Morse Fall Scale (MFS)", "Braden scale for predicting pressure ulcers"];
+          this.toScaleArr = resp.body.d.results.filter(scale => requiredScales.includes(scale.Scaletype)).map(scale => ({ ...scale, isSelected: false }));
+        }
+      }
+      //   this.filterEvents();
+    }, () => { scalesOrders.unsubscribe(); });
+  }
+
+
+
+  // get items(): FormArray {
+  //   return this.nursingAdmissionForm.get('TOINFECTION') as FormArray;
+  // }
+
+
+  public scaleStoreInTable(event: any, scaleType: string) {
+    if (scaleType == 'morseFall') {
+      this.scalesList[1].LastScore = event?.totalScore;
+      this.scalesList[1].ScoreDesc = event?.description;
+      this.scalesList[1].Dockey = event?.dockey;
+      this.scalesList[1].Datetimee = event?.date;
+    } else if (scaleType == 'braden') {
+      this.scalesList[2].LastScore = event?.totalScore;
+      this.scalesList[2].ScoreDesc = event?.description;
+      this.scalesList[2].Dockey = event?.dockey;
+      this.scalesList[2].Datetimee = event?.date;
+    } else if (scaleType == 'glosgow') {
+      this.scalesList[0].LastScore = event?.totalScore;
+      this.scalesList[0].ScoreDesc = event?.description;
+      this.scalesList[0].Dockey = event?.dockey;
+      this.scalesList[0].Datetimee = event?.date;
+    }
+  }
+
 
   public createLaborRoomDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
       let formData = this.labourForm.value;
-      formData.Datee = this.sanitizeSAPDateFormat(formData.Datee);
+      formData.Datee = formData.Datee ? this.sanitizeSAPDateFormat(formData.Datee) : '';
+      formData.Lmp = formData.Lmp ? this.sanitizeSAPDateFormat(formData.Lmp) : '';
+      formData.Edd = formData.Edd ? this.sanitizeSAPDateFormat(formData.Edd) : '';
+      formData.DocStatus = status;
+      formData.Height = formData.Height ? formData.Height : '0';
+      formData.Weight = formData.Weight ? formData.Weight : '0';
       formData.DocStatus = status;
       formData.Timee = formData.Timee ? this.parsePayloadFormateTime(formData.Timee) : 'PT00H00M00S';
       formData.PdTimeDelivery = formData.PdTimeDelivery ? this.parsePayloadFormateTime(formData.PdTimeDelivery) : 'PT00H00M00S';
@@ -476,7 +851,7 @@ export class LaborRoomFlowSheetComponent implements OnInit {
         ...res,
         DateTime: this.concatDateTime(res.DateTime)
       }));
-      
+
       // formData.Datee = '\/Date(1620518400000)\/';
       let checkScalesList: any[] = this.scalesList.filter((res) => {
         delete res.description;
@@ -497,9 +872,9 @@ export class LaborRoomFlowSheetComponent implements OnInit {
         item.Dockey = this.docKey;
       });
 
-      
 
-      this.subscription = this.emergencyService.saveDeliveryRecordDoc(formData).subscribe({
+
+      this.subscription = this.emergencyService.saveLaborRoomDocument({ d: formData }).subscribe({
         next: (data: any) => {
         },
         error: (err: any) => {
@@ -593,6 +968,14 @@ export class LaborRoomFlowSheetComponent implements OnInit {
       var num = parseInt(str.replace(/[^0-9]/g, ''));
       var date = new Date(num);
       return date;
+    }
+  }
+
+  dateStringNewDate(stringData: any) {
+    if (stringData) {
+      let [day, month, yearWithTime] = stringData.split('.');
+      let [year, time] = yearWithTime.split('/');
+      return new Date(+year, +month - 1, +day);
     }
   }
 }
