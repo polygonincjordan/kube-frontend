@@ -258,8 +258,8 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       Gender: [data?.Gender || ''],
       BirthDate: [this.getDate(data?.BirthDate) || null],
       BirthTime: [this.parseTime(data?.BirthTime) || null],
-      AdmDate: [this.getDate(data?.AdmDate) || null],
-      AdmTime: [this.parseTime(data?.AdmTime) || null],
+      AdmDate: [this.getDate(data?.AdmDate) || this.convertDateFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionDate)],
+      AdmTime: [this.parseTime(data?.AdmTime) || this.convertTimeFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionTime)],
       PlaceBirth: [data?.PlaceBirth || ''],
       BirthWeight: [data?.BirthWeight || ''],
       BirthWgtUnit: [data?.BirthWgtUnit || ''],
@@ -433,14 +433,14 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         CrIntubatedYn : [data?.CrIntubatedYn ||{ value: '', disabled: true }],
         CrItubeSize : [data?.CrItubeSize || { value: '', disabled: true }],
         CrItubeLevel : [data?.CrItubeLevel || { value: '', disabled: true }],
-        CrIintubation : [data?.CrIintubation || { value: null, disabled: true }],
-        CrIextubation : [data?.CrIextubation || { value: null, disabled: true }],
+        CrIintubation : [this.getDate(data?.CrIintubation) || { value: null, disabled: true }],
+        CrIextubation : [this.getDate(data?.CrIextubation) || { value: null, disabled: true }],
         CrReintubation : [data?.CrReintubation || false],
         CrReintubationYn : [data?.CrReintubationYn || { value: '', disabled: true }],
         CrRtubeSize : [data?.CrRtubeSize || { value: '', disabled: true }],
         CrRtubeLevel : [data?.CrRtubeLevel || { value: '', disabled: true }],
-        CrRdate : [data?.CrRdate || { value: null, disabled: true }],
-        CrRentryDate : [data?.CrRentryDate || { value: null, disabled: true }],
+        CrRdate : [this.getDate(data?.CrRdate) || { value: null, disabled: true }],
+        CrRentryDate : [this.getDate(data?.CrRentryDate) || { value: null, disabled: true }],
         CbNormal : [data?.CbNormal || false],
         CbAccessory : [data?.CbAccessory || false],
         CbNodule : [data?.CbNodule || false],
@@ -1041,6 +1041,58 @@ export class NicuAssessmentDocumentComponent implements OnInit {
 
     formData.AdmDate = `${year}-${month}-${day}T00:00:00`;
   }
+  if (formData.CrIintubation) {
+    if(typeof formData.CrIintubation === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.CrIintubation)) {
+        formData.CrIintubation = convertDateFormat(formData.CrIintubation);
+      }
+    }
+    const date = new Date(formData.CrIintubation);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.CrIintubation = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.CrIextubation) {
+    if(typeof formData.CrIextubation === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.CrIextubation)) {
+        formData.CrIextubation = convertDateFormat(formData.CrIextubation);
+      }
+    }
+    const date = new Date(formData.CrIextubation);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.CrIextubation = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.CrRentryDate) {
+    if(typeof formData.CrRentryDate === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.CrRentryDate)) {
+        formData.CrRentryDate = convertDateFormat(formData.CrRentryDate);
+      }
+    }
+    const date = new Date(formData.CrRentryDate);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.CrRentryDate = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.CrRdate) {
+    if(typeof formData.CrRdate === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.CrRdate)) {
+        formData.CrRdate = convertDateFormat(formData.CrRdate);
+      }
+    }
+    const date = new Date(formData.CrRdate);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.CrRdate = `${year}-${month}-${day}T00:00:00`;
+  }
    let checkVitalList: any[] = this.toVitalsArr?.filter((res) => {
     delete res.Vunit;
     delete res.value;
@@ -1135,5 +1187,51 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     if (index > -1) {
       this.toVitalsArr.splice(index, 1);
     }
+  }
+
+  
+  private convertDateFormat(dateInput) {
+
+    // If input is a Date object, convert to /Date(timestamp)/
+    if (dateInput instanceof Date) {
+      return `/Date(${dateInput.getTime()})/`;
+    }
+
+    // If input is an ISO date string (e.g. "2025-06-30T05:07:07.976Z")
+    if (typeof dateInput === 'string' && dateInput.includes('T')) {
+      const date = new Date(dateInput);
+      if (!isNaN(date.getTime())) {
+        return `/Date(${date.getTime()})/`;
+      }
+    }
+
+    // If input is in /Date(timestamp)/ format
+    const match = /\/Date\((\d+)\)\//.exec(dateInput);
+    if (match) {
+      const timestamp = parseInt(match[1], 10);
+      return new Date(timestamp);
+    }
+    return null;
+
+  }
+
+
+  private convertTimeFormat(timeInput) {
+
+    // If format is HH:mm
+    if (typeof timeInput === 'string' && /^\d{1,2}:\d{2}$/.test(timeInput)) {
+      const [hours, minutes] = timeInput.split(':').map(Number);
+      return `PT${hours}H${minutes}M0S`;
+    }
+
+    // If format is ISO 8601 duration (e.g. PT15H51M25S)
+    const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(timeInput);
+    if (match) {
+      const hours = match[1] ? parseInt(match[1], 10) : 0;
+      const minutes = match[2] ? parseInt(match[2], 10) : 0;
+      // You can choose to include or ignore seconds
+      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    }
+    return null;
   }
 }

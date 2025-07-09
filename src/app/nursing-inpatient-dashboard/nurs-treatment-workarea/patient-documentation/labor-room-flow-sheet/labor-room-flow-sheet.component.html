@@ -107,11 +107,15 @@
           </div>
           <div class="form-group col-md-2">
             <label class="mr-3" style="width: 56px">LMP</label>
-            <input type="text" class="form-control" style="width: 150px;" formControlName="Lmp">
+            <input class="form-control" formControlName="Lmp" style="font-weight: 800; color: #000" [minDate]=""
+              [maxDate]="" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
           </div>
           <div class="form-group">
             <label class="mr-4" style="width: 75px;">EDD</label>
-            <input type="text" class="form-control mr-4 ml-4" style="width: 150px;" formControlName="Edd">
+            <input class="form-control" formControlName="Edd" style="font-weight: 800; color: #000" [minDate]=""
+              [maxDate]="" #dp="bsDatepicker" bsDatepicker
+              [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
           </div>
           <div class="form-group">
             <label class="mr-4">Gestational Age</label>
@@ -249,7 +253,7 @@
                 <input type="checkbox" id="noScaleAppicable" class="mr-2" />
                 <label class="m-0">No lab test applicable</label>
               </div>
-              <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+              <img src="assets/img/file1.svg" title="Create & Import" class="img-size" (click)="addLabTest()"/>
             </div>
           </div>
           <div class="table-scroll-container">
@@ -263,20 +267,19 @@
                   <th scope="col">Date/Time</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr *ngFor="let codeItems of code">
-
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input type="text" class="form-control" /></td>
-                  <td><input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px" type="text"
-                      placeholder="" [minDate]="" [maxDate]="" #dp="bsDatepicker"
-                      style="max-width: 235px; height: 40px !important" bsDatepicker [bsConfig]="{
-                showWeekNumbers: false,
-                dateInputFormat: 'DD.MM.YYYY'
-              }" /></td>
-                </tr>
+              <tbody style="background: #fbfcff">
+                <ng-container formArrayName="TOLABTEST"
+                  *ngFor=" let item of labourForm.get('TOLABTEST')['controls']; let i = index">
+                  <tr [formGroupName]="i" class="c-pointer">
+                    <td><input type="text" formControlName="Description" class="form-control" /></td>
+                    <td><input type="text" formControlName="Value" class="form-control" /></td>
+                    <td><input type="text" formControlName="ValueConfi" class="form-control" /></td>
+                    <td><input type="text" formControlName="Range" class="form-control" /></td>
+                    <td><input class="form-control ml-0 col-1" style="color: #000; border-radius: 8px"
+                        formControlName="DateTime" #dp="bsDatepicker" style="max-width: 235px; height: 40px !important"
+                        bsDatepicker [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" /></td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
@@ -733,18 +736,14 @@
       <div class="mt-2" style="border-bottom: 3px solid #0056b0; width: 100%">
         <h6 class="col-md-12 p-0 b-3">Scales</h6>
       </div> <br>
-      <div class="d-flex mb-2 py-3" style="justify-content: space-between;
-      padding-right: 22px">
-        <div style="display: flex;
-      align-items: center;
-      gap: 10px;">
-          <input type="checkbox" style="width: 36px; 
-        height: 22px;" id="noDiagnosisApplicable" />
-          <label class="admitting-physician" for="noDiagnosisApplicable">No Scales
-            Applicable</label>
-        </div>
-        <div class="secound-bar-vital-sign">
-          <img src="assets/img/file1.svg" title="Create & Import" class="img-size">
+      <div class="scale-box-checkbox">
+        <input type="checkbox" id="noScaleAppicable" [(ngModel)]="noScaleAppicable"
+          [ngModelOptions]="{ standalone: true }" [disabled]="isDockeyAvailable()" />
+        <label class="admitting-physician" for="noScaleAppicable">No Scale Applicable</label>
+
+        <div style="display: flex; width: 88%; justify-content: end;">
+          <img src="assets/img/file1.svg" title="Create & Import" class="img-size"
+            (click)="openModalForScales(scalesOrderCase)" />
         </div>
       </div>
       <div class="end-container">
@@ -769,14 +768,10 @@
                         <td>{{ item.LastScore }}</td>
                         <td>{{ item.ScoreDesc }}</td>
                         <td>{{ item.Datetimee }}</td>
+                        <td><a (click)="openScaleModel(item)">Create</a></td>
+                        <td><a (click)="viewGlosgowModel(item)">View</a></td>
                         <td>
-                          <a>Create</a>
-                        </td>
-                        <td>
-                          <a>View</a>
-                        </td>
-                        <td>
-                          <img src="assets/img/Delete.svg" title="Delete" class="cursor-pointer ml-1" />
+                          <img src="assets/img/Delete.svg" class="cursor-pointer ml-1" (click)="removeScale(i)" />
                         </td>
                       </tr>
                     </tbody>
@@ -1015,3 +1010,72 @@
 </form>
 
 <app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>
+
+<app-glos-gow-comma-scale-popup #scalesGlosgow
+  (scaleStoreValue)="scaleStoreInTable($event, 'glosgow')"></app-glos-gow-comma-scale-popup>
+<app-morse-fall-labor-scale #morseFallScale (scaleStoreValue)="scaleStoreInTable($event, 'morseFall')"></app-morse-fall-labor-scale>
+<app-braden-labor-scale #bradenScaleTemp (scaleStoreValue)="scaleStoreInTable($event, 'braden')"></app-braden-labor-scale>
+
+<ng-template #scalesOrderCase>
+  <div>
+    <div class="allergy-header">
+      <div style="
+        font-size: 23px;
+        font-weight: bold">
+        <span>Import Scales</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px;">
+    <div style="display: flex;
+    justify-content: end;
+    padding-right: 1rem;">
+      <button (click)="scalesImport()" style="border: 1px solid;
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 5px 20px;
+      border-radius: 4px;
+      font-weight: 700;margin-top: 4px;">
+        Import
+      </button>
+    </div>
+    <form style="max-height: 350px;
+    overflow: auto;">
+      <table class="table table-bordered past-table mt-3">
+        <thead style="background-color: #e4edf5;
+    color: black;text-align: center;position: sticky;
+    top: 0;">
+          <tr>
+            <th scope="col" style="    text-align: -webkit-center;">
+              <input type="checkbox" [checked]="selectedScales.length === toScaleArr.length" class="form-control"
+                (change)="collectAllScalesData($event)" style="width:20px" />
+            </th>
+            <th>Scale Type</th>
+            <th style="width: 270px;">Last Score</th>
+            <th>Score Description</th>
+            <th>Date/Time</th>
+            <th>Create</th>
+            <th>Display</th>
+
+          </tr>
+        </thead>
+        <tbody style="background-color: hsl(225, 100%, 99%);">
+          <tr *ngFor="let item of toScaleArr;let i=index" style="text-align:center">
+            <td style="text-align: -webkit-center;"> <span class="input-text-field d-inline-block align-top w-100">
+                <ng-container>
+                  <input type="checkbox" class="form-control" [checked]="item.isSelected"
+                    (change)="collectScalesIData($event,item, i)" style="width:20px" />
+                </ng-container>
+              </span></td>
+            <td>{{item!.Scaletype}}</td>
+            <td style="width: 270px;">{{item?.Score}}</td>
+            <td style="text-align: center;pointer-events: none;">{{item?.ScoreDesc}}</td>
+            <td style="text-align: center;pointer-events: none;">{{item?.DateTime}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</ng-template>

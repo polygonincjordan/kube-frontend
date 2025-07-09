@@ -187,6 +187,8 @@ import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-docu
 import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
 import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
 import { ModifiedAldreteDocumentForInportComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/modified-aldrete-document/modified-aldrete-document.component';
+import { MorseFallScaleLaborComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/morse-fall-scale/morse-fall-scale.component';
+import { BradenScaleLaborComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/braden-scale/braden-scale.component';
 
 
 
@@ -323,7 +325,9 @@ const route: Routes = [
     LdrViewComponent,
     ErVitalsForSBARComponent,
     ModifiedAldreteDocumentForInportComponent,
-    PhysicianPastSurgicalComponent
+    PhysicianPastSurgicalComponent,
+    MorseFallScaleLaborComponent,
+    BradenScaleLaborComponent
   ],
   providers: [
     EmergencyService,

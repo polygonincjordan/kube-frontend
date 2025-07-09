@@ -3283,7 +3283,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.openLaborRoomFlow = true;
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.openNurseInitAss = true;;
+          this.openLaborRoomFlow = true;;
           let valueObj = {
             type: WordType.EditNE,
             docKey: this.selectedDocData.Dockey
@@ -3313,7 +3313,7 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openLaborRoomFlow = true;
-        this.LaborRoomFlowSheetComp.createLaborRoomDoc(4).then((formValue: any) => {
+        this.LaborRoomFlowSheetComp.createLaborRoomDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh();
           }
@@ -3328,7 +3328,7 @@ export class PatientDocumentationComponent implements OnInit {
         this.openNicuNurFlowSheet = true;
       } else if (action == 'edit') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.openNurseInitAss = true;;
+          this.openNicuNurFlowSheet = true;;
           let valueObj = {
             type: WordType.EditNE,
             docKey: this.selectedDocData.Dockey

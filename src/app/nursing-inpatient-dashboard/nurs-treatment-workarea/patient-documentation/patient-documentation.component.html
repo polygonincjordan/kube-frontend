@@ -1175,7 +1175,26 @@
                     </div>
                 </div>
               </div>
-
+              <!-- Labor Room Flow Sheet -->
+              <div [ngClass]="isLaborRoomFlow ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
+                (click)="selectAssessment('isLaborRoomFlow',laborRoomFlowList[0])" *ngIf="!selectedDocument || selectedDocument == 'LRFS'">
+                <div class="col-md-4" >Labor Room Flow Sheet {{laborRoomFlowList[0]?.Zversion ?
+                  dockVer(laborRoomFlowList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{laborRoomFlowList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(laborRoomFlowList[0]?.DocTime)}}">
+                  {{getDate(laborRoomFlowList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                </div>
+                <div class="col-md-3">{{laborRoomFlowList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="getScaleDetails(laborRoomFlowList[0],RedirectionType.BRADEN$)"
+                    *ngIf="laborRoomFlowList[0]?.StatusTxt == 'Released'" />
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(laborRoomFlowList[0]?.Dockey, laborRoomFlowList[0])">
+                      <select *ngIf="laborRoomFlowList.length && laborRoomFlowList[0]?.StatusTxt !='N/A' && laborRoomFlowList[0]?.Zversion != '00'" class="mr-2" name=""
+                        id=""></select>
+                    </div>
+                </div>
+              </div>
               <!--  Pediatric Admission Assessment -->
                <!-- <div
                 [ngClass]="isPaediatricPhysician ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
@@ -1369,26 +1388,7 @@
                  </div>
              </div>
            </div>
-           <!-- Labor Room Flow Sheet -->
-           <div [ngClass]="isLaborRoomFlow ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-             (click)="selectAssessment('isLaborRoomFlow',laborRoomFlowList[0])" *ngIf="!selectedDocument || selectedDocument == 'LRFS'">
-             <div class="col-md-4" >Labor Room Flow Sheet {{laborRoomFlowList[0]?.Zversion ?
-               dockVer(laborRoomFlowList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
-             <div class="col-md-2 status-color">{{laborRoomFlowList[0]?.StatusTxt || 'N/A'}}</div>
-             <div class="col-md-2" title="{{getTime(laborRoomFlowList[0]?.DocTime)}}">
-               {{getDate(laborRoomFlowList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-             </div>
-             <div class="col-md-3">{{laborRoomFlowList[0]?.PhyNm || '-'}}</div>
-             <div class="col-md-1 d-flex">
-                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                 (click)="openNurseAssMainsPdf(laborRoomFlowList[0]?.Dockey)"
-                 *ngIf="laborRoomFlowList[0]?.StatusTxt == 'Released'"></i>
-                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(laborRoomFlowList[0]?.Dockey, laborRoomFlowList[0])">
-                   <select *ngIf="laborRoomFlowList.length && laborRoomFlowList[0]?.StatusTxt !='N/A' && laborRoomFlowList[0]?.Zversion != '00'" class="mr-2" name=""
-                     id=""></select>
-                 </div>
-             </div>
-           </div>
+
            <!-- NICU Nursing Flow Sheet -->
            <div [ngClass]="isNicuNurFlowSheet ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
              (click)="selectAssessment('isNicuNurFlowSheet',NicuNursingFlowSheetList[0])" *ngIf="!selectedDocument || selectedDocument == 'NNFS'">
