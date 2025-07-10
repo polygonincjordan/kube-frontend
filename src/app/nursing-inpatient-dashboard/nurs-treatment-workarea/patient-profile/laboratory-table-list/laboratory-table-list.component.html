@@ -17,6 +17,8 @@
                   <td>{{ item.Trtoe }}</td>
                   <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
                   <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                  <td>{{ emergencyService.getDate(item.DesiredDate) | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ emergencyService.getDate(item.DesiredTime) | date:'HH:mm a' }}</td>
                   <td>
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>

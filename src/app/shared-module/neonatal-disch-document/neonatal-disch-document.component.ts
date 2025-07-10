@@ -634,6 +634,8 @@ export class NeonatalDischDocumentComponent implements OnInit {
       this.isFormValidError = true;
       this.neonatalDischarge.value.DocStatus = docStatus;
       let paylaod = this.neonatalDischarge.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit,
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart,
       paylaod['HsOtherT'] = this.neonatalDischarge.getRawValue().HsOtherT;
       paylaod['HfAnteriorOc'] = this.neonatalDischarge.getRawValue().HfAnteriorOc;
       paylaod['HfAother'] = this.neonatalDischarge.getRawValue().HfAother;

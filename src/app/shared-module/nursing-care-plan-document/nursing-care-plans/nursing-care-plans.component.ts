@@ -151,6 +151,8 @@ export class NursingCarePlansComponent implements OnInit {
       let paylaod = {
         d: this.nursingCarePlanForm.value,
       };
+      paylaod.d.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.subscription = this.dayCaseDashboard
         .createNursingCarePlan(paylaod)
         .subscribe({

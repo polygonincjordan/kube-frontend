@@ -178,6 +178,8 @@ export class RichmondScaleComponent implements OnInit {
     return new Promise((resolve, reject) => {
       let formData = this.richmondForm.value;
       formData.DocStatus = docStatus;
+      formData.Orgdo = this.storageService.patientData.deptOrgUnit;
+      formData.AttendPhy = this.storageService.getUserProfile().Gpart;
       let payload = {
         d: this.richmondForm.value
       };

@@ -232,6 +232,8 @@ export class CvcInsertionComponent implements OnInit {
       }
       this.cvcInsertionForm.value.DocStatus = docStatus;
       let paylaod = this.cvcInsertionForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       paylaod['Cvc3Contraindication1'] = this.cvcInsertionForm.getRawValue()?.Cvc3Contraindication1;
 
       paylaod.CvcInsertionDate = this.sanitizeSAPDateFormat(paylaod.CvcInsertionDate);

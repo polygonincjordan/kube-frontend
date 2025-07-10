@@ -274,7 +274,7 @@ export class CprDocumentComponent implements OnInit {
             Patnr: result.Patnr,
             Falnr: result.Falnr,
             Lfdnr: result.Lfdnr,
-            Orgdo: result.Orgdo,
+            Orgdo: this.storageService.patientData.deptOrgUnit,
             Location: result.Location,
             TypeArrest: result.TypeArrest,
             TypeArrestTxt: result.TypeArrestTxt,
@@ -355,7 +355,7 @@ export class CprDocumentComponent implements OnInit {
             EcgStrip: result.EcgStrip,
             AttachedBy: result.AttachedBy,
             WitnessedBy: result.WitnessedBy,
-            AttendPhy: result.AttendPhy,
+            AttendPhy: this.storageService.getUserProfile().Gpart,
             DocStatus: result.DocStatus
           });
 

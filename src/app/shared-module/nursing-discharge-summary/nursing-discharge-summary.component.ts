@@ -268,7 +268,8 @@ export class NursingDischargeSummaryComponent implements OnInit, OnDestroy {
         d: this.nursingDischargeForm.value,
       };
       delete paylaod?.d?.enableCreateDiagnosis
-
+      paylaod.d.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.subscription = this.dayCaseDashboard
         .createNursingDischargeDoc(paylaod)
         .subscribe({

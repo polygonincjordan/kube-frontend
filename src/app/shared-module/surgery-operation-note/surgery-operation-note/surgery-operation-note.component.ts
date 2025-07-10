@@ -266,6 +266,7 @@ export class SurgeryOperationNoteComponent implements OnInit {
         Released: status ? status : documentType,
         Etag: "",
         Erdattim: `\/Date(${new Date().getTime()})\/`,
+        AttendPhy: this.storageService.getUserProfile().Gpart
       }
       const payload = { ...payloadData, PATDOCTOOPERRPTDOCDETAIL: { results: [data.patientFormData] }, DOCCATTOATTACHMENTS: { results: [] }, PATDOCTOPOSTOPERATIVEDX: { results: data.postDiagnosisData }, PATDOCTOPREOPERATIVEDX: { results: data.preDiganosisData }, PATDOCTOSURGICALTEAM: { results: data.surgeryData } };
       this.inPatientConfigurationService.saveSurgery(payload).subscribe({

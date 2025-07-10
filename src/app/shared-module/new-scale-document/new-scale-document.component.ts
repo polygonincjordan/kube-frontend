@@ -180,6 +180,8 @@ export class NewScaleDocumentComponent implements OnInit {
       // if(status == '3') payload.d.Dockey = ''; 
       payload.d.DocStatus = status;
       payload.d.TotalScore = payload.d.TotalScore.toString();
+      payload.d.Orgdo = this.storageService.patientData.deptOrgUnit,
+      payload.d.AttendPhy = this.storageService.getUserProfile().Gpart,
       // Subscribe using an object to define handlers
       this.subscription = this.emergencyService.saveApgarScaleDoc(payload).subscribe({
         next: (data: any) => {

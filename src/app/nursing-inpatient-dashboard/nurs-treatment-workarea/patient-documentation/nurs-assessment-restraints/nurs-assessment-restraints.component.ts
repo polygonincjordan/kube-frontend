@@ -164,6 +164,8 @@ export class NursAssessmentRestraintsComponent implements OnInit {
   public createDoc(status?:any,actionType?:any){
     return new Promise((resolve, reject) => {
       let formData = this.nurseAssMainForm.value;
+      formData.Orgdo = localStorage.getItem('initOrg'),
+      formData.AttendPhy = this.storageService.getGpart(),
       formData.PhysicianNotified = formData.PhysicianNotified ? this.convertTimeToDuration(formData.PhysicianNotified) : null;
       formData.SupervisorNotified = formData.SupervisorNotified ? this.convertTimeToDuration(formData.SupervisorNotified) : null;
       const checkedRows = this.nurseAssMainForm.value.TORESTRAINTS

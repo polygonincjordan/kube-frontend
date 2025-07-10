@@ -6,7 +6,8 @@ import {
   infoObtainedList,
   schoolGradeEduList,
   schoolGradeList,
-  languageList
+  languageList,
+  schoolGradePeadtraticList
 } from '../../nursing-admission-assessment/dropdown-value';
 
 @Component({
@@ -21,7 +22,7 @@ export class AdmissionDataSectionComponent implements OnInit {
   admissionModeList = admissionModeList;
   accompaniedbyList = accompaniedbyList;
   infoObtainedList = infoObtainedList;
-  schoolGradeList = schoolGradeList;
+  schoolGradeList = schoolGradePeadtraticList;
   schoolGradeEduList = schoolGradeEduList;
   languageList = languageList
   constructor() {}

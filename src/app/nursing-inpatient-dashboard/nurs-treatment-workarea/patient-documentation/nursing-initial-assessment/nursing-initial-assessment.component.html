@@ -469,7 +469,7 @@
           </div>
           <div class="col-md-1">
             <div class="form-group">
-              <ng-select class="w-100" [items]="pain" bindLabel="id" bindValue="label" placeholder="Select"
+              <ng-select class="w-100" [items]="pain" bindLabel="label" bindValue="id" placeholder="Select"
                 formControlName="PaPainIntensity1">
               </ng-select>
             </div>
@@ -1611,7 +1611,7 @@
                           <input type="text" class="form-control w-70 ml-3" [value]="
                               toAllergyArr?.length
                                 ? 'Allergy Exists'
-                                : 'No Known Allergies'
+                                : ''
                             " />
                         </div>
                         <img src="assets/img/file1.svg" title="Create & Import" class="img-size"
@@ -1713,7 +1713,7 @@
           <div style="max-height: 296px;
             overflow: auto;">
             <table class="table table-bordered past-table">
-              <thead style="background-color: #e4edf5; color: black; text-align: center;">
+              <thead style="background-color: #e4edf5; color: black;">
                 <tr>
                   <!-- <th scope="col" style="width: 2% !important"><input  style="width: 30% !important; height: 15px;" type="checkbox"/></th> -->
                   <th scope="col">ID</th>

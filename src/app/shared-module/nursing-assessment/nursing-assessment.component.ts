@@ -674,6 +674,8 @@ isFormValidError = false
       }
       this.nursingAdmissionForm.value.DocStatus = docStatus;
       let paylaod = this.nursingAdmissionForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       // paylaod.ADate = this.sanitizeSAPDateFormat(this.nursingAdmissionForm.value.ADate);
       paylaod.RAt = this.parsePayloadFormateTime(this.nursingAdmissionForm.value.RAt);
       if(this.nursingAdmissionForm.value.RfLmp) paylaod.RfLmp = this.nursingAdmissionForm.value.RfLmp.toISOString().split('T')[0] + "T00:00:00";

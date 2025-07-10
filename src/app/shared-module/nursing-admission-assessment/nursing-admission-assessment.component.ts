@@ -1334,6 +1334,8 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       }
       this.nursingAdmissionForm.value.DocStatus = docStatus;
       let paylaod = this.nursingAdmissionForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       paylaod.ADate = this.sanitizeSAPDateFormat(this.nursingAdmissionForm.value.ADate);
       paylaod.ATime = this.parsePayloadFormateTime(this.nursingAdmissionForm.value.ATime);
       delete paylaod.disabledAllPhy

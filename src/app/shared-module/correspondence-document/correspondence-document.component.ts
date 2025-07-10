@@ -107,7 +107,8 @@ export class CorrespondenceDocumentComponent implements OnInit {
       }
       this.correspondForm.value.DocStatus = docStatus;
       let paylaod = this.correspondForm.value;
-
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.subscription = this.dayCaseDashboard
         .saveCorrespondenceDocument(paylaod)
         .subscribe({

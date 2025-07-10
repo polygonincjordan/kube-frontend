@@ -350,6 +350,8 @@ export class ObsFallRiskAssessmentComponent implements OnInit {
       let payload = {
         d: this.obsFallRiskForm.value
       };
+      payload.d.Orgdo = this.storageService.patientData.deptOrgUnit;
+      payload.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       // if(status == '3') payload.d.Dockey = ''; 
       payload.d.DocStatus = status;
       payload.d.TotalScore = payload.d.TotalScore.toString();
