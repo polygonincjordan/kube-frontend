@@ -666,6 +666,8 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
     }
     return new Promise((resolve, reject) => {
       let formData = this.newBornForm.value;
+      formData.Orgdo = this.storageService.patientData.deptOrgUnit;
+      formData.AttendPhy = this.storageService.getUserProfile().Gpart;
       const convertDateFormat = (dateString: string): string => {
         const [day, month, year] = dateString.split('-').map(Number);
         const date = new Date(year, month - 1, day);

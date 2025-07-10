@@ -142,6 +142,8 @@ export class TimeOutChecklistComponent implements OnInit {
       }
       this.timeOutForm.value.DocStatus = docStatus;
       let paylaod = this.timeOutForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       paylaod.ProcedureTime = this.parsePayloadFormateTime(paylaod.ProcedureTime);
       if (paylaod.ProcedureDate) paylaod.ProcedureDate = paylaod.ProcedureDate.toISOString().split('T')[0] + "T00:00:00";
 

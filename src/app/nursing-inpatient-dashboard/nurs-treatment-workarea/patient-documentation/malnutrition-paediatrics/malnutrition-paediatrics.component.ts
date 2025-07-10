@@ -340,8 +340,8 @@ export class MalnutritionPaediatricsComponent implements OnInit {
           Patnr: this.malnutritionForm.value.Patnr,
           Falnr: this.malnutritionForm.value.Falnr,
           Lfdnr: this.malnutritionForm.value.Lfdnr,
-          Orgdo: this.malnutritionForm.value.Orgdo,
-          AttendPhy: this.malnutritionForm.value.AttendPhy,
+          Orgdo: this.storageService.patientData.deptOrgUnit,
+          AttendPhy: this.storageService.getUserProfile().Gpart,
           DocStatus: docStatus,
           TONUTRITIONAL: this.malnutritionForm.value.Nutritional.filter(item => item?.WhatIsTheChild).map((item) => ({
             ...item,

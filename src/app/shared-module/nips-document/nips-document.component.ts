@@ -156,6 +156,8 @@ export class NIPSDocumentComponent implements OnInit {
     return new Promise((resolve, reject) => {
       let formData = this.snipForm.value;
       formData.DocStatus = docStatus;
+       formData.Orgdo = this.storageService.patientData.deptOrgUnit;
+      formData.AttendPhy = this.storageService.getUserProfile().Gpart;
       let payload = {
         d: formData
       };

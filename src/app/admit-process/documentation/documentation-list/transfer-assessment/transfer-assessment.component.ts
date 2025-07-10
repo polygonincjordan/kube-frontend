@@ -46,6 +46,9 @@ export class TransferAssessmentComponent implements OnInit {
   toMedication: any = [];
   toScaleArr: any[] = [];
   toProc: any = [];
+  noMedicationOrder: any = false;
+  noVitalSigns: any = false;
+
   orgUnits = [
   { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
   { code: '4THFLVIP', name: '4th Floor-Zone B-VIP' },
@@ -415,6 +418,7 @@ selectedOrgUnit: any;
       );
   }
   openModal(template: TemplateRef<any>) {
+    if(this.noMedicationOrder) return;
     const config: ModalOptions = {
       class:
         'modal-dialog modal-dialog-centered medication-order-case modal-xl',
@@ -456,6 +460,7 @@ selectedOrgUnit: any;
   }
 
   openModalVital() {
+    if(this.noVitalSigns) return;
     const item = {
       Einri: this.storageService.einri,
       Patnr: this.storageService.patnr,

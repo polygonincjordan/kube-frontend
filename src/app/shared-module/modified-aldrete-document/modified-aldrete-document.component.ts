@@ -225,6 +225,8 @@ export class ModifiedAldreteDocumentComponent implements OnInit {
       }
       this.MorsefallForm.value.DocStatus = docStatus;
       let paylaod = this.MorsefallForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit,
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart,
       paylaod.TotalScore = paylaod.TotalScore.toString(); 
       paylaod.Orgdo = this.storageService?.patientData?.deptOrgUnit;
       this.subscription = this.dayCaseDashboard

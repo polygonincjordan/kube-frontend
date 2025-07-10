@@ -350,6 +350,8 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
     return new Promise((resolve, reject) => {
       // this.isFormValidError = true;
       let paylaod = this.confusionForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       paylaod['TOSCALE'] = this.scalesList.filter((res: any) => {
         delete res.value;
         res.LastScore = res?.LastScore.toString();

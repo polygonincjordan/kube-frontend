@@ -876,6 +876,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       let payload = {
         d: this.nursingAdmissionForm.value
       };
+      payload.d.Orgdo = this.storageService.patientData.deptOrgUnit;
+      payload.d.AttendPhy = this.storageService.getUserProfile().Gpart;
 
       payload.d.DocStatus = status;
       payload.d.Datee = this.convertDateFormat(payload.d.Datee);

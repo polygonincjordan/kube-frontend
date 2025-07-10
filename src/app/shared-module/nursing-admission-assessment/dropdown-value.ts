@@ -86,6 +86,24 @@ export const schoolGradeList = [
     value: '1',
   },
 ];
+export const schoolGradePeadtraticList = [
+  {
+    label: 'Elementary School',
+    value: '0',
+  },
+  {
+    label: 'Middle School',
+    value: '1',
+  },
+  {
+    label: 'High School',
+    value: '2',
+  },
+  {
+    label: 'Other',
+    value: '3',
+  },
+];
 
 export const schoolGradeEduList = [
   {

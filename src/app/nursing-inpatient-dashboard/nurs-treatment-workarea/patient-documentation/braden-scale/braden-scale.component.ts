@@ -232,6 +232,7 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
           Falnr: this.storageService.falnr,
           Lfdnr: this.storageService.lfdnr,
           Orgdo: localStorage.getItem('initOrg'),
+          AttendPhy: this.storageService.getGpart(),
           SensoryPerception: this.Sensoryperception,
           Moisture: this.Moisture,
           Activity: this.Activity,
@@ -239,7 +240,6 @@ export class BradenScaleComponent implements OnInit, OnDestroy {
           Nutrition: this.Nutrition,
           FrictionShear: this.Frictionandshear,
           NrsComments: this.NrsComments,
-          AttendPhy: this.storageService.getGpart(),
           DocStatus: '1',
         },
       };

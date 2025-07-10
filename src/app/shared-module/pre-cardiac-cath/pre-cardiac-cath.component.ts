@@ -327,6 +327,8 @@ export class PreCardiacCathComponent implements OnInit {
       }
       this.preCardiacForm.value.DocStatus = docStatus;
       let paylaod = this.preCardiacForm.value;
+      paylaod.Orgdo = this.storageService.patientData.deptOrgUnit;
+      paylaod.AttendPhy = this.storageService.getUserProfile().Gpart;
       // paylaod.Datee = this.sanitizeSAPDateFormat(this.preCardiacForm.value.Datee);
       paylaod.Timee = this.parsePayloadFormateTime(this.preCardiacForm.value.Timee);
       if (this.preCardiacForm.value.Datee) paylaod.Datee = this.preCardiacForm.value.Datee.toISOString().split('T')[0] + "T00:00:00";

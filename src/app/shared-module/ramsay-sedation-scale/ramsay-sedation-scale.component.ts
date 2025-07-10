@@ -151,6 +151,8 @@ export class RamsaySedationScaleComponent implements OnInit {
       let formData = this.ramsaySedationForm.value;
       formData.DocStatus = docStatus;
       formData.TotalScore = formData.TotalScore.toString();
+      formData.Orgdo = this.storageService.patientData.deptOrgUnit;
+      formData.AttendPhy = this.storageService.getUserProfile().Gpart;
       let payload = {
         d: this.ramsaySedationForm.value
       };
