@@ -819,6 +819,8 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
     return new Promise((resolve, reject) => {
       let formData = this.postAssForm.value;
       formData.DocStatus = status;
+      formData.Orgdo = this.storageService.patientData.deptOrgUnit;
+      formData.AttendPhy = this.storageService.getUserProfile().Gpart;
       formData.IoFluidBalance = formData?.IoFluidBalance?.toString();
       formData.IoGrandTotalIntake = formData?.IoGrandTotalIntake?.toString();
       formData.IoGrandTotalOutput = formData?.IoGrandTotalOutput?.toString();

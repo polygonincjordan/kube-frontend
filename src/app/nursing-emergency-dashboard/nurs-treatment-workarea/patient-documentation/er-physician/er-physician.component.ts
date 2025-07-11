@@ -250,6 +250,8 @@ export class ErPhysicianComponent implements OnInit {
       if (createJson['DateDisp'] == '') {
         delete createJson['DateDisp'];
       }
+      createJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      createJson.AttendPhy = this.storageService.getUserProfile().Gpart;
       return this.emergencyService.createPhyDoc(createJson);
     }
   }
@@ -323,6 +325,8 @@ export class ErPhysicianComponent implements OnInit {
       if (updateJson['DateDisp'] == '') {
         delete updateJson['DateDisp'];
       }
+      updateJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      updateJson.AttendPhy = this.storageService.getUserProfile().Gpart;
       return this.emergencyService.updatePhyDoc(updateJson);
     }
   }
@@ -393,7 +397,8 @@ export class ErPhysicianComponent implements OnInit {
       delete updateJson['DateDisp'];
     }
     console.log(updateJson);
-
+    updateJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+    updateJson.AttendPhy = this.storageService.getUserProfile().Gpart;
     return this.emergencyService.releasePhyDoc(updateJson);
   }
   async deletePhyAssessment() {
@@ -477,6 +482,8 @@ export class ErPhysicianComponent implements OnInit {
       if (createJson['DateDisp'] == '') {
         delete createJson['DateDisp'];
       }
+      createJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      createJson.AttendPhy = this.storageService.getUserProfile().Gpart;
       return this.emergencyService.createPhyDoc(createJson);
     }
   }
@@ -551,6 +558,8 @@ export class ErPhysicianComponent implements OnInit {
       if (createJson['DateDisp'] == '') {
         delete createJson['DateDisp'];
       }
+      createJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      createJson.AttendPhy = this.storageService.getUserProfile().Gpart;
       return this.emergencyService.createPhyDoc(createJson);
     }
   }

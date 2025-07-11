@@ -213,6 +213,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   toPHYEXAMmportedData: any
   modalRefScales: BsModalRef;
   isChecked: any;
+  allergyInformation: any;
   public toVitalsArr: any = [];
   private actionTypeData!: any
   physicianForm: FormGroup;
@@ -299,6 +300,14 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
   initForm() {
     // let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss a');
+    console.log(this.storageService, "=====");
+    if(this.storageService.patientData.allergyInfo == 'The patient has no known allergies' || this.storageService.patientData.allergyInfo == 'The patient has no allergy assessment') {
+      this.allergyInformation = 'No know allergies';
+    } else if (this.storageService.patientData.allergyInfo == 'The patient has no possible allergy assessment') {
+      this.allergyInformation = 'No possible allergy assessment';
+    } else {
+      this.allergyInformation = 'Allergy Exists';
+    }
     this.nursingAdmissionForm = this.formBuilder.group({
 
       Dtid: 'ZMED_PDASM',
@@ -640,6 +649,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     // this.initPhyExamForm();
     this.defaultAddRow();
     this.defaultAddRowforTOINFECTIONS();
+    this.defaultAddRowforTOFUNASS();
 
   }
 
@@ -1001,6 +1011,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       this.addItemRowforTOINFECTIONS();
     }
   }
+  defaultAddRowforTOFUNASS() {
+    for (let index = 0; index < 2; index++) {
+      this.addItemRowForTOFUNASS();
+    }
+  }
 
   // this function is updatted one dont not remove it
   addItemRowforTOINFECTIONS() {
@@ -1077,6 +1092,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         Description: el.Allergen,
       });
     });
+    if(this.toAllergyArr.length) {
+      this.allergyInformation = 'Allergy Exists';
+    } else {
+      this.allergyInformation = 'No know allergies';
+    }
     this.duplicates = [];
     this.duplicates = this.findDuplicatesAllergy();
     this.toAllergyArr = this.toAllergyArr.filter(
@@ -1117,6 +1137,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
+    if(this.toAllergyArr.length) {
+      this.allergyInformation = 'Allergy Exists';
+    } else {
+      this.allergyInformation = 'No know allergies';
+    }
   }
   //------------ Alergey managemenet  (ends) ------------
 

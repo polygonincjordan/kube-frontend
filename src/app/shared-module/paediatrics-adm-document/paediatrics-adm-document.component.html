@@ -11,9 +11,7 @@
                     <div class="tab-navigate allergies-header">
                         <div class="tab-nav mb-3 align-items-center">
                             <label class="m-0">Allergies</label>
-                            <input type="text" class="form-control w-70" [value]="
-                      toAllergyArr?.length ? 'Allergy Exists' : ''
-                    " />
+                            <input type="text" class="form-control w-70" [value]="this.allergyInformation" />
                         </div>
                         <div class="" (click)="openModalForAllergy()">
                             <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />

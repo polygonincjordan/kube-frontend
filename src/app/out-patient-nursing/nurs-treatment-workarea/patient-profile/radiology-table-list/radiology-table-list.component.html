@@ -24,6 +24,9 @@
                     <span class="table-action">{{item.Status}}</span>
                   </td>
                   <td>
+                    <span class="white-space">{{item?.SupplText ? item?.SupplText : '--'}}</span>
+                  </td>
+                  <td>
                     <img *ngIf="item.Pdf"  (click)="getPdf(item)" class="width-25 mr-1" src="assets/img/emergency-pdf.png" alt="" />
                     <img *ngIf="item.Img"  (click)="openImageActionSet(item)" class="width-25" src="assets/img/radiolody-eme.png" alt="" />
                   </td>

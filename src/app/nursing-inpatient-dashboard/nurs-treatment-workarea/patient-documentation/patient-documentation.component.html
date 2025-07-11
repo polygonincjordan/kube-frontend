@@ -1118,7 +1118,7 @@
                   dockVer(richmondList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{richmondList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(richmondList[0]?.DocTime)}}">
-                  {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
+                  {{getDate(richmondList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(richmondList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{richmondList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">

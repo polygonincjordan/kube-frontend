@@ -23,7 +23,7 @@
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>
                   <td>
-                    <span class="white-space">{{item?.Ergtx ? item?.Ergtx : '--'}}</span>
+                    <span class="white-space">{{item?.SupplText ? item?.SupplText : '--'}}</span>
                   </td>
                   <td>
                     <div style="display: flex; justify-content: end; line-height: 14px">
@@ -32,6 +32,9 @@
                         <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Label"/>
                       </div>
                       <div style="margin-left: 3px; margin-right: 3px" (click)="labSampleCollectedPrintModal(labSampleCollectedPrint,item)">
+                        <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
+                      </div>
+                      <div style="margin-left: 3px; margin-right: 3px" (click)="deleteLab(item)">
                         <img src="assets/img/frame4.png" style="width: 25px; cursor: pointer" title="Status Change">
                       </div>
                     </div>

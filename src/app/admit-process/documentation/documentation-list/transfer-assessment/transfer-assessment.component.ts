@@ -141,7 +141,7 @@ selectedOrgUnit: any;
       Patnr: [this.storageService.patnr],
       Falnr: [this.storageService.falnr],
       Lfdnr: [this.storageService.lfdnr],
-      Orgdo: [''],
+      Orgdo: [localStorage.getItem('initOrg')],
       Datee: [
         new Date(
           `${new DatePipe('en-US').transform(
@@ -162,7 +162,7 @@ selectedOrgUnit: any;
       IsolationType: [''],
       ContiMonitoring: [''],
       OtherRequir: [''],
-      AttendPhy: [''],
+      AttendPhy: [this.storageService.getGpart()],
       DocStatus: [''],
       CarePlan: [''],
       TransferCond: [''],

@@ -807,8 +807,11 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       FloDate: this.transformDate(painAssessmentValue.FloDate),
       FloTime: this.transformTime(painAssessmentValue.FloTime),
       FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval),
-      ComScore: painAssessmentValue.ComNoSigns ? 0 : painAssessmentValue.ComScore
+      ComScore: painAssessmentValue.ComNoSigns ? 0 : painAssessmentValue.ComScore,
+      Orgdo: 'F21IUAMC',
+      AttendPhy: this.storageService.getUserProfile().Gpart,
     };
+    
     return this.setEmptyStrings(payload);
   }
   

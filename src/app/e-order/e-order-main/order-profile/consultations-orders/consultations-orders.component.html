@@ -21,11 +21,11 @@
                 <td>--</td>
                 <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
                 <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
-                <!-- <td>
+                <td>
                   <div>
                     <button class="btn btn-primary" style="background: #007bff; border: none; padding: 5px;" (click)="openModalForConsultationCompletion(consultationCompletionTemplate, item)">Complete</button>
                   </div>
-                </td> -->
+                </td>
               </tr>
             </tbody>
           </table>
@@ -202,4 +202,4 @@
   </div>
 </ng-template>
 
-<app-progress-notes-kardex #progressNotesKardexId></app-progress-notes-kardex>
+<!-- <app-progress-notes-kardex #progressNotesKardexId></app-progress-notes-kardex> -->

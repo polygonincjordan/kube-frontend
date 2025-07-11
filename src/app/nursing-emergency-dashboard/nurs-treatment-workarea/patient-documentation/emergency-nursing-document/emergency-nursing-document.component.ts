@@ -2471,7 +2471,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         TOSCALE: checkScalesList,
         TOSOCIAL: updatedList
       };
-
+      payload.Orgdo = this.storageService.patientData.deptOrgUnit;
+      payload.AttendPhy = this.storageService.getUserProfile().Gpart;
       if (payload.ArrivalTime != '') {
         let createtime = payload.ArrivalTime.split(':');
         payload.ArrivalTime =
@@ -2529,6 +2530,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
           'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
       }
       payload.DocStatus = DocStatus;
+      payload.Orgdo = this.storageService.patientData.deptOrgUnit,
+      payload.AttendPhy = this.storageService.getUserProfile().Gpart,
       // Subscribe using an object to define handlers
       this.subscription = this.emergencyService.saveNurEmrTriage(payload).subscribe({
         next: (data: any) => {
