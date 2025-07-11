@@ -270,6 +270,23 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     }
   }
 
+  deleteLab(obj) {
+    let labOrders:any[] = [];
+    labOrders.push({
+      Cordtypid: obj.clinOrdTypId,
+      Tarif: obj.catalogkey,
+      Talst: obj.service,
+      Lslok: obj.localization,
+      Ergtx: obj.note,
+      Trtoe: obj.treatingUnitCode,
+      Orgfa: obj.defaultOrgCode,
+      Trtgp: '',
+      Eorderid: obj.Eorderid,
+      Eorderitemid: obj.Eorderitemid,
+      Storn: obj.isSelected ? 'X' : 'X',
+    });
+  }
+
   warningSwalModel(warningMsg) {
     Swal.fire({
       title: warningMsg,

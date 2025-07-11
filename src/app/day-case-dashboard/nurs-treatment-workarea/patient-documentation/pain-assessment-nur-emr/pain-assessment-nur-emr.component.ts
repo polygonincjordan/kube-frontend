@@ -748,7 +748,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
     const reAssessmentCloneValue = this.processReAssessment(this.reAssessmentTableList, painAssessmentValue);
   
     const payload = this.createPayload(painAssessmentValue, reAssessmentCloneValue, flowSheetAssessmentCloneValue);
-  
+    
     return new Promise((resolve, reject) => {
       this.subscription = this.emergencyService.createPainAssessmentDoc({ d: payload }).subscribe({
         next: (data: any) => {},
@@ -809,6 +809,8 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       FloDate: this.transformDate(painAssessmentValue.FloDate),
       FloTime: this.transformTime(painAssessmentValue.FloTime),
       FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval),
+      Orgdo: 'F21IUAMC',
+      AttendPhy: this.storageService.getUserProfile().Gpart,
       ComScore: painAssessmentValue.ComNoSigns ? 0 : painAssessmentValue.ComScore
     };
     return this.setEmptyStrings(payload);

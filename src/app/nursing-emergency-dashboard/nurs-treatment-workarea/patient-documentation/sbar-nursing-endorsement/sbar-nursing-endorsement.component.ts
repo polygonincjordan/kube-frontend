@@ -807,6 +807,8 @@ export class SbarNursingEndorsementComponent implements OnInit {
     return new Promise((resolve, reject) => {
       let Payload = { ...this.sbarNursingForm.value };
       Payload.DocStatus = status;
+      Payload.Orgdo = this.storageService.patientData.deptOrgUnit;
+      Payload.AttendPhy = this.storageService.getUserProfile().Gpart;
       Payload.PrLastTime = Payload.PrLastTime ? this.convertToPTTime(Payload.PrLastTime) : 'PT00H00M00S',
         Payload.PgLastBowel = Payload.PgLastBowel ? this.convertToPTTime(Payload.PgLastBowel) : 'PT00H00M00S',
         Payload.PmDressingDate = this.sanitizeSAPDateFormat(Payload.PmDressingDate) || '',

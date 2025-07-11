@@ -96,12 +96,16 @@ export class PatientMedicalReportComponent implements OnInit {
   async createMedDoc() {
     let createJson = this.medReportForm.value;
     createJson['DocStatus'] = '1';
+    createJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      createJson.AttendPhy = this.storageService.getUserProfile().Gpart;
     return this.emergencyService.createMedDoc(createJson);
 
   }
   async updateMedDoc() {
     let updateJson = this.medReportForm.value;
     updateJson['DocStatus'] = '1';
+    updateJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      updateJson.AttendPhy = this.storageService.getUserProfile().Gpart;
     return this.emergencyService.updateMedDoc(updateJson);
   }
   async deleteMedReport() {
@@ -114,16 +118,22 @@ export class PatientMedicalReportComponent implements OnInit {
 
     let updateJson = this.medReportForm.value;
     updateJson['DocStatus'] = '2';
+    updateJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+      updateJson.AttendPhy = this.storageService.getUserProfile().Gpart;
     return this.emergencyService.releaseMedDoc(updateJson);
   }
   async CopyMedReport() {
     let createJson = this.medReportForm.value;
+    createJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+    createJson.AttendPhy = this.storageService.getUserProfile().Gpart;
     createJson['DocStatus'] = '1';
     return this.emergencyService.createMedDoc(createJson);
 
   }
   async createAndReleaseMedDoc() {
     let createJson = this.medReportForm.value;
+    createJson.Orgdo = this.storageService.patientData.deptOrgUnit;
+    createJson.AttendPhy = this.storageService.getUserProfile().Gpart;
     createJson['DocStatus'] = '2';
     return this.emergencyService.createMedDoc(createJson);
 

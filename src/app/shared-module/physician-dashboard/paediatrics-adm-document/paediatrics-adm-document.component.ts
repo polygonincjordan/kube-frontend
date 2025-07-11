@@ -231,6 +231,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   med: boolean = true;
   surg: boolean = false;
   family: boolean = false;
+  allergyInformation: any;
 
   constructor(
     private sharedService: SharedService,
@@ -313,7 +314,13 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
 
   initForm() {
-
+    if(this.storageService.patientData.allergyInfo == 'The patient has no known allergies' || this.storageService.patientData.allergyInfo == 'The patient has no allergy assessment') {
+      this.allergyInformation = 'No know allergies';
+    } else if (this.storageService.patientData.allergyInfo == 'The patient has no possible allergy assessment') {
+      this.allergyInformation = 'No possible allergy assessment';
+    } else {
+      this.allergyInformation = 'Allergy Exists';
+    }
     const check = this.storageService.getGpart()
 
     this.nursingAdmissionForm = this.formBuilder.group({
@@ -332,7 +339,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       AccompaniedTxt: '',
       AdmissionMode: '',
       AdmissionModeTxt: '',
-      ChiefComplaint: [''],
+      ChiefComplaint: ['Chief complaint is:'],
       Datee: [this.convertDateFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionDate)],
       FavouriteToy: '',
       InfoObtained: '',
@@ -701,6 +708,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     });
     this.defaultAddRow();
     this.defaultAddRowforTOINFECTIONS();
+    this.defaultAddRowforTOFUNASS();
 
   }
 
@@ -748,8 +756,29 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
           // this.toADMMEDImportedData = TOADMMED.results;
           this.toPHYEXAMmportedData = TOPHYEXAM.results;
           // this.patchFormArray('TOALLERGY', TOALLERGY, this.createTOALLERGYGroup.bind(this));
-          this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
-          this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
+          // this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
+          if (TOFUNASS.results && TOFUNASS?.results?.length) {
+            this.patchFormArray('TOFUNASS', TOFUNASS, this.createTOFUNASSGroup.bind(this));
+            for (let index = TOFUNASS?.results?.length; index < 3; index++) {
+              this.addItemRowForTOFUNASS();
+            }
+          } else {
+            for (let index = 0; index < 2; index++) {
+              this.addItemRowForTOFUNASS();
+            }
+          }
+
+           if (TOINFECTIONS.results && TOINFECTIONS?.results?.length) {
+            this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
+            for (let index = TOINFECTIONS?.results?.length; index < 3; index++) {
+              this.addItemRowforTOINFECTIONS();
+            }
+          } else {
+            for (let index = 0; index < 2; index++) {
+              this.addItemRowforTOINFECTIONS();
+            }
+          }
+
           if (TOVACCINATION.results && TOVACCINATION?.results?.length) {
             this.patchFormArray('TOVACCINATION', TOVACCINATION, this.createTOVACCINATIONGroup.bind(this));
           } else {
@@ -783,7 +812,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     });
   }
 
-  createTOFUNASSGroup(item): FormGroup {
+  createTOFUNASSGroup(item?): FormGroup {
     return this.formBuilder.group({
       Dockey: item?.Dockey || '',
       Describe: item?.Describe || '',
@@ -1109,7 +1138,15 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     }
   }
 
-
+  defaultAddRowforTOFUNASS() {
+    for (let index = 0; index < 2; index++) {
+      this.addItemRowForTOFUNASS();
+    }
+  }
+  addItemRowForTOFUNASS() {
+    const control = this.nursingAdmissionForm.get('TOFUNASS') as FormArray;
+    control.push(this.createTOFUNASSGroup());
+  }
 
   public importAllergyData(data) {
     data.forEach((el) => {
@@ -1119,6 +1156,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         Description: el.Allergen,
       });
     });
+    if(this.toAllergyArr.length) {
+      this.allergyInformation = 'Allergy Exists';
+    } else {
+      this.allergyInformation = 'No know allergies';
+    }
     this.duplicates = [];
     this.duplicates = this.findDuplicatesAllergy();
     this.toAllergyArr = this.toAllergyArr.filter(
@@ -1163,6 +1205,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
+    if(this.toAllergyArr.length) {
+      this.allergyInformation = 'Allergy Exists';
+    } else {
+      this.allergyInformation = 'No know allergies';
+    }
   }
 
   public openScaleModel(item: any) {
