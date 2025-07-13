@@ -55,6 +55,10 @@ export enum WordType {
   CopyPEAA = 'CopyPediatricsAdmissionAssessDocument'
 }
 
+export enum DashboardType {
+  nursing = 'nursing'
+}
+
 export enum FilterType {
   PatientWithNoConsumable$ = 'PatientWithNoConsumable',
   PatientWithNoDocuments$ = 'PatientWithNoDocuments',

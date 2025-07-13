@@ -3,7 +3,7 @@ import { DataShareService } from '@services/data-share.service';
 import { DataService } from '@services/data.service';
 import { EventService } from '@services/event.service';
 import { FeeListService } from '@services/fee-service/fee-list.service';
-import { ActionType, WordType } from '@services/interfaces/common.enum';
+import { ActionType, DashboardType, WordType } from '@services/interfaces/common.enum';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 
@@ -61,6 +61,6 @@ export class OpCreateServiceComponent implements OnInit {
   }
 
   public createNewFeeServiceOrder() {
-    this.feeListService.onCreateFeeOrder()
+    this.feeListService.onCreateFeeOrder(DashboardType.nursing)
   }
 }
