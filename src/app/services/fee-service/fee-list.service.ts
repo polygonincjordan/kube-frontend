@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import swal from 'sweetalert2';
 import { FeeServiceFilterObject } from './interface/fee-list.interface';
 import { HttpClient } from '@angular/common/http';
+import { DashboardType } from '@services/interfaces/common.enum';
 
 @Injectable()
 export class FeeListService {
@@ -2700,7 +2701,7 @@ export class FeeListService {
     }
   }
 
-  onCreateFeeOrder() {
+  onCreateFeeOrder(dashboardType?:any) {
     let postObject: any = {};
     postObject['Einri'] = this.jsonObj.Einri
     postObject['Falnr'] = this.jsonObj.Falnr
@@ -2717,7 +2718,7 @@ export class FeeListService {
           Talst: element.Talst,
           Tarif: element.Tarif,
           Ktxt1: element.text,
-          Fprice: `${element.newprice}`,
+          Fprice: dashboardType == DashboardType.nursing ? '' : `${element.newprice}`,
           Funit: element.Unit,
           Imeng: element.Imeng,
           Ibgdt:
