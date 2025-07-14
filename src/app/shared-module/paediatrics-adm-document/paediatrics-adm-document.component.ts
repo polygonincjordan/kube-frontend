@@ -779,6 +779,10 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     });
   }
 
+  addFinAssLine(event) {
+    this.addItemRowForTOFUNASS();
+  }
+
   createTOPHYEXAMGroup(item?): FormGroup {
     return this.formBuilder.group({
       Dockey: item?.Dockey || '',

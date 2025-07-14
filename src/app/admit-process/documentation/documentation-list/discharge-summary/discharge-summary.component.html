@@ -254,7 +254,7 @@
         </div>
         <div>
           <button class="create-diagnosis" (click)="openModal(medicationOrderCase)">
-            Create & Import
+            Import
           </button>
         </div>
       </div>
@@ -271,7 +271,6 @@
             <th>Rate</th>
             <th>The</th>
             <th>ID</th>
-
             <th>Ordering Physician</th>
             <th>Cycle</th>
           </tr>
@@ -279,21 +278,21 @@
         <tbody style="background-color: hsl(225, 100%, 99%)">
           <tr *ngFor="let item of medicationImportDrugArray; let i = index" style="text-align: center">
             <td>{{ item.OrderType }}</td>
-            <td style="width: 270px">{{ item.Descr }}</td>
+            <td style="width: 270px">{{ item.OrderDesc }}</td>
             <td style="text-align: center; pointer-events: none">
               <input type="checkbox" style="width: 18px" [(ngModel)]="item.HomeMedication"
                 [ngModelOptions]="{ standalone: true }" />
             </td>
             <td style="text-align: center; pointer-events: none">
-              <input type="checkbox" style="width: 18px" [(ngModel)]="item.PatientOwnMed"
+              <input type="checkbox" style="width: 18px" [(ngModel)]="item.OwnMedication"
                 [ngModelOptions]="{ standalone: true }" />
             </td>
             <td>{{ item.Dose }}</td>
             <td>{{ item.Validity }}</td>
             <td>{{ item.Route }}</td>
-            <td>{{ "" }}</td>
-            <td>{{ "" }}</td>
-            <td>{{ "" }}</td>
+            <td>{{ item.Rate }}</td>
+            <td>{{ item.RecommendedTherapy }}</td>
+            <td>{{ item.Id }}</td>
             <td>{{ item.OrderingPhysician }}</td>
             <td>{{ item.Cycle }}</td>
             <!-- <td></td> -->
@@ -325,7 +324,7 @@
         <form style="max-height: 296px;
         overflow: auto;">
           <table class="table table-bordered past-table">
-            <thead style="background-color: #e4edf5; color: black; text-align: center;">
+            <thead style="background-color: #e4edf5 !important; color: black; text-align: center">
               <tr>
 
                 <th scope="col">Code</th>
@@ -340,16 +339,16 @@
             </thead>
             <tbody style="background-color: #fbfcff;">
               <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
-                <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
-                <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
-                <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
-                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DAdmission"
+                <td style="width: 14%;    padding: 10px !important;">{{item.Code}}</td>
+                <td style="width: 32%;    padding: 10px !important;">{{item.Description}}</td>
+                <td style="    width:23%;padding: 10px !important;">{{item.Remarks}}</td>
+                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.AdmDiagnosisInd"
                     [ngModelOptions]="{standalone: true}"></td>
-                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DSurgery"
+                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.SurgeryDiagnosisInd"
                     [ngModelOptions]="{standalone: true}"></td>
                 <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                    [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
-                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DDischarge"
+                    [(ngModel)]="item.PreoprativeDiagnosisInd" [ngModelOptions]="{standalone: true}"></td>
+                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DischargDiagnosisInd"
                     [ngModelOptions]="{standalone: true}"></td>
                 <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
                     src="assets/img/Delete.svg" style="position: relative;

@@ -79,6 +79,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
   docKey: any;
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
+  allergyInformation: any;
 
   constructor(private modalService: BsModalService, private ePrescriptionService: EPrescriptionService, public storageService: StorageService, private admissionService: AdmissionService,
     private sharedService: SharedService, private route: ActivatedRoute, private fb: FormBuilder, private dataShareService: DataShareService, private emergencyService: EmergencyService
@@ -183,6 +184,13 @@ export class NursingInitialAssessmentComponent implements OnInit {
 
   initForm() {
     console.log(this.storageService, "--")
+    if(this.storageService.patientData.allergyInfo == 'The patient has no known allergies' || this.storageService.patientData.allergyInfo == 'The patient has no allergy assessment') {
+      this.allergyInformation = 'No know allergies';
+    } else if (this.storageService.patientData.allergyInfo == 'The patient has no possible allergy assessment') {
+      this.allergyInformation = 'No possible allergy assessment';
+    } else {
+      this.allergyInformation = 'Allergy Exists';
+    }
     this.nursingFormGroup = this.fb.group({
       Dockey: [''],
       Dtid: ['ZMED_NIAGO'],
@@ -1232,6 +1240,11 @@ export class NursingInitialAssessmentComponent implements OnInit {
         Description: el.Allergen,
       });
     });
+    if(this.toAllergyArr.length) {
+      this.allergyInformation = 'Allergy Exists';
+    } else {
+      this.allergyInformation = 'No know allergies';
+    }
     this.duplicates = [];
     this.duplicates = this.findDuplicatesAllergy();
     this.toAllergyArr = this.toAllergyArr.filter(
@@ -1278,6 +1291,11 @@ export class NursingInitialAssessmentComponent implements OnInit {
 
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
+    if(this.toAllergyArr.length) {
+      this.allergyInformation = 'Allergy Exists';
+    } else {
+      this.allergyInformation = 'No know allergies';
+    }
   }
 
 

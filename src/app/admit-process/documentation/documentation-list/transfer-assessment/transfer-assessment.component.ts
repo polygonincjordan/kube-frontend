@@ -16,6 +16,7 @@ import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { PhysicianErVitalsComponent } from '../physician-form/physician-er-vitals/physician-er-vitals.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-transfer-assessment',
@@ -50,45 +51,45 @@ export class TransferAssessmentComponent implements OnInit {
   noVitalSigns: any = false;
 
   orgUnits = [
-  { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
-  { code: '4THFLVIP', name: '4th Floor-Zone B-VIP' },
-  { code: '6FL-NICU', name: '6th Floor NICU' },
-  { code: '6FL-NURS', name: '6th Floor Nursery Unit' },
-  { code: '6FL-OROU', name: '6th Floor LDR Operation Rooms' },
-  { code: 'F02AGAMC', name: '2nd Floor' },
-  { code: 'F03AGAMC', name: '3rd Floor' },
-  { code: 'F04GAMC', name: '4th Floor' },
-  { code: 'F05AGAMC', name: '5th Floor' },
-  { code: 'F06AGAMC', name: '6th Floor' },
-  { code: 'F07AGAMC', name: '7th Floor' },
-  { code: 'F09AGAMC', name: '9th Floor' },
-  { code: 'F21IUAMC', name: '2nd Floor-Zone C-IP' },
-  { code: 'F2DAGAMC', name: '2nd Floor Dialysis' },
-  { code: 'F2DTUAMC', name: '2nd Floor Dialysis' },
-  { code: 'F31IUAMC', name: '3rd Floor-Zone C-IP' },
-  { code: 'F3CIUAMC', name: '3rd Floor-Zone B-IP' },
-  { code: 'F3IAGAMC', name: 'Infusion Bay Area' },
-  { code: 'F3TTUAMC', name: 'Infusion Bay Treatment Unit' },
-  { code: 'EXCPTAMC', name: 'DAY CARE AREA' },
-  // { code: 'F02AGAMC', name: '2nd Floor' },
-  // { code: 'F03AGAMC', name: '3rd Floor' },
-  // { code: 'F04AGAMC', name: '4th Floor' },
-  // { code: 'F05AGAMC', name: '5th Floor' },
-  // { code: 'F06AGAMC', name: '6th Floor' },
-  // { code: 'F07AGAMC', name: '7th Floor' },
-  { code: 'F51IUAMC', name: '5th Floor-Zone C-IP' },
-  { code: 'F5VIUAMC', name: '5th Floor-Zone B-IP' },
-  { code: 'F6CIUAMC', name: '6th Floor-Zone C-IP' },
-  { code: 'F7IIUAMC', name: '7th Class 2-3 Medical/Surgical' },
-  { code: 'F9DAGAMC', name: '9th Floor Day Surgery Area' },
-  { code: 'F9DIUAMC', name: '9th Floor Day Surgery' },
-  { code: 'F9GOTAMC', name: 'Major OT (GRAL)' },
-  { code: 'F9IIUAMC', name: '9th Floor ICU Area' },
-  { code: 'LDRASMTU', name: '6th Floor LDR Birthing Unit' },
-  { code: 'LDRINTOU', name: '6th Floor Neonatal Intermediate' },
-];
+    { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
+    { code: '4THFLVIP', name: '4th Floor-Zone B-VIP' },
+    { code: '6FL-NICU', name: '6th Floor NICU' },
+    { code: '6FL-NURS', name: '6th Floor Nursery Unit' },
+    { code: '6FL-OROU', name: '6th Floor LDR Operation Rooms' },
+    { code: 'F02AGAMC', name: '2nd Floor' },
+    { code: 'F03AGAMC', name: '3rd Floor' },
+    { code: 'F04GAMC', name: '4th Floor' },
+    { code: 'F05AGAMC', name: '5th Floor' },
+    { code: 'F06AGAMC', name: '6th Floor' },
+    { code: 'F07AGAMC', name: '7th Floor' },
+    { code: 'F09AGAMC', name: '9th Floor' },
+    { code: 'F21IUAMC', name: '2nd Floor-Zone C-IP' },
+    { code: 'F2DAGAMC', name: '2nd Floor Dialysis' },
+    { code: 'F2DTUAMC', name: '2nd Floor Dialysis' },
+    { code: 'F31IUAMC', name: '3rd Floor-Zone C-IP' },
+    { code: 'F3CIUAMC', name: '3rd Floor-Zone B-IP' },
+    { code: 'F3IAGAMC', name: 'Infusion Bay Area' },
+    { code: 'F3TTUAMC', name: 'Infusion Bay Treatment Unit' },
+    { code: 'EXCPTAMC', name: 'DAY CARE AREA' },
+    // { code: 'F02AGAMC', name: '2nd Floor' },
+    // { code: 'F03AGAMC', name: '3rd Floor' },
+    // { code: 'F04AGAMC', name: '4th Floor' },
+    // { code: 'F05AGAMC', name: '5th Floor' },
+    // { code: 'F06AGAMC', name: '6th Floor' },
+    // { code: 'F07AGAMC', name: '7th Floor' },
+    { code: 'F51IUAMC', name: '5th Floor-Zone C-IP' },
+    { code: 'F5VIUAMC', name: '5th Floor-Zone B-IP' },
+    { code: 'F6CIUAMC', name: '6th Floor-Zone C-IP' },
+    { code: 'F7IIUAMC', name: '7th Class 2-3 Medical/Surgical' },
+    { code: 'F9DAGAMC', name: '9th Floor Day Surgery Area' },
+    { code: 'F9DIUAMC', name: '9th Floor Day Surgery' },
+    { code: 'F9GOTAMC', name: 'Major OT (GRAL)' },
+    { code: 'F9IIUAMC', name: '9th Floor ICU Area' },
+    { code: 'LDRASMTU', name: '6th Floor LDR Birthing Unit' },
+    { code: 'LDRINTOU', name: '6th Floor Neonatal Intermediate' },
+  ];
 
-selectedOrgUnit: any;
+  selectedOrgUnit: any;
 
   constructor(
     public modalService: BsModalService,
@@ -97,7 +98,7 @@ selectedOrgUnit: any;
     private admissionService: AdmissionService,
     private datePipe: DatePipe,
     public ePrescriptionService: EPrescriptionService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -111,7 +112,7 @@ selectedOrgUnit: any;
       this.updateTransferAssessForm();
     }
     if (changes.soapFormEvent.currentValue == 'edit') {
-      if(this.admissionService.isEditTransferAssestForm) {
+      if (this.admissionService.isEditTransferAssestForm) {
         this.updateTransferAssessForm();
       } else {
         this.createTransferAssessForm(false);
@@ -167,10 +168,15 @@ selectedOrgUnit: any;
       CarePlan: [''],
       TransferCond: [''],
       PatAsses: [''],
+      NoVitalSigns: false,
+      NoProcedure: false,
+      NoMedication: false,
+      NoExamination: false,
+      NoScales: false,
     });
   }
 
-  initTransferAssesstForm() {}
+  initTransferAssesstForm() { }
 
   getTransferData() {
     let json = {
@@ -266,13 +272,16 @@ selectedOrgUnit: any;
       Route: med.Route,
       Rate: med.Rate || '',
     })) : [];
-    createJson['TOSCALE'] = this.scalesArray?.length ? this.scalesArray.map((element) => ({
-      Dockey: '',
-      ScaleType: element.ScaleType,
-      LastScore: element.LastScore,
-      ScoreDesc: element.ScoreDesc,
-      Datetimee: element.Datetimee,
-    })) : []
+    createJson['TOSCALE'] = this.scalesArray?.length
+      ? this.scalesArray
+        .filter(element => element.LastScore && element.ScoreDesc) // Only include if both fields have data
+        .map(element => ({
+          Dockey: '',
+          ScaleType: element.ScaleType,
+          LastScore: element.LastScore,
+          ScoreDesc: element.ScoreDesc,
+          Datetimee: element.Datetimee,
+        })) : [];
     await this.admissionService
       .createTansferAssessData(createJson)
       .subscribe((x) => {
@@ -315,13 +324,16 @@ selectedOrgUnit: any;
       Route: med.Route,
       Rate: med.Rate || '',
     }));
-    updateJson['TOSCALE'] = this.scalesArray.map((element) => ({
-      Dockey: '',
-      ScaleType: element.ScaleType,
-      LastScore: element.LastScore,
-      ScoreDesc: element.ScoreDesc,
-      Datetimee: element.Datetimee,
-    }));
+    updateJson['TOSCALE'] = this.scalesArray?.length
+      ? this.scalesArray
+        .filter(element => element.LastScore && element.ScoreDesc) // Only include if both fields have data
+        .map(element => ({
+          Dockey: '',
+          ScaleType: element.ScaleType,
+          LastScore: element.LastScore,
+          ScoreDesc: element.ScoreDesc,
+          Datetimee: element.Datetimee,
+        })) : [];
     await this.admissionService.updateTransferDoc(updateJson).subscribe(() => {
       // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
       // }
@@ -360,13 +372,16 @@ selectedOrgUnit: any;
       Route: med.Route,
       Rate: med.Rate || '',
     }));
-    updateJson['TOSCALE'] = this.scalesArray.map((element) => ({
-      Dockey: '',
-      ScaleType: element.ScaleType,
-      LastScore: element.LastScore,
-      ScoreDesc: element.ScoreDesc,
-      Datetimee: element.Datetimee,
-    }));
+    updateJson['TOSCALE'] = this.scalesArray?.length
+      ? this.scalesArray
+        .filter(element => element.LastScore && element.ScoreDesc) // Only include if both fields have data
+        .map(element => ({
+          Dockey: '',
+          ScaleType: element.ScaleType,
+          LastScore: element.LastScore,
+          ScoreDesc: element.ScoreDesc,
+          Datetimee: element.Datetimee,
+        })) : [];
     this.admissionService.releaseTransferDoc(updateJson).subscribe(() => {
       this.admissionService.cancelAllForm();
       this.admissionService.selectedCurrentDocDetails = '';
@@ -418,7 +433,7 @@ selectedOrgUnit: any;
       );
   }
   openModal(template: TemplateRef<any>) {
-    if(this.noMedicationOrder) return;
+    if (this.noMedicationOrder) return;
     const config: ModalOptions = {
       class:
         'modal-dialog modal-dialog-centered medication-order-case modal-xl',
@@ -460,7 +475,7 @@ selectedOrgUnit: any;
   }
 
   openModalVital() {
-    if(this.noVitalSigns) return;
+    if (this.noVitalSigns) return;
     const item = {
       Einri: this.storageService.einri,
       Patnr: this.storageService.patnr,
@@ -476,9 +491,12 @@ selectedOrgUnit: any;
     throw new Error('Method not implemented.');
   }
   // toVitalsArr: any[]=[];
-  deleteVitalsFromTable(_t73: any, _t74: number) {
-    throw new Error('Method not implemented.');
+  public deleteVitalsFromTable(index: number) {
+    if (index > -1) {
+      this.toVitalsArr.splice(index, 1);
+    }
   }
+
   onDateChange($event: any) {
     //  throw new Error('Method not implemented.');
   }
@@ -499,6 +517,9 @@ selectedOrgUnit: any;
         )}/${this.getTime(el.Time)}`,
         Vunit: el.UnitTxt,
       });
+    });
+    this.transferAssessForm.patchValue({
+      NoVitalSigns: false
     });
   }
 
@@ -576,6 +597,9 @@ selectedOrgUnit: any;
       });
     });
     this.modalRefUpdateName.hide();
+    this.transferAssessForm.patchValue({
+      NoMedication: false
+    });
   }
 
   collectAllMedicationIData(event: any) {
@@ -600,6 +624,9 @@ selectedOrgUnit: any;
       });
     });
     this.modalRefScales.hide();
+    this.transferAssessForm.patchValue({
+      NoScales: false
+    });
   }
 
   collectAllScalesData(event: any) {
@@ -626,14 +653,35 @@ selectedOrgUnit: any;
   }
 
   onIsolationChange(event: Event) {
-  const selectedValue = (event.target as HTMLSelectElement).value;
-  const isoTypeControl = this.transferAssessForm.get('IsolationType');
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    const isoTypeControl = this.transferAssessForm.get('IsolationType');
 
-  if (selectedValue === '2') {
-    isoTypeControl?.enable();
-  } else {
-    isoTypeControl?.disable();
-    isoTypeControl?.reset();
+    if (selectedValue === '2') {
+      isoTypeControl?.enable();
+    } else {
+      isoTypeControl?.disable();
+      isoTypeControl?.reset();
+    }
   }
-}
+
+  importProcedures() {
+    Swal.fire({
+      text: 'There is no procedures to import',
+      confirmButtonColor: '#0890c5',
+      cancelButtonColor: '#84898c',
+      confirmButtonText: 'OK',
+      customClass: 'myalertpopup',
+      icon: 'warning',
+    });
+  }
+  importExamination() {
+    Swal.fire({
+      text: 'There is no examination to import',
+      confirmButtonColor: '#0890c5',
+      cancelButtonColor: '#84898c',
+      confirmButtonText: 'OK',
+      customClass: 'myalertpopup',
+      icon: 'warning',
+    });
+  }
 }

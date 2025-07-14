@@ -106,7 +106,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   getDichargeDataByDockey(isRelease) {
     this.inPatientConfigurationService.getPatientSummaryDataByDocKey(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((resp) => {
       if (resp && resp.results && resp.results.length) {
-        this.inPatientDischargeData = resp;
+        this.inPatientDischargeData = resp.results[0];
         this.isCheckAPICall = true;
         const FormData = resp.results[0].ToFormData.results[0];
         this.inPatientPhdisDataSet.patchValue({
@@ -135,6 +135,8 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
             Time: this.parseTime(FormData.Time),
           })
         }
+        this.toDiagnosisArr = this.inPatientDischargeData.ToDiagnosis.results;
+        this.medicationImportDrugArray = this.inPatientDischargeData.ToDischargeMed.results;
         if (isRelease) {
           this.savePhysicianDischarge(true);
         }
@@ -170,15 +172,21 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     payloadDicharge.Date = payloadDicharge.Date !== undefined && payloadDicharge.Date !== null
       ? this.sanitizeSAPDateFormat(payloadDicharge.Date)
       : null;
+
+    payloadDicharge['ToDiagnosis'] = this.toDiagnosisArr;
+    payloadDicharge['ToDischargeMed'] = this.medicationImportDrugArray;
+
+    console.log(payloadDicharge, "payloadDicharge")
     const saveDataList = {
-      patientFormData: this.inPatientPhdisDataSet.value,
+      patientFormData: payloadDicharge,
       releaseForm: isRelease,
     };
     this.admissionService
       .saveInPatientPhdisData(
         saveDataList,
         this.userConfig,
-        this.paramsObj
+        this.paramsObj,
+        'physicianDischargeSumm'
       )
       .subscribe((resp) => {
         // if (this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
@@ -191,11 +199,11 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         this.admissionService.isEditDischargeSummery = false;
         this.admissionService.isCloneDischargeSummery = false;
       }, (error: any) => {
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isCloneNicuForm = false;
-          this.admissionService.isEditNicuForm = false;
-          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-          this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isCloneNicuForm = false;
+        this.admissionService.isEditNicuForm = false;
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
       });
     // this.updateEvent.emit(true);
   }
@@ -382,14 +390,14 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         Dockey: '',
         OrderType:
           element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
-        Descr:
+        OrderDesc:
           element.Descrlt +
           element.Quan +
           element.Quanunit +
           element.Routedescr +
           element.N1id,
         HomeMedication: false,
-        PatientOwnMed: false,
+        OwnMedication: false,
         Dose: element.Quan + element.Quanunit,
         Validity: `${new DatePipe('en-US').transform(
           this.getDate(element.StartD),
@@ -401,8 +409,8 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         Route: element.Routedescr,
         Amount: '',
         Rate: '',
-        Therapy: '00000',
-        Id: '',
+        RecommendedTherapy: '00000',
+        Id: null,
         OrderingPhysician: element.EmpRespNm,
         Cycle: element.N1id,
       });
@@ -440,17 +448,17 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     data.forEach(el => {
       this.toDiagnosisArr = this.toDiagnosisArr.concat({
         "Dockey": "",
-        "DCode": el.DiagKey1,
-        "DDescription": el.DiagShorttext,
-        "DRemarks": el.DiagText,
-        "DAdmission": el.AdmissionDia,
-        "DDischarge": el.DischargeDia,
-        "DWorking": el.WorkDiagInd,
-        "DPreoperative": el.PreopDiagInd,
-        "DSurgery": el.SurgeryDia,
-        "DDeath": el.CauseOfDeath,
-        "DDepartment": el.DeptMainDia,
-        "DHospital": el.HospMainDia
+        "Code": el.DiagKey1,
+        "Description": el.DiagShorttext,
+        "Remarks": el.DiagText,
+        "AdmDiagnosisInd": el.AdmissionDia,
+        "DischargDiagnosisInd": el.DischargeDia,
+        "WorkingDiagnosisInd": el.WorkDiagInd,
+        "PreoprativeDiagnosisInd": el.PreopDiagInd,
+        "SurgeryDiagnosisInd": el.SurgeryDia,
+        "DeathCauseDiagnosisInd": el.CauseOfDeath,
+        "DeptMainDiagnosisInd": el.DeptMainDia,
+        "HospMainDiagnosisInd": el.HospMainDia
       });
     });
     this.duplicates = [];
@@ -496,7 +504,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     this.toDiagnosisArr.splice(index, 1);
   }
 
-    openModalForDiagnosis() {
+  openModalForDiagnosis() {
     this.diagnosisNotesKardex.openModalForDiagnosisKardex();
   }
 }

@@ -23,7 +23,9 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     'Category',
     'Order Date',
     'Order Time',
-    'Status',
+    'Desired Date',
+    'Desired Time',
+    'Order Status',
     'Comments',
     'Action',
     'Details',
@@ -36,7 +38,11 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
   laboratoryDetails: any;
   phyOrderData: any;
   isCollpseOpen: boolean = true;
-
+  activelabLabelData: any;
+  modalRefForLab: BsModalRef;
+  modalRefForLabCollcetion: BsModalRef;
+  printUrl: any;
+  sampleOrderDescription: any;
   constructor(public emergencyService: EmergencyService,
     private _dataServices: EEmrService,
     private sanitizer: DomSanitizer,
@@ -74,7 +80,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
             _success.d.Url
           );
           const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-lg',
+            class: 'modal-dialog-centered modal-xl',
           };
           this.modalRef = this.modalService.show(this.labpdfmodal, config);
         }
@@ -295,11 +301,6 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     });
   }
 
-  modalRefForLab: BsModalRef;
-  modalRefForLabCollcetion: BsModalRef;
-  printUrl: any;
-  activelabLabelData: any;
-  sampleOrderDescription: any;
   public labPrintLabelModal(template: TemplateRef<any>, data: any) {
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-md lab-modal-size',

@@ -1608,11 +1608,7 @@
                       <div style="display: flex; width: 100%; justify-content:space-between  ">
                         <div class="d-flex  align-items-center w-50">
                           <label class="m-0">Allergies</label>
-                          <input type="text" class="form-control w-70 ml-3" [value]="
-                              toAllergyArr?.length
-                                ? 'Allergy Exists'
-                                : ''
-                            " />
+                          <input type="text" class="form-control w-70 ml-3" [value]="this.allergyInformation" />
                         </div>
                         <img src="assets/img/file1.svg" title="Create & Import" class="img-size"
                           (click)="openModalForAllergy()" />
