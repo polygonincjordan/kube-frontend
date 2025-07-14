@@ -1012,27 +1012,55 @@ export class AdmissionService {
     return this.http.get(`${environment.eKardexApiUrl}/inpatientData/getDischargeSummarySet?Einri=${paramsObj.einri}&Falnr=${paramsObj.falnr}`, { withCredentials: true })
   }
 
-  saveInPatientPhdisData(data: any, userConfiguration: any, paramsObj) {
-    const payloadData = {
-      Dockey: data.patientFormData.Dockey !== undefined ? data.patientFormData.Dockey : "",
-      Einri: paramsObj.einri,
-      Patnr: paramsObj.patnr,
-      Falnr: paramsObj.falnr,
-      Orgdo: "",
-      Mitarb: "",
-      Dtid: "",
-      Dtvers: "",
-      Dodat: `\/Date(${new Date().getTime()})\/`,
-      Dotim: "PT17H55M55S",
-      Erusr: userConfiguration.UserId,
-      Erdat: `\/Date(${new Date().getTime()})\/`,
-      Dokst: "",
-      Lfdbew: paramsObj.lfdnr,
-      Orgfa: "",
-      Orgpf: "",
-      Released: data.releaseForm
+  saveInPatientPhdisData(data: any, userConfiguration: any, paramsObj, type?: any) {
+    let payload: any
+    if(type == 'physicianDischargeSumm') {
+      const payloadData = {
+            Dockey: data.patientFormData.Dockey !== undefined ? data.patientFormData.Dockey : "",
+            Einri: paramsObj.einri,
+            Patnr: paramsObj.patnr,
+            Falnr: paramsObj.falnr,
+            Orgdo: "",
+            Mitarb: "",
+            Dtid: "",
+            Dtvers: "",
+            Dodat: `\/Date(${new Date().getTime()})\/`,
+            Dotim: "PT17H55M55S",
+            Erusr: userConfiguration.UserId,
+            Erdat: `\/Date(${new Date().getTime()})\/`,
+            Dokst: "",
+            Lfdbew: paramsObj.lfdnr,
+            Orgfa: "",
+            Orgpf: "",
+            Released: data.releaseForm
+          }
+          payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: data.patientFormData.ToDiagnosis }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: data.patientFormData.ToDischargeMed } };
+          delete payload.ToFormData.results[0].ToDiagnosis
+          delete payload.ToFormData.results[0].ToDischargeMed
+    } else {
+
+      const payloadData = {
+        Dockey: data.patientFormData.Dockey !== undefined ? data.patientFormData.Dockey : "",
+        Einri: paramsObj.einri,
+        Patnr: paramsObj.patnr,
+        Falnr: paramsObj.falnr,
+        Orgdo: "",
+        Mitarb: "",
+        Dtid: "",
+        Dtvers: "",
+        Dodat: `\/Date(${new Date().getTime()})\/`,
+        Dotim: "PT17H55M55S",
+        Erusr: userConfiguration.UserId,
+        Erdat: `\/Date(${new Date().getTime()})\/`,
+        Dokst: "",
+        Lfdbew: paramsObj.lfdnr,
+        Orgfa: "",
+        Orgpf: "",
+        Released: data.releaseForm
+      }
+      payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: [] }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: [] } };
     }
-    const payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: [] }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: [] } };
+    console.log(payload , "----------");
     const url = `${environment.eKardexApiUrl}/inpatientData/saveReleaseDischargeSummarySet`;
     return this.http.post(url, payload, { withCredentials: true });
     // const savePatientConfig$ = this.http.post(url, payload, { withCredentials: true })

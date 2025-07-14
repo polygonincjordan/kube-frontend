@@ -17,11 +17,13 @@
                   <td>{{ item.Trtoe }}</td>
                   <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
                   <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                  <td>{{ emergencyService.getDate(item.DesiredDate) | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ emergencyService.getDate(item.DesiredTime) | date:'HH:mm a' }}</td>
                   <td>
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>
                   <td>
-                    <span class="white-space">{{item?.Ergtx ? item?.Ergtx : '--'}}</span>
+                    <span class="white-space">{{item?.SupplText ? item?.SupplText : '--'}}</span>
                   </td>
                   <td style="text-align: center;">
                     <div style="display: flex; justify-content: end; line-height: 14px">
@@ -49,7 +51,7 @@
   <ng-template #labpdfmodal>
     <div class="modal-body">
       <div class="row">
-        <iframe [src]="pdfUrl" width="1000" height="500"> </iframe>
+        <iframe [src]="pdfUrl" width="1100" height="500"> </iframe>
       </div>
       <div class="mt-2" style="text-align: center">
         <button
@@ -73,7 +75,7 @@
                 <h6 class="font-weight-bold ml-3">Order Details</h6>
                 <h6 class="font-weight-bold">{{laboratoryDetails.PatientName}}</h6>
                 <div class="mr-3">
-                  <img width="25px" title="Re-Order" class="mr-2 cursor-pointer" src="assets/img/lab-col.png" (click)="createLabData(laboratoryDetails)" />
+                  <!-- <img width="25px" title="Re-Order" class="mr-2 cursor-pointer" src="assets/img/lab-col.png" (click)="createLabData(laboratoryDetails)" /> -->
                   <img width="20px" (click)="openModuleLabChart(laboratoryDetails)" title="Lab Chart" class="mr-2 cursor-pointer" src="assets/img/lab.png" />
                   <img width="25px" class="mr-2 cursor-pointer" src="assets/img/close.png" (click)="modalRef.hide()"/>
                 </div>
@@ -193,7 +195,6 @@
     </td>
   </ng-template>
 
-  
   <ng-template #labPrintLabel>
     <div>
       <div class="allergy-header">

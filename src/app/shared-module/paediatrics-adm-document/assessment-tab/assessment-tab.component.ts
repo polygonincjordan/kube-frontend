@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
 export class AssessmentTabComponent implements OnInit {
 
   @Input() nursingAdmissionForm: FormGroup;
-  // @Output() addTableRow = new EventEmitter<any>();
+  @Output() addFinAssLine = new EventEmitter<any>();
   selectedTabName: string = 'Functional Assessment';
 
   tabList = [
@@ -115,9 +115,7 @@ export class AssessmentTabComponent implements OnInit {
     this.selectedTabName = tabName;
   }
 
-  // addRow() {
-  //   if (this.selectedTabName == 'Functional Assessment') {
-  //   this.addTableRow.emit(this.selectedTabName);
-  //   }
-  // }
+  addFinAssRow() {
+      this.addFinAssLine.emit(this.selectedTabName);
+  }
 }

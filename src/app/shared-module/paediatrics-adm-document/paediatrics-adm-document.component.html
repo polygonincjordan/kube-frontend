@@ -196,7 +196,7 @@
         <app-examination-tab  [nursingAdmissionForm]="nursingAdmissionForm" (PhysicianExaminationDrugArrayList)="physicianExamaminationArrayListData($event)" [toPHYEXAMmportedData]="toPHYEXAMmportedData"></app-examination-tab>
     </div>
     <div>
-        <app-assessment-tab  [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
+        <app-assessment-tab  [nursingAdmissionForm]="nursingAdmissionForm" (addFinAssLine)="addFinAssLine($event)" ></app-assessment-tab>
     </div>
     <div>
         <app-orietation-patient-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-orietation-patient-tab>
