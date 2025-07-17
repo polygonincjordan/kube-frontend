@@ -570,13 +570,13 @@
                           </ng-select>
                           <p style="margin: auto; margin-top: 5px">Performing Unit</p>
                           <ng-select class="" id="inputGroupSelect01" formControlName="PerformaceUnit" [multiple]="true">
-                            <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+                            <ng-option [value]="item" *ngFor="let item of getPerformanceUnitFilterData">
                               {{ item }}
                             </ng-option>
                           </ng-select>
                           <p style="margin: auto; margin-top: 5px">Financial Category</p>
                          <ng-select class="" id="inputGroupSelect01" formControlName="FinCate" [multiple]="true">
-                           <ng-option [value]="item" *ngFor="let item of getCheckInSpecialtyFilterData">
+                           <ng-option [value]="item" *ngFor="let item of getFinancialCateFilterData">
                              {{ item }}
                            </ng-option>
                          </ng-select>

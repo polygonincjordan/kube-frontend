@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataShareService } from '@services/data-share.service';
 import { FacePaingScaleType } from '@services/e-kardex/interfaces/documents.interface';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -16,6 +16,9 @@ import { ActionType, WordType } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
+import Painterro from 'painterro';
+import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
+import { PainLocationComponent } from './pain-location/pain-location.component';
 import {
   FacePainResponse,
   NonMedicationCheckBox,
@@ -35,7 +38,6 @@ import {
   painScoreList,
   sedationList,
 } from './pain-assissment-dropdown-list/dropdown-value';
-import { ImageEdittorComponent } from 'src/app/shared-module/image-editor/image-edittor/image-edittor.component';
 
 @Component({
   selector: 'app-pain-assessment-nur-emr',
@@ -44,7 +46,7 @@ import { ImageEdittorComponent } from 'src/app/shared-module/image-editor/image-
 })
 export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   @ViewChild('imageEditorPainLocation')
-  imageEditorPainLocation: ImageEdittorComponent;
+  imageEditorPainLocation: PainLocationComponent;
 
   painAssessmentForm: FormGroup;
   private subscription: Subscription;
@@ -58,6 +60,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   isReAssessment: boolean = false;
   isPainLocation: boolean = false;
   isFlowSheet: boolean = false;
+  isFormValidError: boolean = false;
   paniScoreValue = null;
 
   public FacePainResponse: FacePaingScaleType[] = FacePainResponse;
@@ -122,7 +125,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
           }
           if (data.type == ActionType.Update$ && data.value) {
             if (data.value.type == WordType.EditBS && data.value.docKey != '') {
-    
+
               this.dockeyValue = data.value.docKey ? data.value.docKey : null;
               if (this.dockeyValue) {
                 this.getPainAssessment(data.value.docKey);
@@ -146,7 +149,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   }
 
   getPABackImage() {
-    this.emergencyService.getPABackGroundImage(this.storageService.einri).subscribe((elemnet: any) =>{
+    this.emergencyService.getPABackGroundImage(this.storageService.einri).subscribe((elemnet: any) => {
       this.defaultImage = `data:image/png;base64,${elemnet?.d?.Image64}`;
     })
   }
@@ -162,16 +165,16 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
             PlDate: this.getDate(data?.d?.results[0]?.PlDate),
             PlTime: this.getTime(data?.d?.results[0]?.PlTime),
           });
-          if(data?.d?.results[0].TOPAINLOGS?.results.length) {
-            data?.d?.results[0].TOPAINLOGS?.results.forEach((element) =>{
+          if (data?.d?.results[0].TOPAINLOGS?.results.length) {
+            data?.d?.results[0].TOPAINLOGS?.results.forEach((element) => {
               element.PlDate = this.getDate(element?.PlDate),
-              element.PlTime = this.getTime(element?.PlTime)
+                element.PlTime = this.getTime(element?.PlTime)
             })
           }
-          if(data?.d?.results[0].TOFLOWSHEET?.results?.length) {
-            data?.d?.results[0].TOFLOWSHEET?.results.forEach((element) =>{
+          if (data?.d?.results[0].TOFLOWSHEET?.results?.length) {
+            data?.d?.results[0].TOFLOWSHEET?.results.forEach((element) => {
               element.FloDate = this.getDate(element?.FloDate),
-              element.FloTime = this.getTime(element?.FloTime)
+                element.FloTime = this.getTime(element?.FloTime)
             })
           }
           this.reAssessmentTableList = data?.d?.results[0].TOPAINLOGS?.results || [];
@@ -260,7 +263,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       ComScore: new FormControl(''),
       ComComment: new FormControl(''),
       SedationAgitation: new FormControl(''),
-      SedationScore: new FormControl(''),
+      SedationScore: new FormControl(0),
       SedationComment: new FormControl(''),
       PlDate: new FormControl(new Date()),
       PlTime: new FormControl(currentTime),
@@ -303,26 +306,26 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       PlComment: new FormControl(''),
       FloDate: new FormControl(new Date()),
       FloTime: new FormControl(currentTime),
-      FloPsRest: new FormControl(''),
-      FloPsMovement: new FormControl(''),
-      FloPreRest: new FormControl(''),
-      FloPreMovement: new FormControl(''),
-      FloIvInfusion: new FormControl(''),
-      FloIvBolus: new FormControl(''),
-      FloIvAmount: new FormControl(''),
-      FloPcaReservoir: new FormControl(''),
-      FloPcaInfusion: new FormControl(''),
+      FloPsRest: new FormControl('0', Validators.required),
+      FloPsMovement: new FormControl('0', Validators.required),
+      FloPreRest: new FormControl('0', Validators.required),
+      FloPreMovement: new FormControl('0', Validators.required),
+      FloIvInfusion: new FormControl('0', Validators.required),
+      FloIvBolus: new FormControl('0', Validators.required),
+      FloIvAmount: new FormControl('0', Validators.required),
+      FloPcaReservoir: new FormControl('0', Validators.required),
+      FloPcaInfusion: new FormControl('0', Validators.required),
       FloPcaInfusionUnit: new FormControl(''),
-      FloPcaDemandDose: new FormControl(''),
+      FloPcaDemandDose: new FormControl('0', Validators.required),
       FloPcaTimeInterval: new FormControl(''),
-      FloPcaMaximumDoses: new FormControl(''),
-      FloPcaDoseGiven: new FormControl(''),
-      FloPcaDoseAttempted: new FormControl(''),
-      FloPcaClinicalBolus: new FormControl(''),
-      FloPcaAmount: new FormControl(''),
-      FloEpiInfusion: new FormControl(''),
-      FloEpiBlock: new FormControl(''),
-      FloEpiAmount: new FormControl(''),
+      FloPcaMaximumDoses: new FormControl('0'),
+      FloPcaDoseGiven: new FormControl('0', Validators.required),
+      FloPcaDoseAttempted: new FormControl('0', Validators.required),
+      FloPcaClinicalBolus: new FormControl('0', Validators.required),
+      FloPcaAmount: new FormControl('0', Validators.required),
+      FloEpiInfusion: new FormControl('0', Validators.required),
+      FloEpiBlock: new FormControl('0', Validators.required),
+      FloEpiAmount: new FormControl('0', Validators.required),
       FloOthIvStat: new FormControl(false),
       FloOthIvPrn: new FormControl(false),
       FloOthLocally: new FormControl(false),
@@ -349,7 +352,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
     this.isFlowSheet = false;
     this[tab] = true;
 
-    if(this.painAssessmentForm.value.NrsPainScore) {
+    if (this.painAssessmentForm.value.NrsPainScore) {
       this.painAssessmentForm.patchValue({
         PlPainIntensity: `${this.painAssessmentForm.value.NrsTotalScore}-${this.painAssessmentForm.value.NrsTotalScoreTxt}`,
         PlPainScaling: 'Face Scale'
@@ -739,17 +742,23 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   }
 
   savePainAssessmentDoc(docStatus?: any): Promise<any> {
+    this.isFormValidError = true
+    if (this.painAssessmentForm.invalid) {
+      return;
+    }
     this.painAssessmentForm.value.DocStatus = docStatus;
-
+    this.isFormValidError = false;
     const painAssessmentValue = this.deepClone(this.painAssessmentForm.value);
     const flowSheetAssessmentCloneValue = this.processFlowSheet(this.flowSheetAssessmentList, painAssessmentValue);
     const reAssessmentCloneValue = this.processReAssessment(this.reAssessmentTableList, painAssessmentValue);
-  
+
     const payload = this.createPayload(painAssessmentValue, reAssessmentCloneValue, flowSheetAssessmentCloneValue);
-  
+
     return new Promise((resolve, reject) => {
       this.subscription = this.emergencyService.createPainAssessmentDoc({ d: payload }).subscribe({
-        next: (data: any) => {},
+        next: (data: any) => {
+          
+         },
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
           this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
@@ -764,19 +773,19 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   }
 
   manageMessage() {
-    if(this.documentType == ActionType.Add$) {
-      return 'Pain Assessment created successfully';
-    } else if(this.documentType == ActionType.Update$) {
+  if (this.documentType == ActionType.Update$) {
       return 'Pain Assessment edited successfully'
-    } else if(this.documentType == ActionType.Copy$) {
+    } else if (this.documentType == ActionType.Copy$) {
       return 'Pain Assessment copied successfully'
+    } else {
+      return 'Pain Assessment created successfully';
     }
   }
-  
+
   deepClone(obj: any): any {
     return JSON.parse(JSON.stringify(obj));
   }
-  
+
   processFlowSheet(flowSheetList: any[], painAssessmentValue: any): any[] {
     return flowSheetList.length ? flowSheetList.map(element => ({
       ...element,
@@ -785,7 +794,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       FloPcaTimeInterval: Number(element.FloPcaTimeInterval)
     })) : [];
   }
-  
+
   processReAssessment(reAssessmentList: any[], painAssessmentValue: any): any[] {
     return reAssessmentList.length ? reAssessmentList.map(element => {
       const { PlAssessedBy, ...rest } = element;
@@ -796,7 +805,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       };
     }) : [];
   }
-  
+
   createPayload(painAssessmentValue: any, reAssessmentCloneValue: any[], flowSheetAssessmentCloneValue: any[]): any {
     const payload = {
       ...painAssessmentValue,
@@ -807,14 +816,11 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       FloDate: this.transformDate(painAssessmentValue.FloDate),
       FloTime: this.transformTime(painAssessmentValue.FloTime),
       FloPcaTimeInterval: Number(painAssessmentValue.FloPcaTimeInterval),
-      ComScore: painAssessmentValue.ComNoSigns ? 0 : painAssessmentValue.ComScore,
-      Orgdo: 'F21IUAMC',
-      AttendPhy: this.storageService.getUserProfile().Gpart,
+      ComScore: painAssessmentValue.ComScore ? painAssessmentValue.ComNoSigns ? 0 : painAssessmentValue.ComScore : 0
     };
-    
     return this.setEmptyStrings(payload);
   }
-  
+
 
   openImageEditor() {
     this.imageEditorPainLocation.initializePainterro();
