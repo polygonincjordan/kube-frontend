@@ -800,7 +800,7 @@
                         </div>
                         <div class="use-of-box col-md-4">
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list">
+                            <ng-select class="drop-down-list"  formControlName="CommCough">
                               <ng-option *ngFor="let item of doctorNotication"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
@@ -815,7 +815,7 @@
                         </div>
                         <div class="use-of-box col-md-4">
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list">
+                            <ng-select class="drop-down-list"  formControlName="CommFever">
                               <ng-option *ngFor="let item of doctorNotication"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
@@ -830,7 +830,7 @@
                         </div>
                         <div class="use-of-box col-md-4">
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list">
+                            <ng-select class="drop-down-list"  formControlName="CommNightSweats">
                               <ng-option *ngFor="let item of doctorNotication"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>
@@ -845,7 +845,7 @@
                         </div>
                         <div class="use-of-box col-md-4">
                           <div class="scale-box-list">
-                            <ng-select class="drop-down-list">
+                            <ng-select class="drop-down-list"  formControlName="CommWeightLoss">
                               <ng-option *ngFor="let item of doctorNotication"
                                 [value]="item.value">{{item.label}}</ng-option>
                             </ng-select>

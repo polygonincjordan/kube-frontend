@@ -197,11 +197,11 @@
         </div>
         <div class="col-md-3" style="display: flex; gap: 15px; align-items: center;">
           <div class="d-flex">
-            <input type="radio" formControlName="Transfer" [value]="'0'" name="Transfer" />
+            <input type="radio" formControlName="Transfer" [value]="'0'" name="Transfer"  (click)="toggleRadio('Transfer', '0','TransferPlace')"/>
             <label class="m-0 ml-2">No</label>
           </div>
           <div class="d-flex">
-            <input type="radio" formControlName="Transfer" [value]="'1'" name="Transfer" />
+            <input type="radio" formControlName="Transfer" [value]="'1'" name="Transfer"  (click)="toggleRadio('Transfer', '1','TransferPlace')"/>
             <label class="m-0 ml-2">Yes</label>
           </div>
         </div>
@@ -213,7 +213,7 @@
             <span class="date_icon"><img src="assets/img/Calender.svg" alt="" /></span>
             <input formControlName="TransferDate" class="form-control" style="color: #000; border-radius: 8px"
               #dp="bsDatepicker" bsDatepicker [bsConfig]="{
-                  showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
+                  showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" [readOnly]="neonatalDischarge.get('Transfer')?.value == '0'"/>
           </div>
         </div>
       </div>
@@ -222,7 +222,7 @@
           <label>Place of Transfer</label>
         </div>
         <div class="col-md-3">
-          <input class="form-control" formControlName="TransferPlace" />
+          <input class="form-control" formControlName="TransferPlace"  [readOnly]="neonatalDischarge.get('Transfer')?.value == '0'"/>
         </div>
       </div>
     </div>
@@ -1282,13 +1282,13 @@
                   </div>
                   <div class="col-10">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" id="herniaNo" formControlName="AHernia" value="1"
-                        (click)="toggleRadio('AHernia', '1','AHerniaT')" />
+                      <input class="form-check-input" type="radio" id="herniaNo" formControlName="AHernia" value="0"
+                        (click)="toggleRadio('AHernia', '0','AHerniaT')" />
                       <label class="form-check-label" for="herniaNo">No</label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" id="herniaYes" formControlName="AHernia" value="0"
-                        (click)="toggleRadio('AHernia', '0','AHerniaT')" />
+                      <input class="form-check-input" type="radio" id="herniaYes" formControlName="AHernia" value="1"
+                        (click)="toggleRadio('AHernia', '1','AHerniaT')" />
                       <label class="form-check-label" for="herniaYes">Yes</label>
                       <input type="text" class="form-control ml-3" formControlName="AHerniaT"
                         [disabled]="!neonatalDischarge.get('AHernia')?.value" />

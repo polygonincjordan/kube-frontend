@@ -1034,9 +1034,18 @@ export class AdmissionService {
             Orgpf: "",
             Released: data.releaseForm
           }
-          payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: data.patientFormData.ToDiagnosis }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: data.patientFormData.ToDischargeMed } };
-          delete payload.ToFormData.results[0].ToDiagnosis
-          delete payload.ToFormData.results[0].ToDischargeMed
+          // payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: data.patientFormData.ToDiagnosis }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: data.patientFormData.ToDischargeMed } };
+           payload = {
+    ...payloadData,
+    ToFormData: [data.patientFormData],
+    ToDiagnosis: data.patientFormData.ToDiagnosis || [],
+    ToHospitalMed: [], // or actual data
+    ToDischargeMed: data.patientFormData.ToDischargeMed || []
+  };
+          // delete payload.ToFormData.results[0].ToDiagnosis
+          // delete payload.ToFormData.results[0].ToDischargeMed
+            delete data.patientFormData.ToDiagnosis;
+  delete data.patientFormData.ToDischargeMed;
     } else {
 
       const payloadData = {
@@ -1058,7 +1067,14 @@ export class AdmissionService {
         Orgpf: "",
         Released: data.releaseForm
       }
-      payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: [] }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: [] } };
+      // payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: [] }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: [] } };
+        payload = {
+    ...payloadData,
+    ToFormData: [data.patientFormData],
+    ToDiagnosis:  [],
+    ToHospitalMed: [], // or actual data
+    ToDischargeMed:  []
+  };
     }
     console.log(payload , "----------");
     const url = `${environment.eKardexApiUrl}/inpatientData/saveReleaseDischargeSummarySet`;

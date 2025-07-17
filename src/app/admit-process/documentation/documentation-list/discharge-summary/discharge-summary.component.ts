@@ -198,6 +198,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditDischargeSummery = false;
         this.admissionService.isCloneDischargeSummery = false;
+         this.sharedService.successSwallModel('Physician Discharge Summary Created successfully');
       }, (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isCloneNicuForm = false;
