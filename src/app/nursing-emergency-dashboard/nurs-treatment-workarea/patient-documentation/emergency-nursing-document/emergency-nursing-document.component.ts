@@ -1045,6 +1045,11 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       PsChangeMood: new FormControl(),
       PsComments: new FormControl(),
 
+      CommWeightLoss: new FormControl(),
+      CommNightSweats: new FormControl(),
+      CommFever: new FormControl(),
+      CommCough: new FormControl(),
+
 
       DocStatus: ['1'], // Initialize with default value '1'
     });
@@ -1307,6 +1312,11 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsChangeMood: [{ value: false, disabled: false }],
         PsComments: [{ value: '', disabled: false }],
 
+        CommWeightLoss: [{ value: '', disabled: false }],
+      CommNightSweats: [{ value: '', disabled: false }],
+      CommFever: [{ value: '', disabled: false }],
+      CommCough: [{ value: '', disabled: false }],
+
         DocStatus: [{ value: '1', disabled: false }],
       });
     } else {
@@ -1564,6 +1574,11 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsUnusualProblems: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsUnusualProblems, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
         PsChangeMood: [{ value: triageValue?.PsNoReportedAbnorm == true ? false : triageValue?.PsChangeMood, disabled: triageValue?.PsNoReportedAbnorm == false ? false : true }],
         PsComments: triageValue?.PsComments ? triageValue?.PsComments : '',
+
+        CommWeightLoss: triageValue?.CommWeightLoss ? triageValue?.CommWeightLoss : '',
+        CommNightSweats: triageValue?.CommNightSweats ? triageValue?.CommNightSweats : '',
+        CommFever: triageValue?.CommFever ? triageValue?.CommFever : '',
+        CommCough: triageValue?.CommCough ? triageValue?.CommCough : '',
 
         DocStatus: [{ value: this.documentStatus, disabled: false }],
       });
