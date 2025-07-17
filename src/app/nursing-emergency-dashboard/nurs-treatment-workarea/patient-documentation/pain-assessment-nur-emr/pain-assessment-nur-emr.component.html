@@ -1783,20 +1783,22 @@
               <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
                 <div class="col-md-12 row m-0">
                   <div class="col-md-7">
-                    <label class="m-0">Pain Score(At Rest)</label>
+                    <div class="d-flex justify-content-between">
+                      <label class="input-lable m-0"><span  class="star">*</span>Pain Score(At Rest)</label>
+                    </div>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" formControlName="FloPsRest" />
+                    <input class="form-control" formControlName="FloPsRest" [ngClass]="painAssessmentForm.get('FloPsRest').errors && isFormValidError ? 'ep-error-message': ''"/>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
                 <div class="col-md-12 row m-0 mt-2">
                   <div class="col-md-7">
-                    <label class="m-0">Pre-analgesia(At Rest)</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Pre-analgesia(At Rest)</label>
                   </div>
                   <div class="col-md-4">
-                    <input class="form-control" formControlName="FloPreRest" />
+                    <input class="form-control" formControlName="FloPreRest" [ngClass]="painAssessmentForm.get('FloPreRest').errors && isFormValidError ? 'ep-error-message': ''"/>
                   </div>
                 </div>
               </div>
@@ -1807,12 +1809,12 @@
               <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
                 <div class="col-md-12 row m-0 mt-2">
                   <div class="col-md-7">
-                    <label class="m-0">Pain Score(Witch Movement)</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Pain Score(Witch Movement)</label>
                   </div>
                   <div class="col-md-4">
                     <input
                       class="form-control"
-                      formControlName="FloPsMovement"
+                      formControlName="FloPsMovement" [ngClass]="painAssessmentForm.get('FloPsMovement').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
@@ -1820,12 +1822,12 @@
               <div class="col-md-4 row m-0 pl-4 pr-4 align-items-center">
                 <div class="col-md-12 row m-0 mt-2">
                   <div class="col-md-7">
-                    <label class="m-0">Pre-analgesia(With Movement)</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Pre-analgesia(With Movement)</label>
                   </div>
                   <div class="col-md-4">
                     <input
                       class="form-control"
-                      formControlName="FloPreMovement"
+                      formControlName="FloPreMovement" [ngClass]="painAssessmentForm.get('FloPreMovement').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
@@ -1838,29 +1840,29 @@
               <div class="row">
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Continuous Infusion</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Continuous Infusion</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
-                      formControlName="FloIvInfusion"
+                      formControlName="FloIvInfusion" [ngClass]="painAssessmentForm.get('FloIvInfusion').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-5">
-                    <label class="m-0">Bolus Given</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Bolus Given</label>
                   </div>
                   <div class="col-md-5 pl-0">
-                    <input class="form-control" formControlName="FloIvBolus" />
+                    <input class="form-control" formControlName="FloIvBolus" [ngClass]="painAssessmentForm.get('FloIvBolus').errors && isFormValidError ? 'ep-error-message': ''"/>
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Total Amount Given</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Total Amount Given</label>
                   </div>
                   <div class="col-md-5">
-                    <input class="form-control" formControlName="FloIvAmount" />
+                    <input class="form-control" formControlName="FloIvAmount" [ngClass]="painAssessmentForm.get('FloIvAmount').errors && isFormValidError ? 'ep-error-message': ''"/>
                   </div>
                 </div>
               </div>
@@ -1870,31 +1872,34 @@
               <div class="row">
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Infusion rate (ml/hr)</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Infusion rate (ml/hr)</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloEpiInfusion"
+                      [ngClass]="painAssessmentForm.get('FloEpiInfusion').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-5">
-                    <label class="m-0">Level of Block</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Level of Block</label>
                   </div>
                   <div class="col-md-5 pl-0">
-                    <input class="form-control" formControlName="FloEpiBlock" />
+                    <input class="form-control" formControlName="FloEpiBlock"  [ngClass]="painAssessmentForm.get('FloEpiBlock').errors && isFormValidError ? 'ep-error-message': ''"/>
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Total Amount Given</label>
+                    <label class="m-0"></label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Total Amount Given</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloEpiAmount"
+                      [ngClass]="painAssessmentForm.get('FloEpiAmount').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
@@ -1905,46 +1910,50 @@
               <div class="row">
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Reservoir Volume</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Reservoir Volume</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloPcaReservoir"
+                      [ngClass]="painAssessmentForm.get('FloPcaReservoir').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Dose Given</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Dose Given</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloPcaDoseGiven"
+                      [ngClass]="painAssessmentForm.get('FloPcaDoseGiven').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Demand Dose (mg)</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Demand Dose (mg)</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloPcaDemandDose"
+                      [ngClass]="painAssessmentForm.get('FloPcaDemandDose').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
 
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-5">
-                    <label class="m-0">Clinic Bolus</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Clinic Bolus</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloPcaClinicalBolus"
+                      [ngClass]="painAssessmentForm.get('FloPcaClinicalBolus').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
@@ -1972,23 +1981,25 @@
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Dose Attempted</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Dose Attempted</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloPcaDoseAttempted"
+                      [ngClass]="painAssessmentForm.get('FloPcaDoseAttempted').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-5">
-                    <label class="m-0">Rate of Infusion</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Rate of Infusion</label>
                   </div>
                   <div class="col-md-4">
                     <input
                       class="form-control"
                       formControlName="FloPcaInfusion"
+                      [ngClass]="painAssessmentForm.get('FloPcaInfusion').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                   <div class="col-md-3 p-0">
@@ -2007,12 +2018,13 @@
 
                 <div class="col-md-3 row align-items-center mb-2">
                   <div class="col-md-6">
-                    <label class="m-0">Total Amount Given</label>
+                    <label class="input-lable m-0"><span  class="star">*</span>Total Amount Given</label>
                   </div>
                   <div class="col-md-5">
                     <input
                       class="form-control"
                       formControlName="FloPcaAmount"
+                      [ngClass]="painAssessmentForm.get('FloPcaAmount').errors && isFormValidError ? 'ep-error-message': ''"
                     />
                   </div>
                 </div>
@@ -2269,3 +2281,23 @@
     </form>
   </div>
 </div>
+
+<!-- <div class="taskbar">
+  <button (click)="setTool('pencil')">
+    <img src="assets/pencil-icon.png" alt="Pencil" />
+  </button>
+  <button (click)="setTool('eraser')">
+    <img src="assets/eraser-icon.png" alt="Eraser" />
+  </button>
+  <button (click)="clearCanvas()">
+    <img src="assets/clear-icon.png" alt="Clear" />
+  </button>
+</div>
+<div class="canvas-container">
+  <img src="assets/img/pain-location.png" alt="Body Diagram" class="background-image" />
+  <canvas #canvas class="drawing-canvas"
+          (mousedown)="startDrawing($event)"
+          (mouseup)="endDrawing()"
+          (mousemove)="draw($event)"
+          (mouseleave)="endDrawing()"></canvas>
+</div> -->

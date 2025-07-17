@@ -466,7 +466,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     this.duplicates = this.findDuplicatesDiagnosis();
     this.toDiagnosisArr = this.toDiagnosisArr.filter((value, index, self) =>
       index === self.findIndex((t) => (
-        t.DCode === value.DCode
+        t.Code === value.Code
       ))
     )
     if (this.duplicates.length > 0) {
@@ -477,13 +477,13 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   findDuplicatesDiagnosis() {
     let tempArr = []
     const lookup = this.toDiagnosisArr.reduce((a, e) => {
-      a[e.DCode] = ++a[e.DCode] || 0;
+      a[e.Code] = ++a[e.Code] || 0;
       return a;
     }, {});
-    tempArr = this.toDiagnosisArr.filter(e => lookup[e.DCode]);
+    tempArr = this.toDiagnosisArr.filter(e => lookup[e.Code]);
     return tempArr.filter((value, index, self) =>
       index === self.findIndex((t) => (
-        t.DCode === value.DCode
+        t.Code === value.Code
       ))
     )
 
@@ -491,7 +491,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   errorMsgForDuplicatesDiagnosis() {
     let codeArr = [];
     this.duplicates.forEach(element => {
-      codeArr.push(element.DCode);
+      codeArr.push(element.Code);
     });
 
     Swal.fire({
