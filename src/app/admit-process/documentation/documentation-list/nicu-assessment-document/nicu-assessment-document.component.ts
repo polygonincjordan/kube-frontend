@@ -762,7 +762,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
       this.nicuForm.get(controlName)?.setValue(null);
     }
     if (value === '1') {  
-      if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia'){
+      if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn'){
         this.nicuForm.get(textinput)?.disable();
         this.nicuForm.get(textinput)?.setValue('');
         if(controlName == 'CrIntubatedYn'){
@@ -785,10 +785,10 @@ export class NicuAssessmentDocumentComponent implements OnInit {
           this.nicuForm.get('CrRdate')?.setValue('');
           this.nicuForm.get('CrRentryDate')?.setValue('');
         }
-        if(controlName == 'AHernia'){
-          this.nicuForm.get('AHerniaT')?.disable();
-          this.nicuForm.get('AHerniaT')?.setValue('');
-        }
+        // if(controlName == 'AHernia'){
+        //   this.nicuForm.get('AHerniaT')?.disable();
+        //   this.nicuForm.get('AHerniaT')?.setValue('');
+        // }
       }else{
         this.nicuForm.get(textinput)?.enable(); // Enable input when abnormal (Yes)
         if(controlName == 'HfAnteriorOc'){
@@ -799,7 +799,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         }
       }
     } else {
-      if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia'){
+      if(controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn'){
         this.nicuForm.get(textinput)?.enable();
         if(controlName == 'CrIntubatedYn'){
           this.nicuForm.get('CrItubeSize')?.enable();
@@ -814,9 +814,9 @@ export class NicuAssessmentDocumentComponent implements OnInit {
           this.nicuForm.get('CrRentryDate')?.enable();
         }
 
-        if(controlName == 'AHernia'){
-          this.nicuForm.get('AHerniaT')?.enable
-        }
+        // if(controlName == 'AHernia'){
+        //   this.nicuForm.get('AHerniaT')?.enable
+        // }
         
       }else{
         this.nicuForm.get(textinput)?.disable(); // Disable input when normal (No)

@@ -172,7 +172,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       Cga: [data?.Cga || ''],
       CgaDays: [data?.CgaDays || ''],
       ChronoAge: [data?.ChronoAge || ''],
-      DischDate: [this.getDate(data?.DischDate) || new Date()],
+      DischDate: [this.getDate(data?.DischDate) || null],
       AdmDate: [this.getDate(data?.AdmDate) || new Date(`${new DatePipe('en-US').transform(this.storageService.patientData.periodStart, 'yyyy-MM-dd')}T00:00:00`)],
       AdmTime: [this.parseTime(data?.AdmTime) || this.datePipe.transform(this.storageService.patientData.periodStart, "hh:mm:ss")],
       BirthWeight: [data?.BirthWeight || ''],
@@ -182,7 +182,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       DischWeight: [data?.DischWeight || ''],
       DischWgtUnit: [data?.DischWgtUnit || ''],
       Transfer: [data?.Transfer || '0'],
-      TransferDate: [this.getDate(data?.TransferDate) || new Date()],
+      TransferDate: [this.getDate(data?.TransferDate) || null],
       TransferPlace: [data?.TransferPlace || ''],
       AttendingPhy: [data?.AttendingPhy || ''],
       AdmReason: [data?.AdmReason || ''],
@@ -281,14 +281,14 @@ export class NeonatalDischDocumentComponent implements OnInit {
       CrIntubatedYn: [data?.CrIntubatedYn || { value: '', disabled: true }],
       CrItubeSize: [data?.CrItubeSize || { value: '', disabled: true }],
       CrItubeLevel: [data?.CrItubeLevel || { value: '', disabled: true }],
-      CrIintubation: [this.getDate(data?.CrIintubation) || { value: new Date(), disabled: true }],
-      CrIextubation: [this.getDate(data?.CrIextubation) || { value: new Date(), disabled: true }],
+      CrIintubation: [this.getDate(data?.CrIintubation) || { value: null, disabled: true }],
+      CrIextubation: [this.getDate(data?.CrIextubation) || { value: null, disabled: true }],
       CrReintubation: [data?.CrReintubation || false],
       CrReintubationYn: [data?.CrReintubationYn || ''],
       CrRtubeSize: [data?.CrRtubeSize || { value: '', disabled: true }],
       CrRtubeLevel: [data?.CrRtubeLevel || { value: '', disabled: true }],
-      CrRdate: [this.getDate(data?.CrRdate) || { value: new Date(), disabled: true }],
-      CrRentryDate: [this.getDate(data?.CrRentryDate) || { value: new Date(), disabled: true }],
+      CrRdate: [this.getDate(data?.CrRdate) || { value: null, disabled: true }],
+      CrRentryDate: [this.getDate(data?.CrRentryDate) || { value: null, disabled: true }],
       CbNormal: [data?.CbNormal || false],
       CbAccessory: [data?.CbAccessory || false],
       CbNodule: [data?.CbNodule || false],
@@ -538,7 +538,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       this.neonatalDischarge.get(controlName)?.setValue(null);
     }
     if (value === '1') {
-      if (controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia') {
+      if (controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn') {
         this.neonatalDischarge.get(textinput)?.disable();
         this.neonatalDischarge.get(textinput)?.setValue('');
         if (controlName == 'CrIntubatedYn') {
@@ -561,10 +561,10 @@ export class NeonatalDischDocumentComponent implements OnInit {
           this.neonatalDischarge.get('CrRdate')?.setValue('');
           this.neonatalDischarge.get('CrRentryDate')?.setValue('');
         }
-        if (controlName == 'AHernia') {
-          this.neonatalDischarge.get('AHerniaT')?.disable();
-          this.neonatalDischarge.get('AHerniaT')?.setValue('');
-        }
+        // if (controlName == 'AHernia') {
+        //   this.neonatalDischarge.get('AHerniaT')?.disable();
+        //   this.neonatalDischarge.get('AHerniaT')?.setValue('');
+        // }
       } else {
         this.neonatalDischarge.get(textinput)?.enable(); // Enable input when abnormal (Yes)
         if (controlName == 'HfAnteriorOc') {
@@ -573,9 +573,12 @@ export class NeonatalDischDocumentComponent implements OnInit {
         if (controlName == 'HfPosteriorOc') {
           this.neonatalDischarge.get('HfPsize')?.enable();
         }
+        if (controlName == 'Transfer') {
+          this.neonatalDischarge.get('TransferDate')?.enable();
+        }
       }
     } else {
-      if (controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn' || controlName == 'AHernia') {
+      if (controlName == 'AUcomplication' || controlName == 'AUacomplication' || controlName == 'MMalformation' || controlName == 'CrIntubatedYn' || controlName == 'CrReintubationYn') {
         this.neonatalDischarge.get(textinput)?.enable();
         if (controlName == 'CrIntubatedYn') {
           this.neonatalDischarge.get('CrItubeSize')?.enable();
@@ -590,9 +593,9 @@ export class NeonatalDischDocumentComponent implements OnInit {
           this.neonatalDischarge.get('CrRentryDate')?.enable();
         }
 
-        if (controlName == 'AHernia') {
-          this.neonatalDischarge.get('AHerniaT')?.enable
-        }
+        // if (controlName == 'AHernia') {
+        //   this.neonatalDischarge.get('AHerniaT')?.enable
+        // }
 
       } else {
         this.neonatalDischarge.get(textinput)?.disable(); // Disable input when normal (No)
@@ -600,6 +603,10 @@ export class NeonatalDischDocumentComponent implements OnInit {
         if (controlName == 'HfAnteriorOc') {
           this.neonatalDischarge.get('HfAsize')?.disable();
           this.neonatalDischarge.get('HfAsize')?.setValue('');
+        }
+        if (controlName == 'Transfer') {
+          this.neonatalDischarge.get('TransferDate')?.disable();
+          this.neonatalDischarge.get('TransferDate')?.setValue('');
         }
         if (controlName == 'HfPosteriorOc') {
           this.neonatalDischarge.get('HfPsize')?.disable();
@@ -696,15 +703,15 @@ export class NeonatalDischDocumentComponent implements OnInit {
       paylaod['MMalformationT'] = this.neonatalDischarge.getRawValue().MMalformationT;
 
       paylaod.Datee = paylaod.Datee ? this.dateFormateString(paylaod.Datee) : '';
-      paylaod.DischDate = paylaod.DischDate ? this.dateFormateString(paylaod.DischDate) : '';
+      paylaod.DischDate = paylaod.DischDate ? this.dateFormateString(paylaod.DischDate) : null;
       paylaod.AdmDate = paylaod.AdmDate ? this.dateFormateString(paylaod.AdmDate) : '';
-      paylaod.TransferDate = paylaod.TransferDate ? this.dateFormateString(paylaod.TransferDate) : '';
-      paylaod.CrIintubation = paylaod.CrIintubation ? this.dateFormateString(paylaod.CrIintubation) : '';
-      paylaod.CrRdate = paylaod.CrRdate ? this.dateFormateString(paylaod.CrRdate) : '';
-      paylaod.CrRentryDate = paylaod.CrRentryDate ? this.dateFormateString(paylaod.CrRentryDate) : '';
+      paylaod.TransferDate = paylaod.TransferDate ? this.dateFormateString(paylaod.TransferDate) : null;
+      paylaod.CrIintubation = paylaod.CrIintubation ? this.dateFormateString(paylaod.CrIintubation) : null;
+      paylaod.CrRdate = paylaod.CrRdate ? this.dateFormateString(paylaod.CrRdate) : null;
+      paylaod.CrRentryDate = paylaod.CrRentryDate ? this.dateFormateString(paylaod.CrRentryDate) : null;
       paylaod.AUinsertion = paylaod.AUinsertion ? this.dateFormateString(paylaod.AUinsertion) : '';
       paylaod.AUremoval = paylaod.AUremoval ? this.dateFormateString(paylaod.AUremoval) : '';
-      paylaod.CrIextubation = paylaod.CrIextubation ? this.dateFormateString(paylaod.CrIextubation) : '';
+      paylaod.CrIextubation = paylaod.CrIextubation ? this.dateFormateString(paylaod.CrIextubation) : null;
       paylaod.AUainsertion = paylaod.AUainsertion ? this.dateFormateString(paylaod.AUainsertion) : '';
       paylaod.AUaremoval = paylaod.AUaremoval ? this.dateFormateString(paylaod.AUaremoval) : '';
 
@@ -735,7 +742,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
       paylaod['TOVITALSIGNS'] = this.toVitalsArr;
 
 
-      console.log(this.neonatalDischarge, "neonatalDischarge");
+      console.log(paylaod, "neonatalDischarge");
       // return
       this.subscription = this.dayCaseDashboard
         .saveNeonatalDischargeDocument(paylaod)
