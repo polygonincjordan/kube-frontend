@@ -51,7 +51,24 @@ export class CheckInComponent implements OnInit {
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
   @Output() dataToParent = new EventEmitter<any>();
-
+    dischargeDisposition = [
+    {
+      value : 'T',
+      label: 'Death'
+    },
+    {
+      value : 'AF',
+      label: 'Fit for Work'
+    },
+    {
+      value : 'N',
+      label: 'Normal'
+    },
+    {
+      value : 'AU',
+      label: 'Unable for Work'
+    },
+  ]
   isFormValidError: boolean = false;
   searchString: string = '';
   ERlistData: any[];

@@ -11,7 +11,7 @@ import { UserConfigurationService } from '@services/e-kardex/user-configuration.
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Observable, ReplaySubject, Subscription, filter, forkJoin } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, catchError, filter, forkJoin, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PatientDiagnoisiHistoryComponent } from './patient-diagnoisi-history/patient-diagnoisi-history.component';
 import { PatientMedicalReportComponent } from './patient-medical-report/patient-medical-report.component';
@@ -63,7 +63,9 @@ import { PaediatricsAdmDocumentComponent } from 'src/app/shared-module/paediatri
 import { RichmondScaleComponent } from './richmond-scale/richmond-scale.component';
 import { RamsaySedationScaleComponent } from 'src/app/shared-module/ramsay-sedation-scale/ramsay-sedation-scale.component';
 import { LaborRoomFlowSheetComponent } from './labor-room-flow-sheet/labor-room-flow-sheet.component';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-patient-documentation',
   templateUrl: './patient-documentation.component.html',
@@ -248,6 +250,9 @@ export class PatientDocumentationComponent implements OnInit {
   latestInitialNursingNewbornList = [];
 
   phyDocList = [];
+  currentVisitDocumentNameList = [];
+  currentVisitDocumet = [];
+  currentVisitDocumetClone = [];
   latestDocList = [];
   latestGlasgowComaScaleList = [];
   latestEmergencyNursingDocList = [];
@@ -386,7 +391,7 @@ export class PatientDocumentationComponent implements OnInit {
       value: 'NAR'
     },
     {
-      label: 'Critical Care Pain Observation Tool',
+      label: 'CPOT',
       value: 'CCPOT'
     },
     {
@@ -685,6 +690,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.richmondLatestDocument();
     this.ramsayLatestDocument();
     this.laborFlowLatestDocument();
+    this.getCurrentVisitDetails('2');
   }
 
   LatestMFSSet() {
@@ -1251,6 +1257,68 @@ export class PatientDocumentationComponent implements OnInit {
         this.sharedService.waringSwallModel(`GET Error : ${err}`);
       },
     });
+  }
+
+  getCurrentVisitDetails(type: string) {
+    this.admissionService
+      .getDicumentDetails(
+        this.paramsObject.einri,
+        type,
+        this.paramsObject.patnr,
+        '',
+        this.paramsObject.falnr
+      )
+      .pipe(
+        untilDestroyed(this),
+        catchError((err) => {
+          return of([]);
+        })
+      )
+      .subscribe((data: any) => {
+        if (type == '2') {
+          data?.d?.results.forEach((res) => {
+            if(res.Dtid === 'ZMED_NEODS') {
+              res.DtidText = 'Neonatal Discharge Summary'
+            }
+            if(res.Dtid === 'ZMED_PHDIS') {
+              res.DtidText = 'Physician Discharge Summary'
+            }
+            if(res.Dtid === 'ZMED_PDASM') {
+              res.DtidText = 'Paediatrics Physician Admission Assessment'
+            }
+            if(res.Dtid === 'ZMED_OPERT') {
+              res.DtidText = 'Department of Surgery - Operation Notes'
+            }
+          })
+          this.currentVisitDocumetClone = data?.d.results;
+          this.currentVisitDocumet = data?.d.results;
+          this.currentVisitDocumentNameList = Array.from(
+            new Set(this.currentVisitDocumet.map(res => res.DtidText))
+          );
+        } else {
+          this.documentTypeFilterValueClone = data?.d.results;
+          // this.documentTypeFilterValue = _success.d.results;
+          this.filterByPeriod();
+          this.sort();
+          this.admissionService.departmentOUList = this.documentTypeFilterValueClone.map(item => item.MitarbName);
+          this.admissionService.createdDocumentUserList = this.removeDuplicates(this.admissionService.departmentOUList);
+          this.admissionService.departmentOUList = this.documentTypeFilterValueClone.map(item => item.Orgdo);
+          this.admissionService.departmentOUList = this.removeDuplicates(this.admissionService.departmentOUList);
+          if (this.documentTypeFilterValue.length) {
+            this.documentTypeFilterValue.forEach((element) => {
+                let checkPatinet = this.admissionService.documentTypeFilter.find(
+                  (el) => el.Dtid === element.Dtid
+                );
+                if (!checkPatinet) {
+                  this.admissionService.documentTypeFilter.push({
+                    Dtid: element.Dtid,
+                    DtidText: element.DtidText,
+                  });
+                }
+              });
+          }
+        }
+      });
   }
 
   filterPeriodDate() {
@@ -5669,6 +5737,7 @@ export class PatientDocumentationComponent implements OnInit {
           Orgdo: 'F21IUAMC',
           DocStatus: '1',
           Dtid: 'SCA_MORSE',
+          AttendPhy: this.storageService.getUserProfile().Gpart
         };
 
         this.emergencyService.postMFSSet(formData).subscribe((resp) => {
@@ -6946,6 +7015,7 @@ export class PatientDocumentationComponent implements OnInit {
           Orgdo: 'F21IUAMC',
           DocStatus: '3',
           Dtid: 'SCA_MORSE',
+          AttendPhy: this.storageService.getUserProfile().Gpart
         };
         this.emergencyService.createNewMFSSet(formData).subscribe((resp) => {
           Swal.fire({

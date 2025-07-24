@@ -56,7 +56,24 @@ export class ArrivalMainListComponent implements OnInit {
   modalRef: BsModalRef;
   phyOrderAction: any;
   modalRefForRisk: BsModalRef;
-
+  dischargeDisposition = [
+    {
+      value : 'T',
+      label: 'Death'
+    },
+    {
+      value : 'AF',
+      label: 'Fit for Work'
+    },
+    {
+      value : 'N',
+      label: 'Normal'
+    },
+    {
+      value : 'AU',
+      label: 'Unable for Work'
+    },
+  ]
   @Output() openModuleKardex = new EventEmitter();
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
