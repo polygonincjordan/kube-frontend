@@ -9,7 +9,7 @@
         <thead>
           <tr class="checkin-table-header">
             <th scope="col">
-               Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i>
+              Patient Name <i class="fa fa-sort" aria-hidden="true" (click)="sortPatient()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               MRN
@@ -19,14 +19,14 @@
               Case# <i class="fa fa-sort" aria-hidden="true" (click)="sortCase()"></i>
             </th>
             <th scope="col">Risk</th>
-            <th scope="col" style="padding-left: 0px;" >
+            <th scope="col" style="padding-left: 0px;">
               Allergy
             </th>
             <th scope="col" style="padding-left: 0px;">
               Vital
             </th>
-            <th scope="col"  style="padding-left: 0px;">
-             Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="sortAdmission()"></i>
+            <th scope="col" style="padding-left: 0px;">
+              Admission Status <i class="fa fa-sort" aria-hidden="true" (click)="sortAdmission()"></i>
             </th>
             <th scope="col" style="padding-left: 0px;">
               Date <i class="fa fa-sort" aria-hidden="true" (click)="sortDate()"></i>
@@ -70,7 +70,7 @@
         &nbsp;
         <tbody>
           <tr *ngFor="let item of ERlistData | filter:searchString ; let i = index">
-            <td scope="row" style="cursor: pointer"[title]="item.Pnamec + '(' + item.Gschle + ',' + item.Agepat + ')'"
+            <td scope="row" style="cursor: pointer" [title]="item.Pnamec + '(' + item.Gschle + ',' + item.Agepat + ')'"
               class="border-top-none" (click)="redirectToTreatByName(item)">
               {{ item.Pnamec }},({{ item.Gschle }}, {{ item.Agepat }})
             </td>
@@ -92,7 +92,8 @@
               [ngClass]="i === 0 ? 'border-top-right' : lastIndex === i ? 'border-bottom-right' : '' ">
               <img src="assets/img/er-vital.png" style="width: 23px" (click)="openModalVital(item)" title="Vitals" />
             </td>
-            <td style="padding-left: 0px" [title]="item.AdmissionStatus" class="border-top-none">{{ item.AdmissionStatus }}</td>
+            <td style="padding-left: 0px" [title]="item.AdmissionStatus" class="border-top-none">{{ item.AdmissionStatus
+              }}</td>
             <td style="width: 1%; padding-left: 0px" class="border-top-none"
               [title]="getDate(item.Bwidt) | date : 'dd.MM.y'">
               {{ getDate(item.Bwidt) | date : "dd.MM.y" }}
@@ -111,26 +112,34 @@
               <span *ngIf="!item?.Diagnose">N/A</span>
             </td>
             <!-- <td style="padding-left: 0px" [title]="item.Allergies" class="border-top-none">{{ item.Allergies }}</td> -->
-            <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
+            <td style="padding-left: 0px" [title]="getTooltipText(item.Zznmealstat)" class="border-top-none"><span
+                [ngClass]="getShapeClass(item.Zznmealstat)" class="shape"></span></td>
             <td style="padding-left: 0px" [title]="item.KostrName" class="border-top-none">{{ item.KostrName }}</td>
-            <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ? item.BehArztName:'--'}}</td>
-            <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)" class="border-top-none"> 
-              <img (click)="openModalForAttechment(item)" src="assets/img/attechment_blue.png" style="width: 22px; cursor: pointer;" />
-            </td>            
+            <td style="padding-left: 0px" [title]="item.BehArztName" class="border-top-none">{{ item.BehArztName ?
+              item.BehArztName:'--'}}</td>
+            <td style="padding-left: 0px; text-align: center;" [title]="getAttachmentTooltip(item.DokIcon)"
+              class="border-top-none">
+              <img (click)="openModalForAttechment(item)" src="assets/img/attechment_blue.png"
+                style="width: 22px; cursor: pointer;" />
+            </td>
             <!-- <td style="padding-left: 0px" [title]="item.Zzisoindi" class="border-top-none">{{ item.Zzisoindi ? item.Zzisoindi:'--' }}</td> -->
             <td class="border-left text-center">
               <span>
-                <img [src]="item.Zzisoindi ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon" [title]="item.Zzisoindi" />
+                <img [src]="item.Zzisoindi ? 'assets/img/111.svg' : 'assets/img/5556.svg'" class="risk-icon"
+                  [title]="item.Zzisoindi" />
               </span>
             </td>
-            <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
+            <td style="padding-left: 0px" [title]="getFinTooltip(item.ZzfinClear)" class="border-top-none"><span
+                [ngClass]="getShapeClass(item.ZzfinClear)" class="shape"></span></td>
             <td colspan="1" style="text-align: center; overflow: visible !important">
               <div style="display: flex; justify-content: end; line-height: 14px">
-                <div style="margin-left: 3px; margin-right: 3px" (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
-                  <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status"/>
+                <div style="margin-left: 3px; margin-right: 3px"
+                  (click)="openChangeAdmissionStatusModel(AdmissionStatus,item)">
+                  <img src="assets/image.png" style="width: 25px; cursor: pointer" title="Change Status" />
                 </div>
                 <div style="margin-left: 3px; margin-right: 3px" (click)="labPrintLabelModal(labPrintLabel,item)">
-                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer" title="Print Patient Label"/>
+                  <img src="assets/img/Frame-icone.svg" style="width: 32px; cursor: pointer"
+                    title="Print Patient Label" />
                 </div>
               </div>
               <!-- <div>
@@ -414,9 +423,25 @@
 <!-- change Status -->
 <ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
   <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
-    <h4 class="modal-title" style="color: white">Change Admission Status</h4>
+    <h4 class="modal-title" style="color: white; white-space: nowrap;">Change Admission Status</h4>
+    <div class="risk-history-main">
+      <ul class="allergy-header-ul d-flex">
+        <li class="allergy-header-item"
+          style="margin-left: 30px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;width: 40%;">
+          Patient Name : <span [title]="admissionStatusModel.Patname">{{ admissionStatusModel.Patname }}</span>
+        </li>
+        <li class="allergy-header-item">MRN: {{ admissionStatusModel.Mrn }}</li>
+        <li class="allergy-header-item">
+          Admission date:
+          {{ getDate(admissionStatusModel.AdmissionDate) | date : "dd.MM.y" }}
+        </li>
+        <li class="close-icon allergy-header-item">
+          <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />
+        </li>
+      </ul>
+    </div>
   </div>
-  <div class="modal-body p-0">
+  <div class="modal-body p-0 pb-3">
     <form [formGroup]="changeStatusForm">
       <div class="p-3">
         <p class="m-0">Are you sure you want to change status to <strong>{{ getStatusValue() }}</strong></p>
@@ -428,15 +453,15 @@
           </div>
           <div class="col-md-8 p-0">
             <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
-              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"/>
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
-        <div class="col-md-3 row m-0 align-items-center pl-0" >
+        <div class="col-md-3 row m-0 align-items-center pl-0">
           <div class="col-md-3 p-0">
             <strong class="m-0">Time</strong>
           </div>
           <div class="col-md-9 p-0">
-            <input type="time" class="form-control" formControlName="Bwizt"  />
+            <input type="time" class="form-control" formControlName="Bwizt" />
           </div>
         </div>
         <div class="col-md-5 row m-0 align-items-center">
@@ -444,7 +469,7 @@
             <strong class="m-0">Comments</strong>
           </div>
           <div class="col-md-8 pl-0">
-            <input type="text" class="form-control" formControlName="Kztxt"  />
+            <input type="text" class="form-control" formControlName="Kztxt" />
           </div>
         </div>
       </div>
@@ -455,7 +480,7 @@
           </div>
           <div class="col-md-8 p-0">
             <input formControlName="Bwidt" class="form-control" #dp="bsDatepicker" bsDatepicker
-              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}"/>
+              [bsConfig]="{showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY'}" />
           </div>
         </div>
 
@@ -465,7 +490,7 @@
           </div>
           <div class="col-md-8 p-0">
             <ng-select formControlName="Bwart">
-              <ng-option *ngFor="let item of dischargeTypeList" [value]="item?.value" >{{item?.label }}</ng-option>
+              <ng-option *ngFor="let item of dischargeTypeList" [value]="item.value">{{item?.label }}</ng-option>
             </ng-select>
           </div>
         </div>
@@ -474,7 +499,7 @@
             <strong class="m-0">Dis. Physician</strong>
           </div>
           <div class="col-md-7 pl-0">
-            <input type="text" class="form-control" formControlName="Pernr"  />
+            <input type="text" class="form-control" formControlName="Pernr" />
           </div>
         </div>
         <div class="col-md-4 row m-0 align-items-center mb-2">
@@ -482,23 +507,35 @@
             <strong class="m-0">Time</strong>
           </div>
           <div class="col-md-8 p-0">
-            <input type="time" class="form-control" formControlName="Bwizt"  />
+            <input type="time" class="form-control" formControlName="Bwizt" />
           </div>
         </div>
-        <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
-          <div class="col-md-2 p-0">
+        <div class="col-md-6 row m-0 align-items-center mb-2 p-0">
+          <div class="col-md-3 p-0">
+            <strong class="m-0">Discharge Disposition</strong>
+          </div>
+          <div class="col-md-6 p-0">
+            <ng-select>
+              <ng-option *ngFor="let item of dischargeDisposition" [value]="item.value">{{item?.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-8 row m-0 align-items-center mb-2">
+          <div class="col-md-2">
             <strong class="m-0">Comments</strong>
           </div>
           <div class="col-md-10 pl-0">
-            <input type="text" class="form-control" formControlName="Kztxt"  />
+            <input type="text" class="form-control" formControlName="Kztxt" />
           </div>
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"  (click)="closeRiskModal()">No</button>
-    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="changeStatus(admissionStatusModel?.AdmissionStatus)">Yes</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="closeRiskModal()">No</button>
+    <button type="button" class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+      (click)="changeStatus(admissionStatusModel?.AdmissionStatus)">Yes</button>
   </div>
   <div>
   </div>

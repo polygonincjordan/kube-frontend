@@ -463,11 +463,11 @@
 <!-- change Status -->
 <ng-template #AdmissionStatus let-modal let-admissionData="admissionStatusModel">
   <div class="modal-header" style="display: flex; padding: 17px; background-color: #0082c8; color: white;">
-    <h4 class="modal-title" style="color: white">Change Admission Status</h4>
+    <h4 class="modal-title" style="color: white; white-space: nowrap;">Change Admission Status</h4>
     <div class="risk-history-main">
       <ul class="allergy-header-ul d-flex">
-        <li class="allergy-header-item" style="margin-left: 10%">
-          Patient Name : <span>{{ admissionStatusModel.Patname }}</span>
+        <li class="allergy-header-item" style="margin-left: 30px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;width: 40%;">
+          Patient Name : <span [title]="admissionStatusModel.Patname">{{ admissionStatusModel.Patname }}</span>
         </li>
         <li class="allergy-header-item">MRN: {{ admissionStatusModel.Mrn }}</li>
         <li class="allergy-header-item">
@@ -541,6 +541,7 @@
             <input type="text" class="form-control" formControlName="Pernr" />
           </div>
         </div>
+ 
         <div class="col-md-4 row m-0 align-items-center mb-2">
           <div class="col-md-4">
             <strong class="m-0">Time</strong>
@@ -549,8 +550,18 @@
             <input type="time" class="form-control" formControlName="Bwizt" />
           </div>
         </div>
-        <div class="col-md-8 row m-0 align-items-center mb-2 pl-0">
-          <div class="col-md-2 p-0">
+        <div class="col-md-6 row m-0 align-items-center mb-2 p-0">
+          <div class="col-md-3 p-0">
+            <strong class="m-0">Discharge Disposition</strong>
+          </div>
+          <div class="col-md-6 p-0">
+            <ng-select>
+              <ng-option *ngFor="let item of dischargeDisposition" [value]="item.value">{{item?.label }}</ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-8 row m-0 align-items-center mb-2">
+          <div class="col-md-2">
             <strong class="m-0">Comments</strong>
           </div>
           <div class="col-md-10 pl-0">

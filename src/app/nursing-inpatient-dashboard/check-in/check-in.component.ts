@@ -47,6 +47,24 @@ export class CheckInComponent implements OnInit {
     { value: '3', label: 'Level IV Less Urgency', TriagePriorityCode: '04', TriageColor: 'green', isActive: false },
     { value: '4', label: 'Level V Non Urgency', TriagePriorityCode: '05', TriageColor: 'white', isActive: false }
   ];
+  dischargeDisposition = [
+    {
+      value : 'T',
+      label: 'Death'
+    },
+    {
+      value : 'AF',
+      label: 'Fit for Work'
+    },
+    {
+      value : 'N',
+      label: 'Normal'
+    },
+    {
+      value : 'AU',
+      label: 'Unable for Work'
+    },
+  ]
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;
   @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
