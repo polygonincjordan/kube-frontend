@@ -4948,6 +4948,7 @@ export class PatientDocumentationComponent implements OnInit {
         next: (data: any) => {
           let paylaod = data.d.results[0]
           paylaod.DocStatus = '2';
+          paylaod.AttendPhy = this.storageService.getGpart();
           this.subscription = this.emergencyService.createPainAssessmentDoc({ d: paylaod }).subscribe({
             next: (data: any) => { },
             error: (err: any) => {
@@ -5067,7 +5068,7 @@ export class PatientDocumentationComponent implements OnInit {
               this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
             },
             complete: () => {
-              this.sharedService.successSwallModel('Time Out Checklist released successfully');
+              this.sharedService.successSwallModel('IC Bundles for Urinary Catheter released successfully');
               this.refresh();
             }
           });
@@ -5075,7 +5076,7 @@ export class PatientDocumentationComponent implements OnInit {
         error: (err: any) => {
           this.sharedService.waringSwallModel(`Error ${err}`);
           this.sharedService.waringSwallModel(
-            `POST Error at Nurse Endorsment : ${err}`
+            `POST Error at IC Bundles for Urinary Catheter : ${err}`
           );
         }
       });

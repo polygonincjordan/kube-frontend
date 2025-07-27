@@ -1752,6 +1752,7 @@ export class PatientDocumentationComponent implements OnInit {
       next: (data: any) => {
         let paylaod = data.d.results[0] 
         paylaod.DocStatus = '2'; 
+        paylaod.AttendPhy = this.storageService.getGpart();
         this.subscription = this.emergencyService.createPainAssessmentDoc({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {
