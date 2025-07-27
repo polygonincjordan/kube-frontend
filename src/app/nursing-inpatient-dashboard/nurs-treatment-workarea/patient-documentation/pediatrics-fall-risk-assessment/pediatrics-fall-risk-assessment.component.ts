@@ -311,6 +311,7 @@ export class PediatricsFallRiskAssessmentComponent implements OnInit {
     });
     return new Promise((resolve, reject) => {
       this.pediatricsForm.value.DocStatus = dockStatus;
+      this.pediatricsForm.value.AttendPhy = this.storageService.getGpart();
       let payload = {
         d: this.pediatricsForm.value
       };

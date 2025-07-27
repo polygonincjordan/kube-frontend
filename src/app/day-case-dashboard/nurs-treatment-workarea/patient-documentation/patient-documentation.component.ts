@@ -1749,7 +1749,8 @@ export class PatientDocumentationComponent implements OnInit {
     this.subscription = this.emergencyService
     .getPainAssesmentDetails(this.selectedDocData.Dockey).subscribe({
       next: (data: any) => {
-        let paylaod = data.d.results[0]
+        let paylaod = data.d.results[0];
+        paylaod.AttendPhy = this.storageService.getGpart();
         paylaod.DocStatus = '2';
         this.subscription = this.emergencyService.createPainAssessmentDoc({ d: paylaod }).subscribe({
           next: (data: any) => {},
@@ -1779,6 +1780,7 @@ export class PatientDocumentationComponent implements OnInit {
         let paylaod = data.d.results[0];
         delete paylaod.__metadata
         paylaod.DocStatus = '2';
+        paylaod.AttendPhy = this.storageService.getGpart();
         this.subscription = this.dayCaseDashboardService.createNursingCarePlan({ d: paylaod }).subscribe({
           next: (data: any) => {},
           error: (err: any) => {

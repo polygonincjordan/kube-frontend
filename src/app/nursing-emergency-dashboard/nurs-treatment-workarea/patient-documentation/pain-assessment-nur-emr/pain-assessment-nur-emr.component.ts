@@ -748,7 +748,8 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
     }
     this.painAssessmentForm.value.DocStatus = docStatus;
     this.isFormValidError = false;
-    const painAssessmentValue = this.deepClone(this.painAssessmentForm.value);
+    let painAssessmentValue = this.deepClone(this.painAssessmentForm.value);
+    painAssessmentValue.AttendPhy = this.storageService.getGpart();
     const flowSheetAssessmentCloneValue = this.processFlowSheet(this.flowSheetAssessmentList, painAssessmentValue);
     const reAssessmentCloneValue = this.processReAssessment(this.reAssessmentTableList, painAssessmentValue);
 

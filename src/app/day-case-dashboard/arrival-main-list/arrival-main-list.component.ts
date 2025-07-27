@@ -735,6 +735,7 @@ export class ArrivalMainListComponent implements OnInit {
       Bwidt: [new Date()],
       Bwizt: [''],
       Kztxt: [''],
+      Ezust: [''],
       Bwart: [''],
       Pernr: [this.admissionStatusModel?.AttendingDoctorName],
     });
@@ -789,6 +790,7 @@ export class ArrivalMainListComponent implements OnInit {
       Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
       Bwizt: createTime,
       Kztxt: this.changeStatusForm.value.Kztxt,
+      Ezust: this.changeStatusForm.value.Ezust,
       Bwart: this.changeStatusForm.value.Bwart,
       Pernr: this.admissionStatusModel.AttendingDoctor,
     };
