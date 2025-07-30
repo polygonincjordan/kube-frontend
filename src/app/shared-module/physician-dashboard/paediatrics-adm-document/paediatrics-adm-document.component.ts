@@ -569,6 +569,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       SsPatient: false,
       SsSocialWorker: false,
       SsSuspected: false,
+      Phy:'X',
       Timee: [this.convertTimeFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionTime)],
 
       AdmittedWard: '', // AdmittedWard (not binded) >>> ? keep it unbind
@@ -1001,6 +1002,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       if (status === '5') {
         payload.d.Dockey = '';
       }
+      payload.d.Phy = 'X';
       this.subscription = this.emergencyService.CreatePediatricAdmAssesDoc(payload).subscribe({
         next: (data: any) => {
             this.admissionService.cancelAllForm();
