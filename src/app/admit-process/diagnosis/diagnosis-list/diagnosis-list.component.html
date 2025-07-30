@@ -5,14 +5,19 @@
         <div *ngIf="!item.value.CancelInd" class="diagnosis-list">
           <div [formGroupName]="i">
             <div class="d-flex justify-content-between">
-              <div class="d-flex align-items-center position-relative w-14 mr-1">
+              <div class="d-flex align-items-center position-relative w-drop mr-1">
                 <span class="d-flex align-items-center p-0 w-100 position-relative pt-2">
                   <span class="input-title z-indexlabel">Code </span>
                   <span class="input-text-field d-inline-block align-top w-100">
                     <ng-container>
                       <ng-select formControlName="DiagKey1" class="d-grid" appendTo="body" [typeahead]="searchCodeTypeHead" (change)="onSelectMedicine($event, i)">
+                          <ng-template ng-option-tmp let-item="item">
+                            <div style=" white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" [title]="item.Dkey + ' - ' + item.Dtext1">
+                              {{ item.Dkey }} - {{ item.Dtext1 }}
+                            </div>
+                          </ng-template>
                         <ng-option *ngFor="let search of diagnosisSearchList" [value]="search">
-                          {{ search.Dkey }} - {{ search.Dtext1}}
+                          <!-- {{ search.Dkey }} - {{ search.Dtext1}} -->
                         </ng-option>
                       </ng-select>
                     </ng-container>
