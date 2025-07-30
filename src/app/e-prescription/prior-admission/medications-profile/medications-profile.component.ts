@@ -476,7 +476,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
   exportToExcel(nameofFile: string = 'medication', fileExtention: string = 'xlsx'): void {
     const eventArray = this.drugArray.value;
     console.log(eventArray, "eventArray");
-  
+
     const mappedEvents = eventArray.map(event => {
       return {
         Descrlt: event.Descrlt,
@@ -491,7 +491,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
         MosidDesc: event.MosidDesc,
       };
     });
-  
+
     const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician', 'Status']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
@@ -522,7 +522,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
         MosidDesc: event.MosidDesc,
       };
     });
-  
+
     const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
@@ -551,7 +551,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
         MosidDesc: event.MosidDesc,
       };
     });
-  
+
     const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);

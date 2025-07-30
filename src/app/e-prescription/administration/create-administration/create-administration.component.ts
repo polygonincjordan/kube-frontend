@@ -614,7 +614,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.Quan = `${element.Quan}`;
           element.Pdur = element.Pdur === null || element.Pdur === '' ? "0" : `${element.Pdur}`;
           element.Pduru = element.Pduru !== null ? element.Pduru : "";
-          element.Prncond = element.Prn ? element.Prncond : "";
+          element.Prncond = element.Prncond ? element.Prncond : "";
           element.StartT = this.parseTime(element.StartD);
           element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
           // element.StartD = this.sanitizeSAPDateFormat(this.parseDate(element.StartD),element.StartT);
@@ -692,7 +692,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             element.Quan = `${element.Quan}`;
             element.Pdur = element.Pdur === null || element.Pdur === '' ? "0" : `${element.Pdur}`;
             element.Pduru = element.Pduru !== null ? element.Pduru : "";
-            element.Prncond = element.Prn ? element.Prncond : "";
+            element.Prncond = element.Prncond ? element.Prncond : "";
             element.StartT = this.parseTime(element.StartD);
             element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
             element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
