@@ -428,12 +428,12 @@
       <ul class="allergy-header-ul d-flex">
         <li class="allergy-header-item"
           style="margin-left: 30px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;width: 40%;">
-          Patient Name : <span [title]="admissionStatusModel.Patname">{{ admissionStatusModel.Patname }}</span>
+          Patient Name : <span [title]="admissionStatusModel.Pnamec1">{{ admissionStatusModel.Pnamec1 }}</span>
         </li>
-        <li class="allergy-header-item">MRN: {{ admissionStatusModel.Mrn }}</li>
+        <li class="allergy-header-item">MRN: {{ admissionStatusModel.Patnr }}</li>
         <li class="allergy-header-item">
           Admission date:
-          {{ getDate(admissionStatusModel.AdmissionDate) | date : "dd.MM.y" }}
+          {{ getDate(admissionStatusModel.Bwidt) | date : "dd.MM.y" }}
         </li>
         <li class="close-icon allergy-header-item">
           <img src="assets/img/CloseTab.svg" class="img-size" (click)="closeRiskModal()" />

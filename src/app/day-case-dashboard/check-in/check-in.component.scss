@@ -280,3 +280,8 @@ table {
 
 tr:nth-child(even) {background: #fff !important}
 tr:nth-child(odd) {background: #e4edf5   !important}
+
+::ng-deep .add-habit-size {
+  width: 60% !important;
+  min-width: 60% !important;
+}

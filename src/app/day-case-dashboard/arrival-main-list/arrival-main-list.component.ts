@@ -715,10 +715,6 @@ export class ArrivalMainListComponent implements OnInit {
     },
   ]
   public openChangeAdmissionStatusModel(template: TemplateRef<any>, data: any) {
-    data.Pnamec = data.Pnamec1;
-    data.Mrn = data.Patnr;
-    data.Falnr = data.Falnr;
-    data.Bwidt = data.Bwidt;
     this.admissionStatusModel = data;
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl',
@@ -728,8 +724,8 @@ export class ArrivalMainListComponent implements OnInit {
     };
     this.modalRefForRisk = this.modalService.show(template, config);
     this.changeStatusForm = this.formBuilder.group({
-      Einri: [this.admissionStatusModel?.Institute],
-      Falnr: [this.admissionStatusModel?.CaseNumber],
+      Einri: [this.admissionStatusModel?.Einri],
+      Falnr: [this.admissionStatusModel?.Falnr],
       Lfdnr: [this.admissionStatusModel?.Lfdnr],
       AdmStatusCode: [''],
       Bwidt: [new Date()],
@@ -737,7 +733,7 @@ export class ArrivalMainListComponent implements OnInit {
       Kztxt: [''],
       Ezust: [''],
       Bwart: [''],
-      Pernr: [this.admissionStatusModel?.AttendingDoctorName],
+      Pernr: [this.admissionStatusModel?.BehArztName],
     });
 
     this.modalRefForRisk.onHide.subscribe((reason: string | any) => {
@@ -750,11 +746,11 @@ export class ArrivalMainListComponent implements OnInit {
 
   getStatusValue() {
     let currentStatus = this.admissionStatusModel.AdmissionStatus;
-    if (currentStatus === 'Planned Arrival') {
+    if (currentStatus.toLowerCase() == 'planned arrival') {
       return 'Actual Arrival';
-    } else if (currentStatus === 'Actual Arrival') {
-      return 'Planned Discharge';
-    } else if (currentStatus === 'Planned Discharge') {
+    } else if (currentStatus.toLowerCase() === 'actual arrival') {
+      return 'Actual Admission';
+    } else if (currentStatus.toLowerCase() === 'planned discharge') {
       return 'Actual Discharge';
     } else {
       return '';
@@ -780,19 +776,24 @@ export class ArrivalMainListComponent implements OnInit {
       default:
         visitStatCode = null; // Handle undefined cases
     }
+     if(!this.changeStatusForm.get('Bwizt')?.value){
+          this.sharedService.waringSwallModel('Please Enter the Time')
+          return
+      }
     let createTime = this.changeStatusForm.controls.Bwizt.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    
     const json = {
-      Einri: this.changeStatusForm.value.Einri,
-      Falnr: this.changeStatusForm.value.Falnr,
-      Lfdnr: this.changeStatusForm.value.Lfdnr,
+      Einri: this.admissionStatusModel?.Einri,
+      Falnr: this.admissionStatusModel?.Falnr,
+      Lfdnr: this.admissionStatusModel?.Lfdnr,
       AdmStatusCode: visitStatCode.toString(),
       Bwidt: this.sanitizeSAPDateFormat(this.changeStatusForm.value.Bwidt),
       Bwizt: createTime,
       Kztxt: this.changeStatusForm.value.Kztxt,
       Ezust: this.changeStatusForm.value.Ezust,
       Bwart: this.changeStatusForm.value.Bwart,
-      Pernr: this.admissionStatusModel.AttendingDoctor,
+      Pernr: this.admissionStatusModel.BehArztName,
     };
 
     if (!json?.Bwart) {
