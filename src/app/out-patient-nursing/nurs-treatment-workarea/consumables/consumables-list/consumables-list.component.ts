@@ -336,76 +336,91 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     this.resultsFormArray.removeAt(index);
   }
 
-    private saveRecords(): void {
-      var payload;
-  
-      var hasMatch = this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.filter(function (val) {
-        return (val.isSelected === true);
-      }).length > 0;
-      if (hasMatch) {
-        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-          .filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected)
-          .map(d => d.value);
-      } else {
-        payload = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']
-          .filter(d => d.valid && d.value.Matnr.trim() !== '')
-          .map(d => d.value);
+private saveRecords(): void {
+  const formControls = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'];
+  const filledRows = formControls.filter(d => d.valid && d.value.Matnr?.trim() !== '');
+  const notSelectedRow = filledRows.find(d => !d.value.isSelected);
+  if (notSelectedRow) {
+    Swal.fire({
+      text: "Please select the filled row to proceed.",
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup'
+    });
+    return;
+  }
+  const selectedRows = formControls.filter(d => d.value.isSelected);
+  const selectedInvalid = selectedRows.find(d => !d.valid || d.value.Matnr?.trim() === '');
+  if (selectedInvalid) {
+    Swal.fire({
+      text: "Please fill all the required values.",
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup'
+    });
+    return;
+  }
+  const stockZeroRow = selectedRows.find(d =>
+    d.valid && d.value.Matnr?.trim() !== '' && d.value.isSelected &&
+    (+d.value.Stock === 0 || d.value.Stock === '0')
+  );
+  if (stockZeroRow) {
+    Swal.fire({
+      text: "Stock is not available.",
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup'
+    });
+    return;
+  }
+  const payload = selectedRows
+    .filter(d => d.valid && d.value.Matnr?.trim() !== '')
+    .map(d => {
+      const val = { ...d.value };
+      delete val.Id;
+      delete val.Arktx;
+      delete val.isSelected;
+      delete val.Stock;
+      delete val.Lgort;
+      return val;
+    });
+
+  this.consumableHistoryForm.patchValue({
+    Lgort: this.selectedStorageLocation,
+  });
+
+  delete this.consumableHistoryForm.value.isAllSelected;
+  this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [...payload];
+  this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
+    Swal.fire({
+      text: "Saved Successfully",
+      icon: 'success',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup'
+    }).then((result) => {
+      if (result.value) {
+        this.actionTypeSubscription$.unsubscribe();
+        this.consumableHistoryForm.reset();
       }
-  
-      payload.forEach(element => {
-        delete element.Id;
-        delete element.Arktx;
-        delete element.isSelected;
-        delete element.Stock;
-        delete element.Lgort
-      });
-  
-      let newpayload = payload.filter(item => item.Matnr !== '');
-      this.consumableHistoryForm.patchValue({
-        Lgort: this.selectedStorageLocation,
-      })
-      delete this.consumableHistoryForm.value.isAllSelected;
-      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [];
-      this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.push(...newpayload);
-      if (this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results.length <= 0) {
-        Swal.fire({
-          text: "Please filed all the required values",
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
-        })
-        return;
+    });
+  }, (error: any) => {
+    let messageError = error.error.error.innererror?.errordetails || [];
+    let message: any = '';
+    messageError.forEach((e, index) => {
+      if (e.code !== '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
+        message += `${message ? '<br>' : ''}${index + 1}) ${e.message}`;
       }
-      this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
-        Swal.fire({
-          text: "Saved Successully",
-          icon: 'success',
-          confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
-        }).then((result) => {
-          if (result.value) {
-            this.actionTypeSubscription$.unsubscribe();
-            this.consumableHistoryForm.reset();
-          }
-        })
-      }, (error: any) => {
-        let messageError = error.error.error.innererror.errordetails;
-        let message: any = '';
-        messageError.forEach((e, index) => {
-          if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
-            if (message) {
-              message = `${message} <br> ${index + 1}) ${e.message}`;
-            } else {
-              message = `${index + 1}) ${e.message}`;
-            }
-          }
-        });
-        Swal.fire({
-          title: message,
-          icon: 'error',
-          confirmButtonText: 'OK',
-          customClass: 'diagnosis-error',
-        });
-      });
-    }
+    });
+
+    Swal.fire({
+      title: message || 'An error occurred.',
+      icon: 'error',
+      confirmButtonText: 'OK',
+      customClass: 'diagnosis-error',
+    }).then((result) => {
+        this.actionTypeSubscription$.unsubscribe();
+        this.consumableHistoryForm.reset();
+    });
+  });
+}
 }

@@ -784,7 +784,7 @@ export class ArrivalMainListComponent implements OnInit {
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     
     const json = {
-      Einri: this.admissionStatusModel?.Einri,
+      Einri: this.admissionStatusModel?.Einri == '' ? '1000' : this.admissionStatusModel?.Einri,
       Falnr: this.admissionStatusModel?.Falnr,
       Lfdnr: this.admissionStatusModel?.Lfdnr,
       AdmStatusCode: visitStatCode.toString(),
