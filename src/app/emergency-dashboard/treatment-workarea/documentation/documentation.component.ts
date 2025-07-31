@@ -418,7 +418,14 @@ export class DocumentationComponent implements OnInit {
       })
       this.phyComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+       Swal.fire({
+        text: _error.error.error?.message?.value,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+    });
   }
   async update() {
     (await this.phyComp.updatePhyDoc()).subscribe((res: any) => {
@@ -430,7 +437,14 @@ export class DocumentationComponent implements OnInit {
       })
       this.phyComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+       Swal.fire({
+        text: _error.error.error?.message?.value,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+    });
   }
   async release() {
     (await this.phyComp.releasePhyDoc()).subscribe((res: any) => {
@@ -442,7 +456,14 @@ export class DocumentationComponent implements OnInit {
       })
       this.phyComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+       Swal.fire({
+        text: _error.error.error?.message?.value,
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: 'myalertpopup'
+      })
+    });
   }
   async delete() {
     Swal.fire({
@@ -482,13 +503,28 @@ export class DocumentationComponent implements OnInit {
       })
       this.phyComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        Swal.fire({
+              text: _error.error.error?.message?.value,
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+    });
   }
   async createAndRelease() {
     (await this.phyComp.createPhyDoc()).subscribe((res: any) => {
       this.phyComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => {
+       Swal.fire({
+              text: _error.error.error?.message?.value,
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              customClass: 'myalertpopup'
+            })
+     });
+     this.actionType =  this.actionType == 'createandrelease' ? 'create' : ''
   }
   openReleasePdf(id) {
     this.pdfUrl = '';

@@ -341,24 +341,9 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
    
 private saveRecords(): void {
   const formControls = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'];
-
-  const filledRows = formControls.filter(d => d.valid && d.value.Matnr.trim() !== '');
-  const selectedRows = formControls.filter(d => d.value.isSelected === true);
-  const selectedAndFilled = formControls.filter(d => d.valid && d.value.Matnr.trim() !== '' && d.value.isSelected === true);
-
-  const hasSelectedButNotFilled = selectedRows.some(d => !d.valid || d.value.Matnr.trim() === '');
-  if (hasSelectedButNotFilled) {
-    Swal.fire({
-      text: "Please fill all the required values.",
-      icon: 'error',
-      confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
-    });
-    return;
-  }
-
-  const hasFilledButNotSelected = filledRows.some(d => d.value.isSelected !== true);
-  if (hasFilledButNotSelected) {
+  const filledRows = formControls.filter(d => d.valid && d.value.Matnr?.trim() !== '');
+  const notSelectedRow = filledRows.find(d => !d.value.isSelected);
+  if (notSelectedRow) {
     Swal.fire({
       text: "Please select the filled row to proceed.",
       icon: 'error',
@@ -367,9 +352,22 @@ private saveRecords(): void {
     });
     return;
   }
- 
-    const hasStockZero = selectedAndFilled.some(d => +d.value.Stock === 0 || d.value.Stock === '0');
-  if (hasStockZero) {
+  const selectedRows = formControls.filter(d => d.value.isSelected);
+  const selectedInvalid = selectedRows.find(d => !d.valid || d.value.Matnr?.trim() === '');
+  if (selectedInvalid) {
+    Swal.fire({
+      text: "Please fill all the required values.",
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup'
+    });
+    return;
+  }
+  const stockZeroRow = selectedRows.find(d =>
+    d.valid && d.value.Matnr?.trim() !== '' && d.value.isSelected &&
+    (+d.value.Stock === 0 || d.value.Stock === '0')
+  );
+  if (stockZeroRow) {
     Swal.fire({
       text: "Stock is not available.",
       icon: 'error',
@@ -378,16 +376,17 @@ private saveRecords(): void {
     });
     return;
   }
-  // Only selected + filled rows
-  const payload = selectedAndFilled.map(d => {
-    const val = { ...d.value };
-    delete val.Id;
-    delete val.Arktx;
-    delete val.isSelected;
-    delete val.Stock;
-    delete val.Lgort;
-    return val;
-  });
+  const payload = selectedRows
+    .filter(d => d.valid && d.value.Matnr?.trim() !== '')
+    .map(d => {
+      const val = { ...d.value };
+      delete val.Id;
+      delete val.Arktx;
+      delete val.isSelected;
+      delete val.Stock;
+      delete val.Lgort;
+      return val;
+    });
 
   this.consumableHistoryForm.patchValue({
     Lgort: this.selectedStorageLocation,
@@ -395,7 +394,6 @@ private saveRecords(): void {
 
   delete this.consumableHistoryForm.value.isAllSelected;
   this.consumableHistoryForm.value.PatMatCosmpNmm7HdToItmNav.results = [...payload];
-
   this.consumableService.saveConsumableDataSet(this.consumableHistoryForm.value).subscribe(() => {
     Swal.fire({
       text: "Saved Successfully",
@@ -409,28 +407,24 @@ private saveRecords(): void {
       }
     });
   }, (error: any) => {
-    let messageError = error.error.error.innererror.errordetails;
+    let messageError = error.error.error.innererror?.errordetails || [];
     let message: any = '';
     messageError.forEach((e, index) => {
-      if (e.code != '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
+      if (e.code !== '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
         message += `${message ? '<br>' : ''}${index + 1}) ${e.message}`;
       }
     });
 
     Swal.fire({
-      title: message,
+      title: message || 'An error occurred.',
       icon: 'error',
       confirmButtonText: 'OK',
       customClass: 'diagnosis-error',
     }).then((result) => {
-      if (result.value) {
-        this.actionTypeSubscription$.unsubscribe();
+     this.actionTypeSubscription$.unsubscribe();
         this.consumableHistoryForm.reset();
-      }
     });
   });
 }
-
-
 }
 
