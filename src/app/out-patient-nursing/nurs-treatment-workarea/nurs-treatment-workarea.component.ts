@@ -98,6 +98,7 @@ export class NursTreatmentWorkareaComponent implements OnInit {
   isConsumableAction: string = '1';
   actionTypeSubscription$: Subscription;
   unsavedProgressNote: boolean = false;
+  postValue:any
 
   constructor(public emergencyService: EmergencyService, public cpoeService: CpoeService, private formBuilder: FormBuilder, private _dataServices: EEmrService, public sidebarService: SidebarService,
     public ePrescriptionService: EPrescriptionService,
@@ -169,6 +170,13 @@ export class NursTreatmentWorkareaComponent implements OnInit {
     this.addministrationService.loadDurationUnit();
     this.addministrationService.loadRouteDropdownList();
     this.addministrationService.loadDropdownList();
+  }
+
+
+  getPostEvent(data:any){
+    if(data){
+      this.postValue= data
+    }
   }
 
   addItemForPhyOrder(element): void {

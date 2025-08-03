@@ -189,6 +189,14 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     this.tabChange('');
   }
 
+  postValue:any
+
+  getPostEvent(data:any){
+    if(data){
+      this.postValue= data
+    }
+  }
+
   addItemForPhyOrder(element): void {
     this.phyOrderitems = this.phyOrderform.get('phyOrderitems') as FormArray;
     this.phyOrderitems.push(this.createPhyOrderRecords(element));
@@ -1080,6 +1088,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       });
       if (result.isConfirmed) {
         this.unsavedProgressNote = false;
+        this.postValue = null;
         this.emergencyService.tabPanelNavigation(tabName);
         console.log(this.emergencyService.vitalSign, "this.emergencyService.vitalSign");
 
@@ -1088,6 +1097,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       }
     } else {
       this.unsavedProgressNote = false;
+      this.postValue = null
       this.emergencyService.tabPanelNavigation(tabName);
       console.log(this.emergencyService.vitalSign, "this.emergencyService.vitalSign");
 
