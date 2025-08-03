@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
   providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }],
 })
 export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
-
+    @Output() postEvent: any = new EventEmitter();
   public formDetailGroup: FormGroup;
   public disableSwitching: boolean;
   
@@ -82,6 +82,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataShareService.sendData('2');
   }
 
+
+
   ngAfterViewInit() {
     // Set the second tab as the active tab after the view has been initialized
   }
@@ -106,7 +108,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       customClass: 'myalertpopup'
     }).then(async (result) => {
       if (result.value) {
-        this.dataShareService.sendActionType(ActionType.Save$, true);
+        // this.dataShareService.sendActionType(ActionType.Save$, true);
+         this.postEvent.emit(ActionType.Save$)
       }
     });
   }
@@ -118,7 +121,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public resetForm() {
-    this.dataShareService.sendActionType(ActionType.Reset$, true);
+    // this.dataShareService.sendActionType(ActionType.Reset$, true);
+    this.postEvent.emit(ActionType.Reset$)
   }
 
   // Method to handle location change event

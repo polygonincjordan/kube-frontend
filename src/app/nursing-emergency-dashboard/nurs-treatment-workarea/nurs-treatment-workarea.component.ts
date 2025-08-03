@@ -1097,6 +1097,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
       });
       if (result.isConfirmed) {
         this.unsavedProgressNote = false;
+        this.postValue = null;
         this.emergencyService.tabPanelNavigation(tabName);
       } else {
         return;
@@ -1104,6 +1105,13 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     } else {
       this.unsavedProgressNote = false;
       this.emergencyService.tabPanelNavigation(tabName);
+    }
+  }
+postValue:any
+
+  getPostEvent(data:any){
+    if(data){
+      this.postValue= data
     }
   }
 

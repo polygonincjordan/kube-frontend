@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
 import { DataService } from '@services/data.service';
 import { EventService } from '@services/event.service';
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './create-fee-service.component.html',
   styleUrls: ['./create-fee-service.component.scss']
 })
-export class CreateFeeServiceComponent implements OnInit {
+export class CreateFeeServiceComponent implements OnInit, OnDestroy {
   @Input('customData') customData: any;
 
   public data: any = [];
@@ -78,5 +78,9 @@ export class CreateFeeServiceComponent implements OnInit {
 
   dateFormate() {
 
+  }
+
+   ngOnDestroy(): void {
+    this.actionTypeSubscription$.unsubscribe();
   }
 }

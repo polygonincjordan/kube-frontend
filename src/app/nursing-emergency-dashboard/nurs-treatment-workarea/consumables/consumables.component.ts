@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
@@ -6,7 +6,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageLocation, StorageLocationDetails } from '@services/emergency-dashboard/interface/storage-location.interface';
 import { getAlertConfig } from '@services/index';
-import { ActionType, FilterType } from '@services/interfaces/common.enum';
+import { ActionType, FilterType, WordType } from '@services/interfaces/common.enum';
 import { StorageService } from '@services/storage.service';
 import { TabsetComponent, TabDirective } from 'ngx-bootstrap/tabs';
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
   providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }],
 })
 export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
-
+  @Output() postEvent: any = new EventEmitter();
   public formDetailGroup: FormGroup;
   public disableSwitching: boolean;
   
@@ -95,7 +95,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       customClass: 'myalertpopup'
     }).then(async (result) => {
       if (result.value) {
-        this.dataShareService.sendActionType(ActionType.Save$, true);
+        // this.dataShareService.sendActionType(ActionType.Save$, true,WordType.MaterialCode$);
+        this.postEvent.emit(ActionType.Save$)
       }
     });
   }
@@ -107,7 +108,8 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public resetForm() {
-    this.dataShareService.sendActionType(ActionType.Reset$, true);
+    // this.dataShareService.sendActionType(ActionType.Reset$, true,WordType.MaterialCode$);
+    this.postEvent.emit(ActionType.Reset$)
   }
 
   // Method to handle location change event

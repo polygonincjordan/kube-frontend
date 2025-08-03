@@ -762,9 +762,9 @@
       </ng-container>
 
       <ng-container *ngIf="this.emergencyService.Consumables">
-        <app-consumables></app-consumables>
+       <app-consumables (postEvent)="getPostEvent($event)"></app-consumables>
         <app-consumables-history *ngIf="isConsumableAction == '1'"></app-consumables-history>
-        <app-consumables-list *ngIf="isConsumableAction == '2'"></app-consumables-list>
+        <app-consumables-list [postitem]="postValue"  (postitemReset)="postValue = null" *ngIf="isConsumableAction == '2'"></app-consumables-list>
       </ng-container>
 
       <div class="order-templete-main" *ngIf="this.emergencyService.patientProfile">

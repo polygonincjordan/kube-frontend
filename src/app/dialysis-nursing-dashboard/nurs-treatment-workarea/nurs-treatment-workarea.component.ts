@@ -371,6 +371,14 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     });
 
   }
+
+  postValue:any
+
+  getPostEvent(data:any){
+    if(data){
+      this.postValue= data
+    }
+  }
   setRecordsForms(data) {
     this.resetTags();
     console.log("med", this.medicationItems);

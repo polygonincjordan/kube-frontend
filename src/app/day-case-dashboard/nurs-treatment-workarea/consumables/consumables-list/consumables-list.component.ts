@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConsumableService } from '@services/consumables/consumable.service';
@@ -19,8 +19,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./consumables-list.component.scss'],
   providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }],
 })
-export class ConsumablesListComponent implements OnInit, OnDestroy {
-
+export class ConsumablesListComponent implements OnInit, OnDestroy , OnChanges{
+  @Output() postitemReset = new EventEmitter<void>();
+  @Input() postitem: any;
   public consumableHistoryForm: FormGroup;
   public UserDetails: any;
   public consumableList: Array<ConsumableList>;
@@ -51,24 +52,30 @@ export class ConsumablesListComponent implements OnInit, OnDestroy {
     private emergencyService: EmergencyService
   ) {
     this.getMaterialList();
-    this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-      if (data != null) {
-        if (data.type == ActionType.Save$ && data.isAllow == true) {
-          this.saveRecords();
-        }
-        if (data.type == ActionType.Reset$ && data.isAllow == true) {
-          this.consumableHistoryForm.reset();
-        }
-      }
-    });
-
     this.route.queryParams.subscribe((params) => {
       this.paramsValue = params;
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['postitem']) {
+      const currentValue = changes['postitem'].currentValue;
+      if(currentValue == 'Save'){
+        this.saveRecords();
+      }else if (currentValue == 'Reset'){
+        this.consumableHistoryForm.reset();
+         this.consumableHistoryForm = this.generateConsumableForm();
+         this.generateDefaultForm();
+      }else {
+         this.consumableHistoryForm = this.generateConsumableForm();
+         this.generateDefaultForm();
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.actionTypeSubscription$.unsubscribe();
+    this.postitemReset.emit()
   }
 
   ngOnInit(): void {
@@ -346,7 +353,7 @@ private saveRecords(): void {
   if (notSelectedRow) {
     Swal.fire({
       text: "Please select the filled row to proceed.",
-      icon: 'error',
+      icon: 'warning',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup'
     });
@@ -402,8 +409,8 @@ private saveRecords(): void {
       customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
-        this.actionTypeSubscription$.unsubscribe();
         this.consumableHistoryForm.reset();
+        this.postitemReset.emit();
       }
     });
   }, (error: any) => {
@@ -421,8 +428,8 @@ private saveRecords(): void {
       confirmButtonText: 'OK',
       customClass: 'diagnosis-error',
     }).then((result) => {
-      this.actionTypeSubscription$.unsubscribe();
-        this.consumableHistoryForm.reset();
+     this.consumableHistoryForm.reset();
+     this.postitemReset.emit();
     });
   });
 }

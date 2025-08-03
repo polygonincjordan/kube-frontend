@@ -954,6 +954,14 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
     );
   }
 
+  postValue:any
+
+  getPostEvent(data:any){
+    if(data){
+      this.postValue= data
+    }
+  }
+
   phyOrderFilterList(formFilter: any) {
     this.admittedFrom = '';
     this.admittedTo = '';
