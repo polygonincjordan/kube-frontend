@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import * as _ from 'lodash';
 import * as converter from 'xml-js';
@@ -21,12 +21,13 @@ import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment
   templateUrl: './my-clinic.component.html',
   styleUrls: ['./my-clinic.component.scss'],
 })
-export class MyClinicComponent implements OnInit {
+export class MyClinicComponent implements OnInit,OnDestroy {
   @Output() public dataCount = new EventEmitter<any>();
   @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
   
   asc = false;
   Variantid: any;
+  refreshInterval: any;
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
@@ -133,6 +134,15 @@ export class MyClinicComponent implements OnInit {
     this.checkOutForm = new FormGroup({
       'DateRange': new FormControl([new Date(), new Date()]),
     });
+     this.refreshInterval = setInterval(() => {
+       this.filterDataConf()
+    }, environment.emergencyRefreshTime);
+  }
+
+  ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
   }
   showFilterFn($event) {
     $event.stopPropagation();
