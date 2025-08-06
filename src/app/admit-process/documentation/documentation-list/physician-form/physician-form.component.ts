@@ -31,7 +31,7 @@ import { SharedService } from '@services/shared.service';
 })
 export class PhysicianFormComponent implements OnInit {
   @Input() soapFormEvent: string;
-  @Output() realodEducationList = new EventEmitter(); 
+  @Output() realodEducationList = new EventEmitter();
   @ViewChild('diagnosisNotesKardexId')
   diagnosisNotesKardex: PhysicianDiagnosisComponent;
   @ViewChild('createAllergyId')
@@ -90,17 +90,17 @@ export class PhysicianFormComponent implements OnInit {
   formName: any;
   modalRefForComment: BsModalRef;
   duplicates = [];
-  enableCreateDiagnosis=false;
-  enableCreateVitals=false;
-  Problem: boolean=true;
-  Initial: boolean=false;
-  Risk: boolean=false;
+  enableCreateDiagnosis = false;
+  enableCreateVitals = false;
+  Problem: boolean = true;
+  Initial: boolean = false;
+  Risk: boolean = false;
 
-  drugArray:any[] = [];
+  drugArray: any[] = [];
   medicationImportDrugArray: any[] = [];
   selectedMedicationOrder: any[] = [];
-  enableCreatePMed: boolean=false;
-  enableCreatePSurg: boolean=false;
+  enableCreatePMed: boolean = false;
+  enableCreatePSurg: boolean = false;
   enableCreateFamily: boolean;
 
   constructor(
@@ -111,7 +111,7 @@ export class PhysicianFormComponent implements OnInit {
     private datePipe: DatePipe,
     private sharedService: SharedService,
     public ePrescriptionService: EPrescriptionService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -130,7 +130,7 @@ export class PhysicianFormComponent implements OnInit {
       if (this.admissionService.isEditPhysicianForm) {
         this.updatePhysicianForm();
       } else {
-        this.createPhysicianForm(true);
+        this.createPhysicianForm(false);
       }
     }
     if (changes.soapFormEvent.currentValue == 'release') {
@@ -394,10 +394,10 @@ export class PhysicianFormComponent implements OnInit {
       TOPSURGERIHIST: [[]],
       NaVitalSigns: [false],
       NaDiagnosis: [false],
-      CannotAssessedReview:[false],
-      NoMedicalHistory : [false],
+      CannotAssessedReview: [false],
+      NoMedicalHistory: [false],
       NoSurgeryHistory: [false],
-      NoFamilyHistory:[false]
+      NoFamilyHistory: [false]
     });
   }
 
@@ -629,53 +629,53 @@ export class PhysicianFormComponent implements OnInit {
       this.handleCheckboxFamilyHist();
       if (this.physicianForm.controls.CannotAssessedReview.value) {
         this.handleCheckboxCannotBeAccess({ checked: true });
-      }else{
-      if (this.physicianForm.value.SNoReportedAbnorm) {
-        this.handleCheckboxSkinCannotBeAccess({ checked: true });
+      } else {
+        if (this.physicianForm.value.SNoReportedAbnorm) {
+          this.handleCheckboxSkinCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.HNoReportedAbnorm) {
+          this.handleCheckboxHeadCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.ENoReportedAbnorm) {
+          this.handleCheckboxEyeCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.EneNoReportedAbnorma) {
+          this.handleCheckboxEneCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.NNoReportedAbnorm) {
+          this.handleCheckboxNeckCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.BNoReportedAbnorm) {
+          this.handleCheckboxBreastCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.RNoReportedAbnorm) {
+          this.handleCheckboxResCardiacCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.GNoReportedAbnorm) {
+          this.handleCheckboxGastroCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.UNoReportedAbnorm) {
+          this.handleCheckboxUrinaryCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.PNoReportedAbnorm) {
+          this.handleCheckboxPeriCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.MNoReportedAbnorm) {
+          this.handleCheckboxMusculCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.NuNoReportedAbnorm) {
+          this.handleCheckboxNeuroCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.HNoReportedAbnorm) {
+          this.handleCheckboxHemaCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.EdNoReportedAbnorm) {
+          this.handleCheckboxEndoCannotBeAccess({ checked: true });
+        }
+        if (this.physicianForm.value.PNoReportedAbnorm) {
+          this.handleCheckboxPsyCannotBeAccess({ checked: true });
+        }
       }
-      if (this.physicianForm.value.HNoReportedAbnorm) {
-        this.handleCheckboxHeadCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.ENoReportedAbnorm) {
-        this.handleCheckboxEyeCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.EneNoReportedAbnorma) {
-        this.handleCheckboxEneCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.NNoReportedAbnorm) {
-        this.handleCheckboxNeckCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.BNoReportedAbnorm) {
-        this.handleCheckboxBreastCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.RNoReportedAbnorm) {
-        this.handleCheckboxResCardiacCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.GNoReportedAbnorm) {
-        this.handleCheckboxGastroCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.UNoReportedAbnorm) {
-        this.handleCheckboxUrinaryCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.PNoReportedAbnorm) {
-        this.handleCheckboxPeriCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.MNoReportedAbnorm) {
-        this.handleCheckboxMusculCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.NuNoReportedAbnorm) {
-        this.handleCheckboxNeuroCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.HNoReportedAbnorm) {
-        this.handleCheckboxHemaCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.EdNoReportedAbnorm) {
-        this.handleCheckboxEndoCannotBeAccess({ checked: true });
-      }
-      if (this.physicianForm.value.PNoReportedAbnorm) {
-        this.handleCheckboxPsyCannotBeAccess({ checked: true });
-      }
-    }
       this.toPastMedical.forEach(element => {
         element['Ddate'] = `${new DatePipe('en-US').transform(
           this.getDate(element.Ddate),
@@ -691,7 +691,7 @@ export class PhysicianFormComponent implements OnInit {
     });
   }
 
-  onDateChange(event: any) {}
+  onDateChange(event: any) { }
   switchTabs(tab) {
     if (tab == 'allergies') {
       this.allergy = true;
@@ -1069,7 +1069,7 @@ export class PhysicianFormComponent implements OnInit {
   }
 
   async createPhysicianForm(isrelease: boolean) {
-    let createJson = this.physicianForm.value;
+    let createJson = { ...this.physicianForm.value };
 
     if (createJson["Dockey"] === null || createJson["Dockey"] === undefined || createJson["Dockey"] === "") {
       if (isrelease) {
@@ -1083,6 +1083,12 @@ export class PhysicianFormComponent implements OnInit {
         createJson['DocStatus'] = '5';
       }
       if (this.admissionService.isClonePhysicianForm && !isrelease) {
+        createJson['DocStatus'] = '3';
+      }
+      if (this.admissionService.isEditPhysicianForm && isrelease) {
+        createJson['DocStatus'] = '5';
+      }
+      if (this.admissionService.isEditPhysicianForm && !isrelease) {
         createJson['DocStatus'] = '3';
       }
 
@@ -1111,23 +1117,23 @@ export class PhysicianFormComponent implements OnInit {
     await this.admissionService
       .createPhysicianData(createJson)
       .subscribe(() => {
-          // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-          // }
-          this.admissionService.cancelAllForm();
-           const message = createJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
-          this.sharedService.successSwallModel(message)
-          this.admissionService.selectedCurrentDocDetails = '';
-          this.realodEducationList.next(true);
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isClonePhysicianForm = false;         
-          this.admissionService.isEditPhysicianForm = false;
-          }, (error) => {
-            this.admissionService.isClonePhysicianForm = false;
-            this.admissionService.isEditPhysicianForm = false;
-            this.admissionService.clearSoapEvent.next(true);
-            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-            this.sharedService.waringSwallModel(`${errorMsg}`);
-          });
+        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.admissionService.cancelAllForm();
+        const message = createJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
+        this.sharedService.successSwallModel(message)
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.realodEducationList.next(true);
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isClonePhysicianForm = false;
+        this.admissionService.isEditPhysicianForm = false;
+      }, (error) => {
+        this.admissionService.isClonePhysicianForm = false;
+        this.admissionService.isEditPhysicianForm = false;
+        this.admissionService.clearSoapEvent.next(true);
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
+      });
   }
   toPhyExamItems() {
     return this.physicianForm.value.TOPHYEXAM.results.filter(
@@ -1406,7 +1412,7 @@ export class PhysicianFormComponent implements OnInit {
   }
 
   async updatePhysicianForm() {
-    let updateJson = this.physicianForm.value;
+    let updateJson = { ...this.physicianForm.value };
     let createtime = '';
     if (updateJson.PhyAssdate != '') {
       updateJson.PhyAssdate = `${new DatePipe('en-US').transform(
@@ -1434,23 +1440,23 @@ export class PhysicianFormComponent implements OnInit {
         //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         // }
         this.admissionService.cancelAllForm();
-       const message = updateJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
+        const message = updateJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
         this.sharedService.successSwallModel(message)
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isClonePhysicianForm = false;
-          this.admissionService.isEditPhysicianForm = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isClonePhysicianForm = false;
+        this.admissionService.isEditPhysicianForm = false;
       }, (error) => {
-          this.admissionService.isClonePhysicianForm = false;
-          this.admissionService.isEditPhysicianForm = false;
-          this.admissionService.clearSoapEvent.next(true);
-          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-          this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.admissionService.isClonePhysicianForm = false;
+        this.admissionService.isEditPhysicianForm = false;
+        this.admissionService.clearSoapEvent.next(true);
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
       });
   }
   async releasePhysicianDoc() {
-    let updateJson = this.physicianForm.value;
+    let updateJson = { ...this.physicianForm.value };
     let createtime = '';
     updateJson['DocStatus'] = '2';
     if (updateJson.PhyAssdate != '') {
@@ -1482,777 +1488,470 @@ export class PhysicianFormComponent implements OnInit {
   }
 
   handleCheckboxSkinCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.SRashes.reset();
-      this.physicianForm.controls.STypeRash.reset();
-      this.physicianForm.controls.SItching.reset();
-      this.physicianForm.controls.SChangeHairNails.reset();
+    const fields = ['SRashes', 'SItching', 'SChangeHairNails'];
 
-      this.physicianForm.controls.SRashes.disable();
-      this.physicianForm.controls.STypeRash.disable();
-      this.physicianForm.controls.SItching.disable();
-      this.physicianForm.controls.SChangeHairNails.disable();
-    } else {
-      this.physicianForm.controls.SRashes.enable();
-      this.physicianForm.controls.STypeRash.enable();
-      this.physicianForm.controls.SItching.enable();
-      this.physicianForm.controls.SChangeHairNails.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.setValue(false); // or control.reset() if you prefer to clear all types
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
+    this.physicianForm.get('STypeRash').setValue("");
   }
+
   handleCheckboxHeadCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.HHeadInjury.reset();
-      // this.physicianForm.controls.HHeadCircumference.reset();
+    const fields = ['HHeadInjury'];
 
-      this.physicianForm.controls.HHeadInjury.disable();
-      // this.physicianForm.controls.HHeadCircumference.disable();
-    } else {
-      this.physicianForm.controls.HHeadInjury.enable();
-      this.physicianForm.controls.HHeadCircumference.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset();      // Or setValue(false) if it's a checkbox
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
+    this.physicianForm.get('HHeadCircumference').setValue("");
+
   }
-  handleCheckboxEyeCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.EGlassesContacts.reset();
-      this.physicianForm.controls.EChangeVision.reset();
-      this.physicianForm.controls.EEyePain.reset();
-      this.physicianForm.controls.EDoubleVision.reset();
-      this.physicianForm.controls.EFlashingLights.reset();
-      this.physicianForm.controls.EGlaucomaCataracts.reset();
-      this.physicianForm.controls.ELastEyeExam.reset();
 
-      this.physicianForm.controls.EGlassesContacts.disable();
-      this.physicianForm.controls.EChangeVision.disable();
-      this.physicianForm.controls.EEyePain.disable();
-      this.physicianForm.controls.EDoubleVision.disable();
-      this.physicianForm.controls.EFlashingLights.disable();
-      this.physicianForm.controls.EGlaucomaCataracts.disable();
-      this.physicianForm.controls.ELastEyeExam.disable();
-    } else {
-      this.physicianForm.controls.EGlassesContacts.enable();
-      this.physicianForm.controls.EChangeVision.enable();
-      this.physicianForm.controls.EEyePain.enable();
-      this.physicianForm.controls.EDoubleVision.enable();
-      this.physicianForm.controls.EFlashingLights.enable();
-      this.physicianForm.controls.EGlaucomaCataracts.enable();
-      this.physicianForm.controls.ELastEyeExam.enable();
-    }
+  handleCheckboxEyeCannotBeAccess(assess) {
+    const fields = [
+      'EGlassesContacts',
+      'EChangeVision',
+      'EEyePain',
+      'EDoubleVision',
+      'EFlashingLights',
+      'EGlaucomaCataracts',
+      'ELastEyeExam'
+    ];
+
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset();      // or control.setValue(false) for checkboxes
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
   }
   handleCheckboxEneCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.EneChangeHearing.reset();
-      this.physicianForm.controls.EneTympanicMembrane.reset();
-      this.physicianForm.controls.EneEarDischarge.reset();
-      this.physicianForm.controls.EneRinging.reset();
-      this.physicianForm.controls.EneDizziness.reset();
+    const fields = [
+      'EneChangeHearing',
+      'EneTympanicMembrane',
+      'EneEarDischarge',
+      'EneRinging',
+      'EneDizziness'
+    ];
 
-      this.physicianForm.controls.EneChangeHearing.disable();
-      this.physicianForm.controls.EneTympanicMembrane.disable();
-      this.physicianForm.controls.EneEarDischarge.disable();
-      this.physicianForm.controls.EneRinging.disable();
-      this.physicianForm.controls.EneDizziness.disable();
-    } else {
-      this.physicianForm.controls.EneChangeHearing.enable();
-      this.physicianForm.controls.EneTympanicMembrane.enable();
-      this.physicianForm.controls.EneEarDischarge.enable();
-      this.physicianForm.controls.EneRinging.enable();
-      this.physicianForm.controls.EneDizziness.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset(); // Or setValue(false) for checkboxes
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
   }
   handleCheckboxEnnCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.EnnNoseBleeds.reset();
-      this.physicianForm.controls.EnnNasalStuffiness.reset();
-      this.physicianForm.controls.EnnNasalFlaring.reset();
-      this.physicianForm.controls.EnnFrequentColds.reset();
+    const fields = [
+      'EnnNoseBleeds',
+      'EnnNasalStuffiness',
+      'EnnNasalFlaring',
+      'EnnFrequentColds'
+    ];
 
-      this.physicianForm.controls.EnnNoseBleeds.disable();
-      this.physicianForm.controls.EnnNasalStuffiness.disable();
-      this.physicianForm.controls.EnnNasalFlaring.disable();
-      this.physicianForm.controls.EnnFrequentColds.disable();
-    } else {
-      this.physicianForm.controls.EnnNoseBleeds.enable();
-      this.physicianForm.controls.EnnNasalStuffiness.enable();
-      this.physicianForm.controls.EnnNasalFlaring.enable();
-      this.physicianForm.controls.EnnFrequentColds.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset(); // or control.setValue(false) for checkboxes
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
   }
   handleCheckboxEnmCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.EnmBleedingGums.reset();
-      this.physicianForm.controls.EnmSoreTongue.reset();
-      this.physicianForm.controls.EnmLipColor.reset();
+    const fields = [
+      'EnmBleedingGums',
+      'EnmSoreTongue'];
 
-      this.physicianForm.controls.EnmBleedingGums.disable();
-      this.physicianForm.controls.EnmSoreTongue.disable();
-      this.physicianForm.controls.EnmLipColor.disable();
-    } else {
-      this.physicianForm.controls.EnmBleedingGums.enable();
-      this.physicianForm.controls.EnmSoreTongue.enable();
-      this.physicianForm.controls.EnmLipColor.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset();  // Or use control.setValue(false) for checkboxes
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
+    this.physicianForm.get('EnmLipColor').setValue("");
   }
   handleCheckboxNeckCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.NLumps.reset();
-      this.physicianForm.controls.NSwollenGlands.reset();
-      this.physicianForm.controls.NGoiter.reset();
-      this.physicianForm.controls.NStiffness.reset();
+    const fields = [
+      'NLumps',
+      'NSwollenGlands',
+      'NGoiter',
+      'NStiffness'
+    ];
 
-      this.physicianForm.controls.NLumps.disable();
-      this.physicianForm.controls.NSwollenGlands.disable();
-      this.physicianForm.controls.NGoiter.disable();
-      this.physicianForm.controls.NStiffness.disable();
-    } else {
-      this.physicianForm.controls.NLumps.enable();
-      this.physicianForm.controls.NSwollenGlands.enable();
-      this.physicianForm.controls.NGoiter.enable();
-      this.physicianForm.controls.NStiffness.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset();  // Use control.setValue(false) for checkboxes if needed
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
   }
-  handleCheckboxBreastCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.BLumps.reset();
-      this.physicianForm.controls.BPain.reset();
-      this.physicianForm.controls.BNippleDischarge.reset();
-      this.physicianForm.controls.BSkinAbnormalities.reset();
 
-      this.physicianForm.controls.BLumps.disable();
-      this.physicianForm.controls.BPain.disable();
-      this.physicianForm.controls.BNippleDischarge.disable();
-      this.physicianForm.controls.BSkinAbnormalities.disable();
-    } else {
-      this.physicianForm.controls.BLumps.enable();
-      this.physicianForm.controls.BPain.enable();
-      this.physicianForm.controls.BNippleDischarge.enable();
-      this.physicianForm.controls.BSkinAbnormalities.enable();
-    }
+  handleCheckboxBreastCannotBeAccess(assess) {
+    const fields = [
+      'BLumps',
+      'BPain',
+      'BNippleDischarge',
+      'BSkinAbnormalities'
+    ];
+
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset(); // Or control.setValue(false) if checkbox
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
   }
   handleCheckboxResCardiacCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.RShortnessBreath.reset();
-      this.physicianForm.controls.RCough.reset();
-      this.physicianForm.controls.RWheezing.reset();
-      this.physicianForm.controls.RCoughingBlood.reset();
-      this.physicianForm.controls.RProductionPhlegm.reset();
-      this.physicianForm.controls.RChestPain.reset();
-      this.physicianForm.controls.RFever.reset();
-      this.physicianForm.controls.RNightSweats.reset();
-      this.physicianForm.controls.RBlueFingersToes.reset();
-      this.physicianForm.controls.RSwellingHandsFeet.reset();
-      this.physicianForm.controls.RBronchitisEmphysema.reset();
-      this.physicianForm.controls.RHeartMurmur.reset();
-      this.physicianForm.controls.RHxHeartMedication.reset();
-      this.physicianForm.controls.RSkippingHeartBeats.reset();
+    const fields = [
+      'RShortnessBreath',
+      'RCough',
+      'RWheezing',
+      'RCoughingBlood',
+      'RProductionPhlegm',
+      'RChestPain',
+      'RFever',
+      'RNightSweats',
+      'RBlueFingersToes',
+      'RSwellingHandsFeet',
+      'RBronchitisEmphysema',
+      'RHeartMurmur',
+      'RHxHeartMedication',
+      'RSkippingHeartBeats'
+    ];
 
-      this.physicianForm.controls.RShortnessBreath.disable();
-      this.physicianForm.controls.RCough.disable();
-      this.physicianForm.controls.RWheezing.disable();
-      this.physicianForm.controls.RCoughingBlood.disable();
-      this.physicianForm.controls.RProductionPhlegm.disable();
-      this.physicianForm.controls.RChestPain.disable();
-      this.physicianForm.controls.RFever.disable();
-      this.physicianForm.controls.RNightSweats.disable();
-      this.physicianForm.controls.RBlueFingersToes.disable();
-      this.physicianForm.controls.RSwellingHandsFeet.disable();
-      this.physicianForm.controls.RBronchitisEmphysema.disable();
-      this.physicianForm.controls.RHeartMurmur.disable();
-      this.physicianForm.controls.RHxHeartMedication.disable();
-      this.physicianForm.controls.RSkippingHeartBeats.disable();
-    } else {
-      this.physicianForm.controls.RShortnessBreath.enable();
-      this.physicianForm.controls.RCough.enable();
-      this.physicianForm.controls.RWheezing.enable();
-      this.physicianForm.controls.RCoughingBlood.enable();
-      this.physicianForm.controls.RProductionPhlegm.enable();
-      this.physicianForm.controls.RChestPain.enable();
-      this.physicianForm.controls.RFever.enable();
-      this.physicianForm.controls.RNightSweats.enable();
-      this.physicianForm.controls.RBlueFingersToes.enable();
-      this.physicianForm.controls.RSwellingHandsFeet.enable();
-      this.physicianForm.controls.RBronchitisEmphysema.enable();
-      this.physicianForm.controls.RHeartMurmur.enable();
-      this.physicianForm.controls.RHxHeartMedication.enable();
-      this.physicianForm.controls.RSkippingHeartBeats.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset();
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
   }
   handleCheckboxGastroCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.GChangeAppetiteWeight.reset();
-      this.physicianForm.controls.GProblemsSwallowing.reset();
-      this.physicianForm.controls.GNausea.reset();
-      this.physicianForm.controls.GHeartburn.reset();
-      this.physicianForm.controls.GVomiting.reset();
-      this.physicianForm.controls.GVomitingBlood.reset();
-      this.physicianForm.controls.GConstipation.reset();
-      this.physicianForm.controls.GDiarrhea.reset();
-      this.physicianForm.controls.GChangeBowelHabits.reset();
-      this.physicianForm.controls.GAbdominalPain.reset();
-      this.physicianForm.controls.GExcessiveBelching.reset();
-      this.physicianForm.controls.GExcessiveFlatus.reset();
-      this.physicianForm.controls.GFoodIntolerance.reset();
-      this.physicianForm.controls.GRectalBleedingHemo.reset();
-      this.physicianForm.controls.GYellowColourSkin.reset();
-      this.physicianForm.controls.GToiletTrained.reset();
-      this.physicianForm.controls.GTfreq.reset();
-      this.physicianForm.controls.GUfreq.reset();
+    const fields = [
+      'GChangeAppetiteWeight',
+      'GProblemsSwallowing',
+      'GNausea',
+      'GHeartburn',
+      'GVomiting',
+      'GVomitingBlood',
+      'GConstipation',
+      'GDiarrhea',
+      'GChangeBowelHabits',
+      'GAbdominalPain',
+      'GExcessiveBelching',
+      'GExcessiveFlatus',
+      'GFoodIntolerance',
+      'GRectalBleedingHemo',
+      'GYellowColourSkin',
+      'GToiletTrained'
+    ];
 
-      this.physicianForm.controls.GChangeAppetiteWeight.disable();
-      this.physicianForm.controls.GProblemsSwallowing.disable();
-      this.physicianForm.controls.GNausea.disable();
-      this.physicianForm.controls.GHeartburn.disable();
-      this.physicianForm.controls.GVomiting.disable();
-      this.physicianForm.controls.GVomitingBlood.disable();
-      this.physicianForm.controls.GConstipation.disable();
-      this.physicianForm.controls.GDiarrhea.disable();
-      this.physicianForm.controls.GChangeBowelHabits.disable();
-      this.physicianForm.controls.GAbdominalPain.disable();
-      this.physicianForm.controls.GExcessiveBelching.disable();
-      this.physicianForm.controls.GExcessiveFlatus.disable();
-      this.physicianForm.controls.GFoodIntolerance.disable();
-      this.physicianForm.controls.GRectalBleedingHemo.disable();
-      this.physicianForm.controls.GYellowColourSkin.disable();
-      this.physicianForm.controls.GToiletTrained.disable();
-      this.physicianForm.controls.GTfreq.disable();
-      this.physicianForm.controls.GUfreq.disable();
-    } else {
-      this.physicianForm.controls.GChangeAppetiteWeight.enable();
-      this.physicianForm.controls.GProblemsSwallowing.enable();
-      this.physicianForm.controls.GNausea.enable();
-      this.physicianForm.controls.GHeartburn.enable();
-      this.physicianForm.controls.GVomiting.enable();
-      this.physicianForm.controls.GVomitingBlood.enable();
-      this.physicianForm.controls.GConstipation.enable();
-      this.physicianForm.controls.GDiarrhea.enable();
-      this.physicianForm.controls.GChangeBowelHabits.enable();
-      this.physicianForm.controls.GAbdominalPain.enable();
-      this.physicianForm.controls.GExcessiveBelching.enable();
-      this.physicianForm.controls.GExcessiveFlatus.enable();
-      this.physicianForm.controls.GFoodIntolerance.enable();
-      this.physicianForm.controls.GRectalBleedingHemo.enable();
-      this.physicianForm.controls.GYellowColourSkin.enable();
-      this.physicianForm.controls.GToiletTrained.enable();
-      this.physicianForm.controls.GTfreq.enable();
-      this.physicianForm.controls.GUfreq.enable();
-    }
+    fields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (assess.checked) {
+          control.reset();
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
+
+    this.physicianForm.get('GTfreq').setValue("");
+    this.physicianForm.get('GUfreq').setValue("");
   }
+
   handleCheckboxUrinaryCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.UDifficultyUrination.reset();
-      this.physicianForm.controls.UPainBurningUrination.reset();
-      this.physicianForm.controls.UFrequentUrinationNight.reset();
-      this.physicianForm.controls.UUrgentNeedUrinate.reset();
-      this.physicianForm.controls.UIncontinenceUrine.reset();
-      this.physicianForm.controls.UDribbling.reset();
-      this.physicianForm.controls.UDecreasedUrineStream.reset();
-      this.physicianForm.controls.UBloodUrine.reset();
-      this.physicianForm.controls.UUtiStonesProstate.reset();
+    const fields = [
+      'UDifficultyUrination',
+      'UPainBurningUrination',
+      'UFrequentUrinationNight',
+      'UUrgentNeedUrinate',
+      'UIncontinenceUrine',
+      'UDribbling',
+      'UDecreasedUrineStream',
+      'UBloodUrine',
+      'UUtiStonesProstate'
+    ];
 
-      this.physicianForm.controls.UDifficultyUrination.disable();
-      this.physicianForm.controls.UPainBurningUrination.disable();
-      this.physicianForm.controls.UFrequentUrinationNight.disable();
-      this.physicianForm.controls.UUrgentNeedUrinate.disable();
-      this.physicianForm.controls.UIncontinenceUrine.disable();
-      this.physicianForm.controls.UDribbling.disable();
-      this.physicianForm.controls.UDecreasedUrineStream.disable();
-      this.physicianForm.controls.UBloodUrine.disable();
-      this.physicianForm.controls.UUtiStonesProstate.disable();
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);  // Set value to false
+        this.physicianForm.controls[field].disable();        // Then disable
+      });
     } else {
-      this.physicianForm.controls.UDifficultyUrination.enable();
-      this.physicianForm.controls.UPainBurningUrination.enable();
-      this.physicianForm.controls.UFrequentUrinationNight.enable();
-      this.physicianForm.controls.UUrgentNeedUrinate.enable();
-      this.physicianForm.controls.UIncontinenceUrine.enable();
-      this.physicianForm.controls.UDribbling.enable();
-      this.physicianForm.controls.UDecreasedUrineStream.enable();
-      this.physicianForm.controls.UBloodUrine.enable();
-      this.physicianForm.controls.UUtiStonesProstate.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();         // Enable the field
+      });
     }
   }
+
   handleCheckboxPeriCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.PLegCramps.reset();
-      this.physicianForm.controls.PVaricoseVeins.reset();
-      this.physicianForm.controls.PClotsVeins.reset();
+    const fields = [
+      'PLegCramps',
+      'PVaricoseVeins',
+      'PClotsVeins'
+    ];
 
-      this.physicianForm.controls.PLegCramps.disable();
-      this.physicianForm.controls.PVaricoseVeins.disable();
-      this.physicianForm.controls.PClotsVeins.disable();
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);
+        this.physicianForm.controls[field].disable();
+      });
     } else {
-      this.physicianForm.controls.PLegCramps.enable();
-      this.physicianForm.controls.PVaricoseVeins.enable();
-      this.physicianForm.controls.PClotsVeins.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();
+      });
     }
   }
+
   handleCheckboxMusculCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.MPain.reset();
-      this.physicianForm.controls.MSwelling.reset();
-      this.physicianForm.controls.MStiffness.reset();
-      this.physicianForm.controls.MDecreasedJointMotion.reset();
-      this.physicianForm.controls.MBrokenBone.reset();
-      this.physicianForm.controls.MSeriousSprains.reset();
-      this.physicianForm.controls.MArthritis.reset();
-      this.physicianForm.controls.MGout.reset();
+    const fields = [
+      'MPain',
+      'MSwelling',
+      'MStiffness',
+      'MDecreasedJointMotion',
+      'MBrokenBone',
+      'MSeriousSprains',
+      'MArthritis',
+      'MGout'
+    ];
 
-      this.physicianForm.controls.MPain.disable();
-      this.physicianForm.controls.MSwelling.disable();
-      this.physicianForm.controls.MStiffness.disable();
-      this.physicianForm.controls.MDecreasedJointMotion.disable();
-      this.physicianForm.controls.MBrokenBone.disable();
-      this.physicianForm.controls.MSeriousSprains.disable();
-      this.physicianForm.controls.MArthritis.disable();
-      this.physicianForm.controls.MGout.disable();
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);
+        this.physicianForm.controls[field].disable();
+      });
     } else {
-      this.physicianForm.controls.MPain.enable();
-      this.physicianForm.controls.MSwelling.enable();
-      this.physicianForm.controls.MStiffness.enable();
-      this.physicianForm.controls.MDecreasedJointMotion.enable();
-      this.physicianForm.controls.MBrokenBone.enable();
-      this.physicianForm.controls.MSeriousSprains.enable();
-      this.physicianForm.controls.MArthritis.enable();
-      this.physicianForm.controls.MGout.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();
+      });
     }
   }
+
   handleCheckboxNeuroCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.NuHeadaches.reset();
-      this.physicianForm.controls.NuSeizures.reset();
-      this.physicianForm.controls.NuParalysis.reset();
-      this.physicianForm.controls.NuWeakness.reset();
-      this.physicianForm.controls.NuLossConsciousness.reset();
-      this.physicianForm.controls.NuLossMuscleSize.reset();
-      this.physicianForm.controls.NuMuscleSpasm.reset();
-      this.physicianForm.controls.NuTremor.reset();
-      this.physicianForm.controls.NuInvoluntaryMovement.reset();
-      this.physicianForm.controls.NuIncoordination.reset();
-      this.physicianForm.controls.NuNumbness.reset();
-      this.physicianForm.controls.NuFeelingPinsNeedles.reset();
+    const fields = [
+      'NuHeadaches',
+      'NuSeizures',
+      'NuParalysis',
+      'NuWeakness',
+      'NuLossConsciousness',
+      'NuLossMuscleSize',
+      'NuMuscleSpasm',
+      'NuTremor',
+      'NuInvoluntaryMovement',
+      'NuIncoordination',
+      'NuNumbness',
+      'NuFeelingPinsNeedles'
+    ];
 
-      this.physicianForm.controls.NuHeadaches.disable();
-      this.physicianForm.controls.NuSeizures.disable();
-      this.physicianForm.controls.NuParalysis.disable();
-      this.physicianForm.controls.NuWeakness.disable();
-      this.physicianForm.controls.NuLossConsciousness.disable();
-      this.physicianForm.controls.NuLossMuscleSize.disable();
-      this.physicianForm.controls.NuMuscleSpasm.disable();
-      this.physicianForm.controls.NuTremor.disable();
-      this.physicianForm.controls.NuInvoluntaryMovement.disable();
-      this.physicianForm.controls.NuIncoordination.disable();
-      this.physicianForm.controls.NuNumbness.disable();
-      this.physicianForm.controls.NuFeelingPinsNeedles.disable();
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);  // Set to false (for checkboxes)
+        this.physicianForm.controls[field].disable();        // Disable field
+      });
     } else {
-      this.physicianForm.controls.NuHeadaches.enable();
-      this.physicianForm.controls.NuSeizures.enable();
-      this.physicianForm.controls.NuParalysis.enable();
-      this.physicianForm.controls.NuWeakness.enable();
-      this.physicianForm.controls.NuLossConsciousness.enable();
-      this.physicianForm.controls.NuLossMuscleSize.enable();
-      this.physicianForm.controls.NuMuscleSpasm.enable();
-      this.physicianForm.controls.NuTremor.enable();
-      this.physicianForm.controls.NuInvoluntaryMovement.enable();
-      this.physicianForm.controls.NuIncoordination.enable();
-      this.physicianForm.controls.NuNumbness.enable();
-      this.physicianForm.controls.NuFeelingPinsNeedles.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();         // Enable field
+      });
     }
   }
+
   handleCheckboxHemaCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.HeAnemia.reset();
-      this.physicianForm.controls.HeEasyBruisingBleeding.reset();
+    const fields = [
+      'HeAnemia',
+      'HeEasyBruisingBleeding'
+    ];
 
-      this.physicianForm.controls.HeAnemia.disable();
-      this.physicianForm.controls.HeEasyBruisingBleeding.disable();
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);  // Instead of .reset()
+        this.physicianForm.controls[field].disable();
+      });
     } else {
-      this.physicianForm.controls.HeAnemia.enable();
-      this.physicianForm.controls.HeEasyBruisingBleeding.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();
+      });
     }
   }
+
   handleCheckboxEndoCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.EdAbnormalGrowth.reset();
-      this.physicianForm.controls.EdIncreasedAppetite.reset();
-      this.physicianForm.controls.EdIncreasedThirst.reset();
-      this.physicianForm.controls.EdIncreaseUrineProduction.reset();
-      this.physicianForm.controls.EdThyroidTrouble.reset();
-      this.physicianForm.controls.EdHeatColdIntolerance.reset();
-      this.physicianForm.controls.EdExcessingSweating.reset();
-      this.physicianForm.controls.EdDiabetes.reset();
+    const fields = [
+      'EdAbnormalGrowth',
+      'EdIncreasedAppetite',
+      'EdIncreasedThirst',
+      'EdIncreaseUrineProduction',
+      'EdThyroidTrouble',
+      'EdHeatColdIntolerance',
+      'EdExcessingSweating',
+      'EdDiabetes'
+    ];
 
-      this.physicianForm.controls.EdAbnormalGrowth.disable();
-      this.physicianForm.controls.EdIncreasedAppetite.disable();
-      this.physicianForm.controls.EdIncreasedThirst.disable();
-      this.physicianForm.controls.EdIncreaseUrineProduction.disable();
-      this.physicianForm.controls.EdThyroidTrouble.disable();
-      this.physicianForm.controls.EdHeatColdIntolerance.disable();
-      this.physicianForm.controls.EdExcessingSweating.disable();
-      this.physicianForm.controls.EdDiabetes.disable();
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);  // Set to false instead of reset()
+        this.physicianForm.controls[field].disable();
+      });
     } else {
-      this.physicianForm.controls.EdAbnormalGrowth.enable();
-      this.physicianForm.controls.EdIncreasedAppetite.enable();
-      this.physicianForm.controls.EdIncreasedThirst.enable();
-      this.physicianForm.controls.EdIncreaseUrineProduction.enable();
-      this.physicianForm.controls.EdThyroidTrouble.enable();
-      this.physicianForm.controls.EdHeatColdIntolerance.enable();
-      this.physicianForm.controls.EdExcessingSweating.enable();
-      this.physicianForm.controls.EdDiabetes.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();
+      });
     }
   }
-  handleCheckboxPsyCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.physicianForm.controls.PsTensionAnxiety.reset();
-      this.physicianForm.controls.PsDepressionSuicide.reset();
-      this.physicianForm.controls.PsMemoryProblems.reset();
-      this.physicianForm.controls.PsPastTreatmentPsychiatri.reset();
-      this.physicianForm.controls.PsSleepProblems.reset();
-      this.physicianForm.controls.PsUnusualProblems.reset();
-      this.physicianForm.controls.PsChangeMood.reset();
 
-      this.physicianForm.controls.PsTensionAnxiety.disable();
-      this.physicianForm.controls.PsDepressionSuicide.disable();
-      this.physicianForm.controls.PsMemoryProblems.disable();
-      this.physicianForm.controls.PsPastTreatmentPsychiatri.disable();
-      this.physicianForm.controls.PsSleepProblems.disable();
-      this.physicianForm.controls.PsUnusualProblems.disable();
-      this.physicianForm.controls.PsChangeMood.disable();
+  handleCheckboxPsyCannotBeAccess(assess) {
+    const fields = [
+      'PsTensionAnxiety',
+      'PsDepressionSuicide',
+      'PsMemoryProblems',
+      'PsPastTreatmentPsychiatri',
+      'PsSleepProblems',
+      'PsUnusualProblems',
+      'PsChangeMood'
+    ];
+
+    if (assess.checked) {
+      fields.forEach(field => {
+        this.physicianForm.controls[field].setValue(false);
+        this.physicianForm.controls[field].disable();
+      });
     } else {
-      this.physicianForm.controls.PsTensionAnxiety.enable();
-      this.physicianForm.controls.PsDepressionSuicide.enable();
-      this.physicianForm.controls.PsMemoryProblems.enable();
-      this.physicianForm.controls.PsPastTreatmentPsychiatri.enable();
-      this.physicianForm.controls.PsSleepProblems.enable();
-      this.physicianForm.controls.PsUnusualProblems.enable();
-      this.physicianForm.controls.PsChangeMood.enable();
+      fields.forEach(field => {
+        this.physicianForm.controls[field].enable();
+      });
     }
   }
 
   handleCheckboxCannotBeAccess(assess) {
-    if (assess.checked) {
-      this.resetChecbox();
-      this.physicianForm.controls.SNoReportedAbnorm.disable();
-      this.physicianForm.controls.SRashes.disable();
-      this.physicianForm.controls.STypeRash.disable();
-      this.physicianForm.controls.SItching.disable();
-      this.physicianForm.controls.SChangeHairNails.disable();
-      this.physicianForm.controls.SComments.disable();
+    let allTextBox = [
+      'SComments', 'STypeRash', 'HComments', 'HHeadCircumference', 'EComments', 'EnmLipColor', 'EnmComments', 'NComments', 'BComments', 'RComments', 'GTfreq', 'GUfreq', 'GComments',
+      'UComments', 'PComments', 'MComments', 'NuComments', 'HeComments', 'EdComments', 'PsComments'
+    ]
+    const allFields = [
+      // Skin
+      'SNoReportedAbnorm', 'SRashes', 'SItching', 'SChangeHairNails',
+      // Head
+      'HNoReportedAbnorm', 'HHeadInjury',
+      // Eyes
+      'ENoReportedAbnorm', 'EGlassesContacts', 'EChangeVision', 'EEyePain', 'EDoubleVision', 'EFlashingLights', 'EGlaucomaCataracts', 'ELastEyeExam',
+      // Ear/Nose/Throat
+      'EneNoReportedAbnorma', 'EneChangeHearing', 'EneTympanicMembrane', 'EneEarDischarge', 'EneRinging', 'EneDizziness',
+      'EnnNoReportedAbnorm', 'EnnNoseBleeds', 'EnnNasalStuffiness', 'EnnNasalFlaring', 'EnnFrequentColds', 'EnmBleedingGums', 'EnmSoreTongue',
+      // Neck
+      'NNoReportedAbnorm', 'NLumps', 'NSwollenGlands', 'NGoiter', 'NStiffness',
+      // Breast
+      'BNoReportedAbnorm', 'BLumps', 'BPain', 'BNippleDischarge', 'BSkinAbnormalities',
+      // Respiratory/Cardiac
+      'RNoReportedAbnorm', 'RShortnessBreath', 'RCough', 'RWheezing', 'RCoughingBlood',
+      'RProductionPhlegm', 'RChestPain', 'RFever', 'RNightSweats', 'RBlueFingersToes',
+      'RSwellingHandsFeet', 'RBronchitisEmphysema', 'RHeartMurmur', 'RHxHeartMedication',
+      'RSkippingHeartBeats',
+      // GI
+      'GNoReportedAbnorm', 'GChangeAppetiteWeight', 'GProblemsSwallowing', 'GNausea', 'GHeartburn',
+      'GVomiting', 'GVomitingBlood', 'GConstipation', 'GDiarrhea', 'GChangeBowelHabits',
+      'GAbdominalPain', 'GExcessiveBelching', 'GExcessiveFlatus', 'GFoodIntolerance',
+      'GRectalBleedingHemo', 'GYellowColourSkin', 'GToiletTrained',
+      // Urinary
+      'UNoReportedAbnorm', 'UDifficultyUrination', 'UPainBurningUrination', 'UFrequentUrinationNight',
+      'UUrgentNeedUrinate', 'UIncontinenceUrine', 'UDribbling', 'UDecreasedUrineStream', 'UBloodUrine',
+      'UUtiStonesProstate',
+      // Peripheral
+      'PNoReportedAbnorm', 'PLegCramps', 'PVaricoseVeins', 'PClotsVeins',
+      // Musculoskeletal
+      'MNoReportedAbnorm', 'MPain', 'MSwelling', 'MStiffness', 'MDecreasedJointMotion', 'MBrokenBone',
+      'MSeriousSprains', 'MArthritis', 'MGout',
+      // Neurological
+      'NuNoReportedAbnorm', 'NuHeadaches', 'NuSeizures', 'NuParalysis', 'NuWeakness',
+      'NuLossConsciousness', 'NuLossMuscleSize', 'NuMuscleSpasm', 'NuTremor',
+      'NuInvoluntaryMovement', 'NuIncoordination', 'NuNumbness', 'NuFeelingPinsNeedles',
+      // Hematologic
+      'HeNoReportedAbnorm', 'HeAnemia', 'HeEasyBruisingBleeding',
 
-      this.physicianForm.controls.HNoReportedAbnorm.disable();
-      this.physicianForm.controls.HHeadInjury.disable();
-      this.physicianForm.controls.HHeadCircumference.disable();
-      this.physicianForm.controls.HComments.disable();
+      // Endocrine
+      'EdNoReportedAbnorm', 'EdAbnormalGrowth', 'EdIncreasedAppetite', 'EdIncreasedThirst',
+      'EdIncreaseUrineProduction', 'EdThyroidTrouble', 'EdHeatColdIntolerance', 'EdExcessingSweating',
+      'EdDiabetes',
 
-      this.physicianForm.controls.ENoReportedAbnorm.disable();
-      this.physicianForm.controls.EGlassesContacts.disable();
-      this.physicianForm.controls.EChangeVision.disable();
-      this.physicianForm.controls.EEyePain.disable();
-      this.physicianForm.controls.EDoubleVision.disable();
-      this.physicianForm.controls.EFlashingLights.disable();
-      this.physicianForm.controls.EGlaucomaCataracts.disable();
-      this.physicianForm.controls.ELastEyeExam.disable();
-      this.physicianForm.controls.EComments.disable();
+      // Psychiatric
+      'PsNoReportedAbnorm', 'PsTensionAnxiety', 'PsDepressionSuicide', 'PsMemoryProblems',
+      'PsPastTreatmentPsychiatri', 'PsSleepProblems', 'PsUnusualProblems', 'PsChangeMood',
+    ];
 
-      this.physicianForm.controls.EneNoReportedAbnorma.disable();
-      this.physicianForm.controls.EneChangeHearing.disable();
-      this.physicianForm.controls.EneTympanicMembrane.disable();
-      this.physicianForm.controls.EneEarDischarge.disable();
-      this.physicianForm.controls.EneRinging.disable();
-      this.physicianForm.controls.EneDizziness.disable();
+    let shouldDisable = assess.checked;
 
-      this.physicianForm.controls.EnnNoReportedAbnorm.disable();
-      this.physicianForm.controls.EnnNoseBleeds.disable();
-      this.physicianForm.controls.EnnNasalStuffiness.disable();
-      this.physicianForm.controls.EnnNasalFlaring.disable();
-      this.physicianForm.controls.EnnFrequentColds.disable();
+    allFields.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (shouldDisable) {
+          control.setValue(false); // Optional: clear checkbox/text
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    });
 
-      this.physicianForm.controls.EnmBleedingGums.disable();
-      this.physicianForm.controls.EnmSoreTongue.disable();
-      this.physicianForm.controls.EnmLipColor.disable();
-      this.physicianForm.controls.EnmComments.disable();
-
-      this.physicianForm.controls.NNoReportedAbnorm.disable();
-      this.physicianForm.controls.NLumps.disable();
-      this.physicianForm.controls.NSwollenGlands.disable();
-      this.physicianForm.controls.NGoiter.disable();
-      this.physicianForm.controls.NStiffness.disable();
-      this.physicianForm.controls.NComments.disable();
-
-      this.physicianForm.controls.BNoReportedAbnorm.disable();
-      this.physicianForm.controls.BLumps.disable();
-      this.physicianForm.controls.BPain.disable();
-      this.physicianForm.controls.BNippleDischarge.disable();
-      this.physicianForm.controls.BSkinAbnormalities.disable();
-      this.physicianForm.controls.BComments.disable();
-
-      this.physicianForm.controls.RNoReportedAbnorm.disable();
-      this.physicianForm.controls.RShortnessBreath.disable();
-      this.physicianForm.controls.RCough.disable();
-      this.physicianForm.controls.RWheezing.disable();
-      this.physicianForm.controls.RCoughingBlood.disable();
-      this.physicianForm.controls.RProductionPhlegm.disable();
-      this.physicianForm.controls.RChestPain.disable();
-      this.physicianForm.controls.RFever.disable();
-      this.physicianForm.controls.RNightSweats.disable();
-      this.physicianForm.controls.RBlueFingersToes.disable();
-      this.physicianForm.controls.RSwellingHandsFeet.disable();
-      this.physicianForm.controls.RBronchitisEmphysema.disable();
-      this.physicianForm.controls.RHeartMurmur.disable();
-      this.physicianForm.controls.RHxHeartMedication.disable();
-      this.physicianForm.controls.RSkippingHeartBeats.disable();
-      this.physicianForm.controls.RComments.disable();
-
-      this.physicianForm.controls.GNoReportedAbnorm.disable();
-      this.physicianForm.controls.GChangeAppetiteWeight.disable();
-      this.physicianForm.controls.GProblemsSwallowing.disable();
-      this.physicianForm.controls.GNausea.disable();
-      this.physicianForm.controls.GHeartburn.disable();
-      this.physicianForm.controls.GVomiting.disable();
-      this.physicianForm.controls.GVomitingBlood.disable();
-      this.physicianForm.controls.GConstipation.disable();
-      this.physicianForm.controls.GDiarrhea.disable();
-      this.physicianForm.controls.GChangeBowelHabits.disable();
-      this.physicianForm.controls.GAbdominalPain.disable();
-      this.physicianForm.controls.GExcessiveBelching.disable();
-      this.physicianForm.controls.GExcessiveFlatus.disable();
-      this.physicianForm.controls.GFoodIntolerance.disable();
-      this.physicianForm.controls.GRectalBleedingHemo.disable();
-      this.physicianForm.controls.GYellowColourSkin.disable();
-      this.physicianForm.controls.GToiletTrained.disable();
-      this.physicianForm.controls.GTfreq.disable();
-      this.physicianForm.controls.GUfreq.disable();
-      this.physicianForm.controls.GComments.disable();
-
-      this.physicianForm.controls.UNoReportedAbnorm.disable();
-      this.physicianForm.controls.UDifficultyUrination.disable();
-      this.physicianForm.controls.UPainBurningUrination.disable();
-      this.physicianForm.controls.UFrequentUrinationNight.disable();
-      this.physicianForm.controls.UUrgentNeedUrinate.disable();
-      this.physicianForm.controls.UIncontinenceUrine.disable();
-      this.physicianForm.controls.UDribbling.disable();
-      this.physicianForm.controls.UDecreasedUrineStream.disable();
-      this.physicianForm.controls.UBloodUrine.disable();
-      this.physicianForm.controls.UUtiStonesProstate.disable();
-      this.physicianForm.controls.UComments.disable();
-
-      this.physicianForm.controls.PNoReportedAbnorm.disable();
-      this.physicianForm.controls.PLegCramps.disable();
-      this.physicianForm.controls.PVaricoseVeins.disable();
-      this.physicianForm.controls.PClotsVeins.disable();
-      this.physicianForm.controls.PComments.disable();
-
-      this.physicianForm.controls.MNoReportedAbnorm.disable();
-      this.physicianForm.controls.MPain.disable();
-      this.physicianForm.controls.MSwelling.disable();
-      this.physicianForm.controls.MStiffness.disable();
-      this.physicianForm.controls.MDecreasedJointMotion.disable();
-      this.physicianForm.controls.MBrokenBone.disable();
-      this.physicianForm.controls.MSeriousSprains.disable();
-      this.physicianForm.controls.MArthritis.disable();
-      this.physicianForm.controls.MGout.disable();
-      this.physicianForm.controls.MComments.disable();
-
-      this.physicianForm.controls.NuNoReportedAbnorm.disable();
-      this.physicianForm.controls.NuHeadaches.disable();
-      this.physicianForm.controls.NuSeizures.disable();
-      this.physicianForm.controls.NuParalysis.disable();
-      this.physicianForm.controls.NuWeakness.disable();
-      this.physicianForm.controls.NuLossConsciousness.disable();
-      this.physicianForm.controls.NuLossMuscleSize.disable();
-      this.physicianForm.controls.NuMuscleSpasm.disable();
-      this.physicianForm.controls.NuTremor.disable();
-      this.physicianForm.controls.NuInvoluntaryMovement.disable();
-      this.physicianForm.controls.NuIncoordination.disable();
-      this.physicianForm.controls.NuNumbness.disable();
-      this.physicianForm.controls.NuFeelingPinsNeedles.disable();
-      this.physicianForm.controls.NuComments.disable();
-
-      this.physicianForm.controls.HeNoReportedAbnorm.disable();
-      this.physicianForm.controls.HeAnemia.disable();
-      this.physicianForm.controls.HeEasyBruisingBleeding.disable();
-      this.physicianForm.controls.HeComments.disable();
-
-      this.physicianForm.controls.EdNoReportedAbnorm.disable();
-      this.physicianForm.controls.EdAbnormalGrowth.disable();
-      this.physicianForm.controls.EdIncreasedAppetite.disable();
-      this.physicianForm.controls.EdIncreasedThirst.disable();
-      this.physicianForm.controls.EdIncreaseUrineProduction.disable();
-      this.physicianForm.controls.EdThyroidTrouble.disable();
-      this.physicianForm.controls.EdHeatColdIntolerance.disable();
-      this.physicianForm.controls.EdExcessingSweating.disable();
-      this.physicianForm.controls.EdDiabetes.disable();
-      this.physicianForm.controls.EdComments.disable();
-
-      this.physicianForm.controls.PsNoReportedAbnorm.disable();
-      this.physicianForm.controls.PsTensionAnxiety.disable();
-      this.physicianForm.controls.PsDepressionSuicide.disable();
-      this.physicianForm.controls.PsMemoryProblems.disable();
-      this.physicianForm.controls.PsPastTreatmentPsychiatri.disable();
-      this.physicianForm.controls.PsSleepProblems.disable();
-      this.physicianForm.controls.PsUnusualProblems.disable();
-      this.physicianForm.controls.PsChangeMood.disable();
-      this.physicianForm.controls.PsComments.disable();
-    } else {
-      this.physicianForm.controls.SNoReportedAbnorm.enable();
-      this.physicianForm.controls.SRashes.enable();
-      this.physicianForm.controls.STypeRash.enable();
-      this.physicianForm.controls.SItching.enable();
-      this.physicianForm.controls.SChangeHairNails.enable();
-      this.physicianForm.controls.SComments.enable();
-
-      this.physicianForm.controls.HNoReportedAbnorm.enable();
-      this.physicianForm.controls.HHeadInjury.enable();
-      this.physicianForm.controls.HHeadCircumference.enable();
-      this.physicianForm.controls.HComments.enable();
-
-      this.physicianForm.controls.ENoReportedAbnorm.enable();
-      this.physicianForm.controls.EGlassesContacts.enable();
-      this.physicianForm.controls.EChangeVision.enable();
-      this.physicianForm.controls.EEyePain.enable();
-      this.physicianForm.controls.EDoubleVision.enable();
-      this.physicianForm.controls.EFlashingLights.enable();
-      this.physicianForm.controls.EGlaucomaCataracts.enable();
-      this.physicianForm.controls.ELastEyeExam.enable();
-      this.physicianForm.controls.EComments.enable();
-
-      this.physicianForm.controls.EneNoReportedAbnorma.enable();
-      this.physicianForm.controls.EneChangeHearing.enable();
-      this.physicianForm.controls.EneTympanicMembrane.enable();
-      this.physicianForm.controls.EneEarDischarge.enable();
-      this.physicianForm.controls.EneRinging.enable();
-      this.physicianForm.controls.EneDizziness.enable();
-
-      this.physicianForm.controls.EnnNoReportedAbnorm.enable();
-      this.physicianForm.controls.EnnNoseBleeds.enable();
-      this.physicianForm.controls.EnnNasalStuffiness.enable();
-      this.physicianForm.controls.EnnNasalFlaring.enable();
-      this.physicianForm.controls.EnnFrequentColds.enable();
-
-      this.physicianForm.controls.EnmBleedingGums.enable();
-      this.physicianForm.controls.EnmSoreTongue.enable();
-      this.physicianForm.controls.EnmLipColor.enable();
-      this.physicianForm.controls.EnmComments.enable();
-
-      this.physicianForm.controls.NNoReportedAbnorm.enable();
-      this.physicianForm.controls.NLumps.enable();
-      this.physicianForm.controls.NSwollenGlands.enable();
-      this.physicianForm.controls.NGoiter.enable();
-      this.physicianForm.controls.NStiffness.enable();
-      this.physicianForm.controls.NComments.enable();
-
-      this.physicianForm.controls.BNoReportedAbnorm.enable();
-      this.physicianForm.controls.BLumps.enable();
-      this.physicianForm.controls.BPain.enable();
-      this.physicianForm.controls.BNippleDischarge.enable();
-      this.physicianForm.controls.BSkinAbnormalities.enable();
-      this.physicianForm.controls.BComments.enable();
-
-      this.physicianForm.controls.RNoReportedAbnorm.enable();
-      this.physicianForm.controls.RShortnessBreath.enable();
-      this.physicianForm.controls.RCough.enable();
-      this.physicianForm.controls.RWheezing.enable();
-      this.physicianForm.controls.RCoughingBlood.enable();
-      this.physicianForm.controls.RProductionPhlegm.enable();
-      this.physicianForm.controls.RChestPain.enable();
-      this.physicianForm.controls.RFever.enable();
-      this.physicianForm.controls.RNightSweats.enable();
-      this.physicianForm.controls.RBlueFingersToes.enable();
-      this.physicianForm.controls.RSwellingHandsFeet.enable();
-      this.physicianForm.controls.RBronchitisEmphysema.enable();
-      this.physicianForm.controls.RHeartMurmur.enable();
-      this.physicianForm.controls.RHxHeartMedication.enable();
-      this.physicianForm.controls.RSkippingHeartBeats.enable();
-      this.physicianForm.controls.RComments.enable();
-
-      this.physicianForm.controls.GNoReportedAbnorm.enable();
-      this.physicianForm.controls.GChangeAppetiteWeight.enable();
-      this.physicianForm.controls.GProblemsSwallowing.enable();
-      this.physicianForm.controls.GNausea.enable();
-      this.physicianForm.controls.GHeartburn.enable();
-      this.physicianForm.controls.GVomiting.enable();
-      this.physicianForm.controls.GVomitingBlood.enable();
-      this.physicianForm.controls.GConstipation.enable();
-      this.physicianForm.controls.GDiarrhea.enable();
-      this.physicianForm.controls.GChangeBowelHabits.enable();
-      this.physicianForm.controls.GAbdominalPain.enable();
-      this.physicianForm.controls.GExcessiveBelching.enable();
-      this.physicianForm.controls.GExcessiveFlatus.enable();
-      this.physicianForm.controls.GFoodIntolerance.enable();
-      this.physicianForm.controls.GRectalBleedingHemo.enable();
-      this.physicianForm.controls.GYellowColourSkin.enable();
-      this.physicianForm.controls.GToiletTrained.enable();
-      this.physicianForm.controls.GTfreq.enable();
-      this.physicianForm.controls.GUfreq.enable();
-      this.physicianForm.controls.GComments.enable();
-
-      this.physicianForm.controls.UNoReportedAbnorm.enable();
-      this.physicianForm.controls.UDifficultyUrination.enable();
-      this.physicianForm.controls.UPainBurningUrination.enable();
-      this.physicianForm.controls.UFrequentUrinationNight.enable();
-      this.physicianForm.controls.UUrgentNeedUrinate.enable();
-      this.physicianForm.controls.UIncontinenceUrine.enable();
-      this.physicianForm.controls.UDribbling.enable();
-      this.physicianForm.controls.UDecreasedUrineStream.enable();
-      this.physicianForm.controls.UBloodUrine.enable();
-      this.physicianForm.controls.UUtiStonesProstate.enable();
-      this.physicianForm.controls.UComments.enable();
-
-      this.physicianForm.controls.PNoReportedAbnorm.enable();
-      this.physicianForm.controls.PLegCramps.enable();
-      this.physicianForm.controls.PVaricoseVeins.enable();
-      this.physicianForm.controls.PClotsVeins.enable();
-      this.physicianForm.controls.PComments.enable();
-
-      this.physicianForm.controls.MNoReportedAbnorm.enable();
-      this.physicianForm.controls.MPain.enable();
-      this.physicianForm.controls.MSwelling.enable();
-      this.physicianForm.controls.MStiffness.enable();
-      this.physicianForm.controls.MDecreasedJointMotion.enable();
-      this.physicianForm.controls.MBrokenBone.enable();
-      this.physicianForm.controls.MSeriousSprains.enable();
-      this.physicianForm.controls.MArthritis.enable();
-      this.physicianForm.controls.MGout.enable();
-      this.physicianForm.controls.MComments.enable();
-
-      this.physicianForm.controls.NuNoReportedAbnorm.enable();
-      this.physicianForm.controls.NuHeadaches.enable();
-      this.physicianForm.controls.NuSeizures.enable();
-      this.physicianForm.controls.NuParalysis.enable();
-      this.physicianForm.controls.NuWeakness.enable();
-      this.physicianForm.controls.NuLossConsciousness.enable();
-      this.physicianForm.controls.NuLossMuscleSize.enable();
-      this.physicianForm.controls.NuMuscleSpasm.enable();
-      this.physicianForm.controls.NuTremor.enable();
-      this.physicianForm.controls.NuInvoluntaryMovement.enable();
-      this.physicianForm.controls.NuIncoordination.enable();
-      this.physicianForm.controls.NuNumbness.enable();
-      this.physicianForm.controls.NuFeelingPinsNeedles.enable();
-      this.physicianForm.controls.NuComments.enable();
-
-      this.physicianForm.controls.HeNoReportedAbnorm.enable();
-      this.physicianForm.controls.HeAnemia.enable();
-      this.physicianForm.controls.HeEasyBruisingBleeding.enable();
-      this.physicianForm.controls.HeComments.enable();
-
-      this.physicianForm.controls.EdNoReportedAbnorm.enable();
-      this.physicianForm.controls.EdAbnormalGrowth.enable();
-      this.physicianForm.controls.EdIncreasedAppetite.enable();
-      this.physicianForm.controls.EdIncreasedThirst.enable();
-      this.physicianForm.controls.EdIncreaseUrineProduction.enable();
-      this.physicianForm.controls.EdThyroidTrouble.enable();
-      this.physicianForm.controls.EdHeatColdIntolerance.enable();
-      this.physicianForm.controls.EdExcessingSweating.enable();
-      this.physicianForm.controls.EdDiabetes.enable();
-      this.physicianForm.controls.EdComments.enable();
-
-      this.physicianForm.controls.PsNoReportedAbnorm.enable();
-      this.physicianForm.controls.PsTensionAnxiety.enable();
-      this.physicianForm.controls.PsDepressionSuicide.enable();
-      this.physicianForm.controls.PsMemoryProblems.enable();
-      this.physicianForm.controls.PsPastTreatmentPsychiatri.enable();
-      this.physicianForm.controls.PsSleepProblems.enable();
-      this.physicianForm.controls.PsUnusualProblems.enable();
-      this.physicianForm.controls.PsChangeMood.enable();
-      this.physicianForm.controls.PsComments.enable();
-    }
+    allTextBox.forEach(field => {
+      const control = this.physicianForm.controls[field];
+      if (control) {
+        if (shouldDisable) {
+          control.setValue('');
+          control.disable();
+        } else {
+          control.enable();
+        }
+      }
+    })
   }
 
   resetChecbox() {
@@ -2418,39 +2117,39 @@ export class PhysicianFormComponent implements OnInit {
     this.physicianForm.controls.PsChangeMood.reset();
     this.physicianForm.controls.PsComments.reset();
   }
-  handleCheckboxDiagnosis(){
+  handleCheckboxDiagnosis() {
     if (this.physicianForm.controls.NaDiagnosis.value) {
       this.enableCreateDiagnosis = true;
-    }else{
+    } else {
       this.enableCreateDiagnosis = false;
     }
   }
-  handleCheckboxVitals(){
+  handleCheckboxVitals() {
     if (this.physicianForm.controls.NaVitalSigns.value) {
       this.enableCreateVitals = true;
-    }else{
+    } else {
       this.enableCreateVitals = false;
     }
   }
-  handleCheckboxPastMed(){
+  handleCheckboxPastMed() {
     if (this.physicianForm.controls.NoMedicalHistory.value) {
       this.enableCreatePMed = true;
-    }else{
+    } else {
       this.enableCreatePMed = false;
     }
   }
-  handleCheckboxPastSurg(){
+  handleCheckboxPastSurg() {
     if (this.physicianForm.controls.NoSurgeryHistory.value) {
       this.enableCreatePSurg = true;
-    }else{
+    } else {
       this.enableCreatePSurg = false;
     }
   }
-  switchTabsForMedicalDecision(tab){
+  switchTabsForMedicalDecision(tab) {
     this.Problem = false;
     this.Initial = false;
     this.Risk = false;
-    this[tab]=true;
+    this[tab] = true;
   }
 
   loadMedicationHistoryData() {
@@ -2459,42 +2158,42 @@ export class PhysicianFormComponent implements OnInit {
     const profileOrderHistory: Subscription = this.ePrescriptionService.loadData(`e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
         //this.configurationData = resp.body.d.results;
-        this.drugArray = resp.body.d.results ;
+        this.drugArray = resp.body.d.results;
         // this.medicationImportDrugArray=[];
 
       }
-   //   this.filterEvents();
+      //   this.filterEvents();
     }, () => { profileOrderHistory.unsubscribe(); });
   }
 
   medicationImport() {
     // this.medicationImportDrugArray =  this.drugArray ;
     // this.drugArray.forEach(element => {
-      this.selectedMedicationOrder.forEach(element => {
+    this.selectedMedicationOrder.forEach(element => {
       this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
-       "Dockey": "",
-       "OrderType" : element.MotypId == '30' ? 'Planned Administration':'Discharge',
-      "Description" : element.Descrlt+element.Quan+element.Quanunit+ element.Routedescr+element.N1id,
-      "HomeMedication" : false,
-      "PatientOwnMed" : false,
-      "Dose" : element.Quan+element.Quanunit,
-      "Validity" :  `${new DatePipe('en-US').transform(
-        this.getDate(element.StartD),
-        'dd.MM.yyyy'
-      )}` +'-'+ `${new DatePipe('en-US').transform(
-        this.getDate(element.EndD),
-        'dd.MM.yyyy'
-      )}`,
-      "Route" : element.Routedescr,
-      "Amount" : "",
-      "Rate" : "",
-      "Therapy" : "00000",
-      "Id" : "",
-      "OrderingPhysician" : element.EmpRespNm,
-      "Cycle" : element.N1id
-    });
+        "Dockey": "",
+        "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        "Description": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
+        "HomeMedication": false,
+        "PatientOwnMed": false,
+        "Dose": element.Quan + element.Quanunit,
+        "Validity": `${new DatePipe('en-US').transform(
+          this.getDate(element.StartD),
+          'dd.MM.yyyy'
+        )}` + '-' + `${new DatePipe('en-US').transform(
+          this.getDate(element.EndD),
+          'dd.MM.yyyy'
+        )}`,
+        "Route": element.Routedescr,
+        "Amount": "",
+        "Rate": "",
+        "Therapy": "00000",
+        "Id": "",
+        "OrderingPhysician": element.EmpRespNm,
+        "Cycle": element.N1id
       });
-      this.modalRefUpdateName.hide();
+    });
+    this.modalRefUpdateName.hide();
   }
 
   collectMedicationIData(event, item) {
@@ -2517,7 +2216,7 @@ export class PhysicianFormComponent implements OnInit {
     }
   }
 
-  isChecked(item: any):boolean {
+  isChecked(item: any): boolean {
     return this.selectedMedicationOrder.some(x => x.Meordid == item.Meordid);
   }
   handleCheckboxFamilyHist() {
