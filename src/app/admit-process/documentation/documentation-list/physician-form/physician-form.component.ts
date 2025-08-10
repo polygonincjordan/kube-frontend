@@ -1511,14 +1511,14 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset();      // Or setValue(false) if it's a checkbox
+          control.setValue(false);      // Or setValue(false) if it's a checkbox
           control.disable();
         } else {
           control.enable();
         }
       }
     });
-    this.physicianForm.get('HHeadCircumference').setValue("");
+    this.physicianForm.get('HHeadCircumference').setValue("0.00");
 
   }
 
@@ -1537,7 +1537,7 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset();      // or control.setValue(false) for checkboxes
+          control.setValue(false);      // or control.setValue(false) for checkboxes
           control.disable();
         } else {
           control.enable();
@@ -1558,7 +1558,7 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset(); // Or setValue(false) for checkboxes
+          control.setValue(false); // Or setValue(false) for checkboxes
           control.disable();
         } else {
           control.enable();
@@ -1578,7 +1578,7 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset(); // or control.setValue(false) for checkboxes
+          control.setValue(false); // or control.setValue(false) for checkboxes
           control.disable();
         } else {
           control.enable();
@@ -1589,13 +1589,15 @@ export class PhysicianFormComponent implements OnInit {
   handleCheckboxEnmCannotBeAccess(assess) {
     const fields = [
       'EnmBleedingGums',
-      'EnmSoreTongue'];
+      'EnmSoreTongue',
+      'EnmNoReportedAbnorm'
+    ];
 
     fields.forEach(field => {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset();  // Or use control.setValue(false) for checkboxes
+          control.setValue(false);  // Or use control.setValue(false) for checkboxes
           control.disable();
         } else {
           control.enable();
@@ -1616,7 +1618,7 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset();  // Use control.setValue(false) for checkboxes if needed
+          control.setValue(false);  // Use control.setValue(false) for checkboxes if needed
           control.disable();
         } else {
           control.enable();
@@ -1637,7 +1639,7 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset(); // Or control.setValue(false) if checkbox
+          control.setValue(false); // Or control.setValue(false) if checkbox
           control.disable();
         } else {
           control.enable();
@@ -1667,7 +1669,7 @@ export class PhysicianFormComponent implements OnInit {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset();
+          control.setValue(false);
           control.disable();
         } else {
           control.enable();
@@ -1692,14 +1694,15 @@ export class PhysicianFormComponent implements OnInit {
       'GFoodIntolerance',
       'GRectalBleedingHemo',
       'GYellowColourSkin',
-      'GToiletTrained'
+      'GToiletTrained',
+      'GUsesDiaper'
     ];
 
     fields.forEach(field => {
       const control = this.physicianForm.controls[field];
       if (control) {
         if (assess.checked) {
-          control.reset();
+          control.setValue(false);
           control.disable();
         } else {
           control.enable();
@@ -1900,7 +1903,7 @@ export class PhysicianFormComponent implements OnInit {
       'GNoReportedAbnorm', 'GChangeAppetiteWeight', 'GProblemsSwallowing', 'GNausea', 'GHeartburn',
       'GVomiting', 'GVomitingBlood', 'GConstipation', 'GDiarrhea', 'GChangeBowelHabits',
       'GAbdominalPain', 'GExcessiveBelching', 'GExcessiveFlatus', 'GFoodIntolerance',
-      'GRectalBleedingHemo', 'GYellowColourSkin', 'GToiletTrained',
+      'GRectalBleedingHemo', 'GYellowColourSkin', 'GToiletTrained','GUsesDiaper',
       // Urinary
       'UNoReportedAbnorm', 'UDifficultyUrination', 'UPainBurningUrination', 'UFrequentUrinationNight',
       'UUrgentNeedUrinate', 'UIncontinenceUrine', 'UDribbling', 'UDecreasedUrineStream', 'UBloodUrine',
