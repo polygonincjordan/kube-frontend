@@ -990,15 +990,28 @@ export class PhysicianFormComponent implements OnInit {
       // });
     });
     console.log(this.toFamilyHistory)
-    // this.duplicates = [];
-    // this.duplicates = this.findDuplicatesPastSurgical();
-    // this.toFamilyHistory = this.toFamilyHistory.filter(
-    //   (value, index, self) =>
-    //     index === self.findIndex((t) => t.SurgeryName === value.SurgeryName)
-    // );
-    // if (this.duplicates.length > 0) {
-    //   this.errorMsgForDuplicatesPastSurgical();
-    // }
+    this.duplicates = [];
+    this.duplicates = this.findDuplicatesPastFamliye();
+    this.toFamilyHistory = this.toFamilyHistory.filter(
+      (value, index, self) =>
+        index === self.findIndex((t) => t.Problem === value.Problem)
+    );
+    if (this.duplicates.length > 0) {
+      this.errorMsgForDuplicatesPastFamliye();
+    }
+  }
+
+  findDuplicatesPastFamliye() {
+    let tempArr = [];
+    const lookup = this.toFamilyHistory.reduce((a, e) => {
+      a[e.Problem] = ++a[e.Problem] || 0;
+      return a;
+    }, {});
+    tempArr = this.toFamilyHistory.filter((e) => lookup[e.Problem]);
+    return tempArr.filter(
+      (value, index, self) =>
+        index === self.findIndex((t) => t.Problem === value.Problem)
+    );
   }
 
   findDuplicatesPastSurgical() {
@@ -1014,6 +1027,19 @@ export class PhysicianFormComponent implements OnInit {
     );
   }
 
+  errorMsgForDuplicatesPastFamliye() {
+    let codeArr = [];
+    this.duplicates.forEach((element) => {
+      codeArr.push(element.Problem);
+    });
+
+    Swal.fire({
+      text: `${codeArr.toString()} is/are already Imported `,
+      icon: 'warning',
+      confirmButtonText: 'Ok',
+      customClass: 'myalertpopup',
+    });
+  }
   errorMsgForDuplicatesPastSurgical() {
     let codeArr = [];
     this.duplicates.forEach((element) => {
@@ -1590,7 +1616,6 @@ export class PhysicianFormComponent implements OnInit {
     const fields = [
       'EnmBleedingGums',
       'EnmSoreTongue',
-      'EnmNoReportedAbnorm'
     ];
 
     fields.forEach(field => {
@@ -1877,7 +1902,7 @@ export class PhysicianFormComponent implements OnInit {
 
   handleCheckboxCannotBeAccess(assess) {
     let allTextBox = [
-      'SComments', 'STypeRash', 'HComments', 'HHeadCircumference', 'EComments', 'EnmLipColor', 'EnmComments', 'NComments', 'BComments', 'RComments', 'GTfreq', 'GUfreq', 'GComments',
+      'SComments', 'STypeRash', 'HComments', 'EComments', 'EnmLipColor', 'EnmComments', 'NComments', 'BComments', 'RComments', 'GTfreq', 'GUfreq', 'GComments',
       'UComments', 'PComments', 'MComments', 'NuComments', 'HeComments', 'EdComments', 'PsComments'
     ]
     const allFields = [

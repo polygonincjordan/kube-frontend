@@ -8,7 +8,15 @@
         </div>
         <div style="display: flex;
       justify-content: end;align-items: center;flex:1">
-      <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{storageService.patientData.name}}</span></li><li  class="allergy-header-item">MRN: {{storageService.patnr}}</li>
+      <ul class="allergy-header-ul d-flex"><li class="allergy-header-item" style="margin-left:10%">Patient Name : <span >{{ storageService.patientData?.name }}
+  <ng-container *ngIf="storageService.patientData?.age">
+    (
+    {{ storageService.patientData?.gender?.includes('Male') ? 'M' : 
+      storageService.patientData?.gender?.includes('Female') ? 'F' : '' }},
+    {{ storageService.patientData.age }}
+      )
+    
+  </ng-container></span></li><li  class="allergy-header-item">MRN: {{storageService.patnr}}</li>
         <li  class="allergy-header-item">Admission date: {{storageService.patientData.periodStart | date : "dd.MM.y"}}</li>
       <li  class="close-icon allergy-header-item" style="border: none;
         padding: 0;

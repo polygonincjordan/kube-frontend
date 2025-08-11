@@ -1958,10 +1958,26 @@ export class PatientDocumentationComponent implements OnInit {
     } else {
       this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
     }
-    this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
+   this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => {
+    let documents = this.patientProfileDocumet[key];
+
+    // Sort documents in this date group by CreatedAt (latest first)
+    documents.sort((a, b) => {
+      const timeToSeconds = (timeStr: string) => {
+        if (!timeStr) return 0;
+        const match = timeStr.match(/PT(\d+)H(\d+)M(\d+)S/);
+        if (!match) return 0;
+        const [, h, m, s] = match.map(Number);
+        return h * 3600 + m * 60 + s;
+      };
+      return timeToSeconds(b.CreatedAt) - timeToSeconds(a.CreatedAt);
+    });
+
+    return {
       date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
-      documents: this.patientProfileDocumet[key]
-    }));
+      documents
+    };
+  });
   }
 
   dateFormate(dt) {
@@ -7507,23 +7523,43 @@ export class PatientDocumentationComponent implements OnInit {
 
 
   sort() {
-    this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
-    this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => ({
+  // Group by Dodat
+  this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
+
+  // Map groups into array format and sort inner documents by CreatedAt
+  this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => {
+    let documents = this.patientProfileDocumet[key];
+
+    // Sort the documents within each date group by CreatedAt (latest first)
+    documents.sort((a, b) => {
+      const timeToSeconds = (timeStr: string) => {
+        if (!timeStr) return 0;
+        const match = timeStr.match(/PT(\d+)H(\d+)M(\d+)S/);
+        if (!match) return 0;
+        const [, h, m, s] = match.map(Number);
+        return h * 3600 + m * 60 + s;
+      };
+      return timeToSeconds(b.CreatedAt) - timeToSeconds(a.CreatedAt);
+    });
+
+    return {
       date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
-      documents: this.patientProfileDocumet[key]
-    }));
-    // Sort the array based on the date property
-    if (this.asc) {
-      this.asc = false;
-      this.desc = true;
-      this.sortedDocuments.sort((a, b) => b.date - a.date);
-    } else {
-      this.asc = true;
-      this.desc = false;
-      this.sortedDocuments.sort((a, b) => a.date - b.date);
-    }
-    // this.documentTypeFilterValue.sort((a, b) => 0 - (a > b ? -1 : 1));
+      documents
+    };
+  });
+
+  // Sort the date groups ascending or descending
+  if (this.asc) {
+    this.asc = false;
+    this.desc = true;
+    this.sortedDocuments.sort((a, b) => b.date.getTime() - a.date.getTime());
+  } else {
+    this.asc = true;
+    this.desc = false;
+    this.sortedDocuments.sort((a, b) => a.date.getTime() - b.date.getTime());
   }
+}
+
 
   jsonString() {
     return JSON.stringify(this.patientProfileDocumet);
