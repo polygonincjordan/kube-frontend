@@ -1,5 +1,5 @@
 <ng-template #familyHistoryKardexModal>
-  <div class="modal-body" style="padding: 0 !important;">
+  <div class="modal-body" style="padding: 0 !important;" [ngClass]="{'disabled-form p-3' :isReadOnly}">
     <div class="allergy-header">
       <div style="
           font-size: 23px;

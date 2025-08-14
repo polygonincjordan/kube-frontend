@@ -461,3 +461,9 @@ h4.top-head-h4 {
 :host ::ng-deep .ng-select .ng-placeholder {
   font-size: 12px !important;
 }
+.close-html {
+  position: absolute;
+  right: 12px;
+  z-index: 999;
+  top: 12px;
+}

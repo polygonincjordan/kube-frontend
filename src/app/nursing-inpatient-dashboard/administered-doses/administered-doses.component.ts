@@ -206,11 +206,11 @@ export class AdministeredDosesComponent implements OnInit{
   }
 
   filterAdministeredDosesList(event:any){
-    const { Physician, wardNo, patientStatus } = event;
+    const { Physician, wardNo, Rooms } = event;
     this.missedMedPatientList = this.missedMedPatientListClone.filter((item) => {
       const matchesPhysician = Physician ? item.AttendingDoctorName.toLowerCase().includes(Physician.toLowerCase()) : true;
-      const matchesWardNo = wardNo ? item.RoomidText.toLowerCase().includes(wardNo.toLowerCase()) : true;
-      const matchesPatientStatus = patientStatus ? item.VisitStatus.toLowerCase().includes(patientStatus.toLowerCase()) : true;
+      const matchesWardNo = wardNo ? item.Floor.toLowerCase().includes(wardNo.toLowerCase()) : true;
+      const matchesPatientStatus = Rooms ? item.RoomidText.toLowerCase().includes(Rooms.toLowerCase()) : true;
 
       return matchesPhysician && matchesWardNo && matchesPatientStatus;
     });

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
 import { GlasgowComaScaleType } from '@services/e-kardex/interfaces/documents.interface';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -19,6 +19,7 @@ export class GlosGowCommaScalePopupComponent implements OnInit {
   @ViewChild('scalesGlosgowModal', { static: true }) scalesGlosgowModal: TemplateRef<any>;
   @Output() scaleStoreValue = new EventEmitter<any>();
   modalRef: BsModalRef;
+  @Input() isReadOnly: boolean = false;
 
   public eyeOpeningScore: any = 'C';
   public moterScore: any = '1';

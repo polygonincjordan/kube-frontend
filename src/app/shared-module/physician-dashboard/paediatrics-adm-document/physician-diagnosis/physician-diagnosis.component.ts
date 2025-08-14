@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
@@ -20,6 +20,8 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 export class PhysicianDiagnosisComponent implements OnInit {
   @ViewChild('diagnosisKardexModal', { static: true }) diagnosisKardexModal: TemplateRef<any>;
   @Output() importEvent = new EventEmitter();
+  @Input() isReadOnly: boolean = false;
+  
   diagnosisForm: FormGroup;
   diagnosisFormList: FormArray;
   checkCounterPatient: any;

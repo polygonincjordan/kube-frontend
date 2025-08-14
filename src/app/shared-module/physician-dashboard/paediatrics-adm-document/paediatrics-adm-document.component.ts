@@ -36,7 +36,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   @Output() realodEducationList = new EventEmitter();
   public nursingAdmissionForm: FormGroup;
   @Input() soapFormEvent: string;
-  
+  @Input() isReadOnly: any = false;
+
   toAllergyArr: any = [];
   @ViewChild('createAllergyId') createAllergyId: PhysicianAllergyComponent;
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
@@ -84,6 +85,22 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
 
     { value: '07', label: 'Other', controlname: 'PsOther' },
+  ];
+
+  selectedTabName: string = 'med';
+  surgeryMedicalTabList = [
+    {
+      label: 'Past Medical Condition',
+      value: 'med'
+    },
+    {
+      label: 'Past Surgical History',
+      value: 'surg'
+    },
+    {
+      label: 'Family History',
+      value: 'family'
+    },
   ];
 
   public currentOccupationList = [
@@ -281,6 +298,9 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if(this.isReadOnly){
+      this.getPediatricAdmAssesDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey)
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -314,7 +334,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
 
   initForm() {
-    if(this.storageService.patientData.allergyInfo == 'The patient has no known allergies' || this.storageService.patientData.allergyInfo == 'The patient has no allergy assessment') {
+    if (this.storageService.patientData.allergyInfo == 'The patient has no known allergies' || this.storageService.patientData.allergyInfo == 'The patient has no allergy assessment') {
       this.allergyInformation = 'No know allergies';
     } else if (this.storageService.patientData.allergyInfo == 'The patient has no possible allergy assessment') {
       this.allergyInformation = 'No possible allergy assessment';
@@ -569,7 +589,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       SsPatient: false,
       SsSocialWorker: false,
       SsSuspected: false,
-      Phy:'X',
+      Phy: 'X',
       Timee: [this.convertTimeFormat(JSON.parse(localStorage.getItem('checkindata'))?.AdmissionTime)],
 
       AdmittedWard: '', // AdmittedWard (not binded) >>> ? keep it unbind
@@ -769,7 +789,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
             }
           }
 
-           if (TOINFECTIONS.results && TOINFECTIONS?.results?.length) {
+          if (TOINFECTIONS.results && TOINFECTIONS?.results?.length) {
             this.patchFormArray('TOINFECTIONS', TOINFECTIONS, this.createTOINFECTIONSGroup.bind(this));
             for (let index = TOINFECTIONS?.results?.length; index < 3; index++) {
               this.addItemRowforTOINFECTIONS();
@@ -917,6 +937,9 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       if (this.actionTypeData.type === ActionType.Update$) {
         payload.d.Dockey = this.actionTypeData.value.docKey;
       }
+      if(this.admissionService.isClonePaediatricsAdmissionForm) {
+        payload.d.Dockey = this.admissionService.selectedCurrentDocDetails.Dockey
+      }
 
       payload.d.TOALLERGY = this.toAllergyArr && this.toAllergyArr?.length ? this.toAllergyArr : [];
       payload.d.TOALLERGY.forEach(item => {
@@ -970,17 +993,21 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
 
 
-       payload.d.TOPHYEXAM = this.toPHYEXAMmportedData && this.toPHYEXAMmportedData.length ? this.toPHYEXAMmportedData : [];
-       if(payload.d.TOPHYEXAM){
-         payload.d.TOPHYEXAM.forEach(item => {
-           item.Dockey = this.docKey;
-         });
-       }
+      payload.d.TOPHYEXAM = this.toPHYEXAMmportedData && this.toPHYEXAMmportedData.length ? this.toPHYEXAMmportedData : [];
+      if (payload.d.TOPHYEXAM) {
+        payload.d.TOPHYEXAM.forEach(item => {
+          item.Dockey = this.docKey;
+        });
+      }
 
       delete payload.d.TODIAGNOSES;
       delete payload.d.TOFAMILYHISTORY;
       delete payload.d.TOPASTMEDICAL;
       delete payload.d.TOPASTSURGICAL;
+      // payload.d['TOPASTMEDICAL'] = this.toPastMedical;
+      // payload.d['TOPASTSURGICAL'] = this.toPastSurgical;
+      // payload.d['TOFAMILYHISTORY'] = this.toFamilyHistory;
+      // // payload.d['TOMEDICATION'] = this.medicationImportDrugArray;
       // payload.d.TODIAGNOSES = this.toDiagnosisArr && this.toDiagnosisArr.length ? this.toDiagnosisArr : [];
       // if (payload.d.TODIAGNOSES) {
       //   payload.d.TODIAGNOSES.forEach(item => {
@@ -999,16 +1026,16 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
 
       //Setting DocKey blank on create new version & release
-      if (status === '5') {
-        payload.d.Dockey = '';
-      }
+      // if (status === '5') {
+      //   payload.d.Dockey = '';
+      // }
       payload.d.Phy = 'X';
       this.subscription = this.emergencyService.CreatePediatricAdmAssesDoc(payload).subscribe({
         next: (data: any) => {
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.admissionService.clearSoapEvent.next(true);
-            this.realodEducationList.next(true);
+          this.admissionService.cancelAllForm();
+          this.admissionService.selectedCurrentDocDetails = '';
+          this.admissionService.clearSoapEvent.next(true);
+          this.realodEducationList.next(true);
           // Handle successful data retrieva
           // resolve(formValue); // Resolve the promise with formValue
         },
@@ -1018,10 +1045,10 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
           this.sharedService.waringSwallModel(`POST Error at Pediatrics Admission Assessment : ${err}`);
         },
         complete: () => {
-            this.admissionService.cancelAllForm();
-            this.admissionService.selectedCurrentDocDetails = '';
-            this.admissionService.clearSoapEvent.next(true);
-            this.realodEducationList.next(true);
+          this.admissionService.cancelAllForm();
+          this.admissionService.selectedCurrentDocDetails = '';
+          this.admissionService.clearSoapEvent.next(true);
+          this.realodEducationList.next(true);
           // Handle completion (optional), invoked when the observable completes
           resolve(true); // Resolve the promise with formValue
           if (status === '1') {
@@ -1037,8 +1064,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
   toPHYEXAMmportedData: any
 
-  physicianExamaminationArrayListData($event){
-     this.toPHYEXAMmportedData = $event
+  physicianExamaminationArrayListData($event) {
+    this.toPHYEXAMmportedData = $event
   }
 
   private convertDateFormat(dateInput) {
@@ -1158,7 +1185,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         Description: el.Allergen,
       });
     });
-    if(this.toAllergyArr.length) {
+    if (this.toAllergyArr.length) {
       this.allergyInformation = 'Allergy Exists';
     } else {
       this.allergyInformation = 'No know allergies';
@@ -1207,7 +1234,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
   public deleteFromAllergy(item, index) {
     this.toAllergyArr.splice(index, 1);
-    if(this.toAllergyArr.length) {
+    if (this.toAllergyArr.length) {
       this.allergyInformation = 'Allergy Exists';
     } else {
       this.allergyInformation = 'No know allergies';
@@ -1417,13 +1444,13 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     }
   }
 
-  // handleCheckboxPastMed() {
-  //   if (this.nursingAdmissionForm.controls.NoMedicalHistory.value) {
-  //     this.enableCreatePMed = true;
-  //   } else {
-  //     this.enableCreatePMed = false;
-  //   }
-  // }
+  handleCheckboxPastMed() {
+    if (this.nursingAdmissionForm.controls.NoMedicalHistory.value) {
+      this.enableCreatePMed = true;
+    } else {
+      this.enableCreatePMed = false;
+    }
+  }
 
   deleteFromPastMedicalTable(item, index) {
     this.toPastMedical.splice(index, 1);
@@ -1435,13 +1462,13 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     this.toFamilyHistory.splice(index, 1);
   }
 
-  // handleCheckboxPastSurg() {
-  //   if (this.nursingAdmissionForm.controls.NoSurgeryHistory.value) {
-  //     this.enableCreatePSurg = true;
-  //   } else {
-  //     this.enableCreatePSurg = false;
-  //   }
-  // }
+  handleCheckboxPastSurg() {
+    if (this.nursingAdmissionForm.controls.NoSurgeryHistory.value) {
+      this.enableCreatePSurg = true;
+    } else {
+      this.enableCreatePSurg = false;
+    }
+  }
 
   public importVitalsData(data) {
     data.forEach((el) => {
@@ -1557,6 +1584,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     });
   }
   switchTabsForMedical(tab) {
+    this.selectedTabName = tab;
     if (tab == 'med') {
       this.med = true;
       this.surg = false;

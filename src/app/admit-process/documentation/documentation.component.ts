@@ -447,7 +447,7 @@ export class DocumentationComponent implements OnInit {
 
        this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
         (result) => {
-          
+          this.sharedService.successSwallModel('Paediatrics Physician Admission Assessment Document Release Successfully')
           this.admissionService.isRealoadData.next(true);
         }
       );

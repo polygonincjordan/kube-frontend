@@ -650,7 +650,7 @@ export class LabResultsComponent implements OnInit{
     // Reset main list
     this.ERlistData = this.ERlistDataClone;
 
-    const hasFilter = event.Rooms || event.Physician || event.ItemStatus || event.CreatedBy;
+    const hasFilter = event.Rooms || event.Physician || event.ItemStatus || event.CreatedBy || event.FWard;
 
     if (!hasFilter) {
       this.sendErPatientCount.emit(this.ERlistData.length);
@@ -675,6 +675,11 @@ export class LabResultsComponent implements OnInit{
     if (event.ItemStatus?.length) {
       filteredData = filteredData.filter(item =>
         event.ItemStatus.includes(item.Posstatus?.trimStart())
+      );
+    }
+    if (event.FWard?.length) {
+      filteredData = filteredData.filter(item =>
+        event.FWard.includes(item.Floor?.trimStart())
       );
     }
 

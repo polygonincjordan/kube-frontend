@@ -12,6 +12,7 @@ export class PsychologicalEconomicComponent implements OnInit {
 selectedTabName: string = 'Psychological History';
   @Output() addTableRow = new EventEmitter<any>();
   @Input() nursingAdmissionForm: FormGroup;
+  @Input() isReadOnly: boolean = false;
 
   tabList = ['Psychological History', 'Economic History'];
 

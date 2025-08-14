@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DataShareService } from '@services/data-share.service';
 import { BradenScaleType } from '@services/e-kardex/interfaces/documents.interface';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./braden-scale.component.scss']
 })
 export class BradenScaleComponent implements OnInit, OnDestroy {
-
+  @Input() isReadOnly: boolean = false;
   @ViewChild('bradenScaleTemp', { static: true }) bradenScaleTemp: TemplateRef<any>;
   @Output() scaleStoreValue = new EventEmitter<any>();
 

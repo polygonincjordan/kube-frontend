@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 export class MorseFallScaleComponent implements OnInit {
   @ViewChild('morseFallScaleModal', { static: true }) morseFallScaleModal: TemplateRef<any>;
   @Output() scaleStoreValue = new EventEmitter<any>();
+  @Input() isReadOnly: boolean = false;
 
   MorsefallForm: FormGroup<any>;
   CurrentDateAndTime: Date = new Date();

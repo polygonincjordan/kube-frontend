@@ -21,6 +21,7 @@ import {
 export class PhysicalAssessmentSectionComponent implements OnInit {
   @Input() nursingAdmissionForm: FormGroup;
   selectedTabName: string = 'Skin';
+  @Input() isReadOnly: boolean = false;
 
   tabList = [
     'Skin',
