@@ -1,4 +1,4 @@
-<div class="end-container">
+<div class="end-container" [ngClass]="{'disabled-form p-3' :isReadOnly}">
   <form [formGroup]="nursingAdmissionForm">
     <label class="box-label">Admission Data</label>
     <div class="container-fluid">

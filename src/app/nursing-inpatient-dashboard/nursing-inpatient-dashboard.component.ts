@@ -66,8 +66,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   getCheckInData: any;
-  getCheckInStatusFilterData: any; 
-  getCaseTypeFilterData: any; 
+  getCheckInStatusFilterData: any;
+  getCaseTypeFilterData: any;
   getCheckInRoomidTextFilterData: any;
   getCheckInFinancialFilterData: any;
   getPerformanceUnitFilterData: any;
@@ -77,7 +77,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
-  
+
   getNoReleaseWardFilterData: any;
   getNoReleaseRoomFilterData: any;
 
@@ -208,13 +208,14 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       RoomidText: ['']
     });
     this.singleData = this.formBuilder.group({
-      fromDate:[new Date()]
+      fromDate: [new Date()]
     })
     this.AdministeredDosesform = this.formBuilder.group({
       Physician: [''],
       wardNo: [''],
       patientStatus: [''],
       Floor: [''],
+      Rooms: [''],
     });
     this.dropdownSettingsForSpecialty = {
       singleSelection: false,
@@ -433,7 +434,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   getConfigToolWardList: any;
   getConfigToolSpecialtyList: any;
   getWardDataFromApi: any = '';
@@ -452,7 +453,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
 
     this._dataServices.getConfigTools(jsonObj).subscribe(
       (_success: any) => {
-        if(_success.d.results.length) {
+        if (_success.d.results.length) {
           //_success = JSON.parse(_success._body);
           this.getConfigToolWardList = _success.d.results[0].Ward;
           let specialtyData = this.getSpecialtyList(_success.d.results[0].ConfigHeaderItem.results);
@@ -460,7 +461,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           // this.loadData(_success.d.results[0].Ward, specialtyData);
           // this.loadDataWithAttendPhyList();
           this.Variantid = _success.d.results[0].Variantid;
-  
+
           this.getWardDataFromApi = _success.d.results[0].Ward;
           if (_success.d.results != null && _success.d.results.length > 0) {
             this.arraySplit = _success.d.results[0].Ward.split(',');
@@ -472,7 +473,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
             });
             this.specialtyArraySplit = specialtyData;
             this.specialtySelectForConfig = [];
-  
+
             this.specialtyListConfig.filter((element) => {
               if (this.specialtyArraySplit.includes(element.Orgid)) {
                 this.specialtySelectForConfig.push(element);
@@ -627,11 +628,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           this.getConfigTools();
         }
       },
-      (_error: any) => {}
+      (_error: any) => { }
     );
   }
 
-  
+
   onItemSelect(event: any) {
 
   }
@@ -665,12 +666,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.ePrescriptionService.loadData(`e-prescription/clinicConfigSet?Username=${this.storageService.getUserProfile().UserName}`, false, false, false, false).subscribe((resp: any) => {
       if (resp.body && resp.body.d && resp.body.d) {
         this.clinicConfigDetail = resp.body.d.results
-        if(this.clinicConfigDetail.length) {
+        if (this.clinicConfigDetail.length) {
           localStorage.setItem('UserConfiguration', JSON.stringify(resp.body.d));
           const attendPhy = this.clinicConfigDetail[0]?.AttendPhy?.split(',')
-          console.log(attendPhy, this.assignUsersList , "this.assignUsersList");
-          this.selectedPhysicianConf =  this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
-          
+          console.log(attendPhy, this.assignUsersList, "this.assignUsersList");
+          this.selectedPhysicianConf = this.assignUsersList.filter(item => attendPhy.includes(item.Gpart))
+
           this.arraySplit = this.clinicConfigDetail[0]?.Ward?.split(',');
           this.wardSelectForConfig = [];
           this.getWards.filter((element) => {
@@ -678,8 +679,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
               this.wardSelectForConfig.push(element);
             }
           });
-        const specialityCode =this.clinicConfigDetail[0]?.SpecialityCode.split(',');
-        this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
+          const specialityCode = this.clinicConfigDetail[0]?.SpecialityCode.split(',');
+          this.selectedSpecialityConf = this.specialityList.filter(item => specialityCode.includes(item.Orgid))
         }
       }
     });
@@ -748,7 +749,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
             // this.Ordercount = _success.count;
           }
         },
-        (_error: any) => {}
+        (_error: any) => { }
       );
     });
   }
@@ -783,7 +784,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           this.Ordercount = _success.count;
         }
       },
-      (_error: any) => {}
+      (_error: any) => { }
     );
   }
 
@@ -812,8 +813,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       }, []);
 
       this.wardListWithout = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
-        if (!accumulator.includes(currentValue.Erusr)) {
-          accumulator.push(currentValue.Erusr);
+        if (!accumulator.includes(currentValue.Floor)) {
+          accumulator.push(currentValue.Floor);
         }
         return accumulator;
       }, []);
@@ -858,8 +859,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.Orgfakb), []
         );
 
-      } else if(this.isSurgeryWork) {
-        
+      } else if (this.isSurgeryWork) {
+
         this.getCheckInWardFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.Anpoe), []
         );
@@ -880,18 +881,18 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
           (acc: string[], cur) => pushIfValid(acc, cur?.ZzfinCat), []
         );
 
-      } else if(this.LDRView){
+      } else if (this.LDRView) {
         this.getCheckInStatusFilterData = [];
         this.attendingPhysicianList = [];
         this.getCheckInRoomidTextFilterData = [];
         this.getCheckInSpecialtyFilterData = [];
-        this.getCheckInFinancialFilterData  =[];
+        this.getCheckInFinancialFilterData = [];
 
         this.getCheckInStatusFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.Besstattext), []
         );
 
-         this.attendingPhysicianList = this.getCheckInData.reduce(
+        this.attendingPhysicianList = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.Behpersname), []
         );
 
@@ -973,6 +974,45 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       );
       this.phyWardList = this.labReceivedData.reduce(
         (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue.Floor)) {
+            accumulator.push(currentValue.Floor);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.filterBehpersonList = this.labReceivedData.reduce((accumulator: string[], currentValue) => {
+        if (!accumulator.includes(currentValue.Erusr)) {
+          accumulator.push(currentValue.Erusr);
+        }
+        return accumulator;
+      }, []);
+    }
+
+  }
+  receiveDataFromAdministeredChild(data?: string) {
+    if (data && data.length) {
+      this.labReceivedData = data;
+      this.phyOrderRoomsList = this.labReceivedData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue.RoomidText)) {
+            accumulator.push(currentValue.RoomidText);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.phyWardList = this.labReceivedData.reduce(
+        (accumulator: string[], currentValue) => {
+          if (!accumulator.includes(currentValue.Floor)) {
+            accumulator.push(currentValue.Floor);
+          }
+          return accumulator;
+        },
+        []
+      );
+      this.attendingPhysicianList = this.labReceivedData.reduce(
+        (accumulator: string[], currentValue) => {
           if (!accumulator.includes(currentValue.AttendingDoctorName)) {
             accumulator.push(currentValue.AttendingDoctorName);
           }
@@ -1023,10 +1063,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       );
     } else if (this.selectedModule == 'arrival') {
       this.arrivalMainListComponent.filterListData(this.filterForm.value);
-    }else if (this.selectedModule == 'LDRView'){
+    } else if (this.selectedModule == 'LDRView') {
       this.LdrViewComponent.filterListData(this.filterForm.value);
-    }  else if (this.selectedModule === 'surgeryWork') {
-       this.surgeryWorklistTabComponent?.filterListData(this.filterForm.value);
+    } else if (this.selectedModule === 'surgeryWork') {
+      this.surgeryWorklistTabComponent?.filterListData(this.filterForm.value);
+    } else if (this.selectedModule === 'AdministeredDoses') {
+      this.AdministeredDosesComponent?.filterAdministeredDosesList(this.AdministeredDosesform.value);
     }
     else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
@@ -1038,13 +1080,13 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.refreshFormGroup();
     if (this.selectedModule == 'checkin') {
       this.CheckInComponent.filterListData(this.filterForm.value);
-    } 
-    if (this.selectedModule == 'LDRView'){
+    }
+    if (this.selectedModule == 'LDRView') {
       this.LdrViewComponent.filterListData(this.filterForm.value);
-    }  
+    }
     if (this.selectedModule == 'arrival') {
       this.arrivalMainListComponent.filterListData(this.filterForm.value);
-    } 
+    }
   }
 
   closeAndRefresh() {
@@ -1060,7 +1102,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   refreshCheckIn() {
-    this.singleData?.patchValue({fromDate: new Date()});
+    this.singleData?.patchValue({ fromDate: new Date() });
     if (this.selectedModule === 'checkin') {
       this.CheckInComponent.getHospitalList();
     } else if (this.selectedModule === 'erhistory') {
@@ -1102,12 +1144,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     } else if (this.selectedModule === 'reservation') {
       this.emergencyService?.callHistoryList();
     } else if (this.selectedModule === 'arrival') {
-       this.arrivalMainListComponent?.arrivalList(
+      this.arrivalMainListComponent?.arrivalList(
         new Date()
       );
     } else if (this.selectedModule === 'surgeryWork') {
-       this.surgeryWorklistTabComponent?.surgeryListData();
-    }else if(this.selectedModule === 'LDRView'){
+      this.surgeryWorklistTabComponent?.surgeryListData();
+    } else if (this.selectedModule === 'LDRView') {
       this.LdrViewComponent?.LDRListSet([new Date(), new Date()])
     }
     // Resetting filter form values
@@ -1117,14 +1159,14 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FCategory: '',
       FWard: '',
       FSpecialty: '',
-      RoomidText:'',
-      CaseType:''
+      RoomidText: '',
+      CaseType: ''
     });
     this.filterFormLab.patchValue({
       Rooms: '',
       Physician: '',
       ItemStatus: '',
-       FWard: '',
+      FWard: '',
       RoomidText: '',
       CreatedBy: ''
     });
@@ -1139,6 +1181,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       admittedFrom: '',
       admittedTo: '',
       wardNo: '',
+      Rooms: '',
       patientStatus: '',
       specialty: '',
       patient: '',
@@ -1152,7 +1195,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     });
     this.filterFormNoReleased.patchValue({
       FWard: '',
-      RoomidText:''
+      RoomidText: ''
     });
     this.closeAndRefresh();
   }
@@ -1170,11 +1213,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     this.isSurgeryWork = false;
     this.selectedModule = module;
     this.ErHistoryPatientCount = '';
-    this.getCheckInWardFilterData =  [];
-    this.attendingPhysicianList =  [];
-    this.getCheckInSpecialtyFilterData =  [];
-    this.getPerformanceUnitFilterData =  [];
-    this.getCheckInFinancialFilterData =  [];
+    this.getCheckInWardFilterData = [];
+    this.attendingPhysicianList = [];
+    this.getCheckInSpecialtyFilterData = [];
+    this.getPerformanceUnitFilterData = [];
+    this.getCheckInFinancialFilterData = [];
     // this.emergencyService.tabPanelNavigation('OrderSet');
     this.defaultSelectedDateRange.push(
       new Date().setDate(new Date().getDate() - 1)
@@ -1445,7 +1488,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.isArrival = false;
       this.LDRView = false;
       this.isSurgeryWork = true;
-    }else if (module == 'LDRView') {
+    } else if (module == 'LDRView') {
       this.headerLabel = 'LDR';
       this.currentDate = new Date();
       this.singleData.get('fromDate').patchValue(new Date());
@@ -1494,9 +1537,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   getHeaderTitleName() {
-    if(this.isArrival) {
+    if (this.isArrival) {
       return 'Arrivals';
-    } else if(this.isSurgeryWork) {
+    } else if (this.isSurgeryWork) {
       return 'Surgery Worklist'
     }
   }
@@ -1564,15 +1607,15 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       });
       window.open(
         'nursing-inpatient-dashboard?' +
-          'patnr=' +
-          checkindata.Patnr +
-          '&falnr=' +
-          checkindata.Falnr +
-          '&einri=' +
-          checkindata.Einri +
-          '&lfdnr=' +
-          checkindata.Lfdbw +
-          '&nav=Treatmentarea',
+        'patnr=' +
+        checkindata.Patnr +
+        '&falnr=' +
+        checkindata.Falnr +
+        '&einri=' +
+        checkindata.Einri +
+        '&lfdnr=' +
+        checkindata.Lfdbw +
+        '&nav=Treatmentarea',
         '_blank'
       );
     } else {
@@ -1592,21 +1635,21 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       });
       window.open(
         'nursing-inpatient-dashboard?' +
-          'patnr=' +
-          checkindata.Patnr +
-          '&falnr=' +
-          checkindata.Falnr +
-          '&einri=' +
-          checkindata.Einri +
-          '&lfdnr=' +
-          checkindata.Lfdnr + 
-          '&redirectFor=' +
-          checkindata.redirectFor +
-          '&action=' +
-          checkindata.action +
-          '&doctype=' +
-          checkindata.doctype +
-          '&nav=Treatmentarea',
+        'patnr=' +
+        checkindata.Patnr +
+        '&falnr=' +
+        checkindata.Falnr +
+        '&einri=' +
+        checkindata.Einri +
+        '&lfdnr=' +
+        checkindata.Lfdnr +
+        '&redirectFor=' +
+        checkindata.redirectFor +
+        '&action=' +
+        checkindata.action +
+        '&doctype=' +
+        checkindata.doctype +
+        '&nav=Treatmentarea',
         '_blank'
       );
     }
@@ -1651,7 +1694,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.patient = patientData;
         console.log(this.patient, "this.patient");
-        
+
         localStorage.setItem('initOrg', patientData.deptOrgUnit);
         this.titleService.setTitle(
           `${patientData?.name} | ${this._route.snapshot.parent.routeConfig.path}`
@@ -1687,13 +1730,13 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   previousDate() {
-    if(this.isArrival) {
+    if (this.isArrival) {
       var date1 = this.singleData.get('fromDate').value
       this.singleData.get('fromDate').patchValue(new Date(date1.setDate(date1.getDate() - 1)));
       this.arrivalMainListComponent?.arrivalList(this.singleData.value.fromDate);
     }
 
-    if(this.erhistory) {
+    if (this.erhistory) {
       var date1 = this.formDetailGroup.get('DateRange').value[0];
       var date2 = this.formDetailGroup.get('DateRange').value[1];
       this.formDetailGroup.get('DateRange').patchValue([new Date(date1.setDate(date1.getDate() - 1)), new Date(date2.setDate(date2.getDate() - 1)),]);
@@ -1765,8 +1808,8 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       this.formgroupData.DateRange
     );
     this.LdrViewComponent?.LDRListSet(
-        this.formgroupData.DateRange
-      );
+      this.formgroupData.DateRange
+    );
     this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
       this.formgroupData.DateRange
     );
@@ -1774,42 +1817,42 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   changeDate(event) {
     console.log(event, "event");
     this.updatedDate = event;
-    if(this.erhistory) {
+    if (this.erhistory) {
       this.ErHistoryComponent?.getSelectedDates(
         this.formgroupData.DateRange
       );
     }
-    if(this.LDRView) {
+    if (this.LDRView) {
       this.LdrViewComponent?.LDRListSet(
-       this.updatedDate
+        this.updatedDate
       );
     }
-    if(this.checkin) {
+    if (this.checkin) {
       this.CheckInComponent?.getSelectedDates(
         event, this.getConfigToolWardList, this.getConfigToolSpecialtyList
       );
     }
-    if(this.LabResults) {
+    if (this.LabResults) {
       this.LabResultsComponent?.getSelectedDates(
         this.formgroupData.DateRange
       );
     }
-    if(this.PhysicianOrder) {
+    if (this.PhysicianOrder) {
       this.PhysicianOrdersListComponent?.getErList(
         this.formgroupData.DateRange
       );
     }
-    if(this.AdministeredDoses) {
+    if (this.AdministeredDoses) {
       this.AdministeredDosesComponent?.getMedicationAdministrationlist(
         this.formgroupData.DateRange
       );
     }
-    if(this.noConsumables) {
+    if (this.noConsumables) {
       this.PatientWithoutConsumableComponent?.getPatientWithoutConsumable(
         this.formgroupData.DateRange
       );
     }
-    if(this.isArrival) {
+    if (this.isArrival) {
       this.arrivalMainListComponent?.arrivalList(
         this.updatedDate
       );
@@ -1817,28 +1860,28 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   upcomingDate() {
-    if(this.isArrival) {
+    if (this.isArrival) {
       var date1 = this.singleData.get('fromDate').value;
       this.singleData.get('fromDate').patchValue(new Date(date1.setDate(date1.getDate() + 1)));
       this.arrivalMainListComponent?.arrivalList(this.singleData.value.fromDate);
       return;
     }
 
-    if(this.erhistory) {
+    if (this.erhistory) {
       // if (
       //   +this.formDetailGroup.get('DateRange').value[0] ==
       //   +this.formDetailGroup.get('DateRange').value[1]
       // ) {
-        var date1 = this.formDetailGroup.get('DateRange').value[0];
-        var date2 = this.formDetailGroup.get('DateRange').value[1];
-        this.formDetailGroup
-          .get('DateRange')
-          .patchValue([
-            new Date(date1.setDate(date1.getDate() + 1)),
-            new Date(date2.setDate(date2.getDate() + 1)),
-          ]);
-          this.ErHistoryComponent?.getHospitalList(this.formgroupData.DateRange);
-        return;
+      var date1 = this.formDetailGroup.get('DateRange').value[0];
+      var date2 = this.formDetailGroup.get('DateRange').value[1];
+      this.formDetailGroup
+        .get('DateRange')
+        .patchValue([
+          new Date(date1.setDate(date1.getDate() + 1)),
+          new Date(date2.setDate(date2.getDate() + 1)),
+        ]);
+      this.ErHistoryComponent?.getHospitalList(this.formgroupData.DateRange);
+      return;
       // }
     }
     console.log('Upcomming');
@@ -1928,7 +1971,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         console.log(_success, "_success");
         this.vacantBedListClone = _success?.d?.results;
         this.vacantBedList = _success?.d?.results;;
-        let uniqueRoyustextArray:any[] = [...new Set(this.vacantBedListClone.map(item => item.royustext))];
+        let uniqueRoyustextArray: any[] = [...new Set(this.vacantBedListClone.map(item => item.royustext))];
         this.fetchNursingOUForVacant = uniqueRoyustextArray
       },
       error: (err: any) => {
@@ -1938,7 +1981,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   }
 
   selectNursingOU() {
-    if(this.selectNursingOUForVacant.length) {    
+    if (this.selectNursingOUForVacant.length) {
       this.vacantBedList = this.vacantBedListClone.filter(item =>
         this.selectNursingOUForVacant.includes(item.royustext)
       );
@@ -1959,11 +2002,11 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     const usrevma = this.storageService.getUserProfile().Gpart
     let arrayAsString = physicianArray.join(',');
     let arraysAsString = specialityArray.join(',');
-     let Payload = {
+    let Payload = {
       d: {
         Username: userName,
         Usrevma: usrevma,
-        AttendPhy: arrayAsString ,
+        AttendPhy: arrayAsString,
         SpecialityCode: arraysAsString,
         Ward: wardDetails
       },

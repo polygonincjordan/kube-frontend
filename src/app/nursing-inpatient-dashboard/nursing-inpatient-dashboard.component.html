@@ -705,6 +705,13 @@
           </ng-option>
         </ng-select>
 
+        <p style="margin: auto; margin-top: 5px">Ward</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="FWard" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of wardListWithout">
+            {{item}}
+          </ng-option>
+        </ng-select>
+
         <p style="margin: auto; margin-top: 5px">created by</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="CreatedBy" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of filterBehpersonList">
@@ -761,32 +768,13 @@
         <select
           class="custom-select"
           id="inputGroupSelect01"
-          formControlName="wardNo"
+          formControlName="RoomidText"
         >
           <!-- <option selected value="">Choose Room</option> -->
           <option [value]="item" *ngFor="let item of phyOrderRoomsList">
             {{ item }}
           </option>
         </select>
-        <!-- <p style="margin: auto; margin-top: 5px">Visit Status</p>
-        <select
-          class="custom-select"
-          id="inputGroupSelect01"
-          formControlName="patientStatus"
-        >
-          <option selected value="">Choose status</option>
-          <option value="Admitted">Admitted</option>
-          <option value="New Admissions">New Admissions</option>
-          <option value="Planned discharge">Planned Discharge</option>
-          <option value="Recently discharged">Recently Discharged</option>
-        </select> -->
-        <!-- <p style="margin: auto; margin-top: 5px">Physician</p>
-        <select class="custom-select" id="inputGroupSelect02" formControlName="Physician" >
-          <option selected value="">Choose Physician</option>
-          <option [value]="item" *ngFor="let item of filterBehpersonList">
-            {{ item }}
-          </option>
-        </select> -->
         <div>
           <p style="margin: auto; margin-top: 5px">Ward</p>
           <ng-select
@@ -795,8 +783,8 @@
             formControlName="FWard"
             [multiple]="true"
           >
-            <ng-option [value]="item.Status" *ngFor="let item of phyWardList">
-              {{ item.Status }}
+            <ng-option [value]="item" *ngFor="let item of phyWardList">
+              {{ item }}
             </ng-option>
           </ng-select>
         </div>
@@ -811,10 +799,10 @@
         >
           <!-- <ng-option selected value="">Choose Physician</ng-option> -->
           <ng-option
-            [value]="item.NamString"
-            *ngFor="let item of assignUsersList"
+            [value]="item"
+            *ngFor="let item of filterBehpersonList"
           >
-            {{ item.NamString }}
+            {{ item }}
           </ng-option>
         </ng-select>
         <div
@@ -866,7 +854,7 @@
         <select
           class="custom-select"
           id="inputGroupSelect01"
-          formControlName="wardNo"
+          formControlName="Rooms"
         >
           <option selected value="">Choose Room</option>
           <option [value]="item" *ngFor="let item of phyOrderRoomsList">
@@ -878,7 +866,7 @@
         <select
           class="custom-select"
           id="inputGroupSelect01"
-          formControlName="Floor"
+          formControlName="wardNo"
         >
           <option [value]="item" *ngFor="let item of phyWardList">
             {{ item }}
@@ -900,10 +888,10 @@
         <select
           class="custom-select"
           id="inputGroupSelect02"
-          formControlName="Floor"
+          formControlName="Physician"
         >
-        <option selected value="">Choose Attending Physician</option>
-          <option [value]="item" *ngFor="let item of phyWardList">
+        <!-- <option selected value="">Choose Attending Physician</option> -->
+          <option [value]="item" *ngFor="let item of attendingPhysicianList">
             {{ item }}
           </option>
         </select>
@@ -1204,7 +1192,7 @@
   ></app-physician-orders-list>
   <app-administered-doses
     *ngIf="AdministeredDoses"
-    (dataToParent)="receiveDataFromPhysicianOrdersChild($event)"
+    (dataToParent)="receiveDataFromAdministeredChild($event)"
     (sendErPatientCount)="collectErHistPatientCount($event)"
     style="width: calc(100% - 60px)"
   ></app-administered-doses>

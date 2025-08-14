@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   TemplateRef,
@@ -21,6 +22,8 @@ import Swal from 'sweetalert2';
 export class PhysicianAllergyComponent implements OnInit {
   @ViewChild('allergyModal', { static: true }) allergyModal: TemplateRef<any>;
   @Output() importEvent = new EventEmitter();
+    @Input() isReadOnly: boolean = false;
+  
   allergyform: FormGroup;
   updateAllergyForm: FormGroup;
   updateRiskForm: FormGroup;

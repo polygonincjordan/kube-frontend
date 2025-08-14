@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 export class ErVitalsComponent implements OnInit {
   @ViewChild('erVitalsModal', { static: true }) erVitalsModal: TemplateRef<any>;
   @Output() importEvent = new EventEmitter();
+  @Input() isReadOnly: boolean = false;
 
   modalRef: BsModalRef;
   modalRefForDelete: BsModalRef;

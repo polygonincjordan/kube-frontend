@@ -17,6 +17,7 @@ export class VaccinationExposureSectionComponent implements OnInit {
   selectedTabName: string = 'Vaccination History';
   @Output() addTableRow = new EventEmitter<any>();
   @Input() nursingAdmissionForm: FormGroup;
+  @Input() isReadOnly: boolean = false;
 
   tabList = ['Vaccination History', 'Exposure to Infectious Diseases'];
 

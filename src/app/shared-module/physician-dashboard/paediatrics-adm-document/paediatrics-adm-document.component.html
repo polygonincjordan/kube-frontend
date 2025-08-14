@@ -1,6 +1,6 @@
-<div class="nursing-admission-main">
+<div class="nursing-admission-main" [ngClass]="{'disabled-form p-3' :isReadOnly}">
   <div>
-    <app-admission-data-section [isFormValidError]="isFormValidError"
+    <app-admission-data-section [isFormValidError]="isFormValidError" [isReadOnly]="isReadOnly"
       [nursingAdmissionForm]="nursingAdmissionForm"></app-admission-data-section>
   </div>
   <div class="end-container">
@@ -43,6 +43,67 @@
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="end-container">
+    <div class="scale-box-main">
+      <label class="box-label">Diagnosis</label>
+      <div class="container-fluid">
+        <div class="tab-navigation-part p-0">
+          <div class="container-fluid">
+            <div class="allergy-box d-flex justify-content-between py-3">
+              <div class="allergy-checkbox-section d-flex align-items-center">
+                <input type="checkbox" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)"
+                  style="width: 24px; height: 20px" [attr.disabled]="toDiagnosisArr?.length > 0 ? true : null" />
+                <label class="admitting-physician" for="noDiagnosisApplicable">&nbsp;&nbsp;No Diagnosis
+                  Applicable</label>
+              </div>
+              <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
+                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+              </div>
+            </div>
+            <div style="max-height: 296px; overflow: auto">
+              <form style="max-height: 296px;
+                                      overflow: auto;">
+                <table class="table table-bordered past-table">
+                  <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                    <tr>
+
+                      <th scope="col">Code</th>
+                      <th scope="col">Description </th>
+                      <th scope="col">Remarks</th>
+                      <th scope="col">Administion Diag.</th>
+                      <th scope="col">Surgery Diag.</th>
+                      <th scope="col">Preop Diag.</th>
+                      <th scope="col">Discharge Diag.</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: #fbfcff;">
+                    <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
+                      <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
+                      <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
+                      <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                          [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}"></td>
+                      <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
+                          src="assets/img/Delete.svg" style="position: relative;
+                                              top: 6px;" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
             </div>
           </div>
         </div>
@@ -180,234 +241,250 @@
 
   <!-- surgical history tab, medical history tab, family history tab under Medical History section from-->
 
-  <!-- <div class="end-container" [formGroup]="nursingAdmissionForm">
+  <div class="end-container" [formGroup]="nursingAdmissionForm">
     <div class="scale-box-main">
-      <div class="main-border mt-5">
-        <div>
-          <ul class="nav nav-pills mb-3">
-            <li class="nav-item">
-              <a class="nav-link c-pointer" [ngClass]="(med) ? 'selected' : ''" aria-current="page" data-toggle="tab"
-                (click)="switchTabsForMedical('med')" style="width: 190px;">Past Medical Condition</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link c-pointer" [ngClass]="(surg) ? 'selected' : ''" data-toggle="tab"
-                (click)="switchTabsForMedical('surg')" style="width: 190px;">Past Surgical History</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link c-pointer" [ngClass]="(family) ? 'selected' : ''" data-toggle="tab"
-                (click)="switchTabsForMedical('family')" style="width: 190px;">Family History</a>
-            </li>
-          </ul>
-        </div>
-        <div class="tab-content" style="border: 1px solid black;
+      <div class="container-fluid p-0 mt-2">
+        <div class="tab-navigation-part p-0 pt-4">
+          <div class="tab-navigate">
+            <div class="tab-nav w-100">
+              <ul class="m-0 p-0 d-flex flex-wrap mb-2">
+                <li *ngFor="let item of surgeryMedicalTabList" class="d-flex m-0 align-items-center"
+                  (click)="switchTabsForMedical(item.value)" [ngClass]="item.value == selectedTabName ? 'active' : ''">
+                  <img src="./assets/img/grid-icon.svg" />
+                  <p class="d-inline-block m-0">{{ item.label }}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="main-border mt-5">
+            <!-- <div>
+              <ul class="nav nav-pills mb-3">
+                <li class="nav-item">
+                  <a class="nav-link c-pointer" [ngClass]="(med) ? 'selected' : ''" aria-current="page"
+                    data-toggle="tab" (click)="switchTabsForMedical('med')" style="width: 190px;">Past Medical
+                    Condition</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link c-pointer" [ngClass]="(surg) ? 'selected' : ''" data-toggle="tab"
+                    (click)="switchTabsForMedical('surg')" style="width: 190px;">Past Surgical History</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link c-pointer" [ngClass]="(family) ? 'selected' : ''" data-toggle="tab"
+                    (click)="switchTabsForMedical('family')" style="width: 190px;">Family History</a>
+                </li>
+              </ul>
+            </div> -->
+            <div class="tab-content" style="border: 1px solid black;
       padding: 8px;
       border-radius: 7px;">
-          <div *ngIf="med">
-            <div class="d-flex mb-2" style="justify-content: space-between;
+              <div *ngIf="med">
+                <div class="d-flex mb-2" style="justify-content: space-between;
       padding-right: 22px">
-              <div style="display: flex;
+                  <div style="display: flex;
        align-items: center;
        gap: 10px;">
-                <input type="checkbox" style="width: 36px;
+                    <input type="checkbox" style="width: 36px;
          height: 22px;" formControlName="NoMedicalHistory" (change)="handleCheckboxPastMed()"
-                  [attr.disabled]="toPastMedical.length >0 ? true:null" />
-                <label class="admitting-physician">No medical history known</label>
-              </div>
-              <div>
-                <div class="" (click)="openModalForPastMedical()">
-                  <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                      [attr.disabled]="toPastMedical.length >0 ? true:null" />
+                    <label class="admitting-physician">No medical history known</label>
+                  </div>
+                  <div>
+                    <div class="" (click)="openModalForPastMedical()">
+                      <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <form style="max-height: 296px;
+                <form style="max-height: 296px;
       overflow: auto;">
-              <table class="table table-bordered past-table">
-                <thead style="background-color: #e4edf5; color: black; text-align: center;">
-                  <tr>
-                    <th scope="col">Problem </th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Treatment</th>
-                    <th scope="col">Comments</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody style="background-color: #fbfcff;">
-                  <tr class="past-med-input" *ngFor="let item of toPastMedical;let i=index">
-                    <td style="padding-left: 2px;
+                  <table class="table table-bordered past-table">
+                    <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                      <tr>
+                        <th scope="col">Problem </th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Treatment</th>
+                        <th scope="col">Comments</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fbfcff;">
+                      <tr class="past-med-input" *ngFor="let item of toPastMedical;let i=index">
+                        <td style="padding-left: 2px;
           padding-right: 2px;
           width: 15%;pointer-events: none;text-align: left;
       padding-left: 24px !important;
       line-height: 39px;">{{item.DiseaseName}}</td>
-                    <td style="padding-left: 0;
+                        <td style="padding-left: 0;
           padding-right: 0;
           width: 15%;pointer-events: none;text-align: left;
       padding-left: 24px !important;    line-height: 39px;">{{item.Ddate | date: 'dd.MM.yyyy'}}</td>
-                    <td style="padding-left: 0;
+                        <td style="padding-left: 0;
           padding-right: 0;
           width: 15%;pointer-events: none;text-align: left;
       padding-left: 24px !important;    line-height: 39px;">{{item.Ddate | date: 'dd.MM.yyyy'}}</td>
-                    <td style="padding-left: 0;
+                        <td style="padding-left: 0;
           padding-right: 0;
           width: 15%;pointer-events: none;text-align: left;
       padding-left: 24px !important;    line-height: 39px;">{{item.TreatmentDetail}}</td>
-                    <td style="padding-left: 0;
+                        <td style="padding-left: 0;
           padding-right: 0;
           width: 15%;pointer-events: none;text-align: left;
       padding-left: 24px !important;    line-height: 39px;">{{item.Remarks}}</td>
-                    <td style="padding-left: 0;
+                        <td style="padding-left: 0;
           padding-right: 0;
           width: 1%;text-align: center;position: relative;
       top: 6px;" (click)="deleteFromPastMedicalTable(item,i)"><img src="assets/img/Delete.svg" /></td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-          </div>
-          <div *ngIf="surg">
-            <div class="d-flex mb-2" style="justify-content: space-between;
+                      </tr>
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+              <div *ngIf="surg">
+                <div class="d-flex mb-2" style="justify-content: space-between;
           padding-right: 22px">
-              <div style="display: flex;
+                  <div style="display: flex;
           align-items: center;
           gap: 10px;">
-              
-                <input type="checkbox" style="width: 36px;
+
+                    <input type="checkbox" style="width: 36px;
             height: 22px;" formControlName="NoSurgeryHistory" (change)="handleCheckboxPastSurg()"
-                  [attr.disabled]="toPastSurgical.length >0 ? true:null" />
-                <label class="admitting-physician">No surgery history known</label>
-              </div>
-              <div>
+                      [attr.disabled]="toPastSurgical.length >0 ? true:null" />
+                    <label class="admitting-physician">No surgery history known</label>
+                  </div>
+                  <div>
 
-                <div class="" (click)="openModalForPastSurgical()">
-                  <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                    <div class="" (click)="openModalForPastSurgical()">
+                      <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                    </div>
+                  </div>
+
                 </div>
-              </div>
-
-            </div>
-            <form style="max-height: 296px;
+                <form style="max-height: 296px;
           overflow: auto;">
-              <table class="table table-bordered past-table">
-                <thead style="background-color: #e4edf5; color: black; text-align: center;">
-                  <tr>
+                  <table class="table table-bordered past-table">
+                    <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                      <tr>
 
-                    <th scope="col">Surgery Name</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Comments</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody style="background-color: #fbfcff;">
-                  <tr class="past-med-input" *ngFor="let item of toPastSurgical;let i=index">
-                    <td style="width: 14%;    padding: 10px !important;">{{item.SurgeryName}}</td>
-                    <td style="width: 32%;    padding: 10px !important;">{{item.Sdate | date: 'dd.MM.yyyy'}}</td>
-                    <td style="    width:23%;padding: 10px !important;">{{item.SurgeryRemarks}}</td>
-                    <td style="text-align: center;width:5%" (click)="deleteFromPastSurgTable(item,i)"><img
-                        src="assets/img/Delete.svg" style="position: relative;
+                        <th scope="col">Surgery Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Comments</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fbfcff;">
+                      <tr class="past-med-input" *ngFor="let item of toPastSurgical;let i=index">
+                        <td style="width: 14%;    padding: 10px !important;">{{item.SurgeryName}}</td>
+                        <td style="width: 32%;    padding: 10px !important;">{{item.Sdate | date: 'dd.MM.yyyy'}}</td>
+                        <td style="    width:23%;padding: 10px !important;">{{item.SurgeryRemarks}}</td>
+                        <td style="text-align: center;width:5%" (click)="deleteFromPastSurgTable(item,i)"><img
+                            src="assets/img/Delete.svg" style="position: relative;
                   top: 6px;" /></td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-          </div>
-          <div *ngIf="family">
-            <div class="d-flex mb-2" style="justify-content: space-between;
+                      </tr>
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+              <div *ngIf="family">
+                <div class="d-flex mb-2" style="justify-content: space-between;
           padding-right: 22px">
-              <div style="display: flex;
+                  <div style="display: flex;
           align-items: center;
           gap: 10px;">
-                <input type="checkbox" style="width: 36px;
+                    <input type="checkbox" style="width: 36px;
             height: 22px;" [attr.disabled]="toFamilyHistory.length >0 ? true:null" />
-                <label class="admitting-physician">No family history known</label>
-              </div>
-              <div>
-                <div class="" (click)="openModalForFamilyHistory()">
-                  <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                    <label class="admitting-physician">No family history known</label>
+                  </div>
+                  <div>
+                    <div class="" (click)="openModalForFamilyHistory()">
+                      <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
+                    </div>
+                  </div>
                 </div>
+                <form style="max-height: 296px;
+          overflow: auto;">
+                  <table class="table table-bordered past-table">
+                    <thead style="background-color: #e4edf5; color: black; text-align: center;">
+                      <tr>
+                        <th scope="col">Problem</th>
+                        <th scope="col">Father </th>
+                        <th scope="col">Mother</th>
+                        <th scope="col">Brother</th>
+                        <th scope="col">Sister</th>
+                        <th scope="col">Child</th>
+                        <th scope="col">Paternal</th>
+                        <th scope="col">Maternal</th>
+                        <th scope="col">Comments</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody style="background-color: #fbfcff;">
+                      <tr class="past-med-input" *ngFor="let item of toFamilyHistory;let i=index">
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;"> {{item.Problem}}</td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 10%" type="checkbox" [checked]="item.Father" id="father{{i}}">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 10%" type="checkbox" id="mother{{i}}" [checked]="item.Mother">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 10%" type="checkbox" [checked]="item.Brother" id="brother{{i}}">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 10%" type="checkbox" [checked]="item.Sister" id="sister{{i}}">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 10%" type="checkbox" [checked]="item.Son" id="son{{i}}">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 15%" type="checkbox" [checked]="item.Paternal" id="Paternal{{i}}">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;text-align: center;">
+                          <input style="width: 20%" type="checkbox" [checked]="item.Maternal" id="Maternal{{i}}">
+                        </td>
+                        <td style="padding: 10px !important;
+              width: 15%;pointer-events: none;">{{item.Remarks}}</td>
+                        <td style="padding: 10px !important;
+              width: 15%;cursor: pointer;"><img (click)="deleteFamilyHistoryFromTable(i)"
+                            src="assets/img/Delete.svg" /></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </form>
               </div>
             </div>
-            <form style="max-height: 296px;
-          overflow: auto;">
-              <table class="table table-bordered past-table">
-                <thead style="background-color: #e4edf5; color: black; text-align: center;">
-                  <tr>
-                    <th scope="col">Problem</th>
-                    <th scope="col">Father </th>
-                    <th scope="col">Mother</th>
-                    <th scope="col">Brother</th>
-                    <th scope="col">Sister</th>
-                    <th scope="col">Child</th>
-                    <th scope="col">Paternal</th>
-                    <th scope="col">Maternal</th>
-                    <th scope="col">Comments</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody style="background-color: #fbfcff;">
-                  <tr class="past-med-input" *ngFor="let item of toFamilyHistory;let i=index">
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;"> {{item.Problem}}</td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" [checked]="item.Father" id="father{{i}}">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" id="mother{{i}}" [checked]="item.Mother">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" [checked]="item.Brother" id="brother{{i}}">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" [checked]="item.Sister" id="sister{{i}}">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" [checked]="item.Son" id="son{{i}}">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" [checked]="item.Paternal" id="Paternal{{i}}">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;text-align: center;">
-                      <input style="width: 10%" type="checkbox" [checked]="item.Maternal" id="Maternal{{i}}">
-                    </td>
-                    <td style="padding: 10px !important;
-              width: 15%;pointer-events: none;">{{item.Remarks}}</td>
-                    <td style="padding: 10px !important;
-              width: 15%;cursor: pointer;"><img (click)="deleteFamilyHistoryFromTable(i)"
-                        src="assets/img/Delete.svg" /></td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
           </div>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
   <!-- surgical history tab, medical history tab, family history tab under Medical History section till -->
 
 
   <div>
-    <app-vaccination-exposure-section [nursingAdmissionForm]="nursingAdmissionForm"
+    <app-vaccination-exposure-section [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"
       (addTableRow)="addTableRow($event)"></app-vaccination-exposure-section>
   </div>
   <div>
-    <app-psychological-economic [nursingAdmissionForm]="nursingAdmissionForm"></app-psychological-economic>
+    <app-psychological-economic [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"></app-psychological-economic>
   </div>
   <div>
-    <app-physical-assessment-section [nursingAdmissionForm]="nursingAdmissionForm"></app-physical-assessment-section>
+    <app-physical-assessment-section [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"></app-physical-assessment-section>
   </div>
   <div>
-    <app-examination-tab [nursingAdmissionForm]="nursingAdmissionForm"
+    <app-examination-tab [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"
       (PhysicianExaminationDrugArrayList)="physicianExamaminationArrayListData($event)"
       [toPHYEXAMmportedData]="toPHYEXAMmportedData"></app-examination-tab>
   </div>
   <div>
-    <app-assessment-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-assessment-tab>
+    <app-assessment-tab [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"></app-assessment-tab>
   </div>
   <!-- <div>
     <app-orietation-patient-tab [nursingAdmissionForm]="nursingAdmissionForm"></app-orietation-patient-tab>
@@ -416,76 +493,16 @@
 
 
   <!-- Diagnosis section from  -->
-  <!-- <div class="end-container">
-    <div class="scale-box-main">
-      <label class="box-label">Diagnosis</label>
-      <div class="container-fluid">
-        <div class="tab-navigation-part p-0">
-          <div class="container-fluid">
-            <div class="allergy-box d-flex justify-content-between py-3">
-              <div class="allergy-checkbox-section d-flex align-items-center">
-                <input type="checkbox" id="noDiagnosisApplicable" (change)="handleCheckboxDiagnosis($event)"
-                  style="width: 24px; height: 20px" [attr.disabled]="toDiagnosisArr?.length > 0 ? true : null" />
-                <label class="admitting-physician" for="noDiagnosisApplicable">&nbsp;&nbsp;No Diagnosis
-                  Applicable</label>
-              </div>
-              <div class="secound-bar-vital-sign" (click)="openModalForDiagnosis()">
-                <img src="assets/img/file1.svg" title="Create & Import" class="img-size" />
-              </div>
-            </div>
-            <div style="max-height: 296px; overflow: auto">
-              <form style="max-height: 296px;
-                                      overflow: auto;">
-                <table class="table table-bordered past-table">
-                  <thead style="background-color: #e4edf5; color: black; text-align: center;">
-                    <tr>
 
-                      <th scope="col">Code</th>
-                      <th scope="col">Description </th>
-                      <th scope="col">Remarks</th>
-                      <th scope="col">Administion Diag.</th>
-                      <th scope="col">Surgery Diag.</th>
-                      <th scope="col">Preop Diag.</th>
-                      <th scope="col">Discharge Diag.</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody style="background-color: #fbfcff;">
-                    <tr class="past-med-input" *ngFor="let item of toDiagnosisArr;let i=index">
-                      <td style="width: 14%;    padding: 10px !important;">{{item.DCode}}</td>
-                      <td style="width: 32%;    padding: 10px !important;">{{item.DDescription}}</td>
-                      <td style="    width:23%;padding: 10px !important;">{{item.DRemarks}}</td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DAdmission" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DSurgery" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DPreoperative" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;"><input type="checkbox" style="width:18px"
-                          [(ngModel)]="item.DDischarge" [ngModelOptions]="{standalone: true}"></td>
-                      <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
-                          src="assets/img/Delete.svg" style="position: relative;
-                                              top: 6px;" /></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <!-- Diagnosis section till  -->
 
   <!-- impression and plan of care section from (textarea)-->
-  <!-- <div class="end-container" [formGroup]="nursingAdmissionForm">
+  <div class="end-container" [formGroup]="nursingAdmissionForm">
     <div class="scale-box-main">
       <label class="box-label">Impression and Plan of Care</label>
-      <textarea class="form-control" formControlName="IPcare"
-        [ngClass]="nursingAdmissionForm.get('IPcare').errors && isFormValidError ? 'ep-error-message': ''"></textarea>
+      <textarea class="form-control"></textarea>
     </div>
-  </div> -->
+  </div>
   <!-- impression and plan of care section till -->
 
 </div>

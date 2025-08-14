@@ -10,6 +10,8 @@ export class MedicationSubstancesSectionComponent implements OnInit {
   noMedication: boolean = false;
   medicationList: any[] = [];
   @Input() nursingAdmissionForm: FormGroup;
+  @Input() isReadOnly: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {}

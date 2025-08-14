@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { StorageService } from '@services/storage.service';
@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 export class PhysicianPastMedicalComponent implements OnInit {
   @ViewChild('pastMedicalKardexModal', { static: true }) pastMedicalKardexModal: TemplateRef<any>;
   @Output() importEvent = new EventEmitter();
+  @Input() isReadOnly: boolean = false;
+  
   modalRef: BsModalRef;
   modalRefForProblem: BsModalRef;
   pastMedList: any;

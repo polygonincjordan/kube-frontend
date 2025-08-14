@@ -243,4 +243,16 @@
   .set-height {
     height: 400px !important;
   }
-  
+  .disabled-form {
+    img {
+      pointer-events: none;
+    }
+    input[type="checkbox"],
+    input[type="radio"],
+    input[type="text"],
+    textarea,
+    ng-select {
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+}

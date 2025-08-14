@@ -11,6 +11,7 @@ export class ExaminationTabComponent implements OnInit, OnChanges {
 
   @Input() nursingAdmissionForm: FormGroup;
   private formSubscriptions: Subscription[] = [];
+  @Input() isReadOnly: boolean = false;
 
   physicianForm: FormGroup;
   generalPhyExamForm: FormGroup;

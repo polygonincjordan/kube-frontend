@@ -18,6 +18,7 @@ import {
 export class AdmissionDataSectionComponent implements OnInit {
   @Input() nursingAdmissionForm: FormGroup;
   @Input() isFormValidError: boolean;
+  @Input() isReadOnly: boolean = false;
 
   admissionModeList = admissionModeList;
   accompaniedbyList = accompaniedbyList;

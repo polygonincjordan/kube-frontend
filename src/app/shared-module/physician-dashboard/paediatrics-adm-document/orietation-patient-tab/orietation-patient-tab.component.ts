@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class OrietationPatientTabComponent implements OnInit {
   @Input() nursingAdmissionForm: FormGroup;
+  @Input() isReadOnly: boolean = false;
 
   valueableList = [
     {

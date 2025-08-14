@@ -10,6 +10,7 @@ export class AssessmentTabComponent implements OnInit {
 
   @Input() nursingAdmissionForm: FormGroup;
   selectedTabName: string = 'Growth & Development';
+  @Input() isReadOnly: boolean = false;
 
   tabList = [
     // 'Functional Assessment',

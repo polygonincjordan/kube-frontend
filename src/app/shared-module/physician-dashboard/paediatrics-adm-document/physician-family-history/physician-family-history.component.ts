@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { StorageService } from '@services/storage.service';
@@ -46,6 +46,7 @@ export class PhysicianFamilyHistoryComponent implements OnInit {
   @ViewChild('familyHistoryKardexModal', { static: true }) familyHistoryKardexModal: TemplateRef<any>;
   modalRef: BsModalRef;
   modalProblemRef: BsModalRef;
+  @Input() isReadOnly: boolean = false;
 
   familyHistroyList: IFamilyHistory[] = [];
   familyHistoryForm: FormGroup;
