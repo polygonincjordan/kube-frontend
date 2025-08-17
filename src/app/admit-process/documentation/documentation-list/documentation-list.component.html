@@ -29,8 +29,8 @@
               </div>
                <div class="col-md-1 p-0 d-flex align-items-center" (click)="$event.preventDefault()">
                 <div class="col-md-6 p-0" *ngIf="item.NodocText !='N/A'">
-                  <img src="assets/img/eye-icon.svg" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT' || item.Dtid == 'ZMED_PDASM')" />
-                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="item?.DokstText == 'Released' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT' && item.Dtid != 'ZMED_PDASM')"></i>
+                  <img src="assets/img/eye-icon.svg" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" />
+                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="item?.DokstText == 'Released' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')"></i>
                 </div>
                   <div class="col-md-6 p-0">
                     <div class="d-flex" style="width: 100%;"

@@ -298,7 +298,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if(this.isReadOnly){
+    if (this.isReadOnly) {
       this.getPediatricAdmAssesDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey)
     }
   }
@@ -678,7 +678,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         })
       ]),
 
-      TODIAGNOSES: this.formBuilder.array([
+      TODIAGNOSIS: this.formBuilder.array([
         this.formBuilder.group({
           Dockey: '',
           DCode: '',
@@ -725,7 +725,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         })
       ]),
 
-
+      Impression: ''
     });
     this.defaultAddRow();
     this.defaultAddRowforTOINFECTIONS();
@@ -754,24 +754,324 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
           this.toScaleArr = TOSCALE.results && TOSCALE.results.length ? TOSCALE.results : [];
 
           this.toScaleArr.forEach((element) => {
-            this.scalesList.forEach((res: any) => {
-              if (element.ScaleType == res.ScaleType && element.LastScore) {
-                res.Datetimee = element.Datetimee,
-                  res.Dockey = element.Dockey,
-                  res.description = element.ScoreDesc,
-                  res.LastScore = element.LastScore,
-                  res.ScaleType = element.ScaleType
+            this.scalesList.forEach((result: any) => {
+              if (element.ScaleType == result.ScaleType && element.LastScore) {
+                result.Datetimee = element.Datetimee,
+                  result.Dockey = element.Dockey,
+                  result.description = element.ScoreDesc,
+                  result.LastScore = element.LastScore,
+                  result.ScaleType = element.ScaleType
               }
             })
           })
 
           this.toVitalsArr = TOVITALSIGN.results && TOVITALSIGN?.results.length ? TOVITALSIGN.results : [];
+          this.toDiagnosisArr = result.TODIAGNOSIS.results;
+          this.toPastMedical = result.TOMEDHIST.results.map((el: any) => {
+            const timestamp = parseInt(el.Ddate.replace(/[^0-9]/g, ''), 10);
+            const jsDate = new Date(timestamp);
+            return {
+              ...el,
+              Ddate: `${this.datePipe.transform(jsDate, 'yyyy-MM-dd')}T00:00:00`
+            };
+          });
+          this.toPastSurgical = result.TOSURGIHIST.results.map((el: any) => {
+            const timestamp = parseInt(el.Sdate.replace(/[^0-9]/g, ''), 10);
+            const jsDate = new Date(timestamp);
+            return {
+              ...el,
+              Sdate: `${this.datePipe.transform(jsDate, 'yyyy-MM-dd')}T00:00:00`
+            };
+          });
+          this.toFamilyHistory = result.TOFAMILYHIST.results;
 
+          // this.nursingAdmissionForm.patchValue(flatFields);
+          this.nursingAdmissionForm.patchValue({
+            Dockey: result.Dockey,
+            Dtid: result.Dtid,
+            Einri: result.Einri,
+            Patnr: result.Patnr,
+            Falnr: result.Falnr,
+            Lfdnr: result.Lfdnr,
+            Orgdo: result.Orgdo,
+            AttendPhy: result.AttendPhy,
+            DocStatus: result.DocStatus,
+            AdmittedWard: result.AdmittedWard,
+            Room: result.Room,
+            From: result.From,
+            ReasonVisit: result.ReasonVisit,
+            AdmissionMode: result.AdmissionMode,
+            AdmissionModeTxt: result.AdmissionModeTxt,
+            Accompanied: result.Accompanied,
+            AccompaniedTxt: result.AccompaniedTxt,
+            InfoObtained: result.InfoObtained,
+            InfoObtainedTxt: result.InfoObtainedTxt,
+            LanguageSpoken: result.LanguageSpoken,
+            SchoolGrade: result.SchoolGrade,
+            FavouriteToy: result.FavouriteToy,
+            ChiefComplaint: result.ChiefComplaint,
+            Substances: result.Substances,
+            Vaccinated: result.Vaccinated,
 
-          this.nursingAdmissionForm.patchValue(flatFields);
+            PsNoProblem: result.PsNoProblem,
+            PsAnxious: result.PsAnxious,
+            PsUncooperative: result.PsUncooperative,
+            PsDepressed: result.PsDepressed,
+            PsAngry: result.PsAngry,
+            PsAgitated: result.PsAgitated,
+            PsCombative: result.PsCombative,
+            PsOther: result.PsOther,
+            PsComments1: result.PsComments1,
+
+            EcLivingWith: result.EcLivingWith,
+            EcNoPeople: result.EcNoPeople,
+            EcRelationship: result.EcRelationship,
+            EcRelationshipTxt: result.EcRelationshipTxt,
+            EcPhone: result.EcPhone,
+            EcFatherJob: result.EcFatherJob,
+            EcInsurance: result.EcInsurance,
+
+            SNoReportedAbnorm: result.SNoReportedAbnorm,
+            SRashes: result.SRashes,
+            STypeRash: result.STypeRash,
+            SItching: result.SItching,
+            SChangeHairNails: result.SChangeHairNails,
+            SComments: result.SComments,
+
+            HNoReportedAbnorm: result.HNoReportedAbnorm,
+            HHeadInjury: result.HHeadInjury,
+            HHeadCircumference: result.HHeadCircumference,
+            HComments: result.HComments,
+
+            ENoReportedAbnorm: result.ENoReportedAbnorm,
+            EGlassesContacts: result.EGlassesContacts,
+            EChangeVision: result.EChangeVision,
+            EEyePain: result.EEyePain,
+            EDoubleVision: result.EDoubleVision,
+            EFlashingLights: result.EFlashingLights,
+            EGlaucomaCataracts: result.EGlaucomaCataracts,
+            ELastEyeExam: result.ELastEyeExam,
+            EComments: result.EComments,
+
+            EneNoReportedAbnorma: result.EneNoReportedAbnorma,
+            EneChangeHearing: result.EneChangeHearing,
+            EneTympanicMembrane: result.EneTympanicMembrane,
+            EneEarDischarge: result.EneEarDischarge,
+            EneRinging: result.EneRinging,
+            EneDizziness: result.EneDizziness,
+
+            EnnNoReportedAbnorm: result.EnnNoReportedAbnorm,
+            EnnNoseBleeds: result.EnnNoseBleeds,
+            EnnNasalStuffiness: result.EnnNasalStuffiness,
+            EnnFrequentColds: result.EnnFrequentColds,
+            EnnNasalFlaring: result.EnnNasalFlaring,
+
+            EnmNoReportedAbnorm: result.EnmNoReportedAbnorm,
+            EnmBleedingGums: result.EnmBleedingGums,
+            EnmSoreTongue: result.EnmSoreTongue,
+            EnmHoarseness: result.EnmHoarseness,
+            EnmLipColor: result.EnmLipColor,
+            EnmComments: result.EnmComments,
+
+            NNoReportedAbnorm: result.NNoReportedAbnorm,
+            NLumps: result.NLumps,
+            NSwollenGlands: result.NSwollenGlands,
+            NGoiter: result.NGoiter,
+            NStiffness: result.NStiffness,
+            NComments: result.NComments,
+
+            BNoReportedAbnorm: result.BNoReportedAbnorm,
+            BLumps: result.BLumps,
+            BPain: result.BPain,
+            BNippleDischarge: result.BNippleDischarge,
+            BSkinAbnormalities: result.BSkinAbnormalities,
+            BComments: result.BComments,
+
+            RNoReportedAbnorm: result.RNoReportedAbnorm,
+            RShortnessBreath: result.RShortnessBreath,
+            RCough: result.RCough,
+            RWheezing: result.RWheezing,
+            RCoughingBlood: result.RCoughingBlood,
+            RProductionPhlegm: result.RProductionPhlegm,
+            RChestPain: result.RChestPain,
+            RFever: result.RFever,
+            RNightSweats: result.RNightSweats,
+            RBlueFingersToes: result.RBlueFingersToes,
+            RSwellingHandsFeet: result.RSwellingHandsFeet,
+            RBronchitisEmphysema: result.RBronchitisEmphysema,
+            RHeartMurmur: result.RHeartMurmur,
+            RHxHeartMedication: result.RHxHeartMedication,
+            RSkippingHeartBeats: result.RSkippingHeartBeats,
+            RComments: result.RComments,
+
+            GNoReportedAbnorm: result.GNoReportedAbnorm,
+            GChangeAppetiteWeight: result.GChangeAppetiteWeight,
+            GProblemsSwallowing: result.GProblemsSwallowing,
+            GNausea: result.GNausea,
+            GHeartburn: result.GHeartburn,
+            GVomiting: result.GVomiting,
+            GVomitingBlood: result.GVomitingBlood,
+            GConstipation: result.GConstipation,
+            GDiarrhea: result.GDiarrhea,
+            GChangeBowelHabits: result.GChangeBowelHabits,
+            GAbdominalPain: result.GAbdominalPain,
+            GExcessiveBelching: result.GExcessiveBelching,
+            GExcessiveFlatus: result.GExcessiveFlatus,
+            GYellowColourSkin: result.GYellowColourSkin,
+            GFoodIntolerance: result.GFoodIntolerance,
+            GRectalBleedingHemo: result.GRectalBleedingHemo,
+            GToiletTrained: result.GToiletTrained,
+            GTfreq: result.GTfreq,
+            GUsesDiaper: result.GUsesDiaper,
+            GUfreq: result.GUfreq,
+            GComments: result.GComments,
+
+            UNoReportedAbnorm: result.UNoReportedAbnorm,
+            UDifficultyUrination: result.UDifficultyUrination,
+            UPainBurningUrination: result.UPainBurningUrination,
+            UFrequentUrinationNight: result.UFrequentUrinationNight,
+            UUrgentNeedUrinate: result.UUrgentNeedUrinate,
+            UIncontinenceUrine: result.UIncontinenceUrine,
+            UDribbling: result.UDribbling,
+            UDecreasedUrineStream: result.UDecreasedUrineStream,
+            UBloodUrine: result.UBloodUrine,
+            UUtiStonesProstate: result.UUtiStonesProstate,
+            UComments: result.UComments,
+
+            PNoReportedAbnorm: result.PNoReportedAbnorm,
+            PLegCramps: result.PLegCramps,
+            PVaricoseVeins: result.PVaricoseVeins,
+            PClotsVeins: result.PClotsVeins,
+            PComments: result.PComments,
+
+            MNoReportedAbnorm: result.MNoReportedAbnorm,
+            MPain: result.MPain,
+            MSwelling: result.MSwelling,
+            MStiffness: result.MStiffness,
+            MDecreasedJointMotion: result.MDecreasedJointMotion,
+            MBrokenBone: result.MBrokenBone,
+            MSeriousSprains: result.MSeriousSprains,
+            MArthritis: result.MArthritis,
+            MGout: result.MGout,
+            MComments: result.MComments,
+
+            NuNoReportedAbnorm: result.NuNoReportedAbnorm,
+            NuHeadaches: result.NuHeadaches,
+            NuSeizures: result.NuSeizures,
+            NuLossConsciousness: result.NuLossConsciousness,
+            NuParalysis: result.NuParalysis,
+            NuWeakness: result.NuWeakness,
+            NuLossMuscleSize: result.NuLossMuscleSize,
+            NuMuscleSpasm: result.NuMuscleSpasm,
+            NuTremor: result.NuTremor,
+            NuInvoluntaryMovement: result.NuInvoluntaryMovement,
+            NuIncoordination: result.NuIncoordination,
+            NuNumbness: result.NuNumbness,
+            NuFeelingPinsNeedles: result.NuFeelingPinsNeedles,
+            NuComments: result.NuComments,
+
+            HeNoReportedAbnorm: result.HeNoReportedAbnorm,
+            HeAnemia: result.HeAnemia,
+            HeEasyBruisingBleeding: result.HeEasyBruisingBleeding,
+            HeComments: result.HeComments,
+
+            EdNoReportedAbnorm: result.EdNoReportedAbnorm,
+            EdAbnormalGrowth: result.EdAbnormalGrowth,
+            EdIncreasedAppetite: result.EdIncreasedAppetite,
+            EdIncreasedThirst: result.EdIncreasedThirst,
+            EdIncreaseUrineProduction: result.EdIncreaseUrineProduction,
+            EdThyroidTrouble: result.EdThyroidTrouble,
+            EdHeatColdIntolerance: result.EdHeatColdIntolerance,
+            EdExcessingSweating: result.EdExcessingSweating,
+            EdDiabetes: result.EdDiabetes,
+            EdComments: result.EdComments,
+
+            PsNoReportedAbnorm: result.PsNoReportedAbnorm,
+            PsTensionAnxiety: result.PsTensionAnxiety,
+            PsDepressionSuicide: result.PsDepressionSuicide,
+            PsMemoryProblems: result.PsMemoryProblems,
+            PsUnusualProblems: result.PsUnusualProblems,
+            PsSleepProblems: result.PsSleepProblems,
+            PsPastTreatmentPsychiatri: result.PsPastTreatmentPsychiatri,
+            PsChangeMood: result.PsChangeMood,
+            PsComments: result.PsComments,
+
+            SdNoReported: result.SdNoReported,
+            SdInSwollen: result.SdInSwollen,
+            SdInVaginal: result.SdInVaginal,
+            SdInHypertrophy: result.SdInHypertrophy,
+            SdInOther: result.SdInOther,
+            SdInOtherTxt: result.SdInOtherTxt,
+            SdToEarly: result.SdToEarly,
+            SdToOther: result.SdToOther,
+            SdToOtherTxt: result.SdToOtherTxt,
+            SdPrEarly: result.SdPrEarly,
+            SdPrDelayed: result.SdPrDelayed,
+            SdPrOther: result.SdPrOther,
+            SdPrOtherTxt: result.SdPrOtherTxt,
+            SdComments: result.SdComments,
+
+            FaInfantLess: result.FaInfantLess,
+            FaRecentChanges: result.FaRecentChanges,
+            FaRequiresDr: result.FaRequiresDr,
+            FaNotified: result.FaNotified,
+            FaComments: result.FaComments,
+
+            SrSleep: result.SrSleep,
+            SrSleepTime: result.SrSleepTime,
+            SrNumberHours: result.SrNumberHours,
+            SrComments: result.SrComments,
+
+            GwMSocialSmile: result.GwMSocialSmile,
+            GwMTeething: result.GwMTeething,
+            GwMSetAlone: result.GwMSetAlone,
+            GwMWalked: result.GwMWalked,
+            GwMUsedWords: result.GwMUsedWords,
+            GwMUsedSentences: result.GwMUsedSentences,
+            GwMToiletTraining: result.GwMToiletTraining,
+            GwMPuberity: result.GwMPuberity,
+            GwMOther: result.GwMOther,
+            GwMOtherTxt: result.GwMOtherTxt,
+            GwStatus: result.GwStatus,
+            GwComments: result.GwComments,
+
+            SsNoSocial: result.SsNoSocial,
+            SsInadequateFamily: result.SsInadequateFamily,
+            SsSuspected: result.SsSuspected,
+            SsPatient: result.SsPatient,
+            SsInadequateFinancial: result.SsInadequateFinancial,
+            SsInadequateCoping: result.SsInadequateCoping,
+            SsOthers: result.SsOthers,
+            SsOthersTxt: result.SsOthersTxt,
+            SsSocialWorker: result.SsSocialWorker,
+
+            OpOIdBand: result.OpOIdBand,
+            OpOBathroom: result.OpOBathroom,
+            OpOBatch: result.OpOBatch,
+            OpONurseCall: result.OpONurseCall,
+            OpOMealTimes: result.OpOMealTimes,
+            OpOVisitingHours: result.OpOVisitingHours,
+            OpOTvControl: result.OpOTvControl,
+            OpONonSmoking: result.OpONonSmoking,
+            OpOPatientEquipment: result.OpOPatientEquipment,
+            OpOTelephone: result.OpOTelephone,
+
+            OpPatientHandbook: result.OpPatientHandbook,
+            OpPatientHandbookTxt: result.OpPatientHandbookTxt,
+
+            OpVValuables: result.OpVValuables,
+            OpVPatent: result.OpVPatent,
+            OpVSentHome: result.OpVSentHome,
+            OpVSentHomeTxt: result.OpVSentHomeTxt,
+            OpVGivenBy: result.OpVGivenBy,
+            OpVGivenByTxt: result.OpVGivenByTxt,
+
+            Phy: result.Phy,
+            Impression: result.Impression
+          });
+
           this.nursingAdmissionForm.patchValue({ Datee: this.convertDateFormat(Datee) })
-          this.nursingAdmissionForm.patchValue({ Timee: this.convertTimeFormat(Timee) })
-
+          this.nursingAdmissionForm.patchValue({ Timee: this.convertPTTimeToTime(Timee) })
           // Patch the form arrays
           // this.patchFormArray('TOADMMED', TOADMMED, this.createTOADMMEDGroup.bind(this));
           // this.toADMMEDImportedData = TOADMMED.results;
@@ -937,7 +1237,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       if (this.actionTypeData.type === ActionType.Update$) {
         payload.d.Dockey = this.actionTypeData.value.docKey;
       }
-      if(this.admissionService.isClonePaediatricsAdmissionForm) {
+      if (this.admissionService.isClonePaediatricsAdmissionForm) {
         payload.d.Dockey = this.admissionService.selectedCurrentDocDetails.Dockey
       }
 
@@ -967,11 +1267,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         });
       }
 
-      let checkScalesList: any[] = this.scalesList.filter((res) => {
-        delete res.description;
-        delete res.value;
-        res.LastScore = res?.LastScore?.toString()
-        if (res.LastScore) return res;
+      let checkScalesList: any[] = this.scalesList.filter((result) => {
+        delete result.description;
+        delete result.value;
+        result.LastScore = result?.LastScore?.toString()
+        if (result.LastScore) return result;
       });
 
       payload.d.TOSCALE = checkScalesList;
@@ -1004,16 +1304,16 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       delete payload.d.TOFAMILYHISTORY;
       delete payload.d.TOPASTMEDICAL;
       delete payload.d.TOPASTSURGICAL;
-      // payload.d['TOPASTMEDICAL'] = this.toPastMedical;
-      // payload.d['TOPASTSURGICAL'] = this.toPastSurgical;
-      // payload.d['TOFAMILYHISTORY'] = this.toFamilyHistory;
-      // // payload.d['TOMEDICATION'] = this.medicationImportDrugArray;
-      // payload.d.TODIAGNOSES = this.toDiagnosisArr && this.toDiagnosisArr.length ? this.toDiagnosisArr : [];
-      // if (payload.d.TODIAGNOSES) {
-      //   payload.d.TODIAGNOSES.forEach(item => {
-      //     item.Dockey = this.docKey;
-      //   });
-      // }
+      payload.d['TOMEDHIST'] = this.toPastMedical;
+      payload.d['TOSURGIHIST'] = this.toPastSurgical;
+      payload.d['TOFAMILYHIST'] = this.toFamilyHistory;
+      // payload.d['TOMEDICATION'] = this.medicationImportDrugArray;
+      payload.d.TODIAGNOSIS = this.toDiagnosisArr && this.toDiagnosisArr.length ? this.toDiagnosisArr : [];
+      if (payload.d.TODIAGNOSIS) {
+        payload.d.TODIAGNOSIS.forEach(item => {
+          item.Dockey = this.docKey;
+        });
+      }
 
 
       payload.d.TOFUNASS = []
@@ -1102,6 +1402,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       return `PT${hours}H${minutes}M0S`;
     }
 
+    if (typeof timeInput === 'string') {
+      const [hours, minutes, seconds] = timeInput.split(":").map(Number);
+      return `PT${hours}H${minutes}M${seconds}S`;
+    }
+
     // If format is ISO 8601 duration (e.g. PT15H51M25S)
     const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(timeInput);
     if (match) {
@@ -1111,6 +1416,18 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     }
     return null;
+  }
+
+  convertPTTimeToTime(duration) {
+    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+
+    if (match) {
+      const hours = match[1] ? match[1].padStart(2, '0') : "00";
+      const minutes = match[2] ? match[2].padStart(2, '0') : "00";
+      const seconds = match[3] ? match[3].padStart(2, '0') : "00";
+
+      return `${hours}:${minutes}:${seconds}`;
+    }
   }
 
   // this function is updatted one dont not remove it
@@ -1258,8 +1575,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
-    }).then((res) => {
-      if (res.isConfirmed) {
+    }).then((result) => {
+      if (result.isConfirmed) {
         this.openSelectedModalScale(item);
       }
     });
@@ -1313,13 +1630,13 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   scalesImport() {
 
     this.selectedScales.forEach((element) => {
-      this.scalesList.forEach((res: any) => {
-        if (element.Scaletype == res.ScaleType && element.Score) {
-          res.Datetimee = element.DateTime,
-            res.Dockey = element.Dockey,
-            res.ScoreDesc = element.ScoreDesc,
-            res.LastScore = element.Score,
-            res.ScaleType = element.Scaletype
+      this.scalesList.forEach((result: any) => {
+        if (element.Scaletype == result.ScaleType && element.Score) {
+          result.Datetimee = element.DateTime,
+            result.Dockey = element.Dockey,
+            result.ScoreDesc = element.ScoreDesc,
+            result.LastScore = element.Score,
+            result.ScaleType = element.Scaletype
         }
       })
     })
@@ -1463,7 +1780,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
   }
 
   handleCheckboxPastSurg() {
-    if (this.nursingAdmissionForm.controls.NoSurgeryHistory.value) {
+    if (this.nursingAdmissionForm?.controls?.NoSurgeryHistory?.value) {
       this.enableCreatePSurg = true;
     } else {
       this.enableCreatePSurg = false;

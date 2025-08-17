@@ -31,13 +31,11 @@
                     </tr>
                   </thead>
                   <tbody formArrayName="TOALLERGY">
-                    <tr *ngFor="let item of nursingAdmissionForm.get('TOALLERGY')['controls']; let i = index"
-                      [formGroupName]="i">
-                      <td><input type="text" formControlName="Agroup" class="form-control"></td>
-                      <td><input type="text" formControlName="Description" class="form-control"></td>
+                    <tr *ngFor="let item of toAllergyArr; let i = index">
+                      <td>{{ item.Agroup || item.AllergenGrp }}</td>
+                      <td>{{ item.Description || item.Allergen }}</td>
                       <td>
-                        <img src="assets/img/Delete.svg" alt="delete" class="cursor-pointer"
-                          (click)="deleteFromAllergy(item, i)" />
+                        <img src="assets/img/Delete.svg" alt="delete" (click)="deleteFromAllergy(item, i)" />
                       </td>
                     </tr>
                   </tbody>
@@ -284,8 +282,7 @@
        align-items: center;
        gap: 10px;">
                     <input type="checkbox" style="width: 36px;
-         height: 22px;" formControlName="NoMedicalHistory" (change)="handleCheckboxPastMed()"
-                      [attr.disabled]="toPastMedical.length >0 ? true:null" />
+         height: 22px;" (change)="handleCheckboxPastMed()" [attr.disabled]="toPastMedical.length >0 ? true:null" />
                     <label class="admitting-physician">No medical history known</label>
                   </div>
                   <div>
@@ -473,10 +470,12 @@
       (addTableRow)="addTableRow($event)"></app-vaccination-exposure-section>
   </div>
   <div>
-    <app-psychological-economic [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"></app-psychological-economic>
+    <app-psychological-economic [nursingAdmissionForm]="nursingAdmissionForm"
+      [isReadOnly]="isReadOnly"></app-psychological-economic>
   </div>
   <div>
-    <app-physical-assessment-section [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"></app-physical-assessment-section>
+    <app-physical-assessment-section [nursingAdmissionForm]="nursingAdmissionForm"
+      [isReadOnly]="isReadOnly"></app-physical-assessment-section>
   </div>
   <div>
     <app-examination-tab [nursingAdmissionForm]="nursingAdmissionForm" [isReadOnly]="isReadOnly"
@@ -500,7 +499,7 @@
   <div class="end-container" [formGroup]="nursingAdmissionForm">
     <div class="scale-box-main">
       <label class="box-label">Impression and Plan of Care</label>
-      <textarea class="form-control"></textarea>
+      <textarea class="form-control" formControlName="Impression"></textarea>
     </div>
   </div>
   <!-- impression and plan of care section till -->
