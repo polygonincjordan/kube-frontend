@@ -73,7 +73,7 @@ export class EMarOrderNurseComponent {
         item.ViewOrderDate = this.datePipe.transform(this.parseDate(item.Movdf), 'dd.MM.yyyy');
         item.TimeData = this.parseTime(item.Movtf);
         item.Schedule = [];
-        for (let i = 0; i <= 23; i++) { item.Schedule.push({ Hour: i, Color: 'blank-data', Label: '', SubLabel: '' }); }
+        for (let i = 0; i <= 23; i++) { item.Schedule.push({ Hour: i, Color: 'blank-data', Label: '', SubLabel: '', Userst: '' }); }
       });
       this.allMedicationData = data.sort((a, b) => a.ViewOrderDate < b.ViewOrderDate ? -1 : 1);
     }
@@ -97,6 +97,7 @@ export class EMarOrderNurseComponent {
           Hour: item.TimeData.Hour,
           Label: `${item.TimeData.Hour > 9 ? "" + item.TimeData.Hour : "0" + item.TimeData.Hour}:${item.TimeData.Minute > 9 ? "" + item.TimeData.Minute : "0" + item.TimeData.Minute}`,
           SubLabel: item.Erusr,
+          Userst: item.Userst
         }
         if (item.Notgiven) { item.Schedule.Color = 'yellow-data'; }
       });
@@ -134,6 +135,7 @@ export class EMarOrderNurseComponent {
           Schedule.Label = eventToSet.Schedule.Label;
           Schedule.SubLabel = eventToSet.Schedule.SubLabel;
           Schedule.Events = eventToSet;
+          Schedule.Userst = eventToSet.Userst;
           const SameHourEvents = dataEvents.filter(d => d.Schedule.Hour == eventToSet.Schedule.Hour);
           if (SameHourEvents.length > 1) {
             Schedule.MultipleEvent = [];
@@ -145,6 +147,7 @@ export class EMarOrderNurseComponent {
                 Hour: eventToSet.TimeData.Hour,
                 Minute: eventToSet.TimeData.Minute,
                 Second: eventToSet.TimeData.Second,
+                Userst:eventToSet.Userst
               });
             });
           }
@@ -244,6 +247,7 @@ commanSorting(keyName: string) {
             d.Color = '';
             d.Label = '';
             d.SubLabel = '';
+            d.Userst = '';
           }
         });
 

@@ -177,7 +177,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Falnr: new FormControl(item.Events.Falnr),
         Meevtid: new FormControl(item.Events.Meevtid),
         Rdrugdq: new FormControl(item.Events.Quan),
-        Rbdad: new FormControl(new Date()),
+        Rbdad: new FormControl(item.Events.Mesid === "600" || item.Events.Notgiven ? this.sanitizeSAPDateFormat(item.Events.Rbdad, item.Events.Rbtad) : new Date()),
         Rbtad: new FormControl(''),
         Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(item.Events.Rtimdif),
