@@ -952,6 +952,15 @@ export class EmergencyService {
       return date;
     }
   }
+
+  convertDotNetDate(dotNetDate: string): string {
+    if(dotNetDate) {
+      const timestamp = parseInt(dotNetDate.replace(/\/Date\((\d+)\)\//, '$1'), 10);
+      const date = new Date(timestamp);
+      return date.toUTCString();  
+    }
+  }
+
   // er bed
   getErBedList() {
     return this.http.get(this.url + 'getErBedList', {

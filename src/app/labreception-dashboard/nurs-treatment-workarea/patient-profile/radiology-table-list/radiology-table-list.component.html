@@ -16,8 +16,8 @@
                   <td class="white-space">{{ item.Leitxt }}</td>
                   <!-- <td>{{ item.category ? item.category : '--' }}</td> -->
                   <td>{{ item.Trtoe }}</td>
-                  <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                  <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy':'UTC' }}</td>
+                  <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm':'UTC' }}</td>
                   <td>
                     <span class="table-action">{{item.Status}}</span>
                   </td>

@@ -15,12 +15,13 @@
               <tr *ngFor="let item of surgeryList | filter: searchString; let i = index">
                 <td class="white-space">{{ item.Leitxt }}</td>
                 <!-- <td>{{ item.category ? item.category : '--' }}</td> -->
-                <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
-                <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy':'UTC' }}</td>
+                <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm':'UTC' }}</td>
                 <td>{{item.SurgeonName}}</td>
                 <td><span *ngIf="item.Wbgdt">{{emergencyService.getDate(item.Wbgdt) | date:'dd/MM/yyyy'}}/{{getTime(item.Wbgzt)}}</span></td>
                 <td>{{item.TrtoeText}}</td>
                 <td>{{item.OrgfaText}}</td>
+                <td>{{item.CreatedByName}}</td>
                 <td><input type="checkbox" id="PRN" [checked]="item.Anerf" disabled/></td>
                 <td>{{item.AddInfo}}</td>
                

@@ -19,8 +19,8 @@
                 <td>{{ item.VkgidStatusText == 'Completed' ? 'Completed' : item.VkgidStatusText == 'Confirmed' ? 'Requested' : '' }}</td>
                 <td>{{item.AddInfo}}</td>
                 <td>--</td>
-                <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy' }}</td>
-                <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm a' }}</td>
+                <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy':'UTC' }}</td>
+                <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm':'UTC' }}</td>
                 <!-- <td>
                   <div>
                     <button class="btn btn-primary" style="background: #007bff; border: none; padding: 5px;" (click)="openModalForConsultationCompletion(consultationCompletionTemplate, item)">Complete</button>
