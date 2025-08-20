@@ -130,26 +130,29 @@ export class EMarOrderNurseComponent {
       const dataEvents = todayEvents.filter(d => d.Meordid == data.Meordid);
       if (dataEvents && dataEvents.length) {
         dataEvents.forEach(eventToSet => {
+          const SameHourEvents = dataEvents.filter(d => d.Schedule.Hour == eventToSet.Schedule.Hour);
+          if (SameHourEvents.length > 1 && eventToSet.Userst === 'CAN') {
+            return;
+          }
           const Schedule = data.Schedule.find(d => d.Hour == eventToSet.Schedule.Hour);
+          if (!Schedule) return;
           Schedule.Color = eventToSet.Schedule.Color;
           Schedule.Label = eventToSet.Schedule.Label;
           Schedule.SubLabel = eventToSet.Schedule.SubLabel;
           Schedule.Events = eventToSet;
           Schedule.Userst = eventToSet.Userst;
-          const SameHourEvents = dataEvents.filter(d => d.Schedule.Hour == eventToSet.Schedule.Hour);
+
           if (SameHourEvents.length > 1) {
-            Schedule.MultipleEvent = [];
-            SameHourEvents.forEach(oEvent => {
-              Schedule.MultipleEvent.push({
-                Color: oEvent.Schedule.Color,
-                Label: oEvent.Schedule.Label,
-                SubLabel: oEvent.Schedule.SubLabel,
-                Hour: eventToSet.TimeData.Hour,
-                Minute: eventToSet.TimeData.Minute,
-                Second: eventToSet.TimeData.Second,
-                Userst:eventToSet.Userst
-              });
-            });
+            const filteredEvents = SameHourEvents.filter(e => e.Userst !== 'CAN' || SameHourEvents.every(ev => ev.Userst === 'CAN'));
+            Schedule.MultipleEvent = filteredEvents.map(oEvent => ({
+              Color: oEvent.Schedule.Color,
+              Label: oEvent.Schedule.Label,
+              SubLabel: oEvent.Schedule.SubLabel,
+              Hour: eventToSet.TimeData.Hour,
+              Minute: eventToSet.TimeData.Minute,
+              Second: eventToSet.TimeData.Second,
+              Userst: eventToSet.Userst
+            }));
           }
         });
       }
