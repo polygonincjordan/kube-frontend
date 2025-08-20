@@ -533,6 +533,7 @@ export class DrugSchedule {
   Label?: string;
   SubLabel?: string;
   Color: string;
+  Userst?: string;
   MultipleEvent?: DrugScheduleExtend[];
   Events?: MedicationEventData;
 }
@@ -544,6 +545,7 @@ export class DrugScheduleExtend {
   Label?: string;
   SubLabel?: string;
   Color?: string;
+  Userst?:string
 }
 
 export class PatientMedicationData {

@@ -85,7 +85,7 @@
                             <!-- <div *ngIf="item.MultipleEvent && item.MultipleEvent.length">
                                 <i [popover]="hourPopover" container="body" [ngTemplateOutlet]="hourPopover">dfd</i>
                               </div> -->
-                            <h4 class="m-0 w-100">{{item.Label}}</h4>
+                            <p class="m-0 w-100" style="font-size: 10px;">{{item.Label}}{{item.Userst ?'-'+item.Userst:''}}</p>
                             <span class="m-0">{{item.SubLabel}}</span>
                           </div>
                         </div>
