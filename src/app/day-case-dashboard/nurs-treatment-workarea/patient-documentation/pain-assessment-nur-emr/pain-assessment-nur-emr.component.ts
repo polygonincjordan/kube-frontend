@@ -403,11 +403,11 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
     } else if (parseInt(value) >= 1 && parseInt(value) <= 3) {
       return 'Slight pain';
     } else if (parseInt(value) == 4) {
-      return 'Slight pain';
+      return 'Mild pain';
     } else if (parseInt(value) >= 5 && parseInt(value) <= 6) {
-      return 'Slight pain';
+      return 'Moderate pain';
     } else if (parseInt(value) >= 7 && parseInt(value) <= 9) {
-      return 'Slight pain';
+      return 'Severe pain';
     } else if (parseInt(value) == 10) {
       return 'Worst pain possible';
     }

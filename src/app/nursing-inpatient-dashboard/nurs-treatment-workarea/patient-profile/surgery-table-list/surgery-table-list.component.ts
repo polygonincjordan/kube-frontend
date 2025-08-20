@@ -24,6 +24,7 @@ export class SurgeryTableListComponent implements OnInit,OnChanges {
     'Surgery Date/Time',
     'Treatment OU',
     'Department OU',
+    'Created By',
     'Anesthesia Required',
     'Additional Info'
   ];

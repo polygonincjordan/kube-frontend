@@ -854,8 +854,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       payload.d.DocStatus = status;
       payload.d.Orgdo = this.storageService.patientData.deptOrgUnit;
       payload.d.AttendPhy = this.storageService.getUserProfile().Gpart;
-      payload.d.Datee = this.convertDateFormat(payload.d.Datee);
-      payload.d.Timee = this.convertTimeFormat(payload.d.Timee);
+      payload.d.Datee = payload.d.Datee ? this.convertDateFormat(payload.d.Datee) : null;
+      payload.d.Timee = payload.d.Timee ? this.convertTimeFormat(payload.d.Timee) : null;
       payload.d.SrSleepTime = ''; // this si temparary madded as free text fiels because backend side change is pending
 
       if (this.actionTypeData.type === ActionType.Update$) {
