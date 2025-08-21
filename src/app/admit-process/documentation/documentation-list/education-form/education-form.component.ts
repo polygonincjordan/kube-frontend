@@ -390,6 +390,7 @@ export class EducationFormComponent implements OnInit, OnChanges {
     let d = {
       d: this.educationForm.value,
     };
+    d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
 
     if (this.admissionService.isCloneEducationAsset) {
       this.educationForm.value.DocStatus = '3';
@@ -455,6 +456,7 @@ export class EducationFormComponent implements OnInit, OnChanges {
     let d = {
       d: this.educationForm.value,
     };
+    d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
     this.admissionService.saveEducationData(d).subscribe(
       (result: any) => {
         if(type) result.d.DocStatus = '2';

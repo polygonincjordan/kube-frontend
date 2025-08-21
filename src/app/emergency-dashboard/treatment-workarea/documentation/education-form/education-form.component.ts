@@ -417,6 +417,7 @@ export class EducationFormComponent implements OnInit, OnChanges {
     let d = {
       d: this.educationForm.value,
     };
+    d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
     if(this.docDetails.length) {
       if (this.docDetails[0].StatusTxt == 'Released') {
         this.educationForm.value.DocStatus = '3';

@@ -1402,11 +1402,6 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       return `PT${hours}H${minutes}M0S`;
     }
 
-    if (typeof timeInput === 'string') {
-      const [hours, minutes, seconds] = timeInput.split(":").map(Number);
-      return `PT${hours}H${minutes}M${seconds}S`;
-    }
-
     // If format is ISO 8601 duration (e.g. PT15H51M25S)
     const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(timeInput);
     if (match) {
@@ -1414,6 +1409,11 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       const minutes = match[2] ? parseInt(match[2], 10) : 0;
       // You can choose to include or ignore seconds
       return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    }
+    
+    if (typeof timeInput === 'string') {
+      const [hours, minutes, seconds] = timeInput.split(":").map(Number);
+      return `PT${hours}H${minutes}M${seconds}S`;
     }
     return null;
   }

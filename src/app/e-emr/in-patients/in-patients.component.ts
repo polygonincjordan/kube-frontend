@@ -1247,6 +1247,7 @@ export class InPatientsComponent implements OnInit {
       '&lfdnr=' + data.Lfdnr,
       '_blank'
     );
+    localStorage.setItem('checkindata', JSON.stringify(data));
   }
   // sorting
   sort() {

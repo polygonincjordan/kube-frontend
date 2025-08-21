@@ -20,6 +20,7 @@ export class ICBundlesComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
   docKey: any;
+  public isFormValid = false;
   public dropdownOptions = [
     { label: 'Indwelling short term', value: '0' },
     { label: 'Indwelling long term', value: '1' },
@@ -83,8 +84,8 @@ export class ICBundlesComponent implements OnInit, OnDestroy {
 
   initForm(data?) {
     this.urinaryForm = this.formBuilder.group({
-      UciInsertionDate: [this.getDate(data?.UciInsertionDate) || null],
-      UciInsertionTime: [this.parseTime(data?.UciInsertionTime) || null],
+      UciInsertionDate: [this.getDate(data?.UciInsertionDate) || null, Validators.required],
+      UciInsertionTime: [this.parseTime(data?.UciInsertionTime) || null, Validators.required],
       UciTypeCatheter: [data?.UciTypeCatheter || ''],
       UciCatheterRemDate: [this.getDate(data?.UciCatheterRemDate) || null],
       UciUrinaryCatheterDays: [data?.UciUrinaryCatheterDays || ''],
@@ -108,7 +109,7 @@ export class ICBundlesComponent implements OnInit, OnDestroy {
       Uci2SmallestPossible: [data?.Uci2SmallestPossible || false],
       Uci2SingleUse: [data?.Uci2SingleUse || false],
       UcmMaintenanceDate: [this.getDate(data?.UcmMaintenanceDate) || null],
-      UcmMaintenanceTime: [this.parseTime(data?.UcmMaintenanceTime) || null],
+      UcmMaintenanceTime: [this.parseTime(data?.UcmMaintenanceTime) || null, Validators.required],
       Ucm3WasUrinary: [data?.Ucm3WasUrinary || ''],
       Ucm3NaTxt: [data?.Ucm3NaTxt || ''],
       Ucm3SterileContinuously: [data?.Ucm3SterileContinuously || false],
@@ -142,6 +143,9 @@ export class ICBundlesComponent implements OnInit, OnDestroy {
 
   public createDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
+      this.isFormValid = true;
+      if(this.urinaryForm.invalid) return;
+      this.isFormValid = false;
       let formData = this.urinaryForm.value;
       const convertDateFormat = (dateString: string): string => {
         const [day, month, year] = dateString.split('-').map(Number);
@@ -246,10 +250,14 @@ export class ICBundlesComponent implements OnInit, OnDestroy {
       this.urinaryForm.get(controlName)?.setValue(null);
     }
     if (value === '2') {
-      this.urinaryForm.get(textinput)?.enable(); // Enable input when abnormal (Yes)
+      this.urinaryForm.get(textinput)?.enable();
+      this.urinaryForm.get(textinput)?.setValidators([Validators.required]);
+      this.urinaryForm.get(textinput)?.updateValueAndValidity();
     } else {
       this.urinaryForm.get(textinput)?.disable(); // Disable input when normal (No)
       this.urinaryForm.get(textinput)?.setValue(''); // Clear input if disable
+      this.urinaryForm.get(textinput)?.clearValidators();
+      this.urinaryForm.get(textinput)?.updateValueAndValidity();
 
     }
   }

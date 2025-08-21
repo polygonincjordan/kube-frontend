@@ -427,6 +427,7 @@ export class DocumentationComponent implements OnInit {
         d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
+      d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.admissionService.saveEducationData(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
@@ -444,7 +445,7 @@ export class DocumentationComponent implements OnInit {
         d: res?.d?.results[0],
       };
       d.d.DocStatus = '2';
-
+      d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
        this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
         (result) => {
           this.sharedService.successSwallModel('Paediatrics Physician Admission Assessment Document Release Successfully')
@@ -478,6 +479,7 @@ export class DocumentationComponent implements OnInit {
   }
 }
       delete d.d.__metadata;
+      d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.admissionService.releaseTransferDoc(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
@@ -523,6 +525,7 @@ export class DocumentationComponent implements OnInit {
   }
       }
       delete d.d.__metadata;
+      d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.inPatientConfigurationService.saveSurgery(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
@@ -565,6 +568,7 @@ export class DocumentationComponent implements OnInit {
         if (resp && resp.results && resp.results.length) {
           let obstetricData = resp.results[0];
           obstetricData.DocStatus = '2';
+          obstetricData.AttendPhy = this.storageService.getUserProfile().Gpart;
           this.admissionService
             .updateObstetricDoc(obstetricData).subscribe((resp) => {
               this.admissionService.isRealoadData.next(true);
