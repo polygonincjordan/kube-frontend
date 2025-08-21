@@ -37,20 +37,14 @@
                     showWeekNumbers: false,
                     dateInputFormat: 'DD.MM.YYYY'
                   }"
+                  [ngClass]="urinaryForm.get('UciInsertionDate').errors && isFormValid ? 'ep-error-message': ''"
                 />
             </div>
             <!--space-->
             <div class="col-md-1"></div>
             <label class="col-md-1 p-0">Insertion Time</label>
-            <input
-            type="time"
-            formControlName="UciInsertionTime"
-            step="2"
-            class="form-control"
-            min="08:00:00"
-            max="17:00:00"
-           style="min-width: 200px;"
-           />
+            <input type="time" formControlName="UciInsertionTime" step="2" class="form-control" min="08:00:00" max="17:00:00" style="min-width: 200px;"
+                [ngClass]="urinaryForm.get('UciInsertionDate').errors && isFormValid ? 'ep-error-message': ''" />
             <!--space-->
             <div class="col-md-1"></div>
             <span class="mr-2"> Type of Catheter</span>
@@ -161,7 +155,8 @@
                 <label><input type="radio" value="1"  formControlName="Uci1UnnecessaryInsertion" (click)="toggleRadio('Uci1UnnecessaryInsertion', '1','Uci1NaTxt')"> No</label>
                 <div class="d-flex">
                     <label style="width: 160px;"><input type="radio" value="2"  formControlName="Uci1UnnecessaryInsertion" (click)="toggleRadio('Uci1UnnecessaryInsertion', '2','Uci1NaTxt')"> Not Applicable</label>
-                    <input class="form-control" type="text"  formControlName="Uci1NaTxt"  [readOnly]="urinaryForm.get('Uci1UnnecessaryInsertion')?.value != '2'"><br>
+                    <input class="form-control" type="text"  formControlName="Uci1NaTxt" [ngClass]="urinaryForm.get('Uci1NaTxt').errors && isFormValid ? 'ep-error-message': ''"
+                     [readOnly]="urinaryForm.get('Uci1UnnecessaryInsertion')?.value != '2'"><br>
                 </div>
             </div>
         </div>
@@ -206,7 +201,8 @@
                     <label style="width: 160px;">
                     <input type="radio" value="2"  formControlName="Uci2WasAsepticTechnique"  (click)="toggleRadio('Uci2WasAsepticTechnique', '2','Uci2NaTxt')" />
                      Not Applicable</label>
-                    <input class="form-control" type="text"  formControlName="Uci2NaTxt"  [readOnly]="urinaryForm.get('Uci2WasAsepticTechnique')?.value != '2'" /><br>
+                    <input class="form-control" type="text"  formControlName="Uci2NaTxt" [ngClass]="urinaryForm.get('Uci2NaTxt').errors && isFormValid ? 'ep-error-message': ''"
+                     [readOnly]="urinaryForm.get('Uci2WasAsepticTechnique')?.value != '2'" /><br>
                 </div>
             </div>
         </div>
@@ -267,14 +263,8 @@
             <!--space-->
             <div class="col-md-4"></div>
             <label class="col-md-2 p-0">Maintenance Time</label>
-            <input
-            type="time"
-            step="2"
-            formControlName="UcmMaintenanceTime"
-            class="form-control"
-            min="08:00:00"
-            max="17:00:00"
-           />
+            <input type="time" step="2" formControlName="UcmMaintenanceTime" class="form-control" min="08:00:00" max="17:00:00"
+                [ngClass]="urinaryForm.get('UcmMaintenanceTime').errors && isFormValid ? 'ep-error-message': ''"/>
         </div>
     
         <div class="container mt-3">
@@ -290,7 +280,8 @@
                     <div class="d-flex">
                         <label style="width: 160px;"><input type="radio" value="2"  formControlName="Ucm3WasUrinary" (click)="toggleRadio('Ucm3WasUrinary', '2','Ucm3NaTxt')"> Not
                             Applicable</label>
-                        <input type="text" class="form-control"  formControlName="Ucm3NaTxt" [readOnly]="urinaryForm.get('Ucm3WasUrinary')?.value != '2'" /><br>
+                        <input type="text" class="form-control"  formControlName="Ucm3NaTxt" [ngClass]="urinaryForm.get('Ucm3NaTxt').errors && isFormValid ? 'ep-error-message': ''"
+                        [readOnly]="urinaryForm.get('Ucm3WasUrinary')?.value != '2'" /><br>
                     </div>
                 </div>
             </div>
@@ -320,7 +311,8 @@
                     <div class="d-flex">
                         <label style="width: 160px;"><input type="radio" value="2"  formControlName="Ucm4WasNeed" (click)="toggleRadio('Ucm4WasNeed', '2','Ucm4NaTxt')"> Not
                             Applicable</label>
-                        <input type="text" class="form-control"  formControlName="Ucm4NaTxt" [readOnly]="urinaryForm.get('Ucm4WasNeed')?.value != '2'" /><br>
+                        <input type="text" class="form-control"  formControlName="Ucm4NaTxt" [ngClass]="urinaryForm.get('Ucm4NaTxt').errors && isFormValid ? 'ep-error-message': ''"
+                         [readOnly]="urinaryForm.get('Ucm4WasNeed')?.value != '2'" /><br>
                     </div>
                 </div>
             </div>
