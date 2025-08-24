@@ -88,12 +88,12 @@ export class EditMedicationComponent implements OnInit {
       Descrlt: new FormControl(this.editdata.Descrlt),
       deftimcycleData: new FormControl([]),
       Dosdef: new FormControl(this.editdata.Dosdef),
-      IsFrequencyDeftim: new FormControl(this.editdata?.N1znr === "0000000100"),
+      IsFrequencyDeftim: new FormControl((this.editdata?.N1znr === "0000000100" && this.editdata?.N1id == "DEFTIM") || (this.editdata?.N1znr === "0000000003" && this.editdata?.N1id == "DAILY" )),
     })
     if (new Date() > this.editdata.StartD) {
       this.editprofileForm.patchValue({ StartD: new Date() });
     }
-    if(this.editdata?.N1znr === "0000000100"){
+    if((this.editdata?.N1znr === "0000000100" && this.editdata?.N1id == "DEFTIM") || (this.editdata?.N1znr === "0000000003" && this.editdata?.N1id == "DAILY" )){
       this.setIfDeftimcycleDataKey(this.editdata?.N1znr);
     }
     // this.validFromTobaseonDuration(this.editprofileForm.value);
@@ -293,7 +293,7 @@ export class EditMedicationComponent implements OnInit {
   }
   private setIfDeftimcycleDataKey(data?: string) {
     const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
-    if (this.editdata.N1znr === "0000000100" && frequencyData?.N1id == "DEFTIM") {
+    if ((this.editdata.N1znr === "0000000100" && frequencyData?.N1id == "DEFTIM") || (this.editdata.N1znr === "0000000003" && frequencyData?.N1id == "DAILY")) {
       const defineDoses = this.editprofileForm.value?.Dosdef ? this.editprofileForm.value.Dosdef.split("-") : [];
       if (defineDoses && defineDoses.length) {
         let deftimDcycleData = [];
