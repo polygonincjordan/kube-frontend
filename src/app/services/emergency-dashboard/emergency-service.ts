@@ -953,6 +953,17 @@ export class EmergencyService {
     }
   }
 
+  getTime(value) {
+    if (value) {
+      var str = value;
+      var str = str.replace(/[PT]/g, '');
+      var str = str.replace(/[H]/g, ':');
+      var str = str.replace(/[M]/g, ':');
+      var str = str.replace(/[S]/g, '');
+      return str;
+    }
+  }
+
   convertDotNetDate(dotNetDate: string): string {
     if(dotNetDate) {
       const timestamp = parseInt(dotNetDate.replace(/\/Date\((\d+)\)\//, '$1'), 10);

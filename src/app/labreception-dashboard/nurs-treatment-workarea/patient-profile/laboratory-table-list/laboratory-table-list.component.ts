@@ -26,6 +26,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     'Order Time',
     'Order Status',
     'Comments',
+    'Created By',
     'Action',
     'Details',
   ];

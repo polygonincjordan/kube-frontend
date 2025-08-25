@@ -18,12 +18,15 @@
                   <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy':'UTC' }}</td>
                   <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm':'UTC' }}</td>
                   <td>{{ emergencyService.getDate(item.DesiredDate) | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ emergencyService.getDate(item.DesiredTime) | date:'HH:mm a' }}</td>
+                  <td>{{ emergencyService.getTime(item.DesiredTime) }}</td>
                   <td>
                     <span class="table-action white-space">{{item.Status ? item.Status : '--'}}</span>
                   </td>
                   <td>
                     <span class="white-space">{{item?.SupplText ? item?.SupplText : '--'}}</span>
+                  </td>
+                  <td>
+                    <span class="white-space">{{item?.CreatedByName ? item?.CreatedByName : '--'}}</span>
                   </td>
                   <td style="text-align: center;">
                     <div style="display: flex; justify-content: end; line-height: 14px">
