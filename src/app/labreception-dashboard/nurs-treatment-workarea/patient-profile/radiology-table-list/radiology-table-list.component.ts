@@ -23,7 +23,11 @@ export class RadiologyTableListComponent implements OnInit, OnChanges {
     'Category',
     'Order Date',
     'Order Time',
+    'Desired Date',
+    'Desired Time',
     'Status',
+    'Created By',
+    'Comments',
     'Action',
   ];
   isCollpseOpen: boolean;

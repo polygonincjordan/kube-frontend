@@ -18,7 +18,9 @@
                 <td>{{item.DeptouDesc}}</td>
                 <td>{{ item.VkgidStatusText == 'Completed' ? 'Completed' : item.VkgidStatusText == 'Confirmed' ? 'Requested' : '' }}</td>
                 <td>{{item.AddInfo}}</td>
-                <td>--</td>
+                <td>
+                    <span class="white-space">{{item?.CreatedByName ? item?.CreatedByName : '--'}}</span>
+                </td>
                 <td>{{ emergencyService.getDate(item.Datetime) | date:'dd/MM/yyyy':'UTC' }}</td>
                 <td>{{ emergencyService.getDate(item.Datetime) | date:'HH:mm':'UTC' }}</td>
                 <td>
