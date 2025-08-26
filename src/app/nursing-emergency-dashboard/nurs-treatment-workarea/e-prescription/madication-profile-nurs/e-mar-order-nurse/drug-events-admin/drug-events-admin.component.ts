@@ -438,7 +438,7 @@ export class DrugEventsAdminComponent implements OnInit {
     }
     const PayloadData = {
       Meevtid: data.Meevtid,
-      Fsource: data.Fsource,
+      Fsource: data.Fsource ?? "",
     }
     this.ePrescriptionService.updateData(`e-prescription/updateFillSource?Meevtid=${data.Meevtid}`, PayloadData).subscribe((resp: any) => {
 
