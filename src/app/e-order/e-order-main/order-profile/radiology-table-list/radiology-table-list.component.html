@@ -24,10 +24,10 @@
                     <span class="table-action">{{item.Status}}</span>
                   </td>
                   <td>
-                    <span class="white-space">{{item?.CreatedByName ? item?.CreatedByName : '--'}}</span>
+                    <span class="white-space">{{item?.SupplText ? item?.SupplText : '--'}}</span>
                   </td>
                   <td>
-                    <span class="white-space">{{item?.SupplText ? item?.SupplText : '--'}}</span>
+                    <span class="white-space">{{item?.CreatedByName ? item?.CreatedByName : '--'}}</span>
                   </td>
                   <td>
                     <img *ngIf="item.Pdf"  (click)="getPdf(item)" class="width-25 mr-1" src="assets/img/emergency-pdf.png" alt="" />
