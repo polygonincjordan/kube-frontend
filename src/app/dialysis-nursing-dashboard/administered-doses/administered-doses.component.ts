@@ -32,7 +32,7 @@ export class AdministeredDosesComponent implements OnInit{
   admittedFrom:any;
   admittedTo:any;
   ERlistDataClone: any = [];
-  asc: boolean;
+  asc: boolean=true;
   triageValueArr: any = [];
   physicianValueArr: any = [];
   statusValueArr: any = [];
@@ -225,6 +225,7 @@ export class AdministeredDosesComponent implements OnInit{
     this.emergencyService.getReceviceCart(fromDate, toDate, timeFrom, timeTo, data.nurseUnit).subscribe({
       next: (res: any) => {
         this.receiveCartData = res.d.results;
+        this.commanSorting('ShipDt');
         if (this.itemOfReceive && this.indexOfReceive.toString()) {
           let data = this.receiveCartData.find((item) => {
             return item.Cartid == this.itemOfReceive.Cartid;
@@ -496,5 +497,37 @@ export class AdministeredDosesComponent implements OnInit{
 
   checkboxChangedMedication(event: any, item: any) {
     this.receiveCartData.find(x => x.CartExtId == item.CartExtId).isChecked = event.target.checked;
+  }
+
+  commanSorting(keyName: string) {
+    if (!this.asc) {
+      this.asc = true;
+      this.receiveCartData.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); 
+        const nameB = b[keyName].toUpperCase(); 
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        return 0;
+      });
+    } else {
+      this.asc = false;
+      this.receiveCartData.sort((a, b) => {
+        const nameA = a[keyName].toUpperCase(); 
+        const nameB = b[keyName].toUpperCase();
+        if (nameA < nameB) {
+          return 1;
+        }
+        if (nameA > nameB) {
+          return -1;
+        }
+
+        return 0;
+      });
+    }
   }
 }
