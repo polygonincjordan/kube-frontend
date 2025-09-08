@@ -11,7 +11,8 @@ import swal from 'sweetalert2';
 export class EPrescriptionService implements OnDestroy {
   public templateDrugList: any;
   TemplateMedDataList: TemplateMedDataList;
-  emardata: any;
+  public emardata: any;
+  public emarevents: any;
   receiveCart: boolean;
   static tabPanelNavigation(arg0: string): import("@angular/router").ResolveData {
     throw new Error('Method not implemented.');
@@ -197,6 +198,7 @@ export class EPrescriptionService implements OnDestroy {
           console.log(resp,"eventData");
           
           if (resp.body && resp.body.d && resp.body.d.results) {
+            this.emarevents=resp.body.d.results;
             this.prescriptionList = { ...this.prescriptionList, eventData: resp.body.d.results };
             console.log(' this.prescriptionList', this.prescriptionList);
             
