@@ -309,10 +309,19 @@ export class AdministeredDosesComponent implements OnInit{
     this.cartList.find(x => x.CartExtId == item.CartExtId).isChecked = event.target.checked;
   }
 
+  selectAllMedication(event: any) {
+    const item = this.childCartDetails;
+    this.cartList.find(x => x.CartExtId==item?.CartExtId).isChecked = event.target.checked;
+    this.childCartDetails?.TOCONTENT?.results.forEach(x => x.isChecked = event.target.checked);
+  }
+
   addReceviceCard(){
    this.cartList.forEach((e)=>{
      if(e.isChecked){
       delete e.isChecked;
+      e.TOCONTENT?.results?.forEach((element)=>{
+        delete element.isChecked;
+      })
       this.emergencyService.addReceviceCart(e).subscribe((res:any)=>{
         if(res){
           this.getReceviceCartList();
