@@ -689,7 +689,7 @@ export class DrugEventsAdminComponent implements OnInit {
       e.Meordid === selectedId &&
       this.getFormattedDateFromPbdad(e.Pbdad) === today
     );
-    if (todayEvents.Meevtid) {
+    if (todayEvents?.Meevtid) {
       this.mainEvent = todayEvents.Meevtid
     }
   }
