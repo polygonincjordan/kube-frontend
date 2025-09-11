@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -36,6 +37,7 @@ export class DrugEventsAdminComponent implements OnInit {
   notadministered: boolean = false;
   addsupply: boolean = false;
   drugreturn: boolean = false;
+  public eventDetails: boolean = false;
   public isFormSubmitted: boolean = false;
   public getUserConfigData: UserConfig;
   public AdminiOrderingList: any[] = [];
@@ -47,7 +49,9 @@ export class DrugEventsAdminComponent implements OnInit {
   public isEndedDisabled: boolean;
   emarActive: boolean = false;
   public RequestStatus: any;
-  constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService) { }
+  public eventDetailList: any;
+  public mainEvent: any;
+  constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService,public emergencyService:EmergencyService) { }
 
   ngOnInit() {
 
@@ -94,6 +98,7 @@ export class DrugEventsAdminComponent implements OnInit {
 
   openModalForDrugsEvents(item, data) {
     this.administratiForm = this.AdministerEventForm(item, data);
+    this.getMainEvent(data.Meordid);
     this.administratiForm.get('AdditionalSupply').patchValue({ Nursingou: this.medicationAdministrative.OrderingTo });
     const config: ModalOptions = { class: 'modal-dialog-centered drug-event' };
     this.modalRef = this.modalService.show(this.drugEventMain, config);
@@ -115,7 +120,8 @@ export class DrugEventsAdminComponent implements OnInit {
     // this.RequestReasonaction()
     this.AdministerMaterialBatch(item)
     this.AdministerDrugReason()
-    this.RequestStataction()
+    this.RequestStataction();
+    this.getEventChangeLogList(item)
     // this.AdministerTimeReason()
     // this.AdministerDoseReason();
   }
@@ -126,30 +132,43 @@ export class DrugEventsAdminComponent implements OnInit {
       this.notadministered = false;
       this.addsupply = false;
       this.drugreturn = false;
+      this.eventDetails=false;
     } else if (item == 'QAdministered') {
       this.administered = false;
       this.qadministered = true;
       this.notadministered = false;
       this.addsupply = false;
       this.drugreturn = false;
+      this.eventDetails=false;
     } else if (item == 'NotAdministered') {
       this.administered = false;
       this.qadministered = false;
       this.notadministered = true;
       this.addsupply = false;
       this.drugreturn = false;
+      this.eventDetails=false;
     } else if (item == 'AddSupply') {
       this.administered = false;
       this.qadministered = false;
       this.notadministered = false;
       this.addsupply = true;
       this.drugreturn = false;
+      this.eventDetails=false;
     } else if (item == 'DrugReturn') {
       this.administered = false;
       this.qadministered = false;
       this.notadministered = false;
       this.addsupply = false;
       this.drugreturn = true;
+      this.eventDetails=false;
+    }
+    else if (item == 'EventDetails') {
+      this.administered = false;
+      this.qadministered = false;
+      this.notadministered = false;
+      this.addsupply = false;
+      this.drugreturn = false;
+      this.eventDetails=true;
     }
   }
   AdministerEventForm(item, data) {
@@ -157,7 +176,7 @@ export class DrugEventsAdminComponent implements OnInit {
     return new FormGroup({
       Fsource: new FormControl(item.Events.Fsource),
       Descr: new FormControl(item.Events.Descr),
-      Descrlt: new FormControl(data.Descrlt),
+      Descrlt: new FormControl(item?.Events?.EventDesc),
       Quan: new FormControl(data.Quan),
       Quanunit: new FormControl(data.Unit),
       N1znr: new FormControl(),
@@ -181,6 +200,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Meresp1: new FormControl(item.Events.Mesid === "600" ? item.Events.Erusr : this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
+        DosageStr: new FormControl(item?.Events?.DosageStr),
       }),
       NotAdminister: new FormGroup({
         Rdrugdq: new FormControl(''),
@@ -196,6 +216,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Quanunit: new FormControl(data.Unit),
         Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
+        DosageStr: new FormControl(item?.Events?.DosageStr),
       }),
       DrugAdminister: new FormGroup({
         Fsource: new FormControl(item.Events.Fsource),
@@ -269,6 +290,7 @@ export class DrugEventsAdminComponent implements OnInit {
   Administerdata() {
     this.isFormSubmitted = true;
     if (this.administered) {
+      if (this.mainEvent) this.administratiForm.get('Administrator.Meevtid').setValue(this.mainEvent);
       if ((this.administratiForm.get('Administrator').get('Prncond').value === '' && this.administratiForm.get('Administrator').get('Prn').value) || (!this.administratiForm.get('Administrator').get('Prn').value && this.administratiForm.get('Administrator').get('Prncond').value !== '')) {
         this.showErrorPopup(null, 'Confirmation that administration conditions were checked, is required!', 'Error')
       } else {
@@ -296,7 +318,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
                             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
                           }
-                          const { Quanunit, Prncond, ...payload } = PayloadData;
+                          const { Quanunit,DosageStr, Prncond, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been Administered!", payload)
                         }
 
@@ -327,6 +349,7 @@ export class DrugEventsAdminComponent implements OnInit {
     }
     else if (this.notadministered) {
       if (this.notadministered) {
+        if (this.mainEvent) this.administratiForm.get('NotAdminister.Meevtid').setValue(this.mainEvent);
         if (this.administratiForm.get('Secwitness').value === 'X') {
           this.showErrorPopup(null, 'Witness is required to administer the drug', 'Warn').then(
             (result) => {
@@ -351,7 +374,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
-                          const { Quanunit, ...payload } = PayloadData;
+                          const { Quanunit,DosageStr, ...payload } = PayloadData;
                           this.AdministerEventaction("The event has been NotAdminustered!", payload)
                         }
                       },
@@ -437,11 +460,16 @@ export class DrugEventsAdminComponent implements OnInit {
       this.isDisabledFsource = true;
     }
     const PayloadData = {
-      Meevtid: data.Meevtid,
-      Fsource: data.Fsource,
+      d: {
+        Meevtid: data.Meevtid,
+        Fsource: data.Fsource ?? ""
+      }
     }
-    this.ePrescriptionService.updateData(`e-prescription/updateFillSource?Meevtid=${data.Meevtid}`, PayloadData).subscribe((resp: any) => {
-
+    this.ePrescriptionService.postData(`e-prescription/updateFillSourcepost`, PayloadData).subscribe((resp: any) => {
+      const subevt = resp?.body?.d?.Subevt;
+      if (subevt) {
+        this.mainEvent = subevt
+      }
     });
   }
 
@@ -647,5 +675,53 @@ export class DrugEventsAdminComponent implements OnInit {
       customClass: 'myalertpopup',
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
     });
+  }
+
+  private getMainEvent(selectedId?: any): void {
+    if (!selectedId) return;
+
+    const { emarevents: events, emardata: data } = this.ePrescriptionService;
+    if (!events || !data) return;
+
+    const prnIds = new Set(data.filter(d => d.Prn).map(d => d.Meordid));
+    const today = this.getFormattedDate(new Date());
+
+    const todayEvents = events.find(e =>
+      prnIds.has(e.Meordid) &&
+      e.Mastev === "0000000000" &&
+      e.Meordid === selectedId &&
+      this.getFormattedDateFromPbdad(e.Pbdad) === today
+    );
+    if (todayEvents.Meevtid) {
+      this.mainEvent = todayEvents.Meevtid
+    }
+  }
+
+  private getFormattedDateFromPbdad(date: string): string | null {
+    if (date) {
+      const timestamp = date.replace('/Date(', '').replace(')/', '');
+      return new DatePipe('en-US').transform(+timestamp, 'dd.MM.yyyy');
+    }
+    return null;
+  }
+
+  private getFormattedDate(date: Date): string | null {
+    return new DatePipe('en-US').transform(date, 'dd.MM.yyyy');
+  }
+
+  private getEventChangeLogList(item: any):void {
+    const Meevtid = item.Events.Meevtid;
+    this.ePrescriptionService.getData(`e-prescription/EventChangeLogListSet?Meevtid=${Meevtid}`).subscribe((resp: any) => {
+      this.eventDetailList = resp.body.d.results;
+    });
+  }
+
+  public getDate(value:any) {
+    if (value) {
+      var str = value;
+      var num = parseInt(str.replace(/[^0-9]/g, ''));
+      var date = new Date(num);
+      return date;
+    }
   }
 }

@@ -46,13 +46,16 @@
             class="span-dr">Drug
             Return</span>
         </button>
+        <div [ngClass]="eventDetails ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('EventDetails')">
+          <span>Event's Details</span>
+        </div>
       </div>
       <div class="col-md-9" style="font-weight: bold;color:#69727b">
-        <form action="" [formGroup]="administratiForm">
+        <form action="" [formGroup]="administratiForm" *ngIf="!eventDetails">
           <div style="border-bottom: 2px solid;">
             <div class="mb-1 d-flex justify-content-between">
               <div class=" d-flex m-0 p-0 w-100">
-                <label for="inputPassword" class="col-form-label addMedia w-15 mr-3">Medication</label>
+                <label for="inputPassword" class="col-form-label addMedia w-15 mr-3">Event Description</label>
                 <input type="text" class="form-control event-font w-60 data" id="inputPassword" formControlName="Descrlt" readonly>
               </div>
               <div class=" w-50">
@@ -67,7 +70,7 @@
               </div>
             </div>
             <div class="mb-1 d-flex justify-content-between">
-              <label for="inputPassword" class=" col-form-label w-13 mar-data">Planned Dose</label>
+              <label for="inputPassword" class=" col-form-label w-13 mar-data px-1">Planned Dose</label>
               <div class=" mr-3 dose-data" style="width: 45.5%; margin-left: 8px;">
                 <input type="text" class="form-control event-font data" id="inputPassword" formControlName="Admindose" readonly>
               </div>
@@ -87,7 +90,7 @@
               <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
               <div class="w-47 mr-3">
                 <div class="d-flex">
-                  <div class=" w-100">
+                  <div class="w-25">
                     <!-- <ng-select [searchable]="true" formControlName="Quanunit" class="event-font">
                       <ng-option *ngFor=" let medicationDurationUnit of
                             addministrationService.durationUnitList" [value]="administratiForm.value.Unit">
@@ -96,10 +99,18 @@
                     </ng-select> -->
                     <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Rdrugdq">
                   </div>
-                  <div class="ml-1 w-100">
+                  <div class="ml-1 w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Quanunit"
                       readonly>
                   </div>
+                  <div class="ml-1 w-100 d-flex justify-content-between">
+                        <div class="mb-1 d-flex justify-content-between">
+                          <label for="inputPassword" class="col-form-label w-100 ml-2">Dosage Strength</label>
+                          <div class="w-100 mr-3 ">
+                            <input type="text" class="form-control event-font" id="inputPassword" readOnly formControlName="DosageStr" readonly>
+                          </div>
+                        </div>
+                      </div>
                 </div>
               </div>
               <label for="inputPassword" class=" col-form-label w-15">Change Reason</label>
@@ -194,12 +205,20 @@
               <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
               <div class="w-47 mr-3">
                 <div class="d-flex">
-                  <div class=" w-100">
+                  <div class=" w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" formControlName="Rdrugdq" readonly>
                   </div>
-                  <div class="ml-1 w-100">
+                  <div class="ml-1 w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" formControlName="Quanunit" readonly>
                   </div>
+                  <div class="ml-1 w-100 d-flex justify-content-between">
+                        <div class="mb-1 d-flex justify-content-between">
+                          <label for="inputPassword" class="col-form-label w-100 ml-2">Dosage Strength</label>
+                          <div class="w-100 mr-3 ">
+                            <input type="text" class="form-control event-font" id="inputPassword" readOnly formControlName="DosageStr" readonly>
+                          </div>
+                        </div>
+                    </div>
                 </div>
               </div>
               <label for="inputPassword" class=" col-form-label w-15">Change Reason</label>
@@ -374,6 +393,31 @@
             <button class="save-risk d-flex align-items-center" (click)="modalRef.hide()">Cancel</button>
           </div>
         </form>
+
+          <!-- Event's Details -->
+        <div class="mt-2" *ngIf="eventDetails">
+          <table class="table table-hover">
+            <thead >
+              <tr>
+                <th colspan="1" scope="col" >Event Number</th>
+                <th colspan="1" scope="col" >Status</th>
+                <th colspan="1" scope="col" >Date</th>
+                <th colspan="1" scope="col" >Time</th>
+                <th colspan="1" scope="col" >User Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let event of eventDetailList" class="fw-semibold" >
+                <td colspan="1" >{{ event?.Meevtid }}</td>
+                <td colspan="1" >{{ event?.MesidDesc }}</td>
+                <td colspan="1" >{{ getDate(event.Erdat) | date : "dd.MM.yyyy" }}</td>
+                <td colspan="1" >{{ emergencyService.getTime(event.Ertim)}}</td>
+                <td colspan="1" >{{ event.Notgiven?'Not Given':event.ErusrNm }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
   </div>

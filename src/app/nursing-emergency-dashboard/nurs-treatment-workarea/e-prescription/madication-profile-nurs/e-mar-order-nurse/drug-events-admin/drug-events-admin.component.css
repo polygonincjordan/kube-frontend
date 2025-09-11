@@ -93,3 +93,23 @@
     width:14% !important ;
   }
 }
+
+table {
+  border-spacing: 0px;
+  table-layout: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+thead {
+  background: #e4edf5 !important;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+tbody {
+  background-color: #fbfcff;
+}

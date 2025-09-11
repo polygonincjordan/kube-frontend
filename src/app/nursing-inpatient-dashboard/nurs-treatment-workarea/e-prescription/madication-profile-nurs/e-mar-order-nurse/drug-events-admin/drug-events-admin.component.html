@@ -37,6 +37,12 @@
         <div [ngClass]="notadministered ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'" (click)="changeEvents('NotAdministered')">
           <span>Not Administered</span>
         </div>
+
+        <button class="w-100 color-data"
+          [ngClass]="eventsDetails ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
+          (click)="changeEvents('EventsDetails')">
+          <span class="span-dr">Event's Details</span>
+        </button>
         <!-- <button [disabled]="isDisabledFsource" class="w-100 color-data" [ngClass]="addsupply ? 'events-leftbar-active mb-3' : 'events-leftbar-inactive mb-3'"
           (click)="changeEvents('AddSupply')">
           <span class="span-dr">Additional Supply</span>
@@ -49,10 +55,10 @@
       </div>
       <div class="col-md-9" style="font-weight: bold;color:#69727b">
         <form action="" [formGroup]="administratiForm">
-          <div style="border-bottom: 2px solid;">
+          <div style="border-bottom: 2px solid;" *ngIf="!eventsDetails">
             <div class="mb-1 d-flex justify-content-between">
               <div class=" d-flex m-0 p-0 w-100">
-                <label for="inputPassword" class="col-form-label addMedia w-15 mr-3">Medication</label>
+                <label for="inputPassword" class="col-form-label addMedia w-15 mr-3 text-nowrap">Event Description</label>
                 <input type="text" class="form-control event-font w-60 data" id="inputPassword" formControlName="Descrlt" readonly>
               </div>
               <div class=" w-50">
@@ -66,9 +72,9 @@
                 </ng-select> -->
               </div>
             </div>
-            <div class="mb-1 d-flex justify-content-between">
+            <div class="mb-1 d-flex justify-content-between px-1">
               <label for="inputPassword" class=" col-form-label w-13 mar-data">Planned Dose</label>
-              <div class=" mr-3 dose-data" style="width: 45.5%; margin-left: 8px;">
+              <div class=" mr-3 dose-data" style="width: 45.5%; margin-left: 5px;">
                 <input type="text" class="form-control event-font data" id="inputPassword" formControlName="Admindose" readonly>
               </div>
 
@@ -85,9 +91,9 @@
           <div class="mt-2" *ngIf="administered" formGroupName="Administrator">
             <div class="mb-1 d-flex justify-content-between">
               <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
-              <div class="w-47 mr-3">
+              <div class="w-50 mr-3">
                 <div class="d-flex">
-                  <div class=" w-100">
+                  <div class=" w-25">
                     <!-- <ng-select [searchable]="true" formControlName="Quanunit" class="event-font">
                       <ng-option *ngFor=" let medicationDurationUnit of
                             addministrationService.durationUnitList" [value]="administratiForm.value.Unit">
@@ -96,9 +102,15 @@
                     </ng-select> -->
                     <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Rdrugdq">
                   </div>
-                  <div class="ml-1 w-100">
-                    <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Quanunit"
+                  <div class="ml-1 w-100 d-flex justify-content-between">
+                    <input type="text" class="form-control event-font w-25" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Quanunit"
                       readonly>
+                    <div class="mb-1 d-flex justify-content-between">
+                      <label for="inputPassword" class="col-form-label w-100 ml-2">Dosage Strength</label>
+                      <div class="w-100 mr-3 ">
+                        <input type="text" class="form-control event-font" id="inputPassword" readOnly formControlName="DosageStr" readonly>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -194,11 +206,19 @@
               <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
               <div class="w-47 mr-3">
                 <div class="d-flex">
-                  <div class=" w-100">
+                  <div class=" w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" formControlName="Rdrugdq" readonly>
                   </div>
-                  <div class="ml-1 w-100">
+                  <div class="ml-1 w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" formControlName="Quanunit" readonly>
+                  </div>
+                  <div class="ml-1 w-100 d-flex justify-content-between">
+                    <div class="mb-1 d-flex justify-content-between">
+                      <label for="inputPassword" class="col-form-label w-100 ml-2">Dosage Strength</label>
+                      <div class="w-100 mr-3 ">
+                        <input type="text" class="form-control event-font" id="inputPassword" readOnly formControlName="DosageStr" readonly>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -374,6 +394,30 @@
             <button class="save-risk d-flex align-items-center" (click)="modalRef.hide()">Cancel</button>
           </div>
         </form>
+
+        <!-- Event's Details -->
+        <div class="mt-2" *ngIf="eventsDetails">
+          <table class="table table-hover">
+            <thead >
+              <tr>
+                <th colspan="1" scope="col" >Event Number</th>
+                <th colspan="1" scope="col" >Status</th>
+                <th colspan="1" scope="col" >Date</th>
+                <th colspan="1" scope="col" >Time</th>
+                <th colspan="1" scope="col" >User Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let event of eventDetailList" class="fw-semibold" >
+                <td colspan="1" >{{ event?.Meevtid }}</td>
+                <td colspan="1" >{{ event?.MesidDesc }}</td>
+                <td colspan="1" >{{ getDate(event.Erdat) | date : "dd.MM.yyyy" }}</td>
+                <td colspan="1" >{{ emergencyService.getTime(event.Ertim)}}</td>
+                <td colspan="1" >{{ event.Notgiven?'Not Given':event.ErusrNm }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
