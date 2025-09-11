@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 
@@ -75,7 +76,7 @@ export class PhysicianOrderListComponent implements OnInit {
       action: 'active',
     },
   ];
-  constructor(private modalService: BsModalService,private _hospitallistService: HospitalistService) {}
+  constructor(private modalService: BsModalService,private _hospitallistService: HospitalistService,public emergencyService: EmergencyService) {}
 
   ngOnInit(): void {
     this.physicianList = [1,2,3,4];

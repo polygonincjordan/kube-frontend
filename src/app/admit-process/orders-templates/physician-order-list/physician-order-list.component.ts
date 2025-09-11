@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, TemplateRef, Output, EventEmitter } from '@angular/core';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 
@@ -17,7 +18,7 @@ export class PhysicianOrderListComponent implements OnInit {
   cancelReasonValue: any = '';
   errmsg: string;
   cancelReasonListData: any;
-  constructor(private modalService: BsModalService,private _hospitallistService: HospitalistService) {}
+  constructor(private modalService: BsModalService,private _hospitallistService: HospitalistService, public emergencyService: EmergencyService) {}
 
   ngOnInit(): void {
     this.cancelReasonList();

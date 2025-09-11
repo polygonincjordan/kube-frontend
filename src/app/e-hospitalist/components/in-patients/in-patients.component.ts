@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError, of, retry, throwError } from 'rxjs';
 import { StorageService } from '@services/storage.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @UntilDestroy()
 @Component({
@@ -55,6 +56,7 @@ export class InPatientsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private storageService: StorageService,
     private _hospitallistService: HospitalistService,
+    public emergencyService: EmergencyService
   ) {}
 
   ngOnInit(): void {

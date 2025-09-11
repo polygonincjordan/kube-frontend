@@ -380,21 +380,21 @@
         <table class="table table-bordered table-hover phyorder-table">
           <thead class="table-thead">
             <tr>
-              <th class="col-2">Created On</th>
+              <th class="col-2">Order Date/Time</th>
               <th class="col-1">Status</th>
               <th style="white-space: nowrap;" class="col-2">Occupational Group</th>
               <th class="col-2">Employee</th>
+              <th class="col-2">Excecute On</th>
               <th class="col-5">Physician Order</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let phyOrder of physicianOrderList" class="font-weight-bold">
-              <td>
-                {{ getDate(phyOrder.CreationDate) | date : "dd.MM.yyyy" }}
-              </td>
+              <td colspan="1">{{ getDate(phyOrder.CreationDate) | date : "d.MM.y" }} / {{ emergencyService.getTime(phyOrder.CreationTime) }}</td>
               <td>{{ phyOrder.StatusText }}</td>
               <td>{{ phyOrder?.ProfessionalGroupText }}</td>
               <td>{{ phyOrder.EmployeeRespName }}</td>
+              <td colspan="2">{{ getDate(phyOrder.ChangeDate) | date : "d.MM.y" }} / {{ emergencyService.getTime(phyOrder.ChangeTime) }}</td>
               <td [title]="phyOrder.ZphysOrder"><p class="show-two-line m-0">{{ phyOrder.ZphysOrder }}</p></td>
             </tr>
           </tbody>

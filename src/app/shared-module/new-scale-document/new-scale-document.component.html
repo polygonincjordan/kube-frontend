@@ -23,12 +23,12 @@
                         <div class="col-6 px-0 mb-2">
                             <div class="row align-items-center w-100 custom-input">
                                 <label for="" class="text-nowrap m-0 col-2">Date</label>
-                                <input type="text" class="col-2" bsDatepicker
+                                <input type="text" class="col-2" bsDatepicker formControlName="Datee"
                                     [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
-                                    [bsValue]="CurrentDateAndTime" disabled>
-                                <input type="text" class="col-2" bsDatepicker
-                                    [bsConfig]="{ dateInputFormat: 'hh:mm:ss', showWeekNumbers: false }"
-                                    [bsValue]="CurrentDateAndTime" disabled>
+                                    [bsValue]="CurrentDateAndTime">
+
+                                <!-- <input type="time" step="2" class="col-2"  formControlName="Timee"> -->
+                                <input type="time" step="2" class="col-2" placeholder="HH:mm:ss" min="08:00:00" max="17:00:00" id="surgery-time" formControlName="Timee" />
                             </div>
                         </div>
 

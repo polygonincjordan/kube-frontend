@@ -161,8 +161,8 @@ export class ProgressNotesComponent implements OnInit {
         ActionTime: formGroup.ActionTime,
         DocumentOu: this.progressNoteForm.value.DocumentOu,
         DocumentOuName: this.selectedProgressNote.DocumentOuName,
-        EmployeeResp: this.progressNoteForm.value.EmployeeResp,
-        EmployeeRespName: this.selectedProgressNote.EmployeeRespName,
+        EmployeeResp: this.userProfileDetail?.Gpart,
+        EmployeeRespName: this.userProfileDetail?.EmployeeName,
         ProfGroup: this.progressNoteForm.value.ProfGroup,
         ProfGroupName: this.selectedProgressNote.ProfGroupName,
         Text: this.progressNoteForm.value.Text,
@@ -211,7 +211,7 @@ export class ProgressNotesComponent implements OnInit {
         const actionDate = new Date(formGroup.ActionDate);
         actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
         formGroup.ActionDate = actionDate.toISOString().split('.')[0];
-  
+        formGroup.EmployeeResp = this.userProfileDetail?.Gpart;
         this._dataServices.createProgressEntry(formGroup)
           .subscribe(
             (_success: any) => {

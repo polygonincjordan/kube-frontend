@@ -150,6 +150,7 @@ export class ProgressNoteComponent implements OnInit {
           const actionDate = new Date(this.progressNoteForm.value.ActionDate);
           actionDate.setHours(parseInt(createTime[0]), parseInt(createTime[1]), 0, 0);
           this.progressNoteForm.value.ActionDate = actionDate.toISOString().split('.')[0];
+          this.progressNoteForm.value.EmployeeResp = this.userProfileDetail?.Gpart;
         this._dataServices
           .createProgressEntry(this.progressNoteForm.value)
           .subscribe(

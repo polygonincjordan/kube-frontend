@@ -439,10 +439,11 @@
             z-index: 9;
             ">
             <tr>
-              <th colspan="1" scope="col">Created On</th>
+              <th colspan="1" scope="col">Order Date/Time</th>
               <th colspan="1" scope="col">Status</th>
               <th colspan="2" scope="col">Occupational Group</th>
               <th colspan="2" scope="col">Employee</th>
+              <th colspan="2" scope="col">Excecute On</th>
               <th colspan="4" scope="col">Physician Order</th>
               <th colspan="1" scope="col">Action</th>
             </tr>
@@ -450,11 +451,11 @@
           <tbody>
             <tr *ngFor="let phyOrder of physicianOrderList" style="font-weight:
               bold">
-              <td colspan="1">{{ getDate(phyOrder.CreationDate) | date :
-                "d.MM.y" }}</td>
+              <td colspan="1">{{ getDate(phyOrder.CreationDate) | date : "d.MM.y" }} / {{ emergencyService.getTime(phyOrder.CreationTime) }}</td>
               <td colspan="1">{{ phyOrder.StatusText }}</td>
               <td colspan="2">{{ phyOrder?.ProfessionalGroupText }}</td>
               <td colspan="2">{{ phyOrder.EmployeeRespName }}</td>
+              <td colspan="2">{{ getDate(phyOrder.ChangeDate) | date : "d.MM.y" }} / {{ emergencyService.getTime(phyOrder.ChangeTime) }}</td>
               <td colspan="4">{{ phyOrder.ZphysOrder }}</td>
               <td colspan="1" style="text-align: center; overflow: visible
                 !important">

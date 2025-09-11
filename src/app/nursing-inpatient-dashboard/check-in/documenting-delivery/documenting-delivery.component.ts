@@ -80,7 +80,7 @@ export class DocumentingDeliveryComponent implements OnInit {
     { value: '3', label: 'Upon Arrival to Hospital' },
     { value: '2', label: 'While transfer to other center' },
   ];
-  
+
   headerData: any;
   deliveryForm: FormGroup;
   TOPATDEL: FormArray;
@@ -164,6 +164,11 @@ export class DocumentingDeliveryComponent implements OnInit {
     return this.TOPATDELMain?.at(2) as FormGroup;
   }
   public openModalForDelivery(text, data: any) {
+    this.apgar = [];
+    this.apgar = [
+      { value: '0', label: '0 = Very Bad' },
+      { value: '10', label: '10 = Very Good' },
+    ];
     this.headerData = data;
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl allergy-modal-size',
@@ -175,7 +180,11 @@ export class DocumentingDeliveryComponent implements OnInit {
 
   getPatientDeliveryDetails() {
     this.emergencyService
-      .fetchPatientDeliveryDetail(this.data?.CaseNumber ? this.data?.CaseNumber : this.headerData?.CaseNumber)
+      .fetchPatientDeliveryDetail(
+        this.headerData?.CaseNumber
+          ? this.headerData?.CaseNumber
+          : this.data?.CaseNumber
+      )
       .subscribe((res) => {
         this.bindDeliveryData(res);
       });
@@ -211,6 +220,12 @@ export class DocumentingDeliveryComponent implements OnInit {
     if (!result) return;
 
     const deliveryItems = result?.TOPATDEL?.results || [];
+
+    deliveryItems.forEach((item) => {
+      this.ensureApgarValue(item?.Bwert);
+      this.ensureApgarValue(item?.Bwert5);
+      this.ensureApgarValue(item?.Bwert10);
+    });
 
     this.deliveryForm = this.formBuilder.group({
       Faln1: result?.Faln1,
@@ -262,6 +277,12 @@ export class DocumentingDeliveryComponent implements OnInit {
 
     while (formArray.length < 3) {
       formArray.push(this.createNewOrder());
+    }
+  }
+
+  private ensureApgarValue(val: any) {
+    if (val && !this.apgar.find((x) => x.value == val)) {
+      this.apgar = [...this.apgar, { label: val, value: val }];
     }
   }
 
@@ -323,4 +344,12 @@ export class DocumentingDeliveryComponent implements OnInit {
     return (createTime =
       'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S');
   }
+
+  addCustomValue = (term: string) => {
+    console.log(term, 'term');
+
+    const newItem = { label: term, value: term };
+    this.apgar.push(newItem);
+    return newItem;
+  };
 }

@@ -10,10 +10,11 @@ border-spacing: 2px;">
     "
   >
     <tr>
-      <th colspan="1" scope="col">Order Date</th>
+      <th colspan="2" scope="col">Order Date / Time</th>
       <th colspan="1" scope="col">Status</th>
       <th colspan="2" scope="col">Occupational Group</th>
       <th colspan="2" scope="col">Created By</th>
+      <th colspan="2" scope="col">Executed On</th>
       <th colspan="2" scope="col">Executed By</th>
       <th colspan="4" scope="col">Physician Order</th>
       <th colspan="1" scope="col">Action</th>
@@ -21,13 +22,14 @@ border-spacing: 2px;">
   </thead>
   <tbody style="background-color: #fbfcff;">
     <tr *ngFor="let phyOrder of physicianOrderList" style="font-weight: 600">
-      <td colspan="1">{{ getDate(phyOrder.CreationDate) | date : "d.MM.y" }}</td>
+      <td colspan="2">{{ getDate(phyOrder.CreationDate) | date : "d.MM.y" }} / {{ emergencyService.getTime(phyOrder.CreationTime) }}</td>
       <td colspan="1"><span style="background: #fff5eb;
         padding: 9px 14px;
         border-radius: 34px;
         color: #ab5c14;">{{ phyOrder.StatusText }}</span></td>
       <td colspan="2">{{ phyOrder?.ProfessionalGroupText }}</td>
       <td colspan="2">{{ phyOrder.CreationUser  }}</td>
+      <td colspan="2">{{ getDate(phyOrder.ChangeDate) | date : "d.MM.y" }} / {{ emergencyService.getTime(phyOrder.ChangeTime) }}</td>
       <td colspan="2">{{ phyOrder.ChangeUser }}</td>
       <td colspan="4">{{ phyOrder.ZphysOrder }}</td>
       <td colspan="1" style="text-align: center; overflow: visible !important">

@@ -205,7 +205,11 @@ export class DocumentingDeliveryComponent implements OnInit {
     if (!result) return;
 
     const deliveryItems = result?.TOPATDEL?.results || [];
-
+    deliveryItems.forEach((item) => {
+      this.ensureApgarValue(item?.Bwert);
+      this.ensureApgarValue(item?.Bwert5);
+      this.ensureApgarValue(item?.Bwert10);
+    });
     this.deliveryForm = this.formBuilder.group({
       Faln1: result?.Faln1,
       Patnr: result?.Patnr,
@@ -297,6 +301,12 @@ export class DocumentingDeliveryComponent implements OnInit {
       this.modalRefForAllergy?.hide();
       this.reloadCheckin.next(true);
     })
+  }
+
+  private ensureApgarValue(val: any) {
+    if (val && !this.apgar.find((x) => x.value == val)) {
+      this.apgar = [...this.apgar, { label: val, value: val }];
+    }
   }
 
   sanitizeSAPDateFormat(date: any) {

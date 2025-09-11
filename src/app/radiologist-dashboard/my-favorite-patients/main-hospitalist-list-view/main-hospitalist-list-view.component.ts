@@ -84,7 +84,7 @@ export class MainHospitalistListViewComponent implements OnInit, OnChanges {
   constructor(
     private _dataServices: EEmrService,
     private storageService: StorageService,
-    private emergencyService: EmergencyService,
+    public emergencyService: EmergencyService,
     private hospitalistService: HospitalistService,
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
