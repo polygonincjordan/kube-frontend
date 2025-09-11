@@ -165,8 +165,8 @@ export class ProgressNotesComponent implements OnInit {
         ActionTime: formGroup.ActionTime,
         DocumentOu: this.progressNoteForm.value.DocumentOu,
         DocumentOuName: this.selectedProgressNote.DocumentOuName,
-        EmployeeResp: this.progressNoteForm.value.EmployeeResp,
-        EmployeeRespName: this.selectedProgressNote.EmployeeRespName,
+        EmployeeResp: this.userProfileDetail?.Gpart,
+        EmployeeRespName: this.userProfileDetail?.EmployeeName,
         ProfGroup: this.progressNoteForm.value.ProfGroup,
         ProfGroupName: this.selectedProgressNote.ProfGroupName,
         Text: this.progressNoteForm.value.Text,
@@ -209,6 +209,7 @@ export class ProgressNotesComponent implements OnInit {
     if (this.progressNoteForm.value.ProfGroup) {
       if (this.progressNoteForm.value.Text) {
         let formGroup = {...this.progressNoteForm.value};
+        formGroup.EmployeeResp = this.userProfileDetail?.Gpart;
         let createTime = formGroup.ActionTime.split(':');
         formGroup.ActionTime =
           'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S';

@@ -451,10 +451,15 @@ export class ErVitalsComponent implements OnInit {
    return this.maintainvitalform.get('maintainVitalFormitems') as FormArray;
 }
   updateVitalSigns(){
+    let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
     const json ={
       "Obsid" : this.selectedColData.Obsid,
       "ObsidVers" : this.selectedColData.ObsidVers,
       "Stoid" : this.selectedColData.Stoid,
+      "Odate": createDate,
+        "Otime": createTime,
       "TOITEM" : this.maintainVitalFormitems.value
     }
     this.emergencyService.updateVitalSigns(json).subscribe(

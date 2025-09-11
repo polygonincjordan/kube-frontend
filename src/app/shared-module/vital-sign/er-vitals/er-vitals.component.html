@@ -90,7 +90,7 @@
         <div class="top-header-vital-sign justify-content-between align-content-center">
           <h3 class="header-heading m-0">Maintain Vital Signs </h3>
           <div class="d-flex">
-            <li class="icon-pdf" style="background-color: white;"><img src="assets/img/file2.svg" (click)="actionVitalSigns()" title="Save"> </li>
+            <li class="icon-pdf" style="background-color: white;"><img src="assets/img/file2.svg" (click)="actionVitalSigns(changeReasonVitalSignModal)" title="Save"> </li>
             <li class="close-icon"><img class="img-size w-80" src="assets/img/CloseTab.svg" (click)="closeMaintain()"> </li>
           </div>
         </div>
@@ -357,5 +357,32 @@
         </div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #changeReasonVitalSignModal>
+  <div class="modal-body p-0">
+    <form>
+      <div class="infoModel-title" style="background:#0056b0">
+        <h4 class="m-0 pl-3">Change Reason Vital Signs</h4>
+      </div>
+      <div class="infoModel-contant p-3">
+        <label>Are you sure you want to Change this Vital Signs</label>
+        <select class="form-control" [(ngModel)]="cancelReasonValue" (ngModelChange)="onChange($event)" [ngModelOptions]="{standalone: true}">
+          <option selected value="">Reason for change</option>
+          <option *ngFor="let reason of deleteReasonsListData" [value]="reason.Stoid" >{{reason.N1stotx}}</option>
+        </select>
+        <div *ngIf="cancelReasonValue == '' && isFormSubmitted">
+          <p class="emr-error-message">Select a Reason for Change</p>
+        </div>
+      </div>
+      <div class="p-2 d-flex justify-content-end align-items-center" >
+        <!-- <label>Note: Deleting will remove it permanently</label> -->
+        <div>
+          <button type="button" class="remove-progressnote-btn ml-2" (click)="updateVitalSigns()" style="background:#0056b0">Change</button>
+          <button type="button" class="remove-progressnote-btn ml-2" (click)="modalRefForDelete.hide()" style="background:#0056b0">Cancel</button>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>

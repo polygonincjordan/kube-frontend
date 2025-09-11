@@ -811,10 +811,17 @@ export class ErVitalsComponentComman implements OnInit {
     return this.maintainvitalform.get('maintainVitalFormitems') as FormArray;
   }
   updateVitalSigns() {
+     this.isFormSubmitted = true;
+    if (this.cancelReasonValue !== '') {
+    let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
+    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
     const json = {
       "Obsid": this.selectedColData.Obsid,
       "ObsidVers": this.selectedColData.ObsidVers,
-      "Stoid": this.selectedColData.Stoid,
+      "Stoid": this.cancelReasonValue,
+      "Odate": createDate,
+      "Otime": createTime,
       "TOITEM": this.maintainVitalFormitems.value
     }
     this.emergencyService.updateVitalSigns(json).subscribe(
@@ -822,7 +829,10 @@ export class ErVitalsComponentComman implements OnInit {
         this.getVitalList();
         this.resetAllMaintainValues();
         this.showMaintain = false
-        
+          //this.modalRef.hide();
+          this.modalRefForDelete.hide();
+          this.cancelReasonValue = '';
+          this.isSelected = false;
         Swal.fire({
           text: "Vital signs updated successfully",
           icon: 'success',
@@ -832,6 +842,7 @@ export class ErVitalsComponentComman implements OnInit {
       },
       (_error: any) => { }
     );
+  }
   }
   createVitalSigns() {
     let EnteredvitalArr = [];
@@ -927,12 +938,19 @@ export class ErVitalsComponentComman implements OnInit {
     this.maintainvitalform.controls['maintainVitalFormitems']['controls'][this.selectedIndex]['controls'].UnitTxt.setValue(item.UnitTxt);
     this.maintainvitalform.controls['maintainVitalFormitems']['controls'][this.selectedIndex]['controls'].Bcpid.setValue(item.Bcpid);
   }
-  actionVitalSigns() {
+  actionVitalSigns(template?) {
     if (this.edit) {
-      this.updateVitalSigns();
+      this.confirmationForChange(template);
+      // this.updateVitalSigns();
     } else {
       this.createVitalSigns();
     }
+  }
+  confirmationForChange(template: TemplateRef<any>) {
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered',
+    };
+    this.modalRefForDelete = this.modalService.show(template, config);
   }
   rowDelete(item, index) {
     this.selectedRowDelete = item.value;

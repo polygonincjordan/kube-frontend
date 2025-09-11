@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
 @Component({
   selector: 'app-physician-order-list',
@@ -65,7 +66,7 @@ export class PhysicianOrderListComponent implements OnInit {
       action: 'active',
     },
   ];
-  constructor() {}
+  constructor(public emergencyService: EmergencyService) {}
 
   ngOnInit(): void {
     this.physicianList = [1,2,3,4]

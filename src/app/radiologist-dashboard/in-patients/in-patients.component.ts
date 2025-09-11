@@ -184,7 +184,7 @@ export class InPatientsComponent implements OnInit {
     private _dataServices: EEmrService,
     private formBuilder: FormBuilder,
     private storageService: StorageService,
-    private emergencyService: EmergencyService,
+    public emergencyService: EmergencyService,
     private hospitalistService: HospitalistService,
     public missedMedicationService: MissedMedicationDosesService,
     public sharedService: SharedService,

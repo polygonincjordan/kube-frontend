@@ -7,6 +7,7 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 
@@ -27,7 +28,8 @@ export class PhysicianOrderListComponent implements OnInit {
   cancelReasonListData: any;
   constructor(
     private modalService: BsModalService,
-    private _hospitallistService: HospitalistService
+    private _hospitallistService: HospitalistService,
+    public emergencyService: EmergencyService
   ) {}
 
   ngOnInit(): void {
