@@ -87,22 +87,24 @@
           <!-- admin -->
           <div class="mt-2" *ngIf="administered" formGroupName="Administrator">
             <div class="mb-1 d-flex justify-content-between">
-              <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
+              <!-- <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label> -->
+              <label for="inputPassword" class=" col-form-label w-14">Amount Prescribed</label>
               <div class="w-47 mr-3">
                 <div class="d-flex">
-                  <div class="w-25">
+                  <div class="w-100"> 
                     <!-- <ng-select [searchable]="true" formControlName="Quanunit" class="event-font">
                       <ng-option *ngFor=" let medicationDurationUnit of
                             addministrationService.durationUnitList" [value]="administratiForm.value.Unit">
                         {{ medicationDurationUnit.Text }}
                       </ng-option>
                     </ng-select> -->
-                    <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Rdrugdq">
+                    <!-- <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Rdrugdq"> -->
+                    <input type="text" class="form-control event-font" id="inputPassword" formControlName="AmountPrescribed" readonly>
                   </div>
-                  <div class="ml-1 w-25">
+                  <!-- <div class="ml-1 w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" [readOnly]="isEndedDisabled" formControlName="Quanunit"
                       readonly>
-                  </div>
+                  </div> -->
                   <div class="ml-1 w-100 d-flex justify-content-between">
                         <div class="mb-1 d-flex justify-content-between">
                           <label for="inputPassword" class="col-form-label w-100 ml-2">Dosage Strength</label>
@@ -202,14 +204,18 @@
           <!-- not admin -->
           <div class="mt-2" *ngIf="notadministered" formGroupName="NotAdminister">
             <div class="mb-1 d-flex justify-content-between">
-              <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label>
+              <!-- <label for="inputPassword" class=" col-form-label w-14">Admin Dose</label> -->
+              <label for="inputPassword" class=" col-form-label w-14">Amount Prescribed</label>
               <div class="w-47 mr-3">
                 <div class="d-flex">
-                  <div class=" w-25">
+                  <!-- <div class=" w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" formControlName="Rdrugdq" readonly>
                   </div>
                   <div class="ml-1 w-25">
                     <input type="text" class="form-control event-font" id="inputPassword" formControlName="Quanunit" readonly>
+                  </div> -->
+                  <div class=" w-100">
+                    <input type="text" class="form-control event-font" id="inputPassword" formControlName="AmountPrescribed" readonly>
                   </div>
                   <div class="ml-1 w-100 d-flex justify-content-between">
                         <div class="mb-1 d-flex justify-content-between">
@@ -409,10 +415,10 @@
             <tbody>
               <tr *ngFor="let event of eventDetailList" class="fw-semibold" >
                 <td colspan="1" >{{ event?.Meevtid }}</td>
-                <td colspan="1" >{{ event?.MesidDesc }}</td>
+                <td colspan="1" >{{ event.Notgiven?'Not Given': event?.MesidDesc }}</td>
                 <td colspan="1" >{{ getDate(event.Erdat) | date : "dd.MM.yyyy" }}</td>
                 <td colspan="1" >{{ emergencyService.getTime(event.Ertim)}}</td>
-                <td colspan="1" >{{ event.Notgiven?'Not Given':event.ErusrNm }}</td>
+                <td colspan="1" >{{ event.ErusrNm }}</td>
               </tr>
             </tbody>
           </table>

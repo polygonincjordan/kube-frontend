@@ -83,6 +83,7 @@ export class AdministeredDosesComponent implements OnInit{
   tablelistshow1 = false;
   sampleOrderDescription: any;
   rightside:boolean = false;
+  isAllSelected: boolean = false;
   @Output() reloadTableData = new EventEmitter();
   @Output() openModuleKardex = new EventEmitter();
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
@@ -304,14 +305,32 @@ export class AdministeredDosesComponent implements OnInit{
   }
 
 
-  checkboxChangedMedication(event: any, item: any) {
+  checkboxChangedMedication(event: any, item: any, selectedRow: any) {
     this.cartList.find(x => x.CartExtId == item.CartExtId).isChecked = event.target.checked;
+    selectedRow.isChecked = event.target.checked;
+    this.isAllSelected = item.TOCONTENT.results.every(x => x.isChecked);
+    if(this.isAllSelected){
+      const event = { target: { checked: this.isAllSelected }};
+      this.selectAllMedication(event);
+    }
+  }
+
+  
+  selectAllMedication(event: any) {
+    this.isAllSelected = event.target.checked;
+    const item = this.childCartDetails;
+    this.cartList.find(x => x.CartExtId==item?.CartExtId).isChecked = event.target.checked;
+    this.childCartDetails?.TOCONTENT?.results.forEach(x => x.isChecked = event.target.checked);
   }
 
   addReceviceCard(){
    this.cartList.forEach((e)=>{
      if(e.isChecked){
       delete e.isChecked;
+      e.TOCONTENT?.results?.forEach((element)=>{
+        delete element.isChecked;
+      })
+      this.isAllSelected = false;
       this.emergencyService.addReceviceCart(e).subscribe((res:any)=>{
         if(res){
           this.getReceviceCartList();
