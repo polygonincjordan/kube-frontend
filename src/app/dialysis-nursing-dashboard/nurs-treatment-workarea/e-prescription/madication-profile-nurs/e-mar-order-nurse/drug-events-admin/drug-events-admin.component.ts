@@ -480,9 +480,9 @@ export class DrugEventsAdminComponent implements OnInit {
       }
     }
     this.ePrescriptionService.postData(`e-prescription/updateFillSourcepost`, PayloadData).subscribe((resp: any) => {
-      const subevt = resp?.body?.d?.Subevt;
-      if (subevt) {
-        this.mainEvent = subevt
+      const mainevt = resp?.body?.d?.Meevtid;
+      if (mainevt) {
+        this.mainEvent = mainevt;
       }
     });
   }
