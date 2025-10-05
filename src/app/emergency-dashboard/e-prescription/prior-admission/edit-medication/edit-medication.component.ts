@@ -126,7 +126,7 @@ export class EditMedicationComponent implements OnInit {
               confirmButtonText: 'OK',
               customClass: 'myalertpopup',
               icon: 'success'
-            }).then(() => {
+            } as any).then(() => {
               window.location.reload();
             })
           },
@@ -416,7 +416,7 @@ export class EditMedicationComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   parseTime(data: string) {
     if (data && data.length) {

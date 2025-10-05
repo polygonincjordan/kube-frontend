@@ -327,7 +327,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
             text: `No Stock data for the selected item ${enteredValue}`,
             icon: 'error',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            // customClass: 'myalertpopup'
           }).then((result) => {
             if (result.value) {
               // if (this.materialType === this.wordType.MaterialName$) {
@@ -396,7 +396,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
         text: "Please filed all the required values",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
       return;
     }
@@ -405,7 +405,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
         text: "Saved Successully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       }).then((result) => {
         if (result.value) {
           this.actionTypeSubscription$.unsubscribe();
@@ -428,7 +428,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy, OnChanges {
         title: message,
         icon: 'error',
         confirmButtonText: 'OK',
-        customClass: 'diagnosis-error',
+        // customClass: 'diagnosis-error',
       });
     });
   }

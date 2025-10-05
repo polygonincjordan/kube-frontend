@@ -356,7 +356,7 @@ export class CompanionMealOrderingComponentNew implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup',
-        });
+        } as any);
         this.resetForm();
         this.closeNav();
       }, (error) => {
@@ -371,7 +371,7 @@ export class CompanionMealOrderingComponentNew implements OnInit {
           icon: 'error',
           customClass: 'error-details-swal-modal',
           confirmButtonText: 'Close',
-        });
+        } as any);
         this.resetForm();
       });
     }

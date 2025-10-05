@@ -30,7 +30,7 @@ export class OrganizationUnitComponent {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         icon: 'error',
       });
     }

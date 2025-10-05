@@ -96,7 +96,7 @@ import { EOrderEmergencyComponent } from './treatment-workarea/cpoe/e-order-main
 import { EmerCommentsComponent } from './treatment-workarea/cpoe/create-e-order/emer-comments/emer-comments.component';
 import { ErPhysicianComponent } from './treatment-workarea/documentation/er-physician/er-physician.component';
 import { FilterOrderStatusPipe } from './e-prescription/e-mar/e-mar-order-history/filter-order-status.pipe';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PatientSearchComponent } from './er-history/patient-search/patient-search.component';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
@@ -221,7 +221,7 @@ export const emergencyDashboard: Routes = [
     TabsModule.forRoot(),
     NgbCollapseModule,
     TimepickerModule,
-    NgMultiSelectDropDownModule.forRoot(),
+    // NgMultiSelectDropDownModule.forRoot(),
     NgxExtendedPdfViewerModule,
     CorrespondenceDocumentModule,
     AdminAttechmentModule,

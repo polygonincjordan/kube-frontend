@@ -225,7 +225,7 @@ postCountLabExtraction(startDate: any, endDate: any) {
       customClass: 'myalertpopup',
       icon: 'error',
       timer: 3000
-    });
+    } as any);
   }
 
   showSuccessPopup(title: any, text: any, messageType) {
@@ -240,6 +240,6 @@ postCountLabExtraction(startDate: any, endDate: any) {
       customClass: 'myalertpopup',
       icon: 'success',
       timer: 3000
-    });
+    } as any);
   }
 }

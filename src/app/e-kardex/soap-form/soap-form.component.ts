@@ -45,7 +45,7 @@ export class SoapFormComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         this.updateEvent.emit(isUpdate);
@@ -80,7 +80,7 @@ export class SoapFormComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {       
           this.patientVisitService.deletePatientVisitData(

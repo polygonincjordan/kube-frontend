@@ -153,7 +153,7 @@ export class VisitFormComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.updateEvent.emit(isUpdate);
       }
@@ -179,7 +179,7 @@ export class VisitFormComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'success'
-      }), (error) => {
+      } as any), (error) => {
         alert('The document dose not saved in Red color and caution');
       }
     } else {
@@ -199,7 +199,7 @@ export class VisitFormComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   async releaseForm() {
     if (this.patientVisitFormData.VISITTODIAGNOSIS && this.patientVisitFormData.VISITTODIAGNOSIS.results && this.patientVisitFormData.VISITTODIAGNOSIS.results.length) {
@@ -218,7 +218,7 @@ export class VisitFormComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'success'
-      }), (error) => {
+      } as any), (error) => {
         alert('The document dose not saved in Red color and caution');
       }
     } else {
@@ -234,7 +234,7 @@ export class VisitFormComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.patientVisitService.deleteVisitNotePatientVisitData(
           this.patientVisitFormData

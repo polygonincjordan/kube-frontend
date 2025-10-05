@@ -38,7 +38,7 @@ export class ErDiagnosisService {
       title: successMsg,
       icon: 'success',
       confirmButtonText: 'OK',
-      customClass:'swal-class'
+      // customClass:'swal-class'
     });
   }
 
@@ -47,7 +47,7 @@ export class ErDiagnosisService {
       title: successMsg,
       icon: 'error',
       confirmButtonText: 'OK',
-      customClass:'swal-class'
+      // customClass:'swal-class'
     });
   }
  // Diagnosis Code Search API

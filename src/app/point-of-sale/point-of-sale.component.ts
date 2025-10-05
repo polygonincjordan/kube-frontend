@@ -179,7 +179,7 @@ export class PointOfSaleComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         let setTableValues; 

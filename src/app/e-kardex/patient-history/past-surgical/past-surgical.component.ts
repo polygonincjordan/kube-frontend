@@ -177,7 +177,7 @@ export class PastSurgicalComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         this.deleteForPastSurg(item);
@@ -270,7 +270,7 @@ export class PastSurgicalComponent implements OnInit {
               text: "Please select from the list of surgeries",
               icon: 'error',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           }
     

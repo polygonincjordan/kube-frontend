@@ -584,7 +584,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     })
   }
   deleteDiagnosisFromTable(item, index) {
@@ -625,7 +625,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -979,7 +979,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);
@@ -1133,7 +1133,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 

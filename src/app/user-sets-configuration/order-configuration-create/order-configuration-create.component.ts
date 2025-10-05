@@ -13,7 +13,7 @@ import {
   DiagnosisModal,
   PatientAgeModal,
 } from '@services/orders-dashboard/interfaces/orders-dashboard-model';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertIcon, SweetAlertOptions } from 'sweetalert2';
 @UntilDestroy()
 @Component({
   selector: 'app-order-configuration-create',
@@ -425,7 +425,7 @@ export class OrderConfigurationCreateComponent implements OnInit {
       customClass: 'myalertpopup',
       icon: 'error',
       timer: 3000
-    });
+    } as SweetAlertOptions);
   }
 
   showWarningPopup(title: any, text: any, messageType) {
@@ -439,7 +439,7 @@ export class OrderConfigurationCreateComponent implements OnInit {
       customClass: 'myalertpopup',
       icon: 'warning',
       timer: 3000
-    });
+    } as SweetAlertOptions);
   }
 
  hasDuplicate(array, propertyName) {
@@ -627,7 +627,7 @@ export class OrderConfigurationCreateComponent implements OnInit {
       customClass: 'myalertpopup',
       icon: 'success',
       timer: 3000
-    });
+    } as SweetAlertOptions);
   }
 
   

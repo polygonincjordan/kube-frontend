@@ -510,7 +510,7 @@ export class NurErAllergyComponent implements OnInit {
           text: 'Allergen is mandatory',
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else {
         if (this.updateAllergyForm.controls.AllergySeqno.value == '0000') {
@@ -613,7 +613,7 @@ export class NurErAllergyComponent implements OnInit {
           text: 'Allergen is mandatory',
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else if (
         this.StateComment != '' &&
@@ -838,7 +838,7 @@ export class NurErAllergyComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => {}
@@ -867,7 +867,7 @@ export class NurErAllergyComponent implements OnInit {
               text: text,
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
           },
           (_error: any) => {}
@@ -897,7 +897,7 @@ export class NurErAllergyComponent implements OnInit {
                 text: text,
                 icon: 'success',
                 confirmButtonText: 'Ok',
-                customClass: 'myalertpopup',
+                // customClass: 'myalertpopup',
               });
             },
             (_error: any) => {}
@@ -908,7 +908,7 @@ export class NurErAllergyComponent implements OnInit {
               text: 'Allergen is mandatory',
               icon: 'error',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
           } else {
             let text = '';
@@ -928,7 +928,7 @@ export class NurErAllergyComponent implements OnInit {
                     text: text,
                     icon: 'success',
                     confirmButtonText: 'Ok',
-                    customClass: 'myalertpopup',
+                    // customClass: 'myalertpopup',
                   });
                 },
                 (_error: any) => {}
@@ -950,7 +950,7 @@ export class NurErAllergyComponent implements OnInit {
               text: 'Deleted Successully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
           },
           (_error: any) => {}
@@ -975,7 +975,7 @@ export class NurErAllergyComponent implements OnInit {
               text: text,
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
           },
           (_error: any) => {}

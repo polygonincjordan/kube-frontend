@@ -161,16 +161,16 @@ float: right;" />
             <div class="col-md-12 out-patient-config-select ward-list-select">
                 <div class="mb-2">
                     <label class="mb-1" for="wardSelect">Physician</label>
-                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForPhysician"
+                    <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForPhysician"
                         [placeholder]="'Physician'" [(ngModel)]="selectedPhysicianConf" [data]="assignUsersList">
-                    </ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown> -->
                     <!-- {{jsonString(selectedPhysicianConf)}} -->
                 </div>
                 <div>
                     <label class="mb-1" for="wardSelect">Speciality</label>
-                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpeciality"
+                    <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpeciality"
                         [placeholder]="'Speciality'" [(ngModel)]="selectedSpecialityConf" [data]="specialityList">
-                    </ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown> -->
                 </div>
             </div>
         </div>
@@ -452,21 +452,21 @@ font-size: 12px;
         }" />
                 <p style="margin: auto; margin-top: 5px">Ward</p>
 
-                <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings" [placeholder]="'Ward'"
+                <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings" [placeholder]="'Ward'"
                     formControlName="wardNo" [data]="getWards">
-                </ng-multiselect-dropdown>
+                </ng-multiselect-dropdown> -->
 
                 <p style="margin: auto; margin-top: 5px">
                     Attending Physician
                 </p>
-                <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForAttendPhy"
+                <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForAttendPhy"
                     [placeholder]="'Choose Physician'" formControlName="patientStatus" [data]="inAttendPhyList">
-                </ng-multiselect-dropdown>
+                </ng-multiselect-dropdown> -->
                 <div>
                     <p style="margin: auto; margin-top: 5px">Speciality</p>
-                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
+                    <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
                         [placeholder]="'Choose Speciality'" formControlName="specialty" [data]="getSpecialtyData">
-                    </ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown> -->
                 </div>
                 <div style="display: flex; justify-content: space-around">
                     <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"

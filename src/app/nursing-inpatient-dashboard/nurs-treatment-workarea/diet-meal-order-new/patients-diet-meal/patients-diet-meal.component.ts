@@ -481,7 +481,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Data Saved Successfully!',
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
     } else {
       this.dietOrderForm.markAllAsTouched(); // Mark all controls as touched to show validation errors
@@ -669,7 +669,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Diet Meal Order Saved Successfully!',
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
       this.resetForm();
     }, (error) => {
@@ -702,7 +702,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         title: 'Not Allowed',
         html: messages,
         icon: 'error',
-        customClass: 'error-details-swal-modal',
+        // customClass: 'error-details-swal-modal',
         confirmButtonText: 'Close',
       });
       this.resetForm();
@@ -732,7 +732,7 @@ export class PatientsDietMealComponentNew implements OnInit {
           text: 'The diet meal order has been confirmed successfully!',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
         this.getOrderDetails();
         this.resetForm();
@@ -744,14 +744,14 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Order Already Confirmed',
         icon: 'warning',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       })
     } else {
       Swal.fire({
         text: 'Cannot Confirm a Cancelled Order',
         icon: 'warning',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       })
     }
   }
@@ -778,7 +778,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Assessment Saved Successfully!',
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
       this.getOrderDetails();
       this.resetForm();
@@ -831,7 +831,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Dislike Order Saved Successfully!',
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
       this.getOrderDetails();
       this.resetForm();
@@ -851,7 +851,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Snack Order Saved Successfully!',
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
       this.getOrderDetails();
       this.resetForm();
@@ -866,7 +866,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Please save your order before confirming.',
         icon: 'warning',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
 
       return
@@ -890,7 +890,7 @@ export class PatientsDietMealComponentNew implements OnInit {
           text: 'The diet meal order has been confirmed successfully!',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
         this.getOrderDetails();
         this.resetForm();
@@ -902,7 +902,7 @@ export class PatientsDietMealComponentNew implements OnInit {
         text: 'Please save your order before confirming.',
         icon: 'warning',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
     }
   }
@@ -934,7 +934,7 @@ export class PatientsDietMealComponentNew implements OnInit {
           text: 'The Order is Cancelled successfully!',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
         this.getOrderDetails();
         this.resetForm();

@@ -351,7 +351,7 @@ export class FamilyHistoryComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         this.deleteFamilyHistory(item);

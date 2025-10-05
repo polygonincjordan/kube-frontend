@@ -49,7 +49,7 @@ export class ConsumablesHistoryComponent implements OnInit {
           text: 'Please select a storage location',
           icon: 'warning',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       }
     })

@@ -210,7 +210,7 @@ export class CreateDischargeOrderComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateForm());
     }
@@ -370,7 +370,7 @@ export class CreateDischargeOrderComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   onSubmitData() {
@@ -402,7 +402,7 @@ export class CreateDischargeOrderComponent implements OnInit {
                   confirmButtonText: 'OK',
                   customClass: 'myalertpopup',
                   icon: 'success'
-                }).then((result) => {
+                } as any).then((result) => {
                   if (result.value) {
                     this.drugArray.controls = [];
                     for (let i = 1; i <= 5; i++) { this.drugArray.push(this.generateForm()); }

@@ -263,7 +263,7 @@ export class LabResultsComponent implements OnInit{
           text: 'Risk Code is Mandatory',
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else {
         const json = {
@@ -281,7 +281,7 @@ export class LabResultsComponent implements OnInit{
               text: 'Saved successfully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
             this.isFormValidError = false;
           },
@@ -304,7 +304,7 @@ export class LabResultsComponent implements OnInit{
             text: 'Deleted successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => {}
@@ -325,7 +325,7 @@ export class LabResultsComponent implements OnInit{
             text: 'Saved successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => {}
@@ -405,7 +405,7 @@ export class LabResultsComponent implements OnInit{
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -677,7 +677,7 @@ export class LabResultsComponent implements OnInit{
             text: 'Status has successfully changed.',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            // customClass: 'myalertpopup'
           })
         }
         

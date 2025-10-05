@@ -185,7 +185,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else {
       let createAdmDate = '';
@@ -261,7 +261,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else {
       let createAdmDate = '';
@@ -414,7 +414,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else {
       let createAdmDate = '';
@@ -494,7 +494,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else {
       let createAdmDate = '';

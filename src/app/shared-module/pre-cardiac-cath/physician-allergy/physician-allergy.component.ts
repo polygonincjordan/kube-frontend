@@ -563,7 +563,7 @@ export class PhysicianAllergyComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup',
-          });
+          } as any);
         },
         (_error: any) => {}
       );
@@ -592,7 +592,7 @@ export class PhysicianAllergyComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup',
-            });
+            } as any);
           },
           (_error: any) => {}
         );
@@ -622,7 +622,7 @@ export class PhysicianAllergyComponent implements OnInit {
                 icon: 'success',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup',
-              });
+              } as any);
             },
             (_error: any) => {}
           );
@@ -633,7 +633,7 @@ export class PhysicianAllergyComponent implements OnInit {
               icon: 'error',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup',
-            });
+            } as any);
           } else {
             let text = '';
             if (this.updateAllergyForm.controls.Allergen.value !== '') {
@@ -653,7 +653,7 @@ export class PhysicianAllergyComponent implements OnInit {
                     icon: 'success',
                     confirmButtonText: 'Ok',
                     customClass: 'myalertpopup',
-                  });
+                  } as any);
                 },
                 (_error: any) => {}
               );
@@ -675,7 +675,7 @@ export class PhysicianAllergyComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup',
-            });
+            } as any);
           },
           (_error: any) => {}
         );
@@ -700,7 +700,7 @@ export class PhysicianAllergyComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup',
-            });
+            } as any);
           },
           (_error: any) => {}
         );
@@ -867,7 +867,7 @@ export class PhysicianAllergyComponent implements OnInit {
           icon: 'error',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup',
-        });
+        } as any);
       } else {
         if (this.updateAllergyForm.controls.AllergySeqno.value == '0000') {
           this.allergyJson = {
@@ -970,7 +970,7 @@ export class PhysicianAllergyComponent implements OnInit {
           icon: 'error',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup',
-        });
+        } as any);
       } else if (
         this.StateComment != '' &&
         this.updateAllergyForm.controls.Allergen.value == ''

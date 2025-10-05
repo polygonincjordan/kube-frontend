@@ -44,7 +44,7 @@ export class PdfViewerComponent implements OnInit {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         icon: 'error',
       });
     }else{

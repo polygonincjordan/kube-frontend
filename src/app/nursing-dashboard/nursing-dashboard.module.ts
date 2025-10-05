@@ -6,7 +6,7 @@ import { FloorsWardsService } from '@services/floors-wards/floors-wards.service'
 import { AuthGuard } from '@services/interceptor/auth.guard';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NursingDashboardComponent } from './nursing-dashboard.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const route: Routes = [
@@ -36,7 +36,7 @@ const route: Routes = [
   declarations: [NursingDashboardComponent],
   imports: [
     CommonModule,
-    NgMultiSelectDropDownModule.forRoot(),
+    // NgMultiSelectDropDownModule.forRoot(),
     ReactiveFormsModule,
     BsDatepickerModule,
     RouterModule.forChild(route),

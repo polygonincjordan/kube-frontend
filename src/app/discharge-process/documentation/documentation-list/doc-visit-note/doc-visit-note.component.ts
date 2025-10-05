@@ -263,7 +263,7 @@ export class DocVisitNoteComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.reloadTableList.next(true);
       }
@@ -323,7 +323,7 @@ export class DocVisitNoteComponent implements OnInit {
                 confirmButtonText: 'OK',
                 customClass: 'myalertpopup',
                 icon: 'success'
-              }), (error) => {
+              } as any), (error) => {
                 alert('The document dose not saved in Red color and caution');
               }
         },
@@ -350,7 +350,7 @@ export class DocVisitNoteComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   async releaseForm() {
     this.patientVisitFormData.Einri = this.paramsObject.einri;
@@ -393,7 +393,7 @@ export class DocVisitNoteComponent implements OnInit {
                 confirmButtonText: 'OK',
                 customClass: 'myalertpopup',
                 icon: 'success'
-              }), (error) => {
+              } as any), (error) => {
                 alert('The document dose not saved in Red color and caution');
               }
         },
@@ -417,7 +417,7 @@ export class DocVisitNoteComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.patientVisitService.deleteVisitNotePatientVisitData(
           this.patientVisitFormData

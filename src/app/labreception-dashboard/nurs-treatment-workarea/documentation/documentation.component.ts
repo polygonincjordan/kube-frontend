@@ -474,7 +474,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -486,7 +486,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -498,7 +498,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -512,7 +512,7 @@ export class DocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.phyComp.deletePhyAssessment()).subscribe(
@@ -522,7 +522,7 @@ export class DocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.phyComp.resetAll();
             this.refresh();
           },
@@ -538,7 +538,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -983,7 +983,7 @@ export class DocumentationComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   reloadDoc(event) {
@@ -1204,7 +1204,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1218,7 +1218,7 @@ export class DocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.medComp.deleteMedReport()).subscribe(
@@ -1228,7 +1228,7 @@ export class DocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.medComp.resetAll();
             this.refresh();
           },
@@ -1244,7 +1244,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1256,7 +1256,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1287,7 +1287,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1329,7 +1329,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1386,7 +1386,7 @@ export class DocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.admissionService
@@ -1397,7 +1397,7 @@ export class DocumentationComponent implements OnInit {
                 icon: 'success',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             },
             (_error: any) => { }
@@ -1415,7 +1415,7 @@ async deleteCPRDoc(docKey: string) {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCprDocument(docKey)).subscribe(
           (_success: any) => {
@@ -1424,7 +1424,7 @@ async deleteCPRDoc(docKey: string) {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -1433,7 +1433,7 @@ async deleteCPRDoc(docKey: string) {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -1450,7 +1450,7 @@ async deleteCorrespondenceDoc(docKey: string) {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
           (_success: any) => {
@@ -1459,7 +1459,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -1468,7 +1468,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -1482,7 +1482,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
     }, (_error: any) => { });

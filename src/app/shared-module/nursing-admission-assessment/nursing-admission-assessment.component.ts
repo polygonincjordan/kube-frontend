@@ -1002,7 +1002,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -1069,7 +1069,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);
@@ -1158,7 +1158,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         if (habitNoConsume == 'noConsume') {
@@ -1327,7 +1327,7 @@ export class NursingAdmissionAssessmentComponent implements OnInit {
             html: `Please add the <strong>Total Score</strong> in the <strong>Nutritional Risk Screening</strong> tab.`,
             icon: 'warning',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           })
         }
         return;

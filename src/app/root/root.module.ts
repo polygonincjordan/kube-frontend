@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -219,6 +220,7 @@ export const rootRoutes: Routes = [
   imports: [
     CommonModule,
     ModalModule.forRoot(),
+    // NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forChild(rootRoutes),
     SimpleNotificationsModule.forRoot({
       timeOut: 5000,

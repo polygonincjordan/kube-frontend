@@ -187,21 +187,21 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else if(this.PhyAssessmentForm.controls.AdmDate.value == '') {
       Swal.fire({
         text: "Admission Date is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else if(this.PhyAssessmentForm.controls.AdmTime.value == '') {
       Swal.fire({
         text: "Admission Time is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     } else{
     let createAdmDate = '';
@@ -276,7 +276,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     }else{
     let createAdmDate = '';
@@ -427,7 +427,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     }else{
     let createAdmDate = '';
@@ -506,7 +506,7 @@ export class ErPhysicianComponent implements OnInit {
         text: "Chief Complaint is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     }else{
     let createAdmDate = '';

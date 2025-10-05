@@ -85,7 +85,7 @@ export class OrderFrequencyDeftimComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   deletecycleData(index: any) {
@@ -116,7 +116,7 @@ export class OrderFrequencyDeftimComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateDeftimCycle());
       this.drugArray.controls[this.drugArray.value.length - 1].patchValue({

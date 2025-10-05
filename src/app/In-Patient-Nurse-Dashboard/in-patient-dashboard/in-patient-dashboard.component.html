@@ -324,14 +324,14 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12 ward-list-select">
-                    <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
+                    <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
                       [placeholder]="'Ward'" [(ngModel)]="wardSelectForConfig" [data]="getWards"
                       (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
                     </ng-multiselect-dropdown>
                     <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialtyConfig"
                       [placeholder]="'Choose Speciality'" [(ngModel)]="specialtySelectForConfig"
                       [data]="specialtyListConfig" (onSelect)="onItemSelect1($event)">
-                    </ng-multiselect-dropdown>
+                    </ng-multiselect-dropdown> -->
                   </div>
                 </div>
               </div>
@@ -391,23 +391,23 @@
                               {{ item.Name }}
                             </option>
                           </select> -->
-                          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
+                          <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettings"
                             [placeholder]="'Ward'" formControlName="wardNo" [data]="getWards"
                             (onSelect)="onItemSelect1($event)">
-                          </ng-multiselect-dropdown>
+                          </ng-multiselect-dropdown> -->
                         </div>
                         <p style="margin: auto; margin-top: 5px">
                           Attending Physician
                         </p>
-                        <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue != '07'" class="multiselect-adjust"
+                        <!-- <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue != '07'" class="multiselect-adjust"
                           [settings]="dropdownSettingsForAttendPhy" [placeholder]="'Choose Physician'"
                           formControlName="patientStatus" [data]="inAttendPhyList" (onSelect)="onItemSelect1($event)">
-                        </ng-multiselect-dropdown>
+                        </ng-multiselect-dropdown> -->
 
-                        <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue == '07'" class="multiselect-adjust"
+                        <!-- <ng-multiselect-dropdown *ngIf="navTabBoxActiveValue == '07'" class="multiselect-adjust"
                           [settings]="dropdownSettingsForLDRAttendPhy" [placeholder]="'Choose Physician'"
                           formControlName="patient" [data]="inLDRAttendPhyList" (onSelect)="onItemSelect1($event)">
-                        </ng-multiselect-dropdown>
+                        </ng-multiselect-dropdown> -->
                         <!-- <select class="custom-select" id="inputGroupSelect01" formControlName="patientStatus">
                           <option selected value="">Choose Physician</option>
                           <option value="Physician 1">Physician 1</option>
@@ -415,10 +415,10 @@
                         </select> -->
                         <div *ngIf="navTabBoxActiveValue != '06' && navTabBoxActiveValue != '07'">
                           <p style="margin: auto; margin-top: 5px">Speciality</p>
-                          <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
+                          <!-- <ng-multiselect-dropdown class="multiselect-adjust" [settings]="dropdownSettingsForSpecialty"
                             [placeholder]="'Choose Speciality'" formControlName="specialty" [data]="getSpecialtyData"
                             (onSelect)="onItemSelect1($event)">
-                          </ng-multiselect-dropdown>
+                          </ng-multiselect-dropdown> -->
                         </div>
                         <div style="display: flex; justify-content: space-around">
                           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"

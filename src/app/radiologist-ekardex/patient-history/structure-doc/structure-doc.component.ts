@@ -551,7 +551,7 @@ export class StructureDocComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.ZdocNr = this.phyAssessmentList[0].ZdocNr;
         this.deletePhyAssessmentDoc();
@@ -867,7 +867,7 @@ export class StructureDocComponent implements OnInit {
        confirmButtonText: 'Yes',
        cancelButtonText: 'No',
        customClass: 'myalertpopup'
-     }).then((result) => {
+     } as any).then((result) => {
        if (result.value) {
          this.ZdocNrForNurs = this.nursAssessmentList[0].ZdocNr;
          this.deleteNursAssessmentDoc();
@@ -1397,7 +1397,7 @@ uploadDocument(template) {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   public openModalForSpecialNotes(
@@ -1451,7 +1451,7 @@ uploadDocument(template) {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.deleteSpecialNotes();
       }
@@ -1471,7 +1471,7 @@ uploadDocument(template) {
           title: 'Deleted Successfully',
           icon: 'success',
           confirmButtonText: 'OK',
-        });
+        } as any);
       },
       (_error: any) => {}
     );

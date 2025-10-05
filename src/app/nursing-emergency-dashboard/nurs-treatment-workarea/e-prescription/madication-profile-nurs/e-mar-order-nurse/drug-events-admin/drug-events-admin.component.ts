@@ -452,7 +452,7 @@ export class DrugEventsAdminComponent implements OnInit {
             confirmButtonText: 'OK',
             customClass: 'myalertpopup',
             icon: 'success'
-          }).then(() => {
+          } as any).then(() => {
             this.modalRef.hide()
             this.route.queryParams.subscribe((params: ParamMap) => {
               this.router.navigate(['e-prescription'], { queryParams: { ...params, isEmr: 'true' } });
@@ -497,7 +497,7 @@ export class DrugEventsAdminComponent implements OnInit {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
           this.modalRef.hide();
           this.refreshData.emit();
         })
@@ -544,7 +544,7 @@ export class DrugEventsAdminComponent implements OnInit {
             confirmButtonText: 'OK',
             customClass: 'myalertpopup',
             icon: 'success'
-          }).then(() => {
+          } as any).then(() => {
             this.modalRef.hide()
             this.route.queryParams.subscribe((params: ParamMap) => {
               this.router.navigate(['e-prescription'], { queryParams: { ...params, isEmr: 'true' } });
@@ -685,7 +685,7 @@ export class DrugEventsAdminComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
-    });
+    } as any);
   }
 
  private getMainEvent(selectedId?: any): void {

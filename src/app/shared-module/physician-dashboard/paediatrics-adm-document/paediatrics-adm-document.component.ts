@@ -1531,7 +1531,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -1574,7 +1574,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((result) => {
       if (result.isConfirmed) {
         this.openSelectedModalScale(item);
@@ -1897,7 +1897,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
   switchTabsForMedical(tab) {
@@ -1972,7 +1972,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -2023,7 +2023,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 

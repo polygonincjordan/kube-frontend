@@ -670,7 +670,7 @@ export class TransferAssessmentComponent implements OnInit {
       confirmButtonColor: '#0890c5',
       cancelButtonColor: '#84898c',
       confirmButtonText: 'OK',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
       icon: 'warning',
     });
   }
@@ -680,7 +680,7 @@ export class TransferAssessmentComponent implements OnInit {
       confirmButtonColor: '#0890c5',
       cancelButtonColor: '#84898c',
       confirmButtonText: 'OK',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
       icon: 'warning',
     });
   }

@@ -249,7 +249,7 @@ export class ErTriageComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         if (habitNoConsume == 'noConsume') {
@@ -437,7 +437,7 @@ export class ErTriageComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -492,7 +492,7 @@ export class ErTriageComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -525,7 +525,7 @@ export class ErTriageComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         if (item.value == '1') {
@@ -769,7 +769,7 @@ alreadySelected(){
       text: 'Triage can’t be changed from this document',
       icon: 'warning',
       confirmButtonText: 'Ok',
-     customClass: 'myalertpopup',
+    //  customClass: 'myalertpopup',
     })
     this.triageForm.patchValue({
       TriagePriority:this.selectedTriageDetails?.TriagePriorityCode ? this.selectedTriageDetails?.TriagePriorityCode : this.selectedTriagePriorityData
@@ -825,7 +825,7 @@ alreadySelected(){
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         this.isTriagePrioritySelected = false;

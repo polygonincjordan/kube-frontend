@@ -731,7 +731,7 @@ export class DiagnosesComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         customClass: 'myalertpopup'
-      }).then((result) => {
+      } as any).then((result) => {
         if (result.value) {
           this.modelOpenProcess(paitentData, paitentData.Oldversion, template)
         }
@@ -761,7 +761,7 @@ export class DiagnosesComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         customClass: 'myalertpopup'
-      }).then((result) => {
+      } as any).then((result) => {
         if (result.value) {
           this.modifyAndOpenForm(paitentData.value, paitentData.Oldversion)
         }
@@ -1505,7 +1505,7 @@ export class DiagnosesComponent implements OnInit {
         cancelButtonText: 'No',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     }
 
     resetCVISAttachment(_error?: any, p0?: string){
@@ -1600,7 +1600,7 @@ export class DiagnosesComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
           (_success: any) => {
@@ -1609,7 +1609,7 @@ export class DiagnosesComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.updateForm(true);
             // this.refresh();
           },
@@ -1619,7 +1619,7 @@ export class DiagnosesComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             // this.refresh();
           }
         );

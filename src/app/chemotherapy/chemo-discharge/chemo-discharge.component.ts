@@ -382,9 +382,9 @@ export class ChemoDischargeComponent implements OnInit {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateForm());
     }
@@ -642,9 +642,9 @@ export class ChemoDischargeComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   onChangeDropdownlist(dropdowntype: any, element: any, index: any) {
     if (dropdowntype === 'Frequency' && element !== undefined) {
@@ -700,7 +700,7 @@ export class ChemoDischargeComponent implements OnInit {
         //           confirmButtonColor: '#0890c5',
         //           cancelButtonColor: '#84898c',
         //           confirmButtonText: 'OK',
-        //           customClass: 'myalertpopup',
+                  // customClass: 'myalertpopup',
         //           icon: 'success'
         //         }).then((result) => {
         //           if (result.value) {
@@ -757,9 +757,9 @@ export class ChemoDischargeComponent implements OnInit {
                     confirmButtonColor: '#0890c5',
                     cancelButtonColor: '#84898c',
                     confirmButtonText: 'OK',
-                    customClass: 'myalertpopup',
+                    // customClass: 'myalertpopup',
                     icon: 'success'
-                  }).then((result) => {
+                  } as any).then((result) => {
                     if (result.value) {
                       this.drugArray.controls = [];
                       for (let i = 1; i <= 5; i++) { this.drugArray.push(this.generateForm()); }

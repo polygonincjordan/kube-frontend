@@ -543,7 +543,7 @@ export class GynDiagnosisComponent implements OnInit {
           title: message,
           icon: 'error',
           confirmButtonText: 'OK',
-          customClass: 'diagnosis-error',
+          // customClass: 'diagnosis-error',
         });
       }
     );

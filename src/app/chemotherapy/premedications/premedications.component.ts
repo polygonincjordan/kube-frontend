@@ -332,7 +332,7 @@ export class PremedicationsComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateForm());
     }
@@ -776,7 +776,7 @@ export class PremedicationsComponent implements OnInit {
                 confirmButtonText: 'OK',
                 customClass: 'myalertpopup',
                 icon: 'success'
-              }).then((result) => {
+              } as any).then((result) => {
                 this.drugArray.clear();
                 this.ePrescriptionService.loadAdministrationTemplateData();
                 this.ePrescriptionService.TemplateMedDataList
@@ -884,7 +884,7 @@ export class PremedicationsComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   openMoDetailPanel(index: any, validData: any, isValidForm: boolean, IsMO: boolean) {

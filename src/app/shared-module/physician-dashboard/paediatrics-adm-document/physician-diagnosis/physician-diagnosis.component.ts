@@ -546,7 +546,7 @@ export class PhysicianDiagnosisComponent implements OnInit {
           icon: 'error',
           confirmButtonText: 'OK',
           customClass: 'diagnosis-error',
-        });
+        } as any);
       }
     );
   }

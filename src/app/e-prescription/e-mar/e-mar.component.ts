@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
-import { MultiSelectComponent } from 'ng-multiselect-dropdown';
+// import { MultiSelectComponent } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-e-mar',

@@ -454,7 +454,7 @@ export class ErVitalsComponentComman implements OnInit {
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
     }
   }
   deleteVitalList() {
@@ -480,7 +480,7 @@ export class ErVitalsComponentComman implements OnInit {
             icon: 'success',
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup'
-          })
+          } as any)
         },
         (_error: any) => { }
       );
@@ -756,7 +756,7 @@ export class ErVitalsComponentComman implements OnInit {
          icon: 'error',
          confirmButtonText: 'Ok',
          customClass: 'myalertpopup'
-       })
+       } as any)
      }
  
    }
@@ -838,7 +838,7 @@ export class ErVitalsComponentComman implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup'
-        })
+        } as any)
       },
       (_error: any) => { }
     );
@@ -880,7 +880,7 @@ export class ErVitalsComponentComman implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup'
-        })
+        } as any)
       },
       (_error: any) => { }
     );

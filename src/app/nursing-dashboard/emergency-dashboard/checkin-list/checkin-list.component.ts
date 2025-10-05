@@ -451,7 +451,7 @@ export class CheckinListComponent implements OnInit {
           text: "Action performed successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}
@@ -470,7 +470,7 @@ export class CheckinListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -632,7 +632,7 @@ export class CheckinListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         this.deleteAllergyJson(status,deleteitem);
@@ -731,7 +731,7 @@ export class CheckinListComponent implements OnInit {
           text: "Action performed successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}

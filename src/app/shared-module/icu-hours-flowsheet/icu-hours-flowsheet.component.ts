@@ -479,7 +479,7 @@ export class IcuHoursFlowsheetComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);

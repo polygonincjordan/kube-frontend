@@ -394,7 +394,7 @@ export class PreCardiacCathComponent implements OnInit {
       icon: 'warning',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup',
-    });
+    } as any);
   }
 
   public getDate(value) {

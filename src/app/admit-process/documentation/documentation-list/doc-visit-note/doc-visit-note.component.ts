@@ -268,8 +268,8 @@ export class DocVisitNoteComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
-    }).then((result) => {
+      // customClass: 'myalertpopup'
+    } as any).then((result) => {
       if (result.value) {
         this.reloadTableList.next(true);
       }
@@ -331,9 +331,9 @@ export class DocVisitNoteComponent implements OnInit {
                 confirmButtonColor: '#0890c5',
                 cancelButtonColor: '#84898c',
                 confirmButtonText: 'OK',
-                customClass: 'myalertpopup',
+                // customClass: 'myalertpopup',
                 icon: 'success'
-              }), (error) => {
+              } as any), (error) => {
                 alert('The document dose not saved in Red color and caution');
               }
         },
@@ -362,9 +362,9 @@ export class DocVisitNoteComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   async releaseForm() {
     this.patientVisitFormData.Einri = this.paramsObject.einri;
@@ -405,9 +405,9 @@ export class DocVisitNoteComponent implements OnInit {
                 confirmButtonColor: '#0890c5',
                 cancelButtonColor: '#84898c',
                 confirmButtonText: 'OK',
-                customClass: 'myalertpopup',
+                // customClass: 'myalertpopup',
                 icon: 'success'
-              }), (error) => {
+              } as any), (error) => {
                 alert('The document dose not saved in Red color and caution');
               }
         },
@@ -430,8 +430,8 @@ export class DocVisitNoteComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
-    }).then((result) => {
+      // customClass: 'myalertpopup'
+    } as any).then((result) => {
       if (result.value) {
         this.patientVisitService.deleteVisitNotePatientVisitData(
           this.patientVisitFormData

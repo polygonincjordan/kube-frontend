@@ -88,7 +88,7 @@ export class ChemoHydrationComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.Arraychecmo.push(this.formchemoData());
     }
@@ -129,7 +129,7 @@ export class ChemoHydrationComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   ngOnDestroy(): void {

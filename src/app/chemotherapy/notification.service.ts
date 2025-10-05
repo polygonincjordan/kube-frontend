@@ -32,9 +32,6 @@ export class NotificationService implements OnDestroy {
       cancelButtonText: status !== eMessageType.Warning ? "Close" : "No",
       confirmButtonColor: '#006f9d',
       cancelButtonColor: status !== eMessageType.Warning ? '#006f9d' : '#e71d36',
-      customClass: {
-        container: 'notification-popup'
-      }
     }).then((result) => { result.value ? this.confirmationProcess.next(true) : this.confirmationProcess.next(false); });
   }
 

@@ -369,7 +369,7 @@ export class PatientProfileHistoryNurseComponent implements OnInit {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
           this.loadMedicationHistoryData();
         });
       }, (error) => {
@@ -418,7 +418,7 @@ export class PatientProfileHistoryNurseComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'success'
-      }).then((results) => {
+      } as any).then((results) => {
         this.loadMedicationHistoryData();
       })
     },
@@ -719,7 +719,7 @@ export class PatientProfileHistoryNurseComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   sanitizeSAPDateFormat(date: string, time: any) {
     if (typeof (date) === 'string') {

@@ -484,7 +484,7 @@ export class AdmitProcessComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         customClass: 'myalertpopup'
-      });
+      } as any);
       if (result.isConfirmed) {
         this.unsavedProgressNote = false;
         this._admissionservice.tabPanelNavigation(tabName);

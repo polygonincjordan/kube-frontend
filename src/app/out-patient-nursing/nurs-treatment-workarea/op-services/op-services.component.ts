@@ -50,7 +50,7 @@ export class OpServicesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then(async (result) => {
       if (result.value) {
         this.dataShareService.sendActionType(ActionType.Save$, true, WordType.CreateNewFeeServiceOrder);

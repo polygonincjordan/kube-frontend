@@ -217,7 +217,7 @@ export class InPatientLabComponent implements OnInit {
       html: `<span style="font-weight: bold;">Are you sure you want to re-Order?</span><p style="text-align: start; margin-left: 18%;">${showTestMessage}</p>`,
       icon: 'warning',
       showCancelButton: true,
-      customClass:"reorder-conform-modal",
+      // customClass:"reorder-conform-modal",
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
     }).then((result) => {
@@ -248,7 +248,7 @@ export class InPatientLabComponent implements OnInit {
       title: successMsg,
       icon: 'success',
       confirmButtonText: 'OK',
-      customClass:'swal-class'
+      // customClass:'swal-class'
     });
   }
 
@@ -257,7 +257,7 @@ export class InPatientLabComponent implements OnInit {
       title: successMsg,
       icon: 'error',
       confirmButtonText: 'OK',
-      customClass:'swal-class'
+      // customClass:'swal-class'
     });
   }
 
@@ -266,7 +266,7 @@ export class InPatientLabComponent implements OnInit {
       title: warningMsg,
       icon: 'warning',
       confirmButtonText: 'OK',
-      customClass:'swal-class'
+      // customClass:'swal-class'
     });
   }
 

@@ -297,7 +297,7 @@ export class EMarOrderNurseComponent {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
-    });
+    } as any);
   }
 
   parsePtTime(data: string) {

@@ -97,7 +97,7 @@ export class EventsOrderComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
 }

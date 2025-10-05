@@ -275,9 +275,9 @@ export class DocumentationListComponent implements OnInit {
               confirmButtonColor: '#0890c5',
               cancelButtonColor: '#84898c',
               confirmButtonText: 'OK',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               icon: 'error',
-            });
+            } as any);
           }
         }
       });
@@ -1383,9 +1383,9 @@ export class DocumentationListComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   getTime(value) {

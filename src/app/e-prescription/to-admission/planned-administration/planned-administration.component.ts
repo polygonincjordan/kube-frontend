@@ -203,7 +203,7 @@ export class PlannedAdministrationComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateForm());
     }
@@ -832,7 +832,7 @@ export class PlannedAdministrationComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   onChangePom(index: number, event: any) {

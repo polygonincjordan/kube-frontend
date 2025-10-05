@@ -446,7 +446,7 @@ askQuestion(index){
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'success'
-      })
+      } as any)
     },
       (error) => {
         this.showErrorPopup("", error.error.error.message.value, "Error")
@@ -512,7 +512,7 @@ askQuestion(index){
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        })
+        } as any)
       }, (error) => {
         this.showErrorPopup("", error.error.error.message.value, "Error")
       })
@@ -828,7 +828,7 @@ askQuestion(index){
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   sanitizeSAPDateFormat(date: string, time: any) {
     if (typeof (date) === 'string') {

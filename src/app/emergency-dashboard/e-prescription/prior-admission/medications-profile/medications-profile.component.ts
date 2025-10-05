@@ -458,7 +458,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'success'
-      })
+      } as any)
     },
       (error) => {
         this.showErrorPopup("", error.error.error.message.value, "Error")
@@ -524,7 +524,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        })
+        } as any)
       }, (error) => {
         this.showErrorPopup("", error.error.error.message.value, "Error")
       })
@@ -840,7 +840,7 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   sanitizeSAPDateFormat(date: string, time: any) {
     if (typeof (date) === 'string') {

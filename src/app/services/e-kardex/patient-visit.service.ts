@@ -71,7 +71,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           )}
           return throwError(() => 
@@ -81,7 +81,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
         );
         })
@@ -131,7 +131,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           )}
           return throwError(() => 
@@ -141,7 +141,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
         );
         })
@@ -165,7 +165,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           )}
           return throwError(() => 
@@ -175,7 +175,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
         );
         })
@@ -227,7 +227,7 @@ export class PatientVisitService {
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
-                customClass: 'myalertpopup'
+                // customClass: 'myalertpopup'
               })
             )}
             return throwError(() => 
@@ -237,7 +237,7 @@ export class PatientVisitService {
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
-                customClass: 'myalertpopup'
+                // customClass: 'myalertpopup'
               })
           );
           })
@@ -261,7 +261,7 @@ export class PatientVisitService {
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
-                customClass: 'myalertpopup'
+                // customClass: 'myalertpopup'
               })
             )}
             return throwError(() => 
@@ -271,7 +271,7 @@ export class PatientVisitService {
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
-                customClass: 'myalertpopup'
+                // customClass: 'myalertpopup'
               })
           );
           })
@@ -400,7 +400,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           )}
           return throwError(() => 
@@ -410,7 +410,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
         );
         })
@@ -484,7 +484,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           )}
           return throwError(() => 
@@ -494,7 +494,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
         );
         })
@@ -518,7 +518,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
           )}
           return throwError(() => 
@@ -528,7 +528,7 @@ export class PatientVisitService {
               showCancelButton: true,
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup'
+              // customClass: 'myalertpopup'
             })
         );
         })

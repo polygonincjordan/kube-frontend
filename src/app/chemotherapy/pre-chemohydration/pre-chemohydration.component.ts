@@ -89,7 +89,7 @@ export class PreChemohydrationComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.Arraychecmo.push(this.formchemoData());
     }
@@ -130,7 +130,7 @@ export class PreChemohydrationComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   ngOnDestroy(): void {
     if (this.Protocalsubscription) { this.Protocalsubscription.unsubscribe(); }

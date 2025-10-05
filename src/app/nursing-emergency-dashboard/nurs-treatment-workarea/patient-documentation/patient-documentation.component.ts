@@ -852,7 +852,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -864,7 +864,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -876,7 +876,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -890,7 +890,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.phyComp.deletePhyAssessment()).subscribe(
@@ -900,7 +900,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.phyComp.resetAll();
             this.refresh();
           },
@@ -916,7 +916,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1799,7 +1799,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCprDocument(docKey)).subscribe(
           (_success: any) => {
@@ -1808,7 +1808,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -1817,7 +1817,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -1892,7 +1892,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
           (_success: any) => {
@@ -1901,7 +1901,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -1910,7 +1910,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -2070,7 +2070,7 @@ export class PatientDocumentationComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   reloadDoc(event) {
@@ -2727,7 +2727,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -2741,7 +2741,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.medComp.deleteMedReport()).subscribe(
@@ -2751,7 +2751,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.medComp.resetAll();
             this.refresh();
           },
@@ -2769,7 +2769,7 @@ export class PatientDocumentationComponent implements OnInit {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         customClass: 'myalertpopup'
-      }).then(async (result) => {
+      } as any).then(async (result) => {
         if (result.value) {
           (await this.emergencyService.deleteSBARNursingDocument(this.sbarNurEndList[0].Dockey)).subscribe(
             (_success: any) => {
@@ -2778,7 +2778,7 @@ export class PatientDocumentationComponent implements OnInit {
                 icon: 'success',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             },
             (_error: any) => {
@@ -2787,7 +2787,7 @@ export class PatientDocumentationComponent implements OnInit {
                 icon: 'warning',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             }
           );
@@ -2825,7 +2825,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -2837,7 +2837,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -2868,7 +2868,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -2894,7 +2894,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
     }, (_error: any) => {
@@ -2903,7 +2903,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'warning',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
     });
   }
 
@@ -2916,7 +2916,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.admissionService
           .deleteEducationDetails(this.educationAssList[0].Dockey)).subscribe(
@@ -2926,7 +2926,7 @@ export class PatientDocumentationComponent implements OnInit {
                 icon: 'success',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             },
             (_error: any) => {
@@ -2935,7 +2935,7 @@ export class PatientDocumentationComponent implements OnInit {
                 icon: 'warning',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             }
           );
@@ -2952,7 +2952,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         // need to implement delete API
         (await this.emergencyService.deleteNurEmrTriage(docKey)).subscribe(
@@ -2962,7 +2962,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -2971,7 +2971,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -2987,7 +2987,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.emergencyService.deleteNurseEndDoc(this.nurseEndorsementList[0].Dockey)).subscribe(
           (_success: any) => {
@@ -2996,7 +2996,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -3005,7 +3005,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -3021,7 +3021,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.emergencyService.deleteSurgicalPassPDoc(this.surgicalPassportList[0].Dockey)).subscribe(
             (_success: any) => {
@@ -3030,7 +3030,7 @@ export class PatientDocumentationComponent implements OnInit {
                 icon: 'success',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             },
             (_error: any) => {
@@ -3039,7 +3039,7 @@ export class PatientDocumentationComponent implements OnInit {
                 icon: 'warning',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             }
           );
@@ -3074,7 +3074,7 @@ export class PatientDocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         // need to implement delete API
         (await this.emergencyService.deletePainAssessmentDoc(docKey)).subscribe(
@@ -3084,7 +3084,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -3093,7 +3093,7 @@ export class PatientDocumentationComponent implements OnInit {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -3108,7 +3108,7 @@ export class PatientDocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
     }, (_error: any) => { });

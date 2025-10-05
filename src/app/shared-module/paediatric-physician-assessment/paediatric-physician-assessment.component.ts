@@ -589,7 +589,7 @@ export class PaediatricPhysicianAssessmentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 
@@ -627,7 +627,7 @@ export class PaediatricPhysicianAssessmentComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);

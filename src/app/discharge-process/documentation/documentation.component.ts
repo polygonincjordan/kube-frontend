@@ -150,7 +150,7 @@ export class DocumentationComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       }).then((result)=>{
         if (result.value) {
           if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_SOAP') {
@@ -204,7 +204,7 @@ export class DocumentationComponent implements OnInit {
             text: "Document is deleted successfully",
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            // customClass: 'myalertpopup'
           })
           this.admissionService.isRealoadData.next(true);
         },
@@ -213,7 +213,7 @@ export class DocumentationComponent implements OnInit {
             text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
             icon: 'warning',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            // customClass: 'myalertpopup'
           })
           this.admissionService.isRealoadData.next(true);
         }

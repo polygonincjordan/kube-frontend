@@ -329,9 +329,9 @@ export class ChemotherapyComponent {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         icon: 'error',
-      })
+      } as any)
     } else {
       this.ePrescriptionService.loadData(`e-prescription/ProtoHeadersearched?ProtoDesc=${data.value?.ProtoDesc}`, false, false, false, false).subscribe((resp: any) => {
         if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
@@ -721,9 +721,9 @@ export class ChemotherapyComponent {
             confirmButtonColor: '#0890c5',
             cancelButtonColor: '#84898c',
             confirmButtonText: 'OK',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             icon: 'success'
-          }).then(() => {
+          } as any).then(() => {
             this.CreateEventdata.reset();
             for (let i = 0; i < this.CreateEventdata.controls.length; i++) {
               this.CreateEventdata.controls[i].patchValue({
@@ -771,9 +771,9 @@ export class ChemotherapyComponent {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   parseTimedata(date) {

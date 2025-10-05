@@ -1125,7 +1125,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       icon: 'warning',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup',
-    });
+    } as any);
   }
 
   private findDuplicatesAllergy() {
@@ -1267,7 +1267,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
-    }).then((res) => {
+    } as any).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);
       }

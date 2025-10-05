@@ -382,7 +382,7 @@ export class CheckInComponent implements OnInit {
           text: 'Risk Code is Mandatory',
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else {
         const json = {
@@ -400,7 +400,7 @@ export class CheckInComponent implements OnInit {
               text: 'Saved successfully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
             this.isFormValidError = false;
           },
@@ -423,7 +423,7 @@ export class CheckInComponent implements OnInit {
             text: 'Deleted successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => { }
@@ -444,7 +444,7 @@ export class CheckInComponent implements OnInit {
             text: 'Saved successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => { }
@@ -524,7 +524,7 @@ export class CheckInComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -1734,7 +1734,7 @@ export class CheckInComponent implements OnInit {
           text: 'Change Status Successfully',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
         this.getErList()
         this.modalService.hide();
@@ -1835,7 +1835,7 @@ export class CheckInComponent implements OnInit {
       text: message,
       icon: 'error',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
     this.closeLabModal(); // Ensure modal cleanup
   }

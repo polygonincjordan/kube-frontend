@@ -180,7 +180,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateForm());
     }
@@ -645,7 +645,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
               confirmButtonText: 'OK',
               customClass: 'myalertpopup',
               icon: 'success'
-            }).then(() => {
+            } as any).then(() => {
               this.drugArray.clear();
               this.generateDefaultForm()
             })
@@ -725,7 +725,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
                 confirmButtonText: 'OK',
                 customClass: 'myalertpopup',
                 icon: 'success'
-              }).then((result) => {
+              } as any).then((result) => {
                 this.drugArray.clear();
                 this.ePrescriptionService.loadAdministrationTemplateData();
                 this.ePrescriptionService.TemplateMedDataList
@@ -832,7 +832,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   openMoDetailPanel(index: any, validData: any, isValidForm: boolean, IsMO: boolean) {

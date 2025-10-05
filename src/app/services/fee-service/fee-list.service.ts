@@ -1749,7 +1749,7 @@ export class FeeListService {
           confirmButtonText: 'OK',
           backdrop: true,
           icon: 'error',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
           //type: "info",
         })
         .then((result) => { });
@@ -1779,7 +1779,7 @@ export class FeeListService {
                   confirmButtonText: 'OK',
                   backdrop: true,
                   icon: 'success',
-                  customClass: 'myalertpopup',
+                  // customClass: 'myalertpopup',
                   //type: "info",
                 })
                 .then((result) => {
@@ -1796,7 +1796,7 @@ export class FeeListService {
                   confirmButtonText: 'OK',
                   backdrop: true,
                   icon: 'success',
-                  customClass: 'myalertpopup',
+                  // customClass: 'myalertpopup',
                   //type: "info",
                 })
                 .then((result) => {
@@ -1823,7 +1823,7 @@ export class FeeListService {
                     : JSON.parse(error._body).error?.message?.value,
                 confirmButtonColor: '#096798',
                 confirmButtonText: 'close',
-                customClass: 'myalertpopup',
+                // customClass: 'myalertpopup',
                 backdrop: true,
                 icon: 'error',
                 showClass: {
@@ -1971,7 +1971,7 @@ export class FeeListService {
                   confirmButtonText: 'OK',
                   backdrop: true,
                   icon: 'success',
-                  customClass: 'myalertpopup',
+                  // customClass: 'myalertpopup',
                   //type: "info",
                 })
                 .then((result) => {
@@ -1989,7 +1989,7 @@ export class FeeListService {
               text: this.eOrdersMaster[0].Eorderid && this.eOrdersMaster[0].Eorderid !== '' ? '' : JSON.parse(error._body).error?.message?.value,
               confirmButtonColor: '#096798',
               confirmButtonText: 'close',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               backdrop: true,
               icon: 'error',
               showClass: {
@@ -2150,7 +2150,7 @@ export class FeeListService {
             cancelButtonColor: '#84898c',
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             //type: "info",
           })
             .then((result) => {
@@ -2168,7 +2168,7 @@ export class FeeListService {
                         text: obj.Vma ? `Medication was written by another physician, Editing or Cancellation is not possible` : `Drug Item is reconciled, Changes are not possible`,
                         confirmButtonColor: '#096798',
                         confirmButtonText: 'close',
-                        customClass: 'myalertpopup',
+                        // customClass: 'myalertpopup',
                         backdrop: true,
                         icon: 'error',
                       })
@@ -2185,7 +2185,7 @@ export class FeeListService {
                         text: obj.Billed ? `Service ${obj.Talst} has been billed On ${updateDate[2]}.${updateDate[1]}.${updateDate[0]}. Editing is not possible` : `Medication Order has been already created, Editing or Cancellation is not possible`,
                         confirmButtonColor: '#096798',
                         confirmButtonText: 'close',
-                        customClass: 'myalertpopup',
+                        // customClass: 'myalertpopup',
                         backdrop: true,
                         icon: 'error',
                       })
@@ -2231,7 +2231,7 @@ export class FeeListService {
               cancelButtonColor: '#84898c',
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               //type: "info",
             })
             .then((result) => {
@@ -2279,7 +2279,7 @@ export class FeeListService {
             cancelButtonColor: '#84898c',
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             //type: "info",
           })
             .then((result) => {
@@ -2437,7 +2437,7 @@ export class FeeListService {
             confirmButtonText: 'OK',
             backdrop: true,
             icon: 'success',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           })
           .then((result) => {
             this.spinner.hide();
@@ -2453,7 +2453,7 @@ export class FeeListService {
             text: JSON.parse(error._body).error?.message.value,
             confirmButtonColor: '#096798',
             confirmButtonText: 'close',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             backdrop: true,
             icon: 'error',
           })
@@ -2486,7 +2486,7 @@ export class FeeListService {
               cancelButtonColor: '#84898c',
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               //type: "info",
             })
             .then((result) => {
@@ -2742,7 +2742,7 @@ export class FeeListService {
               confirmButtonText: 'OK',
               backdrop: true,
               icon: 'success',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               //type: "info",
             })
             .then((result) => {
@@ -2766,7 +2766,7 @@ export class FeeListService {
               confirmButtonText: 'OK',
               backdrop: true,
               icon: 'success',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               //type: "info",
             })
             .then((result) => {
@@ -2790,7 +2790,7 @@ export class FeeListService {
             text: JSON.parse(error._body).error?.message.value,
             confirmButtonColor: '#096798',
             confirmButtonText: 'close',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             backdrop: true,
             icon: 'error',
           })
@@ -2902,7 +2902,7 @@ export class FeeListService {
               cancelButtonColor: '#84898c',
               confirmButtonText: 'Yes',
               cancelButtonText: 'No',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               //type: "info",
             }).then((result) => {
               if (result.value) {
@@ -2968,7 +2968,7 @@ export class FeeListService {
             confirmButtonText: 'OK',
             backdrop: true,
             icon: 'success',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           })
           .then((result) => {
             this.spinner.hide();
@@ -2983,7 +2983,7 @@ export class FeeListService {
             text: JSON.parse(error._body).error?.message.value,
             confirmButtonColor: '#096798',
             confirmButtonText: 'close',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             backdrop: true,
             icon: 'error',
           })
@@ -3297,7 +3297,7 @@ export class FeeListService {
         cancelButtonColor: '#84898c',
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         //type: "info",
       }).then((result) => {
         if (result.value) {
@@ -3310,7 +3310,7 @@ export class FeeListService {
                 text: 'Template has been Deleted',
                 confirmButtonColor: '#0890c5',
                 confirmButtonText: 'OK',
-                customClass: 'myalertpopup',
+                // customClass: 'myalertpopup',
                 icon: "success",
                 //type: "info",
               }).then((result) => {
@@ -3325,7 +3325,7 @@ export class FeeListService {
                 text: JSON.parse(error._body).error?.message?.value,
                 confirmButtonColor: '#096798',
                 confirmButtonText: 'close',
-                customClass: 'myalertpopup',
+                // customClass: 'myalertpopup',
                 backdrop: true,
                 icon: 'error',
                 //type: "info",
@@ -3346,7 +3346,7 @@ export class FeeListService {
         // showCancelButton: true,
         confirmButtonColor: '#0890c5',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         //type: "info",
       }).then((result) => { });
     }
@@ -3372,7 +3372,7 @@ export class FeeListService {
               text: JSON.parse(error._body).error?.message.value,
               confirmButtonColor: '#096798',
               confirmButtonText: 'close',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
               backdrop: true,
               icon: 'error',
             })

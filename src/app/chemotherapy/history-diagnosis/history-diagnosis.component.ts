@@ -125,7 +125,7 @@ export class HistoryDiagnosisComponent implements OnInit {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
          this.updateAllergyForm.patchValue({
           Patnr :'',
           ProtoId :'',
@@ -242,7 +242,7 @@ cycleNolistNumbar(event:any){
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   };
 
   closePopup() {this.modalRef.hide();}

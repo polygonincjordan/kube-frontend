@@ -34,7 +34,7 @@ export class SharedService {
       icon: 'success',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup'
-    })
+    } as any)
   }
 
   waringSwallModel(message: string) {
@@ -43,7 +43,7 @@ export class SharedService {
       icon: 'warning',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup'
-    })
+    } as any)
   }
 
   errorSwallModel(message: string) {
@@ -52,6 +52,6 @@ export class SharedService {
       icon: 'error',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup'
-    })
+    } as any)
   }
 }

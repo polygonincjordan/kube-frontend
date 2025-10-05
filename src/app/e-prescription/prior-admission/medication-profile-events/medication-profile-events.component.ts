@@ -340,7 +340,7 @@ export class MedicationProfileEventsComponent {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
           this.drugArray.clear();
           this.ePrescriptionService.loadData(`e-prescription/OrderEventMedicationStatus?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Meordid=${this.configurationData.Meordid}`, false, false, false, false).subscribe((resp: any) => {
             if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
@@ -371,7 +371,7 @@ export class MedicationProfileEventsComponent {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
           this.drugArray.clear();
           this.ePrescriptionService.loadData(`e-prescription/OrderEventMedicationStatus?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Meordid=${this.configurationData.Meordid}`, false, false, false, false).subscribe((resp: any) => {
             if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results.length) {
@@ -403,7 +403,7 @@ export class MedicationProfileEventsComponent {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   parseTime(data: string) {

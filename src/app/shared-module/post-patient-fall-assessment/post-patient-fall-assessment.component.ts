@@ -336,7 +336,7 @@ export class PostPatientFallAssessmentComponent implements OnInit {
       icon: 'warning',
       confirmButtonText: 'Ok',
       customClass: 'myalertpopup',
-    });
+    } as any);
   }
 
   public importVitalsData(data) {

@@ -309,7 +309,7 @@ export class LdrViewComponent implements OnInit {
             text: 'Change Status Successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         this.modalRefForRisk?.hide();
         this.LDRListSet(this.oldDate);
@@ -319,7 +319,7 @@ export class LdrViewComponent implements OnInit {
           text: `Error :${err.error.error.message.value}`,
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       }
     });
@@ -504,7 +504,7 @@ export class LdrViewComponent implements OnInit {
           text: 'Risk Code is Mandatory',
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else {
         const json = {
@@ -523,7 +523,7 @@ export class LdrViewComponent implements OnInit {
               text: 'Saved successfully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup',
+              // customClass: 'myalertpopup',
             });
             this.isFormValidError = false;
           },
@@ -547,7 +547,7 @@ export class LdrViewComponent implements OnInit {
             text: 'Deleted successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => {}
@@ -569,7 +569,7 @@ export class LdrViewComponent implements OnInit {
             text: 'Saved successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
           });
         },
         (_error: any) => {}
@@ -649,7 +649,7 @@ export class LdrViewComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -850,7 +850,7 @@ export class LdrViewComponent implements OnInit {
         text: message,
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       });
       this.closeLabModal(); // Ensure modal cleanup
     }

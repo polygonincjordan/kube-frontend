@@ -412,7 +412,7 @@ export class DischargeProcessComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       });
       if (result.isConfirmed) {
         this.unsavedProgressNote = false;

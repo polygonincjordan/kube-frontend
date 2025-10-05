@@ -415,7 +415,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { 
@@ -424,7 +424,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
     });
   }
   async update() {
@@ -434,7 +434,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { 
@@ -443,7 +443,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
     });
   }
   async release() {
@@ -453,7 +453,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { 
@@ -462,7 +462,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
     });
   }
   async delete() {
@@ -474,7 +474,7 @@ export class DocumentationComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.phyComp.deletePhyAssessment()).subscribe(
@@ -484,7 +484,7 @@ export class DocumentationComponent implements OnInit {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.phyComp.resetAll();
             this.refresh();
           },
@@ -500,7 +500,7 @@ export class DocumentationComponent implements OnInit {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { 
@@ -509,7 +509,7 @@ export class DocumentationComponent implements OnInit {
               icon: 'error',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
     });
   }
   async createAndRelease() {
@@ -522,7 +522,7 @@ export class DocumentationComponent implements OnInit {
               icon: 'error',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
      });
      this.actionType =  this.actionType == 'createandrelease' ? 'create' : ''
   }
@@ -767,7 +767,7 @@ async deleteCorrespondenceDoc(docKey: string) {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
           (_success: any) => {
@@ -776,7 +776,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           },
           (_error: any) => {
@@ -785,7 +785,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               icon: 'warning',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.refresh();
           }
         );
@@ -1016,7 +1016,7 @@ async deleteCorrespondenceDoc(docKey: string) {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   reloadDoc(event) {
@@ -1203,7 +1203,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1217,7 +1217,7 @@ async deleteCorrespondenceDoc(docKey: string) {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.medComp.deleteMedReport()).subscribe(
@@ -1227,7 +1227,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            })
+            } as any)
             this.medComp.resetAll();
             this.refresh();
           },
@@ -1243,7 +1243,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1255,7 +1255,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.medComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1286,7 +1286,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1328,7 +1328,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
     }, (_error: any) => { });
@@ -1343,7 +1343,7 @@ async deleteCorrespondenceDoc(docKey: string) {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then(async (result) => {
+    } as any).then(async (result) => {
       if (result.value) {
 
         (await this.admissionService
@@ -1354,7 +1354,7 @@ async deleteCorrespondenceDoc(docKey: string) {
                 icon: 'success',
                 confirmButtonText: 'Ok',
                 customClass: 'myalertpopup'
-              })
+              } as any)
               this.refresh();
             },
             (_error: any) => { }
@@ -1370,7 +1370,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         icon: 'success',
         confirmButtonText: 'Ok',
         customClass: 'myalertpopup'
-      })
+      } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
     }, (_error: any) => { });

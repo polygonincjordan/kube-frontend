@@ -347,7 +347,7 @@ export class IoChartsComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       }).then((result) => {
         if (result.isConfirmed) {
           this.outputForm.reset();
@@ -377,7 +377,7 @@ export class IoChartsComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
       }).then((result) => {
         console.log(result);
 
@@ -486,14 +486,14 @@ export class IoChartsComponent implements OnInit {
           text: 'Data Saved Successfully!',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else {
         Swal.fire({
           text: 'No Data To be Saved!',
           icon: 'warning',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       }
     }
@@ -520,14 +520,14 @@ export class IoChartsComponent implements OnInit {
           text: 'Data Saved Successfully!',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       } else {
         Swal.fire({
           text: 'No Data To be Saved!',
           icon: 'warning',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       }
       // this.recordView = true;

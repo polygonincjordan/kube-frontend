@@ -61,7 +61,7 @@ import { PriorAdmissionComponent } from './prior-admission/prior-admission.compo
 import { TemplateDescriptionComponent } from './administration/create-administration/template-description/template-description.component';
 import { EMarWitnessComponent } from './e-mar/e-mar-order-history/drug-events-admin/e-mar-witness/e-mar-witness.component';
 import { SearchTextPipe } from './discharge-order/medication-popup/search-text.pipe';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FilterOrderStatusPipe } from './e-mar/e-mar-order-history/filter-order-status.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { TemplatesearchPipe } from './administration/administration-template-popup/templatesearch.pipe';
@@ -180,7 +180,7 @@ export const ePrescriptionRoutes: Routes = [
     NgbModule,
     WebcamModule,
     ImageCropperModule,
-    NgMultiSelectDropDownModule.forRoot(),
+    // NgMultiSelectDropDownModule.forRoot(),
     NgbCollapseModule
   ],
 

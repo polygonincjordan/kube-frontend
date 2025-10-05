@@ -140,7 +140,7 @@ export class PriorToAdmissionComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       this.drugArray.push(this.generateForm());
     }
@@ -631,7 +631,7 @@ export class PriorToAdmissionComponent implements OnInit {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
           if(validData.find(element =>  element.ContHospital)){
             this.onSubmit();
           }
@@ -803,7 +803,7 @@ export class PriorToAdmissionComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   // onChangePom(index: number, event: any) {

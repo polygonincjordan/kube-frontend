@@ -322,7 +322,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
             text: `No Stock data for the selected item ${enteredValue}`,
             icon: 'error',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            // customClass: 'myalertpopup'
           }).then((result) => {
             if (result.value) {
               if (this.materialType === this.wordType.MaterialName$) {
@@ -352,7 +352,7 @@ private saveRecords(): void {
       text: "Please select the filled row to proceed.",
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     });
     return;
   }
@@ -363,7 +363,7 @@ private saveRecords(): void {
       text: "Please fill all the required values.",
       icon: 'error',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     });
     return;
   }
@@ -376,7 +376,7 @@ private saveRecords(): void {
       text: "Stock is not available.",
       icon: 'error',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     });
     return;
   }
@@ -403,7 +403,7 @@ private saveRecords(): void {
       text: "Saved Successfully",
       icon: 'success',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      // customClass: 'myalertpopup'
     }).then((result) => {
       if (result.value) {
         this.consumableHistoryForm.reset();
@@ -423,7 +423,7 @@ private saveRecords(): void {
       title: message || 'An error occurred.',
       icon: 'error',
       confirmButtonText: 'OK',
-      customClass: 'diagnosis-error',
+      // customClass: 'diagnosis-error',
     }).then((result) => {
      this.consumableHistoryForm.reset();
      this.postitemReset.emit();

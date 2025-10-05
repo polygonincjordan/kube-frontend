@@ -547,7 +547,7 @@ export class DiagnosisTabComponent implements OnInit {
           icon: 'error',
           confirmButtonText: 'OK',
           customClass: 'diagnosis-error',
-        });
+        } as any);
       }
     );
   }

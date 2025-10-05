@@ -382,7 +382,7 @@ export class PatientAssignmentComponent implements OnInit {
           text: 'Room assigned successfully',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       },
       (_error: any) => {

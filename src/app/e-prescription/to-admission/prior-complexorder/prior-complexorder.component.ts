@@ -101,7 +101,7 @@ export class PriorComplexorderComponent implements OnInit {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     } else {
       if (this.complexArray.value[this.complexArray.controls.length - 1].EndD !== null && this.complexArray.value[this.complexArray.controls.length - 1].EndD !== null) {
         this.complexArray.push(this.generateForm());
@@ -120,7 +120,7 @@ export class PriorComplexorderComponent implements OnInit {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'error'
-        })
+        } as any)
       }
     }
   }
@@ -137,7 +137,7 @@ export class PriorComplexorderComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   deleteRowData(index: any , data) {

@@ -92,7 +92,7 @@ export class DiagnosisTabComponent implements OnInit, OnDestroy {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      // customClass: 'myalertpopup',
     });
   }
 }

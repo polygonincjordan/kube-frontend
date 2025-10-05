@@ -274,7 +274,7 @@ export class PhysicianFamilyHistoryComponent implements OnInit {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       customClass: 'myalertpopup'
-    }).then((result) => {
+    } as any).then((result) => {
       if (result.value) {
         this.deleteFamilyHistory(item);
       }

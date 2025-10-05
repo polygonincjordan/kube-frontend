@@ -130,7 +130,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
           confirmButtonText: 'OK',
           customClass: 'myalertpopup',
           icon: 'success'
-        }).then(() => {
+        } as any).then(() => {
           // this.addministrationService.PriorToAdmission();
           // for (let i = 0; i < this.addministrationService.IsEditMode.length; i++) {
           //   this.addministrationService.IsEditMode[i] = false;
@@ -513,7 +513,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
   parseTime(data: string) {
     if (data && data.length) {

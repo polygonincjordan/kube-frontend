@@ -219,7 +219,7 @@ export class AdministeredDoesEventComponent {
           icon: 'error',
           confirmButtonText: 'Ok',
           customClass: 'myalertpopup'
-        });
+        } as any);
       }
       this.administratiForm.get('Administrator.Fsource').setValue(previousFsourceValue);
     });
@@ -505,7 +505,7 @@ export class AdministeredDoesEventComponent {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            });
+            } as any);
           }
           this.removeOrderHistoryItem()
         },
@@ -516,7 +516,7 @@ export class AdministeredDoesEventComponent {
               icon: 'error',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            });
+            } as any);
             this.removeOrderHistoryItem()
           }
           
@@ -569,7 +569,7 @@ export class AdministeredDoesEventComponent {
             icon: 'success',
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup'
-          });
+          } as any);
         }
         this.removeOrderHistoryItem()
       },
@@ -580,7 +580,7 @@ export class AdministeredDoesEventComponent {
             icon: 'error',
             confirmButtonText: 'Ok',
             customClass: 'myalertpopup'
-          });
+          } as any);
           this.removeOrderHistoryItem()
         }
         
@@ -603,7 +603,7 @@ export class AdministeredDoesEventComponent {
               icon: 'success',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            });
+            } as any);
           }
           this.removeOrderHistoryItem()
         },
@@ -614,7 +614,7 @@ export class AdministeredDoesEventComponent {
               icon: 'error',
               confirmButtonText: 'Ok',
               customClass: 'myalertpopup'
-            });
+            } as any);
             this.removeOrderHistoryItem()
           }
           
@@ -703,6 +703,6 @@ export class AdministeredDoesEventComponent {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
-    });
+    } as any);
   }
 }

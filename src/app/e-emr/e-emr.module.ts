@@ -10,7 +10,7 @@ import { OrderByPipe } from './pipes/order.pipe';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -61,7 +61,7 @@ export const emrRoutes: Routes = [
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     NgxMaterialTimepickerModule,
-    NgMultiSelectDropDownModule.forRoot(),
+    // NgMultiSelectDropDownModule.forRoot(),
     Ng2SearchPipeModule,
     QuillModule.forRoot(),
     RouterModule.forChild(emrRoutes),

@@ -1022,7 +1022,7 @@ export class ObsGynComponent implements OnInit,OnChanges {
     text: `${codeArr.toString()} is/are already Imported `,
     icon: 'warning',
     confirmButtonText: 'Ok',
-    customClass: 'myalertpopup'
+    // customClass: 'myalertpopup'
   })
  }
   deleteFromTable(item,index){
@@ -1101,7 +1101,7 @@ this.errorMsgForDuplicatesDiagnosis();
     text: `${codeArr.toString()} is/are already Imported `,
     icon: 'warning',
     confirmButtonText: 'Ok',
-    customClass: 'myalertpopup'
+    // customClass: 'myalertpopup'
   })
  }
   deleteDiagnosisFromTable(item,index){

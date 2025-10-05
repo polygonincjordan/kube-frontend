@@ -610,7 +610,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
             confirmButtonColor: '#0890c5',
             cancelButtonColor: '#84898c',
             confirmButtonText: 'OK',
-            customClass: 'myalertpopup',
+            // customClass: 'myalertpopup',
             icon: 'success'
           });
           this.resetTags();
@@ -630,7 +630,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           confirmButtonColor: '#0890c5',
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
           icon: 'error'
         });
       }
@@ -684,7 +684,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        // customClass: 'myalertpopup',
         icon: 'error'
       });
     }
@@ -1101,7 +1101,7 @@ export class NursTreatmentWorkareaComponent implements OnInit, OnDestroy {
           showCancelButton: true,
           confirmButtonText: 'Yes',
           cancelButtonText: 'No',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         });
         if (result.isConfirmed) { 
           this.unsavedProgressNote = false;

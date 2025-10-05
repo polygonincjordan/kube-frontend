@@ -262,7 +262,7 @@ export class DocumentationListComponent implements OnInit {
               confirmButtonText: 'OK',
               customClass: 'myalertpopup',
               icon: 'error',
-            });
+            } as any);
           }
         }
       });
@@ -1244,6 +1244,6 @@ export class DocumentationListComponent implements OnInit {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 }

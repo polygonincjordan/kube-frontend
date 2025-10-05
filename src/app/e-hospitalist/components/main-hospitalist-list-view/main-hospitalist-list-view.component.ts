@@ -880,7 +880,7 @@ copyToClipboard(text: string) {
           text: 'Change Status Successfully',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
 
         this.modalRefForRisk?.hide();
@@ -891,7 +891,7 @@ copyToClipboard(text: string) {
           text: `Error :${err.error.error.message.value}`,
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          // customClass: 'myalertpopup',
         });
       },
     });

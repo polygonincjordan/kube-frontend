@@ -846,7 +846,7 @@ export class EOrderMainComponent {
         confirmButtonText: 'OK',
         customClass: 'myalertpopup',
         icon: 'error'
-      });
+      } as any);
     }
   }
   checkedForData() {
@@ -1004,7 +1004,7 @@ export class EOrderMainComponent {
             confirmButtonText: 'OK',
             customClass: 'myalertpopup',
             icon: 'success'
-          })
+          } as any)
           this.eOrderService.onNavigationClick('OrderSet');
           this.cancelOrderSelected();
           this.showSelected = false;
@@ -1035,7 +1035,7 @@ export class EOrderMainComponent {
             icon: 'error',
             confirmButtonText: 'OK',
             customClass:'diagnosis-error'
-          });
+          } as any);
       }
     );
   }
@@ -1698,7 +1698,7 @@ export class EOrderMainComponent {
       cancelButtonText: 'No',
       customClass: 'myalertpopup',
       icon: 'error'
-    });
+    } as any);
   }
 
   searchEventForTreatmentOU() {

@@ -548,7 +548,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}
@@ -577,7 +577,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}
@@ -608,7 +608,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}
@@ -619,7 +619,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
         text: "Allergen is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     }else{
       let text = '';
@@ -637,7 +637,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}
@@ -658,7 +658,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
             text: 'Deleted Successully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            // customClass: 'myalertpopup'
           })
         },
         (_error: any) => {}
@@ -685,7 +685,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          // customClass: 'myalertpopup'
         })
       },
       (_error: any) => {}
@@ -846,7 +846,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
         text: "Allergen is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
     }
      else{
@@ -931,7 +931,7 @@ export class PhysicianCreateAllergyComponent implements OnInit {
         text: "Allergen is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        // customClass: 'myalertpopup'
       })
      }
      else if(this.StateComment !='' && this.updateAllergyForm.controls.Allergen.value == ''){
