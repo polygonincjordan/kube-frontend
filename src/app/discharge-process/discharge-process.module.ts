@@ -18,7 +18,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { QuillModule } from 'ngx-quill';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { HelperService } from '@services/helper.service';
 import { StorageService } from '@services/storage.service';
@@ -146,7 +146,7 @@ export const ePrescriptionRoutes: Routes = [
     PopoverModule,
     NgxMaterialTimepickerModule,
     QuillModule.forRoot(),
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
     NgbCollapseModule,
     NgxExtendedPdfViewerModule,
     VitalSignModule,

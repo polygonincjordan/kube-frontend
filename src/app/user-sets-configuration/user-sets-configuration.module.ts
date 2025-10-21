@@ -10,7 +10,7 @@ import { HelperService } from '@services/helper.service';
 import { AuthInterceptor } from '@services/interceptor/auth.interceptor.guard';
 import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
 import { StorageService } from '@services/storage.service';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -65,7 +65,7 @@ export const ePrescriptionRoutes: Routes = [
     PopoverModule,
     NgxMaterialTimepickerModule,
     QuillModule.forRoot(),
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
   ],
   providers: [HelperService, DatePipe, StorageService, EPrescriptionService, AddministrationService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

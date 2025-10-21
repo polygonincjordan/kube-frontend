@@ -17,7 +17,7 @@ import { InPatientDashboardComponent } from './in-patient-dashboard/in-patient-d
 // import { HeaderComponent } from '../core/header/header.component';
 import { MissedMedicationDosesService } from '@services/e-hospitalist/missed-medication-doses.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -55,7 +55,7 @@ export const eHospitalistRoutes: Routes = [
     NgbModule,
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
     Ng2SearchPipeModule,
     RouterModule.forChild(eHospitalistRoutes),
     NgxMaterialTimepickerModule,

@@ -45,7 +45,7 @@ import { ERDiagnosisComponent } from './er-history/diagnosis/diagnosis.component
 import { LabResultsComponent } from './lab-results/lab-results.component';
 import { PhysicianOrdersListComponent } from './physician-orders-list/physician-orders-list.component';
 import { AdministeredDosesComponent } from './administered-doses/administered-doses.component';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AdministeredDoesEventComponent } from './administered-doses/administered-does-event/administered-does-event.component';
 import { RemoveTrailingZerosPipe } from './administered-doses/administered-does-event/remove-trailing-zeros.pipe';
 import { ConsumablesComponent } from './nurs-treatment-workarea/consumables/consumables.component';
@@ -273,7 +273,7 @@ const route: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
     RouterModule.forChild(route),
     CoreModule,
     NgSelectModule,

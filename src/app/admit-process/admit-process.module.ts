@@ -28,7 +28,7 @@ import { DiagnosisComponent } from './diagnosis/diagnosis.component';
 import { GynDiagnosisComponent } from './documentation/documentation-list/obs-gyn/diagnosis/diagnosis.component';
 import { DiagnosisListComponent } from './diagnosis/diagnosis-list/diagnosis-list.component';
 import { SearchSelectDiagnosisCodeComponent } from './diagnosis/search-select-diagnosis-code/search-select-diagnosis-code.component';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { DocumentationListComponent } from './documentation/documentation-list/documentation-list.component';
 import { EducationFormComponent } from './documentation/documentation-list/education-form/education-form.component';
@@ -133,7 +133,7 @@ export const ePrescriptionRoutes: Routes = [
     PopoverModule,
     NgxMaterialTimepickerModule,
     QuillModule.forRoot(),
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
     TooltipModule.forRoot(),
     NewbornAssessmentModule,
     VitalSignModule,
