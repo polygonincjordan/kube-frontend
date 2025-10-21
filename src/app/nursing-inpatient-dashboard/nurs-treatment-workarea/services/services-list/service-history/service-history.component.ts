@@ -47,7 +47,7 @@ export class ServiceHistoryComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((result) => {
       if (result.value) {
         this.onDeleteFeeSelect(item);
@@ -91,7 +91,7 @@ export class ServiceHistoryComponent implements OnInit {
             confirmButtonText: 'OK',
             backdrop: true,
             icon: 'success',
-            // customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
           })
           .then((result) => {
           });
@@ -105,7 +105,7 @@ export class ServiceHistoryComponent implements OnInit {
             text: JSON.parse(error._body).error?.message.value,
             confirmButtonColor: '#096798',
             confirmButtonText: 'close',
-            // customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
             backdrop: true,
             icon: 'error',
           })

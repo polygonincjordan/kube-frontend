@@ -33,7 +33,7 @@ export class SharedService {
       text: message,
       icon: 'success',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any)
   }
 
@@ -42,7 +42,7 @@ export class SharedService {
       text: message,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any)
   }
 
@@ -51,7 +51,7 @@ export class SharedService {
       text: message,
       icon: 'error',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any)
   }
 }

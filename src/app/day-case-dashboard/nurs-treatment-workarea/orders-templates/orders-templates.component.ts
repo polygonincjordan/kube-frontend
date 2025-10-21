@@ -151,7 +151,7 @@ export class OrdersTemplatesComponent implements OnInit {
           title: 'Please select Occupation Group',
           icon: 'error',
           confirmButtonText: 'OK',
-          // customClass:'swal-class'
+          customClass: { popup: 'swal-class' },
         });
         return;
       }
@@ -160,7 +160,7 @@ export class OrdersTemplatesComponent implements OnInit {
         title: 'Please add Physician order text',
         icon: 'error',
         confirmButtonText: 'OK',
-        // customClass:'swal-class'
+        customClass: { popup: 'swal-class' },
       });
       return;
     }
@@ -207,7 +207,7 @@ export class OrdersTemplatesComponent implements OnInit {
             title: 'Physician orders is created successfully',
             icon: 'success',
             confirmButtonText: 'OK',
-            // customClass:'swal-class'
+            customClass: { popup: 'swal-class' },
           });
           let orderLenght = this.ordertemplateBind.value.length;
           for (let index = 0; index <= orderLenght; index++) {
@@ -224,7 +224,7 @@ export class OrdersTemplatesComponent implements OnInit {
         title: 'Please add Physician order text',
         icon: 'error',
         confirmButtonText: 'OK',
-        // customClass:'swal-class'
+        customClass: { popup: 'swal-class' },
       });
     }
   }
@@ -236,7 +236,7 @@ export class OrdersTemplatesComponent implements OnInit {
         title: 'Please add template name',
         icon: 'error',
         confirmButtonText: 'OK',
-        // customClass:'swal-class'
+        customClass: { popup: 'swal-class' },
       });
       return;
     }
@@ -278,7 +278,7 @@ export class OrdersTemplatesComponent implements OnInit {
           title: 'Template Save Successfully',
           icon: 'success',
           confirmButtonText: 'OK',
-          // customClass:'swal-class'
+          customClass: { popup: 'swal-class' },
         });
       });
   }

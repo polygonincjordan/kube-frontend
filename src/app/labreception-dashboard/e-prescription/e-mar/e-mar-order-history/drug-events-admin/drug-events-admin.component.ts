@@ -409,7 +409,7 @@ export class DrugEventsAdminComponent implements OnInit {
             confirmButtonColor: '#0890c5',
             cancelButtonColor: '#84898c',
             confirmButtonText: 'OK',
-            customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
             icon: 'success'
           } as any).then(() => {
             this.modalRef.hide()
@@ -449,7 +449,7 @@ export class DrugEventsAdminComponent implements OnInit {
           confirmButtonColor: '#0890c5',
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
-          customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any).then(() => {
           this.modalRef.hide()
@@ -495,7 +495,7 @@ export class DrugEventsAdminComponent implements OnInit {
             confirmButtonColor: '#0890c5',
             cancelButtonColor: '#84898c',
             confirmButtonText: 'OK',
-            customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
             icon: 'success'
           } as any).then(() => {
             this.modalRef.hide()
@@ -636,7 +636,7 @@ export class DrugEventsAdminComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : messageType === 'Warn' ? 'Ok' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
     } as any);
   }

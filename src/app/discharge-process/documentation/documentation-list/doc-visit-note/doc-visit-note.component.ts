@@ -262,7 +262,7 @@ export class DocVisitNoteComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then((result) => {
       if (result.value) {
         this.reloadTableList.next(true);
@@ -321,7 +321,7 @@ export class DocVisitNoteComponent implements OnInit {
                 confirmButtonColor: '#0890c5',
                 cancelButtonColor: '#84898c',
                 confirmButtonText: 'OK',
-                customClass: 'myalertpopup',
+                customClass: { popup: 'myalertpopup' },
                 icon: 'success'
               } as any), (error) => {
                 alert('The document dose not saved in Red color and caution');
@@ -348,7 +348,7 @@ export class DocVisitNoteComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }
@@ -391,7 +391,7 @@ export class DocVisitNoteComponent implements OnInit {
                 confirmButtonColor: '#0890c5',
                 cancelButtonColor: '#84898c',
                 confirmButtonText: 'OK',
-                customClass: 'myalertpopup',
+                customClass: { popup: 'myalertpopup' },
                 icon: 'success'
               } as any), (error) => {
                 alert('The document dose not saved in Red color and caution');
@@ -416,7 +416,7 @@ export class DocVisitNoteComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then((result) => {
       if (result.value) {
         this.patientVisitService.deleteVisitNotePatientVisitData(

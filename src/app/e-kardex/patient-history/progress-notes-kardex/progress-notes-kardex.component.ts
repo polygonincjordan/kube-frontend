@@ -86,7 +86,7 @@ export class ProgressNotesKardexComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       });
       if (result.isConfirmed) { 
         this.unsavedProgressNote = false;

@@ -1729,7 +1729,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         if (item.value == '1') {
@@ -1791,7 +1791,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         if (habitNoConsume == 'noConsume') {
@@ -2029,7 +2029,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 

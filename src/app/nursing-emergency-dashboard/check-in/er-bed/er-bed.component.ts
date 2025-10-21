@@ -74,7 +74,7 @@ export class ErBedComponent implements OnInit {
             text: "Room is assigned successfully",
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
           this.reloadCheckin.emit(true);
         },

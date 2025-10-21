@@ -336,7 +336,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         if (item.value == '1') {
@@ -398,7 +398,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         if (habitNoConsume == 'noConsume') {

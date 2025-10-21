@@ -296,7 +296,7 @@ export class DocumentingDeliveryComponent implements OnInit {
         text: "Documenting Delivery created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       });
       this.modalRefForAllergy?.hide();
       this.reloadCheckin.next(true);

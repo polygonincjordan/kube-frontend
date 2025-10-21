@@ -446,7 +446,7 @@ export class DiagnosisListComponent implements OnInit {
             title: message,
             icon: 'error',
             confirmButtonText: 'OK',
-            customClass:'diagnosis-error'
+            customClass:{ popup: 'diagnosis-error' }
           } as any);
       }
     );

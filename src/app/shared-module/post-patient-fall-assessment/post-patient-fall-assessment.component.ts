@@ -335,7 +335,7 @@ export class PostPatientFallAssessmentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     } as any);
   }
 

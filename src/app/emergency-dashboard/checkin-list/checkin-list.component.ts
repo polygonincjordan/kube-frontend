@@ -499,7 +499,7 @@ export class CheckinListComponent implements OnInit {
           text: "Risk Code is Mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       } else {
         const json = {
@@ -517,7 +517,7 @@ export class CheckinListComponent implements OnInit {
               text: "Saved successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => { }
@@ -539,7 +539,7 @@ export class CheckinListComponent implements OnInit {
             text: "Deleted successfully",
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => { }
@@ -561,7 +561,7 @@ export class CheckinListComponent implements OnInit {
             text: "Saved successfully",
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => { }
@@ -581,7 +581,7 @@ export class CheckinListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -869,7 +869,7 @@ export class CheckinListComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => { }
@@ -898,7 +898,7 @@ export class CheckinListComponent implements OnInit {
               text: text,
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => { }
@@ -929,7 +929,7 @@ export class CheckinListComponent implements OnInit {
                 text: text,
                 icon: 'success',
                 confirmButtonText: 'Ok',
-                // customClass: 'myalertpopup'
+                customClass: { popup: 'myalertpopup' }
               })
             },
             (_error: any) => { }
@@ -940,7 +940,7 @@ export class CheckinListComponent implements OnInit {
               text: "Allergen is mandatory",
               icon: 'error',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           } else {
             let text = '';
@@ -958,7 +958,7 @@ export class CheckinListComponent implements OnInit {
                   text: text,
                   icon: 'success',
                   confirmButtonText: 'Ok',
-                  // customClass: 'myalertpopup'
+                  customClass: { popup: 'myalertpopup' }
                 })
               },
               (_error: any) => { }
@@ -979,7 +979,7 @@ export class CheckinListComponent implements OnInit {
               text: 'Deleted Successully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => { }
@@ -1006,7 +1006,7 @@ export class CheckinListComponent implements OnInit {
               text: text,
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => { }
@@ -1223,7 +1223,7 @@ export class CheckinListComponent implements OnInit {
           text: "Allergen is mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }
       else {
@@ -1308,7 +1308,7 @@ export class CheckinListComponent implements OnInit {
           text: "Allergen is mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }
       else if (this.StateComment != '' && this.updateAllergyForm.controls.Allergen.value == '') {
@@ -1739,7 +1739,7 @@ export class CheckinListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         this.changeStatus(item);
@@ -1770,7 +1770,7 @@ export class CheckinListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         this.changePhysicianStatus(item);

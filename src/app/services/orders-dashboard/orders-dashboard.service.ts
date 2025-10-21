@@ -222,7 +222,7 @@ postCountLabExtraction(startDate: any, endDate: any) {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error',
       timer: 3000
     } as any);
@@ -237,7 +237,7 @@ postCountLabExtraction(startDate: any, endDate: any) {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'success',
       timer: 3000
     } as any);
