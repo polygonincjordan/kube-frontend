@@ -12,8 +12,9 @@
     "prittify": "npx prettier --write ./src/",
     "serve:prod": "ng serve --environment=prod",
     "analyzer": "webpack-bundle-analyzer dist/kardex/stats.json",
+    "build": "ng build --base-href='/e-Kardex-New/' --aot=true --optimization=true --configuration=production --named-chunks",
     "build:analyzer": "ng build --stats-json --named-chunks --configuration production",
-    "build": "ng build --base-href='/e-Kardex-New/' --aot=true --optimization=true --configuration=production --named-chunks"
+    "build:prod": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
