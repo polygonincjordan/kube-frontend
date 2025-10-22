@@ -296,7 +296,7 @@ export class IoChartsComponentNew implements OnInit {
       Swal.fire({
         text : 'I & O Chart is Not Open. Please Start it First to Add Data',
         icon: 'warning',
-        // customClass: 'font-size-text-center',
+        customClass: { popup: 'font-size-text-center' },
         confirmButtonText: 'Okay',
         cancelButtonText: 'No',
       })
@@ -381,7 +381,7 @@ export class IoChartsComponentNew implements OnInit {
         text: 'There is No Active I & O Chart',
         icon: 'warning',
         confirmButtonText: 'Okay',
-        // customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
       })
       return;
     }
@@ -643,7 +643,7 @@ export class IoChartsComponentNew implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        // customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
       }).then((result) => {
         if (result.isConfirmed) {
           this.outputForm.reset();
@@ -667,7 +667,7 @@ export class IoChartsComponentNew implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        // customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
       }).then((result) => {
         if (result.isConfirmed) {
           this.inputForm.reset();
@@ -927,7 +927,7 @@ export class IoChartsComponentNew implements OnInit {
             text: 'Data Saved Successfully!',
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
           });
         });
       } else {
@@ -935,7 +935,7 @@ export class IoChartsComponentNew implements OnInit {
           text: 'No Data To be Saved!',
           icon: 'warning',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         });
       }
       // const json: any = this.inputForm.value;
@@ -981,14 +981,14 @@ export class IoChartsComponentNew implements OnInit {
       //     text: 'Data Saved Successfully!',
       //     icon: 'success',
       //     confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+      //     customClass: { popup: 'myalertpopup' },
       //   });
       // } else {
       //   Swal.fire({
       //     text: 'No Data To be Saved!',
       //     icon: 'warning',
       //     confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+      //     customClass: { popup: 'myalertpopup' },
       //   });
       // }
     }
@@ -1061,7 +1061,7 @@ export class IoChartsComponentNew implements OnInit {
             text: 'Data Saved Successfully!',
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
           });
         });
       } else {
@@ -1069,7 +1069,7 @@ export class IoChartsComponentNew implements OnInit {
           text: 'No Data To be Saved!',
           icon: 'warning',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         });
       }
       // this.recordView = true;
@@ -1119,7 +1119,7 @@ export class IoChartsComponentNew implements OnInit {
         title: "New I & O Chart is Successfully Started",
         icon: 'success',
         confirmButtonText: 'OK',
-        // customClass:'font-size-text-center'
+        customClass: { popup: 'font-size-text-center' },
       });
     }, (error) => {
       console.log(error,"--");
@@ -1128,7 +1128,7 @@ export class IoChartsComponentNew implements OnInit {
         title: "An Open I & O Chart is Already Exists",
         icon: 'error',
         confirmButtonText: 'OK',
-        // customClass:'font-size-text-center'
+        customClass: { popup: 'font-size-text-center' },
       });
     })
   }
@@ -1155,14 +1155,14 @@ export class IoChartsComponentNew implements OnInit {
         title: "The I & O Chart has been Completed Successfully",
         icon: 'success',
         confirmButtonText: 'OK',
-        // customClass:'font-size-text-center'
+        customClass: { popup: 'font-size-text-center' },
       });
     }, (error) => {
       Swal.fire({
         title: error?.error?.error?.message?.value,
         icon: 'error',
         confirmButtonText: 'OK',
-        // customClass:'font-size-text-center'
+        customClass: { popup: 'font-size-text-center' },
       });
     })
   }

@@ -236,7 +236,7 @@ export class ReservationListComponent implements OnInit {
         text: `Reservation Created With Document #${res.d?.ResNo}`,
         icon: 'success',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       });
     }
   }
@@ -246,7 +246,7 @@ export class ReservationListComponent implements OnInit {
       text: message,
       icon: 'error',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     });
   }
 

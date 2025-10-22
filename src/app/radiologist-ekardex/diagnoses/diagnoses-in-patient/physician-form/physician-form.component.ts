@@ -819,7 +819,7 @@ export class PhysicianFormComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 
@@ -873,7 +873,7 @@ export class PhysicianFormComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 
@@ -943,7 +943,7 @@ export class PhysicianFormComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 
@@ -1019,7 +1019,7 @@ export class PhysicianFormComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 

@@ -550,7 +550,7 @@ export class ERDiagnosisComponent implements OnInit {
           title: message,
           icon: 'error',
           confirmButtonText: 'OK',
-          // customClass: 'diagnosis-error',
+          customClass: { popup: 'diagnosis-error' },
         });
       }
     );

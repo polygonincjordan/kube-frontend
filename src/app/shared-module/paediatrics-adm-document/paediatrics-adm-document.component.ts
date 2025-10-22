@@ -1124,7 +1124,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     } as any);
   }
 
@@ -1266,7 +1266,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     } as any).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);

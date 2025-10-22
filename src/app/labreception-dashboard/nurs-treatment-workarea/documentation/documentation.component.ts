@@ -473,7 +473,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.phyComp.resetAll();
       this.refresh();
@@ -485,7 +485,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is updated successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.phyComp.resetAll();
       this.refresh();
@@ -497,7 +497,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is released successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.phyComp.resetAll();
       this.refresh();
@@ -511,7 +511,7 @@ export class DocumentationComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then(async (result) => {
       if (result.value) {
 
@@ -521,7 +521,7 @@ export class DocumentationComponent implements OnInit {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.phyComp.resetAll();
             this.refresh();
@@ -537,7 +537,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.phyComp.resetAll();
       this.refresh();
@@ -981,7 +981,7 @@ export class DocumentationComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }
@@ -1203,7 +1203,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.medComp.resetAll();
       this.refresh();
@@ -1217,7 +1217,7 @@ export class DocumentationComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then(async (result) => {
       if (result.value) {
 
@@ -1227,7 +1227,7 @@ export class DocumentationComponent implements OnInit {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.medComp.resetAll();
             this.refresh();
@@ -1243,7 +1243,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is updated successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.medComp.resetAll();
       this.refresh();
@@ -1255,7 +1255,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is released successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.medComp.resetAll();
       this.refresh();
@@ -1286,7 +1286,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.phyComp.resetAll();
       this.refresh();
@@ -1328,7 +1328,7 @@ export class DocumentationComponent implements OnInit {
         text: "Education assessment is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
@@ -1385,7 +1385,7 @@ export class DocumentationComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then(async (result) => {
       if (result.value) {
 
@@ -1396,7 +1396,7 @@ export class DocumentationComponent implements OnInit {
                 text: "Document is deleted successfully",
                 icon: 'success',
                 confirmButtonText: 'Ok',
-                customClass: 'myalertpopup'
+                customClass: { popup: 'myalertpopup' }
               } as any)
               this.refresh();
             },
@@ -1414,7 +1414,7 @@ async deleteCPRDoc(docKey: string) {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCprDocument(docKey)).subscribe(
@@ -1423,7 +1423,7 @@ async deleteCPRDoc(docKey: string) {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.refresh();
           },
@@ -1432,7 +1432,7 @@ async deleteCPRDoc(docKey: string) {
               text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
               icon: 'warning',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.refresh();
           }
@@ -1449,7 +1449,7 @@ async deleteCorrespondenceDoc(docKey: string) {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
@@ -1458,7 +1458,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.refresh();
           },
@@ -1467,7 +1467,7 @@ async deleteCorrespondenceDoc(docKey: string) {
               text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
               icon: 'warning',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.refresh();
           }
@@ -1481,7 +1481,7 @@ async deleteCorrespondenceDoc(docKey: string) {
         text: "Document is updated successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();

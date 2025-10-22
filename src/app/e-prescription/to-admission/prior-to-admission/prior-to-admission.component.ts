@@ -138,7 +138,7 @@ export class PriorToAdmissionComponent implements OnInit {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'error'
       } as any);
     } else {
@@ -629,7 +629,7 @@ export class PriorToAdmissionComponent implements OnInit {
           confirmButtonColor: '#0890c5',
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
-          customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any).then(() => {
           if(validData.find(element =>  element.ContHospital)){
@@ -801,7 +801,7 @@ export class PriorToAdmissionComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }

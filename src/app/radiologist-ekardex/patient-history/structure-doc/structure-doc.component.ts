@@ -550,7 +550,7 @@ export class StructureDocComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then((result) => {
       if (result.value) {
         this.ZdocNr = this.phyAssessmentList[0].ZdocNr;
@@ -866,7 +866,7 @@ export class StructureDocComponent implements OnInit {
        showCancelButton: true,
        confirmButtonText: 'Yes',
        cancelButtonText: 'No',
-       customClass: 'myalertpopup'
+       customClass: { popup: 'myalertpopup' }
      } as any).then((result) => {
        if (result.value) {
          this.ZdocNrForNurs = this.nursAssessmentList[0].ZdocNr;
@@ -1395,7 +1395,7 @@ uploadDocument(template) {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }
@@ -1450,7 +1450,7 @@ uploadDocument(template) {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then((result) => {
       if (result.value) {
         this.deleteSpecialNotes();

@@ -367,7 +367,7 @@ export class PatientProfileHistoryNurseComponent implements OnInit {
           confirmButtonColor: '#0890c5',
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
-          customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any).then(() => {
           this.loadMedicationHistoryData();
@@ -416,7 +416,7 @@ export class PatientProfileHistoryNurseComponent implements OnInit {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'success'
       } as any).then((results) => {
         this.loadMedicationHistoryData();
@@ -717,7 +717,7 @@ export class PatientProfileHistoryNurseComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }

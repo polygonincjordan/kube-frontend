@@ -498,7 +498,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     })
   }
   deleteDiagnosisFromTable(item, index) {

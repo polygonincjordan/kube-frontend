@@ -196,7 +196,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
           text: 'Risk Code is Mandatory',
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         });
       } else {
         const json = {
@@ -214,7 +214,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
               text: 'Saved successfully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup',
+              customClass: { popup: 'myalertpopup' },
             });
             this.isFormValidError = false;
           },
@@ -237,7 +237,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
             text: 'Deleted successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
           });
         },
         (_error: any) => { }
@@ -258,7 +258,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
             text: 'Saved successfully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup',
+            customClass: { popup: 'myalertpopup' },
           });
         },
         (_error: any) => { }
@@ -329,7 +329,7 @@ export class SurgeryWorklistTabComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);

@@ -83,7 +83,7 @@ export class OrderFrequencyDeftimComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }
@@ -114,7 +114,7 @@ export class OrderFrequencyDeftimComponent implements OnInit {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'error'
       } as any);
     } else {

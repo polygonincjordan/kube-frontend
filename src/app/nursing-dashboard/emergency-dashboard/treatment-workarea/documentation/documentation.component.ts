@@ -136,7 +136,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is created successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       })
       this.phyComp.resetAll();
       this.refresh();
@@ -148,7 +148,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is updated successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       })
       this.phyComp.resetAll();
       this.refresh();
@@ -160,7 +160,7 @@ export class DocumentationComponent implements OnInit {
         text: "Document is released successfully",
         icon: 'success',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       })
       this.phyComp.resetAll();
       this.refresh();
@@ -174,7 +174,7 @@ export class DocumentationComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then(async (result) => {
       if (result.value) {
         (await this.phyComp.deletePhyAssessment()).subscribe(
@@ -183,7 +183,7 @@ export class DocumentationComponent implements OnInit {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
             this.phyComp.resetAll();
             this.refresh();

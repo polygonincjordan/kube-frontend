@@ -623,7 +623,7 @@ export class LaborRoomFlowSheetComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 
@@ -762,7 +762,7 @@ export class LaborRoomFlowSheetComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);

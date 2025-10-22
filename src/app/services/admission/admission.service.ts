@@ -144,7 +144,7 @@ export class AdmissionService {
       title: successMsg,
       icon: 'success',
       confirmButtonText: 'OK',
-      // customClass: 'swal-class'
+      customClass: { popup: 'swal-class' },
     });
   }
 
@@ -153,7 +153,7 @@ export class AdmissionService {
       title: successMsg,
       icon: 'error',
       confirmButtonText: 'OK',
-      // customClass: 'swal-class'
+      customClass: { popup: 'swal-class' },
     });
   }
 

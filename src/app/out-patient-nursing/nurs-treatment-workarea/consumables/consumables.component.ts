@@ -131,7 +131,7 @@ export class ConsumablesComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then(async (result) => {
       if (result.value) {
         // this.dataShareService.sendActionType(ActionType.Save$, true);

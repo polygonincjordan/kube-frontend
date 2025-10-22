@@ -453,7 +453,7 @@ export class ErVitalsComponentComman implements OnInit {
         text: "Please select Vital Signs to delete.",
         icon: 'error',
         confirmButtonText: 'Ok',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any)
     }
   }
@@ -479,7 +479,7 @@ export class ErVitalsComponentComman implements OnInit {
             text: "Vital signs deleted successfully",
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           } as any)
         },
         (_error: any) => { }
@@ -755,7 +755,7 @@ export class ErVitalsComponentComman implements OnInit {
          text: "Please select Vital Signs to change.",
          icon: 'error',
          confirmButtonText: 'Ok',
-         customClass: 'myalertpopup'
+         customClass: { popup: 'myalertpopup' }
        } as any)
      }
  
@@ -837,7 +837,7 @@ export class ErVitalsComponentComman implements OnInit {
           text: "Vital signs updated successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         } as any)
       },
       (_error: any) => { }
@@ -879,7 +879,7 @@ export class ErVitalsComponentComman implements OnInit {
           text: "Vital signs created successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         } as any)
       },
       (_error: any) => { }

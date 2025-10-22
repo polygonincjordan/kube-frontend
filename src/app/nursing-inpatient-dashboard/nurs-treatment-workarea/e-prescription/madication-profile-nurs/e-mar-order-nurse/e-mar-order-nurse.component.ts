@@ -329,7 +329,7 @@ commanSorting(keyName: string) {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : messageType === 'Warn' ? 'Ok' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
     } as any);
   }

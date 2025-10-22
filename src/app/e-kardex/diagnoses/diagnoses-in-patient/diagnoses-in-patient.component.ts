@@ -438,7 +438,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         (this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
@@ -448,7 +448,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
             // this.refresh();
           },
@@ -457,7 +457,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
               text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
               icon: 'warning',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
             // this.refresh();
           }
@@ -477,7 +477,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         (this.emergencyService.deleteMedReport(json)).subscribe(
@@ -487,7 +487,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
             // this.refresh();
           },
@@ -496,7 +496,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
               text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
               icon: 'warning',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
             // this.refresh();
           }

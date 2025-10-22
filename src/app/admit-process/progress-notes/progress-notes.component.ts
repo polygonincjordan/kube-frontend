@@ -295,7 +295,7 @@ export class ProgressNotesComponent implements OnInit {
         title: 'Please enter Text',
         icon: 'error',
         confirmButtonText: 'OK',
-        // customClass: 'swal-class'
+        customClass: { popup: 'swal-class' },
       });
     }else{
         const config: ModalOptions = {
