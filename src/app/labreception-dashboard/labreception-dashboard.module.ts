@@ -5,7 +5,7 @@ import { LabreceptionDashboardComponent } from './labreception-dashboard.compone
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -158,7 +158,7 @@ const route: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
     RouterModule.forChild(route),
     CoreModule,
     NgSelectModule,

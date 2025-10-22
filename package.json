@@ -12,8 +12,9 @@
     "prittify": "npx prettier --write ./src/",
     "serve:prod": "ng serve --environment=prod",
     "analyzer": "webpack-bundle-analyzer dist/kardex/stats.json",
+    "build": "ng build --base-href='/e-Kardex-New/' --aot=true --optimization=true --configuration=production --named-chunks",
     "build:analyzer": "ng build --stats-json --named-chunks --configuration production",
-    "build": "ng build --base-href='/e-Kardex-New/' --aot=true --optimization=true --configuration=production --named-chunks"
+    "build:prod": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +41,7 @@
     "dayjs": "^1.11.6",
     "font-awesome": "^4.7.0",
     "ng-drag-drop": "^5.0.0",
+    "ng-multiselect-dropdown": "^0.3.6",
     "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^9.0.0",
     "ngx-cookie-service": "^14.0.1",

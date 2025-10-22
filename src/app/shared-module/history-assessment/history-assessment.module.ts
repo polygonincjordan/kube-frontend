@@ -5,7 +5,7 @@ import { PastMedicalComponent } from './history-assessment/past-medical/past-med
 import { PastSurgicalComponent } from './history-assessment/past-surgical/past-surgical.component';
 import { HistoryAssessmentComponent } from './history-assessment/history-assessment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -27,7 +27,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
   imports: [
     CommonModule,
     FormsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule,
     NgSelectModule,
     ReactiveFormsModule,
     Ng2SearchPipeModule,

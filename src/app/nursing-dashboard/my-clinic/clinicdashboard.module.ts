@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClinicComponent } from './clinic.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { RouterModule, Routes } from '@angular/router';
@@ -19,7 +19,7 @@ export const Clinic: Routes = [
   imports: [
     CommonModule,
     NgbModule,
-    // NgMultiSelectDropDownModule,
+    NgMultiSelectDropDownModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
     Ng2SearchPipeModule,
