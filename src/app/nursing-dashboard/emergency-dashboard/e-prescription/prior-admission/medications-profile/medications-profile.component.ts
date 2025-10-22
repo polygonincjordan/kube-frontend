@@ -444,7 +444,7 @@ askQuestion(index){
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'success'
       } as any)
     },
@@ -469,7 +469,7 @@ askQuestion(index){
   //         confirmButtonColor: '#0890c5',
   //         cancelButtonColor: '#84898c',
   //         confirmButtonText: 'OK',
-  //         customClass: 'myalertpopup',
+  //         customClass: { popup: 'myalertpopup' },
   //         icon: 'success'
   //       }).then(() => {
   //         this.configurationPopup = "false";
@@ -510,7 +510,7 @@ askQuestion(index){
           confirmButtonColor: '#0890c5',
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
-          customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any)
       }, (error) => {
@@ -826,7 +826,7 @@ askQuestion(index){
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }

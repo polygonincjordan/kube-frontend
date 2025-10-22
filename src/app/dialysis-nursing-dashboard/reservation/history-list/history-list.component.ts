@@ -142,7 +142,7 @@ export class HistoryListComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         // this.deleteForPastSurg(item);

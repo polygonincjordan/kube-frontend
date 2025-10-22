@@ -355,7 +355,7 @@ export class CompanionMealOrderingComponentNew implements OnInit {
           text: 'Companion’s Meal Ordering saved successfully!',
           icon: 'success',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         } as any);
         this.resetForm();
         this.closeNav();
@@ -369,7 +369,7 @@ export class CompanionMealOrderingComponentNew implements OnInit {
           title: 'Error Details',
           html: messages,
           icon: 'error',
-          customClass: 'error-details-swal-modal',
+          customClass: { popup: 'error-details-swal-modal' },
           confirmButtonText: 'Close',
         } as any);
         this.resetForm();

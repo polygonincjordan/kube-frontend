@@ -801,7 +801,7 @@ export class ClinicComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         this.changeStatus(item);

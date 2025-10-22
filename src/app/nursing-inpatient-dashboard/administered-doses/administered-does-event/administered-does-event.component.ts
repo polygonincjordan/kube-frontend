@@ -218,7 +218,7 @@ export class AdministeredDoesEventComponent {
           text:'You cannot able to change file source.',
           icon: 'error',
           confirmButtonText: 'Ok',
-          customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         } as any);
       }
       this.administratiForm.get('Administrator.Fsource').setValue(previousFsourceValue);
@@ -504,7 +504,7 @@ export class AdministeredDoesEventComponent {
               text: title,
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any);
           }
           this.removeOrderHistoryItem()
@@ -515,7 +515,7 @@ export class AdministeredDoesEventComponent {
               text: error.error.error.message.value,
               icon: 'error',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any);
             this.removeOrderHistoryItem()
           }
@@ -568,7 +568,7 @@ export class AdministeredDoesEventComponent {
             text: this.toastrmessage(),
             icon: 'success',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           } as any);
         }
         this.removeOrderHistoryItem()
@@ -579,7 +579,7 @@ export class AdministeredDoesEventComponent {
             text: error.error.error.message.value,
             icon: 'error',
             confirmButtonText: 'Ok',
-            customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           } as any);
           this.removeOrderHistoryItem()
         }
@@ -602,7 +602,7 @@ export class AdministeredDoesEventComponent {
               text: title,
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any);
           }
           this.removeOrderHistoryItem()
@@ -613,7 +613,7 @@ export class AdministeredDoesEventComponent {
               text: error.error.error.message.value,
               icon: 'error',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any);
             this.removeOrderHistoryItem()
           }
@@ -701,7 +701,7 @@ export class AdministeredDoesEventComponent {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : messageType === 'Warn' ? 'Ok' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
     } as any);
   }

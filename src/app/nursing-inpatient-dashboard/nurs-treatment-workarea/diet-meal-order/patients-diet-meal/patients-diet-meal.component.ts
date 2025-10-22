@@ -238,7 +238,7 @@ export class PatientsDietMealComponent implements OnInit {
         text: 'Data Saved Successfully!',
         icon: 'success',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
       });
     } else {
       this.dietOrderForm.markAllAsTouched(); // Mark all controls as touched to show validation errors

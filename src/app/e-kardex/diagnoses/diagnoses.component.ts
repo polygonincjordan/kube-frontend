@@ -730,7 +730,7 @@ export class DiagnosesComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any).then((result) => {
         if (result.value) {
           this.modelOpenProcess(paitentData, paitentData.Oldversion, template)
@@ -760,7 +760,7 @@ export class DiagnosesComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any).then((result) => {
         if (result.value) {
           this.modifyAndOpenForm(paitentData.value, paitentData.Oldversion)
@@ -1503,7 +1503,7 @@ export class DiagnosesComponent implements OnInit {
         cancelButtonColor: '#84898c',
         confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'error'
       } as any);
     }
@@ -1599,7 +1599,7 @@ export class DiagnosesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     } as any).then(async (result) => {
       if (result.value) {
         (await this.dayCaseDashboardService.deleteCorrespondenceDocument(docKey)).subscribe(
@@ -1608,7 +1608,7 @@ export class DiagnosesComponent implements OnInit {
               text: "Document is deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             this.updateForm(true);
             // this.refresh();
@@ -1618,7 +1618,7 @@ export class DiagnosesComponent implements OnInit {
               text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
               icon: 'warning',
               confirmButtonText: 'Ok',
-              customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             } as any)
             // this.refresh();
           }

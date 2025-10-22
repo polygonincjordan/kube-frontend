@@ -183,7 +183,7 @@ export class MorseFallScaleAssessmentComponent implements OnInit {
           text: 'Document is created successfully',
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         });
         this.closeMorseFallScale();
       },

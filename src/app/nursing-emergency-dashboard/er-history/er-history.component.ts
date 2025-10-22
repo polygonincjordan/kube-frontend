@@ -557,7 +557,7 @@ export class ErHistoryComponent implements OnInit {
       text: message,
       icon: 'error',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
     this.closeLabModal(); // Ensure modal cleanup
   }
@@ -580,7 +580,7 @@ export class ErHistoryComponent implements OnInit {
   //       //   text: 'something went worng.',
   //       //   icon: 'error',
   //       //   confirmButtonText: 'Ok',
-        //   customClass: 'myalertpopup'
+  //       //   customClass: { popup: 'myalertpopup' }
   //       // })
       
   //     }
@@ -832,7 +832,7 @@ export class ErHistoryComponent implements OnInit {
            text: "Allergen is mandatory",
            icon: 'error',
            confirmButtonText: 'Ok',
-          //  customClass: 'myalertpopup'
+           customClass: { popup: 'myalertpopup' }
          })
        }
         else{
@@ -917,7 +917,7 @@ export class ErHistoryComponent implements OnInit {
            text: "Allergen is mandatory",
            icon: 'error',
            confirmButtonText: 'Ok',
-          //  customClass: 'myalertpopup'
+           customClass: { popup: 'myalertpopup' }
          })
         }
         else if(this.StateComment !='' && this.updateAllergyForm.controls.Allergen.value == ''){
@@ -1206,7 +1206,7 @@ export class ErHistoryComponent implements OnInit {
           text: "Risk Code is Mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }else{
         const json = {
@@ -1224,7 +1224,7 @@ export class ErHistoryComponent implements OnInit {
               text: "Saved successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => {}
@@ -1246,7 +1246,7 @@ export class ErHistoryComponent implements OnInit {
               text: "Deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => {}
@@ -1268,7 +1268,7 @@ export class ErHistoryComponent implements OnInit {
           text: "Saved successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -1288,7 +1288,7 @@ export class ErHistoryComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -1531,7 +1531,7 @@ export class ErHistoryComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => {}
@@ -1560,7 +1560,7 @@ export class ErHistoryComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => {}
@@ -1591,7 +1591,7 @@ export class ErHistoryComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => {}
@@ -1602,7 +1602,7 @@ export class ErHistoryComponent implements OnInit {
           text: "Allergen is mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }else{
         let text = '';
@@ -1620,7 +1620,7 @@ export class ErHistoryComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => {}
@@ -1641,7 +1641,7 @@ export class ErHistoryComponent implements OnInit {
               text: 'Deleted Successully',
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => {}
@@ -1668,7 +1668,7 @@ export class ErHistoryComponent implements OnInit {
             text: text,
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => {}
@@ -1715,7 +1715,7 @@ export class ErHistoryComponent implements OnInit {
       //   text: value,
       //   icon: 'info',
       //   confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       // })
       this.diagnosisNotesKardex.openModalForDiagnosisKardex(data);
     }

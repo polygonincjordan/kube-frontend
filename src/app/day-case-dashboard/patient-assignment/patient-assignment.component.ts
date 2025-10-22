@@ -362,7 +362,7 @@ export class PatientAssignmentComponent implements OnInit {
         text: "Please select a valid date.",
         icon: 'error',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       })
       
     }
@@ -392,7 +392,7 @@ export class PatientAssignmentComponent implements OnInit {
           text: 'Room assigned successfully',
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         });
       },
       (_error: any) => {

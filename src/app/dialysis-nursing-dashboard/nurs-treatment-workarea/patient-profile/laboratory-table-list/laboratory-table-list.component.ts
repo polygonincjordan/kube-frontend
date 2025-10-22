@@ -238,7 +238,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       html: `<span style="font-weight: bold;">Are you sure you want to re-Order?</span><p style="text-align: start; margin-left: 18%;">${showTestMessage}</p>`,
       icon: 'warning',
       showCancelButton: true,
-      // customClass:"reorder-conform-modal",
+      customClass: { popup: 'reorder-conform-modal' },
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
     }).then((result) => {
@@ -283,7 +283,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       title: warningMsg,
       icon: 'warning',
       confirmButtonText: 'OK',
-      // customClass:'swal-class'
+      customClass: { popup: 'swal-class' },
     });
   }
 
@@ -292,7 +292,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       title: successMsg,
       icon: 'success',
       confirmButtonText: 'OK',
-      // customClass:'swal-class'
+      customClass: { popup: 'swal-class' },
     });
   }
 
@@ -301,7 +301,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       title: successMsg,
       icon: 'error',
       confirmButtonText: 'OK',
-      // customClass: 'swal-class'
+      customClass: { popup: 'swal-class' },
     });
   }
 
@@ -359,7 +359,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
             text: 'Status has successfully changed.',
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         }
 

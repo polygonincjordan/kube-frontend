@@ -232,7 +232,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'error'
       } as any);
     } else {
@@ -495,7 +495,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }
@@ -535,7 +535,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
                   confirmButtonColor: '#0890c5',
                   cancelButtonColor: '#84898c',
                   confirmButtonText: 'OK',
-                  customClass: 'myalertpopup',
+                  customClass: { popup: 'myalertpopup' },
                   icon: 'success'
                 } as any).then((result) => {
                   if (result.value) {
@@ -594,7 +594,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
                     confirmButtonColor: '#0890c5',
                     cancelButtonColor: '#84898c',
                     confirmButtonText: 'OK',
-                    customClass: 'myalertpopup',
+                    customClass: { popup: 'myalertpopup' },
                     icon: 'success'
                   } as any).then((result) => {
                     if (result.value) {

@@ -123,7 +123,7 @@ export class HistoryDiagnosisComponent implements OnInit {
           confirmButtonColor: '#0890c5',
           cancelButtonColor: '#84898c',
           confirmButtonText: 'OK',
-          customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any).then(() => {
          this.updateAllergyForm.patchValue({
@@ -240,7 +240,7 @@ cycleNolistNumbar(event:any){
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   };

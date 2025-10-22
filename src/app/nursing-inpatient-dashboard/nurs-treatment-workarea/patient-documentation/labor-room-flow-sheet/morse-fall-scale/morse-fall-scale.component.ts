@@ -183,7 +183,7 @@ export class MorseFallScaleLaborComponent implements OnInit {
           text: 'Document is created successfully',
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup',
+          customClass: { popup: 'myalertpopup' },
         });
       },
       (error) => {

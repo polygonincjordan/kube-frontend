@@ -422,7 +422,7 @@ export class OrderConfigurationCreateComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error',
       timer: 3000
     } as SweetAlertOptions);
@@ -436,7 +436,7 @@ export class OrderConfigurationCreateComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'warning',
       timer: 3000
     } as SweetAlertOptions);
@@ -624,7 +624,7 @@ export class OrderConfigurationCreateComponent implements OnInit {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'success',
       timer: 3000
     } as SweetAlertOptions);

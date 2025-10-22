@@ -272,7 +272,7 @@ export class ConfusionAssessmentMethodComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         this.openSelectedModalScale(item);

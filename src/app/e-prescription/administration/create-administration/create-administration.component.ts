@@ -181,7 +181,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         confirmButtonColor: '#0890c5',
         cancelButtonColor: '#84898c',
         confirmButtonText: 'OK',
-        customClass: 'myalertpopup',
+        customClass: { popup: 'myalertpopup' },
         icon: 'error'
       } as any);
     } else {
@@ -659,7 +659,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
               confirmButtonColor: '#0890c5',
               cancelButtonColor: '#84898c',
               confirmButtonText: 'OK',
-              customClass: 'myalertpopup',
+              customClass: { popup: 'myalertpopup' },
               icon: 'success'
             } as any).then(() => {
               this.drugArray.clear();
@@ -740,7 +740,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
                 confirmButtonColor: '#0890c5',
                 cancelButtonColor: '#84898c',
                 confirmButtonText: 'OK',
-                customClass: 'myalertpopup',
+                customClass: { popup: 'myalertpopup' },
                 icon: 'success'
               } as any).then((result) => {
                 this.drugArray.clear();
@@ -860,7 +860,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       cancelButtonColor: '#84898c',
       confirmButtonText: messageType === 'Error' ? 'Close' : 'Yes',
       cancelButtonText: 'No',
-      customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
       icon: 'error'
     } as any);
   }

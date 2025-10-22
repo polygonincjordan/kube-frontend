@@ -374,7 +374,7 @@ export class ErVitalsComponent implements OnInit {
           text: "Please select Vital Signs to delete.",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }
   }
@@ -401,7 +401,7 @@ export class ErVitalsComponent implements OnInit {
           text: "Vital signs deleted successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -472,7 +472,7 @@ convertDurationToTime(durationString: string): string {
         text: "Please select Vital Signs to change.",
         icon: 'error',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       })
     }
     
@@ -557,7 +557,7 @@ convertDurationToTime(durationString: string): string {
           text: "Vital signs updated successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {
@@ -565,7 +565,7 @@ convertDurationToTime(durationString: string): string {
           text: _error.error.message,
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }
     );
@@ -609,7 +609,7 @@ convertDurationToTime(durationString: string): string {
           text: "Vital signs created successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {
@@ -617,7 +617,7 @@ convertDurationToTime(durationString: string): string {
           text: _error.error.error.message.value,
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }
     );

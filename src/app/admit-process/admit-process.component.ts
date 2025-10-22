@@ -483,7 +483,7 @@ export class AdmitProcessComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
-        customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       } as any);
       if (result.isConfirmed) {
         this.unsavedProgressNote = false;

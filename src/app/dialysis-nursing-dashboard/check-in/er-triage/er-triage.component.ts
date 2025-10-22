@@ -291,7 +291,7 @@ export class ErTriageComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         if (habitNoConsume == 'noConsume') {
@@ -478,7 +478,7 @@ export class ErTriageComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 
@@ -533,7 +533,7 @@ export class ErTriageComponent implements OnInit {
       text: `${codeArr.toString()} is/are already Imported `,
       icon: 'warning',
       confirmButtonText: 'Ok',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     });
   }
 
@@ -566,7 +566,7 @@ export class ErTriageComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         if (item.value == '1') {
@@ -809,7 +809,7 @@ export class ErTriageComponent implements OnInit {
       confirmButtonText: 'Yes',
       showCancelButton: true,
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup',
+      customClass: { popup: 'myalertpopup' },
     }).then((res) => {
       if (res.isConfirmed) {
         this.modalRefForAllergy?.hide();

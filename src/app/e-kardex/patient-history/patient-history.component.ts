@@ -552,7 +552,7 @@ export class PatientHistoryComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -581,7 +581,7 @@ export class PatientHistoryComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -612,7 +612,7 @@ export class PatientHistoryComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -623,7 +623,7 @@ export class PatientHistoryComponent implements OnInit {
         text: "Allergen is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
-        // customClass: 'myalertpopup'
+        customClass: { popup: 'myalertpopup' }
       })
     }else{
       let text = '';
@@ -641,7 +641,7 @@ export class PatientHistoryComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -662,7 +662,7 @@ export class PatientHistoryComponent implements OnInit {
             text: 'Deleted Successully',
             icon: 'success',
             confirmButtonText: 'Ok',
-            // customClass: 'myalertpopup'
+            customClass: { popup: 'myalertpopup' }
           })
         },
         (_error: any) => {}
@@ -689,7 +689,7 @@ export class PatientHistoryComponent implements OnInit {
           text: text,
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -840,7 +840,7 @@ export class PatientHistoryComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      // customClass: 'myalertpopup'
+      customClass: { popup: 'myalertpopup' }
     }).then((result) => {
       if (result.value) {
         this.deleteRiskJson(item);
@@ -878,7 +878,7 @@ export class PatientHistoryComponent implements OnInit {
           text: "Risk Code is Mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }else{
         const json = {
@@ -896,7 +896,7 @@ export class PatientHistoryComponent implements OnInit {
               text: "Saved successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => {}
@@ -918,7 +918,7 @@ export class PatientHistoryComponent implements OnInit {
               text: "Deleted successfully",
               icon: 'success',
               confirmButtonText: 'Ok',
-              // customClass: 'myalertpopup'
+              customClass: { popup: 'myalertpopup' }
             })
           },
           (_error: any) => {}
@@ -940,7 +940,7 @@ export class PatientHistoryComponent implements OnInit {
           text: "Saved successfully",
           icon: 'success',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       },
       (_error: any) => {}
@@ -1344,7 +1344,7 @@ openModalForFamilyHistory(){
           text: "Allergen is mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
       }
        else{
@@ -1429,7 +1429,7 @@ openModalForFamilyHistory(){
           text: "Allergen is mandatory",
           icon: 'error',
           confirmButtonText: 'Ok',
-          // customClass: 'myalertpopup'
+          customClass: { popup: 'myalertpopup' }
         })
        }
        else if(this.StateComment !='' && this.updateAllergyForm.controls.Allergen.value == ''){
