@@ -220,7 +220,8 @@
     border-radius: 50px
   }
   
-  @import "../../../assets/css/sass/mixins";
+  @import "../../../styles/sass/mixins";
+  
   /* theme color */
   $main-menu-width: 75.8px;
   $theme-gradient-color: linear-gradient(to right,

@@ -39,14 +39,14 @@
               }
             ],
             "styles": [
-              "src/assets/css/sass/hand-overprocess.style.scss",
-              "src/assets/css/sass/e-emr.style.scss",
-              "src/assets/css/sass/emergency.style.scss",
+              "src/styles/sass/hand-overprocess.style.scss",
+              "src/styles/sass/e-emr.style.scss",
+              "src/styles/sass/emergency.style.scss",
               "src/assets/css/vendor/bootstrap.min.css",
               "src/assets/css/vendor/bootstrap.rtl.only.min.css",
-              "src/assets/css/sass/e-order.style.scss",
-              "src/assets/css/sass/e-prescription.style.scss",
-              "src/assets/css/sass/_admit-process.style.scss",
+              "src/styles/sass/e-order.style.scss",
+              "src/styles/sass/e-prescription.style.scss",
+              "src/styles/sass/_admit-process.style.scss",
               "./node_modules/quill/dist/quill.snow.css",
               "./node_modules/quill/dist/quill.bubble.css",
               "./node_modules/@ng-select/ng-select/themes/default.theme.css",
@@ -54,7 +54,7 @@
               "./node_modules/angular-archwizard/archwizard.css",
               "node_modules/font-awesome/less/font-awesome.less",
               {
-                "input": "src/assets/css/sass/kardex.light.greysteel.scss",
+                "input": "src/styles/sass/kardex.light.greysteel.scss",
                 "bundleName": "light.grey.steel",
                 "inject": false
               }
