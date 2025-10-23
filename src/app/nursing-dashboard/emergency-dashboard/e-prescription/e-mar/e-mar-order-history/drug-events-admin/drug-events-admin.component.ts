@@ -4,7 +4,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-drug-events-admin',
   templateUrl: './drug-events-admin.component.html',
-  styleUrls: ['./drug-events-admin.component.css']
+  styleUrls: ['./drug-events-admin.component.scss']
 })
 export class DrugEventsAdminComponent implements OnInit {
   modalRef: BsModalRef;

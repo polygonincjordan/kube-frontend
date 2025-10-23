@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-past-medical',
   templateUrl: './past-medical.component.html',
-  styleUrls: ['./past-medical.component.css']
+  styleUrls: ['./past-medical.component.scss']
 })
 export class PastMedicalComponent implements OnInit {
   @ViewChild('pastMedicalKardexModal', { static: true }) pastMedicalKardexModal: TemplateRef<any>;

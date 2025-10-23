@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-structure-doc',
   templateUrl: './structure-doc.component.html',
-  styleUrls: ['./structure-doc.component.css']
+  styleUrls: ['./structure-doc.component.scss']
 })
 export class StructureDocComponent implements OnInit {
   @ViewChild('structuredDoc', { static: true }) structuredDoc: TemplateRef<any>;

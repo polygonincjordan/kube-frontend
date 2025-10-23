@@ -7,7 +7,7 @@ import { EmergencyService } from '@services/emergency-dashboard/emergency-servic
 @Component({
   selector: 'app-analysis',
   templateUrl: './analysis.component.html',
-  styleUrls: ['./analysis.component.css']
+  styleUrls: ['./analysis.component.scss']
 })
 
 

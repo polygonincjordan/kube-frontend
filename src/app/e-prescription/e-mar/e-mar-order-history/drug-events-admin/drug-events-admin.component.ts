@@ -17,7 +17,7 @@ import { AuthService } from '@services/auth.service';
 @Component({
   selector: 'app-drug-events-admin',
   templateUrl: './drug-events-admin.component.html',
-  styleUrls: ['./drug-events-admin.component.css']
+  styleUrls: ['./drug-events-admin.component.scss']
 })
 export class DrugEventsAdminComponent implements OnInit {
   public administratiForm: FormGroup;
