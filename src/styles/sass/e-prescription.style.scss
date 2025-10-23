@@ -228,7 +228,7 @@ $default-gradient: linear-gradient(180deg, #2758fd, #2856fa 60%, #2144c8 85%);
             position: absolute;
             border: 2px solid #0A5BD8;
             background-color: #0064FE;
-            background-image: url('../../../assets/img/check-icon.svg');
+            background-image: url('../../assets/img/check-icon.svg');
             background-size: contain;
             background-position: center;
             left: -2px;
@@ -1055,7 +1055,7 @@ bs-daterangepicker-container{
     transform: translateY(-50%);
     height: 100%;
     background-color: #3E3E40 !important;
-    background-image: url(../../img/order-type.svg) !important;
+    background-image: url('../../assets/img/order-type.svg') !important;
     width: 44px;
     z-index: 11;
     background-size: 70%;
@@ -1194,7 +1194,7 @@ bs-daterangepicker-container{
               &:hover,
               &.open-mo-detail {
                 img {
-                  content: url(../../../assets/img/selected.svg);
+                  content: url('../../assets/img/selected.svg');
                 }
 
                 label {
@@ -1251,7 +1251,7 @@ bs-daterangepicker-container{
                   position: absolute;
                   border: 2px solid #0A5BD8;
                   background-color: #0064FE;
-                  background-image: url('../../../assets/img/check-icon.svg');
+                  background-image: url('../../assets/img/check-icon.svg');
                   background-size: contain;
                   background-position: center;
                   left: -2px;
@@ -1485,7 +1485,7 @@ bs-daterangepicker-container{
       position: absolute;
       border: 2px solid #0A5BD8;
       background-color: #0064FE;
-      background-image: url('../../../assets/img/check-icon.svg');
+      background-image: url('../../assets/img/check-icon.svg');
       background-size: contain;
       background-position: center;
       left: -2px;
@@ -1548,7 +1548,7 @@ bs-daterangepicker-container{
       position: absolute;
       border: 2px solid #0A5BD8;
       background-color: #0064FE;
-      background-image: url('../../../assets/img/check-icon.svg');
+      background-image: url('../../assets/img/check-icon.svg');
       background-size: contain;
       background-position: center;
       left: -2px;
@@ -1619,7 +1619,7 @@ bs-daterangepicker-container{
       position: absolute;
       border: 2px solid #0A5BD8;
       background-color: #0064FE;
-      background-image: url('../../../assets/img/check-icon.svg');
+      background-image: url('../../assets/img/check-icon.svg');
       background-size: contain;
       background-position: center;
       left: -2px;

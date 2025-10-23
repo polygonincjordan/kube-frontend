@@ -183,7 +183,7 @@ body.show {
 }
 
 .fixed-background {
-  background: url("../../img/login/bg-03.jpg") no-repeat center center fixed;
+  background: url("../../assets/img/login/bg-03.jpg") no-repeat center center fixed;
   background-size: cover;
   width: 100%;
   height: 100%;
@@ -3484,7 +3484,7 @@ body.default-transition main {
 
 .dashboard-search {
   height: 650px;
-  background: url("../../img/login/plane.jpg");
+  background: url("../../assets/img/login/plane.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-color: $foreground-color;
@@ -6613,7 +6613,7 @@ rating span {
 
   .image-side {
     width: 40%;
-    background: url("../../img/login/bg-01.png") no-repeat center top;
+    background: url("../../assets/img/login/bg-01.png") no-repeat center top;
     background-size: cover;
     padding: 80px 40px;
 
