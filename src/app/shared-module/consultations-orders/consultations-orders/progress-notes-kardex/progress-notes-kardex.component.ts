@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-progress-notes-kardex',
   templateUrl: './progress-notes-kardex.component.html',
-  styleUrls: ['./progress-notes-kardex.component.css']
+  styleUrls: ['./progress-notes-kardex.component.scss']
 })
 export class ProgressNotesKardexComponent implements OnInit {
   @ViewChild('progressNotesKardexModal', { static: true }) progressNotesKardexModal: TemplateRef<any>;

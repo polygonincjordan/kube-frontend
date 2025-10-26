@@ -10,7 +10,7 @@ import { ErPhysicianComponent } from './er-physician/er-physician.component';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
-  styleUrls: ['./documentation.component.css']
+  styleUrls: ['./documentation.component.scss']
 })
 export class DocumentationComponent implements OnInit {
   @ViewChild(ErPhysicianComponent) phyComp:ErPhysicianComponent;

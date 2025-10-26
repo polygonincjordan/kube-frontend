@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.css']
+  styleUrls: ['./order-details.component.scss']
 })
 export class OrderDetailsComponent implements OnInit {  
     @ViewChild('erradpdfmodal') erradpdfmodal: TemplateRef<HTMLDivElement>;

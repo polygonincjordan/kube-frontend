@@ -4,7 +4,7 @@ import { SidebarService } from '@services/sidebar.service';
 @Component({
   selector: 'app-cpoe',
   templateUrl: './cpoe.component.html',
-  styleUrls: ['./cpoe.component.css']
+  styleUrls: ['./cpoe.component.scss']
 })
 export class CpoeComponent implements OnInit {
   constructor(public sidebarService: SidebarService,

@@ -15,7 +15,7 @@ import { catchError, of } from 'rxjs';
 @Component({
   selector: 'app-physician-order-kardex',
   templateUrl: './physician-order-kardex.component.html',
-  styleUrls: ['./physician-order-kardex.component.css']
+  styleUrls: ['./physician-order-kardex.component.scss']
 })
 export class PhysicianOrderKardexComponent implements OnInit {
   @ViewChild('physicianOrderKardexModal', { static: true }) physicianOrderKardexModal: TemplateRef<any>;

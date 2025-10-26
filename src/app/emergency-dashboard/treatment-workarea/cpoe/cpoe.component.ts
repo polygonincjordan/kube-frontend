@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-cpoe',
   templateUrl: './cpoe.component.html',
-  styleUrls: ['./cpoe.component.css']
+  styleUrls: ['./cpoe.component.scss']
 })
 export class CpoeComponent implements OnInit {
   private subscription: Subscription;

@@ -22,7 +22,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-emergency-dashboard',
   templateUrl: './emergency-dashboard.component.html',
-  styleUrls: ['./emergency-dashboard.component.css']
+  styleUrls: ['./emergency-dashboard.component.scss']
 })
 export class EmergencyDashboardComponent implements OnInit {
   @ViewChild(CheckinListComponent) CheckinListComponent;

@@ -9,7 +9,7 @@ import { StorageService } from '@services/storage.service';
 @Component({
   selector: 'app-checkin-list',
   templateUrl: './checkin-list.component.html',
-  styleUrls: ['./checkin-list.component.css']
+  styleUrls: ['./checkin-list.component.scss']
 })
 export class CheckinListComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();

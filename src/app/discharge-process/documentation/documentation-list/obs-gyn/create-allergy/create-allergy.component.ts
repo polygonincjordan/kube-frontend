@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-create-allergy',
   templateUrl: './create-allergy.component.html',
-  styleUrls: ['./create-allergy.component.css']
+  styleUrls: ['./create-allergy.component.scss']
 })
 export class CreateAllergyComponent implements OnInit {
   @ViewChild('allergyModal', { static: true }) allergyModal: TemplateRef<any>;

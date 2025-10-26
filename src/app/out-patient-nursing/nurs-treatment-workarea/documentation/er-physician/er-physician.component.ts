@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-er-physician',
   templateUrl: './er-physician.component.html',
-  styleUrls: ['./er-physician.component.css']
+  styleUrls: ['./er-physician.component.scss']
 })
 export class ErPhysicianComponent implements OnInit {
   @Input() docDetails: any;

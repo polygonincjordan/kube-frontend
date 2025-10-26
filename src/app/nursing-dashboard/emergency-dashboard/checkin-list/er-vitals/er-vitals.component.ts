@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-er-vitals',
   templateUrl: './er-vitals.component.html',
-  styleUrls: ['./er-vitals.component.css']
+  styleUrls: ['./er-vitals.component.scss']
 })
 export class ErVitalsComponent implements OnInit {
   @ViewChild('erVitalsModal', { static: true }) erVitalsModal: TemplateRef<any>;

@@ -13,7 +13,7 @@ const color =
     ? getThemeColor()
     : environment.defaultColor;
 
-import('./assets/css/sass/kardex.' + color + '.scss')
+import('./styles/sass/kardex.' + color + '.scss')
   .then((x) => {
     setThemeColor(color);
     platformBrowserDynamic()
