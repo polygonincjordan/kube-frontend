@@ -12,7 +12,6 @@ import { ERDashboardGuard } from '@services/interceptor/er-dashboard.guard';
 import { InPatientGuard } from '@services/interceptor/in-patient.guard';
 import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
 import { OrdersSetsGuard } from '@services/interceptor/orders-sets.guard';
-import { SimpleNotificationsModule } from 'angular2-notifications';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RootComponent } from './root.component';
 import { NursingEmergencyGuard } from '@services/interceptor/nursing-emergency.guard';
@@ -222,12 +221,6 @@ export const rootRoutes: Routes = [
     ModalModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forChild(rootRoutes),
-    SimpleNotificationsModule.forRoot({
-      timeOut: 5000,
-      clickToClose: true,
-      theClass: 'outline primary',
-      position: ['bottom', 'center'],
-    }),
     // TranslateModule.forRoot({
     //   isolate: true,
     //   useDefaultLang: false,
