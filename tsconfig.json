@@ -20,6 +20,7 @@
       "@services/*": ["./src/app/services/*"],
       "@pipes/*": ["./src/app/dynamics/pipes/*"],
       "@utilities/*": ["./src/app/dynamics/utilities/*"],
+      "stream": ["./node_modules/readable-stream"]
     }
   },
   "angularCompilerOptions": {

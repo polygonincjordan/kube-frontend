@@ -248,7 +248,7 @@ export class HeaderComponent implements OnInit {
     );
   }
   deleteWidgetConfigSet(id) {
-    this._dataServices.deleteMyWidgetConfigSet(id).then(
+    this._dataServices.deleteMyWidgetConfigSet(id).subscribe(
       (_success: any) => {
         this.myWidgetConfigSet();
       },

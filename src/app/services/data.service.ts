@@ -7,6 +7,7 @@ import { ApiResponse, StatusFlags, eMessageIcon, eMessageType } from '../chemoth
 import { DatePipe } from '@angular/common';
 @Injectable({ providedIn: 'root' })
 export class DataService {
+  client = `${environment.client}`;
   notify: Subject<any> = new Subject();
 
   post<T>(url: string, data: any): Promise<ApiResponse<T>> {
@@ -124,7 +125,7 @@ export class DataService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this.webService.post(entitySetName, _data, headers, isEPresc, false);
@@ -134,7 +135,7 @@ export class DataService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this.webService.delete(url, headers, null, null, isePresc);
@@ -143,7 +144,7 @@ export class DataService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this.webService.delete(url, headers, null, null, isePresc).toPromise();
@@ -152,7 +153,7 @@ export class DataService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this.webService.update(url, data, headers);
@@ -162,7 +163,7 @@ export class DataService {
   //   let headers = {
   //     'X-Requested-With': 'XMLHttpRequest',
   //     'Content-Type': 'application/json',
-  //     'sap-client': environment.client
+  //     'sap-client': this.client
   //   }
 
   //   let _url = this.generateURL(entitySetName, params, filters, isPost, expandEntities, isExpand);
@@ -189,7 +190,7 @@ export class DataService {
     let custHeaders = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': '*/*',
-      'sap-client': environment.client,
+      'sap-client': this.client,
       spnego: 'disabled',
     };
     let _url = !isMultiSearch
@@ -232,7 +233,7 @@ export class DataService {
     let custHeaders = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': '*/*',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
     return this.webService.get(url, custHeaders, headers, true, false).pipe(
       map((response: Response) => {
@@ -331,7 +332,7 @@ export class DataService {
       Authorization: 'Basic ' + btoa(username + ':' + _password),
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
     let _url = 'loginUser';
     return this.webService.get(_url, custHeaders, headers);

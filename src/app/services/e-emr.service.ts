@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
 import { environment } from 'src/environments/environment';
 import { WebService } from './web.service';
 @Injectable()
@@ -12,6 +11,8 @@ export class EEmrService {
     private cookies: CookieService
   ) { }
   url = environment.url;
+  client = `${environment.client}`;
+  
   loadData(
     entitySetName,
     params,
@@ -31,7 +32,7 @@ export class EEmrService {
       //'Authorization': 'Basic cmFqZXNoYTpBbWNAMTIz',
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
       spnego: 'disabled',
 
       //'Referrer':'https://achdevemr01.ach.jo:5200/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html',
@@ -154,7 +155,7 @@ export class EEmrService {
       //'Authorization': 'Basic cmFqZXNoYTpBbWNAMTIz',
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
       spnego: 'disabled',
       //'Referrer':'https://achdevemr01.ach.jo:5200/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html',
       //'MYSAPSSO2':this.getToken('MYSAPSSO2')!=""?this.getToken('MYSAPSSO2'):this._api.getLocal("MYSAPSSO2")
@@ -175,7 +176,7 @@ export class EEmrService {
       //'Authorization': 'Basic cmFqZXNoYTpBbWNAMTIz',
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
       spnego: 'disabled',
       //'Referrer':'https://achdevemr01.ach.jo:5200/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html',
       //'MYSAPSSO2':this.getToken('MYSAPSSO2')!=""?this.getToken('MYSAPSSO2'):this._api.getLocal("MYSAPSSO2")
@@ -191,7 +192,7 @@ export class EEmrService {
       //'Authorization': 'Basic cmFqZXNoYTpBbWNAMTIz',
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
       spnego: 'disabled',
       //'Referrer':'https://achdevemr01.ach.jo:5200/sap/bc/ui5_ui5/ui2/ushell/shells/abap/FioriLaunchpad.html',
       //'MYSAPSSO2':this.getToken('MYSAPSSO2')!=""?this.getToken('MYSAPSSO2'):this._api.getLocal("MYSAPSSO2")
@@ -203,7 +204,7 @@ export class EEmrService {
     let custHeaders = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
       spnego: 'disabled',
     };
     return this._http.delete(
@@ -222,7 +223,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this.http.post(this.url + 'WidgetDataSet', _data, {
@@ -235,7 +236,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this._http.get(
@@ -247,7 +248,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this._http.get(
@@ -259,7 +260,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this._http.get(
@@ -271,7 +272,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     return this._http.get(
@@ -285,7 +286,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
 
     // return this._http.get(`InPatientList?filter=((AdmDateFrom=${obj.AdmDateFrom})and(AdmDateTo=${obj.AdmDateTo})and(Floor=${obj.Floor}))"`, headers)
@@ -297,7 +298,7 @@ export class EEmrService {
     // let headers = {
     //   'X-Requested-With': 'XMLHttpRequest',
     //   'Content-Type': 'application/json',
-    //   'sap-client': environment.client,
+    //   'sap-client': this.client,
 
     // };
     return this.http.get(this.url + 'getWardList', { withCredentials: true });
@@ -307,7 +308,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
     return this._http.post('getHighDependencyOfPatientList', obj, headers);
   }
@@ -315,7 +316,7 @@ export class EEmrService {
     let headers = {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json',
-      'sap-client': environment.client,
+      'sap-client': this.client,
     };
     return this._http.post('HighDependencyOfPatientList', obj, headers);
   }
@@ -324,7 +325,7 @@ export class EEmrService {
     // let headers = {
     //   'X-Requested-With': 'XMLHttpRequest',
     //   'Content-Type': 'application/json',
-    //   'sap-client': environment.client,
+    //   'sap-client': this.client,
     // };
     return this.http.post(this.url + 'getConfigTools', obj, {
       withCredentials: true,
@@ -334,7 +335,7 @@ export class EEmrService {
     // let headers = {
     //   'X-Requested-With': 'XMLHttpRequest',
     //   'Content-Type': 'application/json',
-    //   'sap-client': environment.client,
+    //   'sap-client': this.client,
     // };
     return this.http.post(this.url + 'postConfigTools', obj, {
       withCredentials: true,
@@ -345,7 +346,7 @@ export class EEmrService {
       let headers = {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
-        'sap-client': environment.client,
+        'sap-client': this.client,
       };
       return this._http.post('getCountForModules', obj, headers);
     }
@@ -356,7 +357,7 @@ export class EEmrService {
       let headers = {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
-        'sap-client': environment.client,
+        'sap-client': this.client,
       };
       return this._http.post('getCountForPhOrderModules', obj, headers);
     }
@@ -370,7 +371,7 @@ export class EEmrService {
       let headers = {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',
-        'sap-client': environment.client,
+        'sap-client': this.client,
       };
       return this.http.put(this.url + 'physicianOrderSet', obj, {
         withCredentials: true,

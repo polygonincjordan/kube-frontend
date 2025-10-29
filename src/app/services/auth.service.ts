@@ -14,7 +14,7 @@ export class AuthService {
       Authorization: 'Basic ' + btoa(username + ':' + password),
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'sap-client': 210,
+      'sap-client': '210',
     };
     return this.webService.get('loginUser', custHeaders, headers, false);
   }
