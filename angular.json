@@ -21,7 +21,12 @@
               "lodash",
               "chart.js",
               "dropzone",
-              "quill"
+              "quill",
+              "luxon",
+              "xml-js",
+              "sweetalert2",
+              "dayjs",
+              "painterro"
             ],
             "outputPath": "dist/kardex",
             "index": "src/index.html",
