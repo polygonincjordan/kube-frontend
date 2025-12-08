@@ -17,7 +17,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { PhysicianErVitalsComponent } from '../physician-form/physician-er-vitals/physician-er-vitals.component';
 import Swal from 'sweetalert2';
-
+import { OrderType } from '@services/interfaces/common.enum';
 @Component({
   selector: 'app-transfer-assessment',
   templateUrl: './transfer-assessment.component.html',
@@ -49,6 +49,7 @@ export class TransferAssessmentComponent implements OnInit {
   toProc: any = [];
   noMedicationOrder: any = false;
   noVitalSigns: any = false;
+  orderType = OrderType;
 
   orgUnits = [
     { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
@@ -98,7 +99,7 @@ export class TransferAssessmentComponent implements OnInit {
     private admissionService: AdmissionService,
     private datePipe: DatePipe,
     public ePrescriptionService: EPrescriptionService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -176,7 +177,7 @@ export class TransferAssessmentComponent implements OnInit {
     });
   }
 
-  initTransferAssesstForm() { }
+  initTransferAssesstForm() {}
 
   getTransferData() {
     let json = {
@@ -223,7 +224,6 @@ export class TransferAssessmentComponent implements OnInit {
   }
 
   async createTransferAssessForm(isrelease: boolean) {
-
     let createJson = this.transferAssessForm.value;
     console.log(createJson);
     if (
@@ -261,32 +261,35 @@ export class TransferAssessmentComponent implements OnInit {
     createJson['TOVITALSIGNS'] = this.toVitalsArr;
     createJson['TOPROCE'] = [];
     createJson['TOEXAM'] = [];
-    createJson['TOMED'] = this.medicationImportDrugArray?.length ? this.medicationImportDrugArray.map((med) => ({
-      Dockey: '',
-      OrderType: med.OrderType,
-      Descr: med.Description, // assuming this is the correct mapping
-      Dose: med.Dose,
-      CycleTxt: med.Cycle, // static value as per your example
-      Validity: med.Validity,
-      RespEmp: med.OrderingPhysician, // assuming that's what you want
-      Route: med.Route,
-      Rate: med.Rate || '',
-    })) : [];
+    createJson['TOMED'] = this.medicationImportDrugArray?.length
+      ? this.medicationImportDrugArray.map((med) => ({
+          Dockey: '',
+          OrderType: med.OrderType,
+          Descr: med.Description, // assuming this is the correct mapping
+          Dose: med.Dose,
+          CycleTxt: med.Cycle, // static value as per your example
+          Validity: med.Validity,
+          RespEmp: med.OrderingPhysician, // assuming that's what you want
+          Route: med.Route,
+          Rate: med.Rate || '',
+        }))
+      : [];
     createJson['TOSCALE'] = this.scalesArray?.length
       ? this.scalesArray
-        .filter(element => element.LastScore && element.ScoreDesc) // Only include if both fields have data
-        .map(element => ({
-          Dockey: '',
-          ScaleType: element.ScaleType,
-          LastScore: element.LastScore,
-          ScoreDesc: element.ScoreDesc,
-          Datetimee: element.Datetimee,
-        })) : [];
+          .filter((element) => element.LastScore && element.ScoreDesc) // Only include if both fields have data
+          .map((element) => ({
+            Dockey: '',
+            ScaleType: element.ScaleType,
+            LastScore: element.LastScore,
+            ScoreDesc: element.ScoreDesc,
+            Datetimee: element.Datetimee,
+          }))
+      : [];
     await this.admissionService
       .createTansferAssessData(createJson)
       .subscribe((x) => {
         console.log(x);
-        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
         // }
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
@@ -326,16 +329,17 @@ export class TransferAssessmentComponent implements OnInit {
     }));
     updateJson['TOSCALE'] = this.scalesArray?.length
       ? this.scalesArray
-        .filter(element => element.LastScore && element.ScoreDesc) // Only include if both fields have data
-        .map(element => ({
-          Dockey: '',
-          ScaleType: element.ScaleType,
-          LastScore: element.LastScore,
-          ScoreDesc: element.ScoreDesc,
-          Datetimee: element.Datetimee,
-        })) : [];
+          .filter((element) => element.LastScore && element.ScoreDesc) // Only include if both fields have data
+          .map((element) => ({
+            Dockey: '',
+            ScaleType: element.ScaleType,
+            LastScore: element.LastScore,
+            ScoreDesc: element.ScoreDesc,
+            Datetimee: element.Datetimee,
+          }))
+      : [];
     await this.admissionService.updateTransferDoc(updateJson).subscribe(() => {
-      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
       // }
       this.admissionService.cancelAllForm();
       this.admissionService.selectedCurrentDocDetails = '';
@@ -374,14 +378,15 @@ export class TransferAssessmentComponent implements OnInit {
     }));
     updateJson['TOSCALE'] = this.scalesArray?.length
       ? this.scalesArray
-        .filter(element => element.LastScore && element.ScoreDesc) // Only include if both fields have data
-        .map(element => ({
-          Dockey: '',
-          ScaleType: element.ScaleType,
-          LastScore: element.LastScore,
-          ScoreDesc: element.ScoreDesc,
-          Datetimee: element.Datetimee,
-        })) : [];
+          .filter((element) => element.LastScore && element.ScoreDesc) // Only include if both fields have data
+          .map((element) => ({
+            Dockey: '',
+            ScaleType: element.ScaleType,
+            LastScore: element.LastScore,
+            ScoreDesc: element.ScoreDesc,
+            Datetimee: element.Datetimee,
+          }))
+      : [];
     this.admissionService.releaseTransferDoc(updateJson).subscribe(() => {
       this.admissionService.cancelAllForm();
       this.admissionService.selectedCurrentDocDetails = '';
@@ -519,7 +524,7 @@ export class TransferAssessmentComponent implements OnInit {
       });
     });
     this.transferAssessForm.patchValue({
-      NoVitalSigns: false
+      NoVitalSigns: false,
     });
   }
 
@@ -598,7 +603,7 @@ export class TransferAssessmentComponent implements OnInit {
     });
     this.modalRefUpdateName.hide();
     this.transferAssessForm.patchValue({
-      NoMedication: false
+      NoMedication: false,
     });
   }
 
@@ -625,7 +630,7 @@ export class TransferAssessmentComponent implements OnInit {
     });
     this.modalRefScales.hide();
     this.transferAssessForm.patchValue({
-      NoScales: false
+      NoScales: false,
     });
   }
 

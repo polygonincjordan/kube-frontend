@@ -210,7 +210,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Falnr: new FormControl(item.Events.Falnr),
         Meevtid: new FormControl(item.Events.Meevtid),
         Rbdad: new FormControl(new Date(), Validators.required),
-        Rbtad: new FormControl(item.Events.Pbtad),
+        Rbtad: new FormControl(''),
         Notgiven: new FormControl(true),
         Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(item.Events.Rtimdif),
@@ -380,6 +380,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
+                            Rbtad: `${this.parseTime(this.administratiForm.get('NotAdminister').value.Rbdad)}`,
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
                           const { Quanunit,DosageStr, ...payload } = PayloadData;
@@ -405,6 +406,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Meresp1: this.getUserConfigData.VMA,
             Meresp2: "",
             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
+            Rbtad: `${this.parseTime(this.administratiForm.get('NotAdminister').value.Rbdad)}`,
             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
           }
           const { Quanunit, ...payload } = PayloadData;

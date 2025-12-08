@@ -987,7 +987,7 @@
             <td>{{ item.MosidDesc }}</td>
             <td>
               {{
-                item.MotypId == "30" ? "Planned Administration" : "Discharge"
+                orderType[item.MotypId] || 'Unknown Order Type'
               }}
             </td>
             <td></td>

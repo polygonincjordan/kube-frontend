@@ -30,6 +30,7 @@ export class ProgressNoteListComponent implements OnInit {
   isFormSubmitted: boolean = false;
   cancalReasonList: any;
   cancelReason: null;
+  currentUsername: string;
   constructor(
     private modalService: BsModalService,
     private _admissionservice: AdmissionService,
@@ -39,6 +40,18 @@ export class ProgressNoteListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCancelReason();
+    this.setCurrentUserId();
+  }
+
+  setCurrentUserId(): void {
+    const storedUserId = localStorage.getItem('amc_qa_gpart');
+    if (storedUserId) {
+      this.currentUsername = JSON.parse(storedUserId);
+    }
+  }
+
+  isCurrentUser(noteUser: string): boolean {
+    return noteUser === this.currentUsername;
   }
 
   public getImageBorderLogic(item) {

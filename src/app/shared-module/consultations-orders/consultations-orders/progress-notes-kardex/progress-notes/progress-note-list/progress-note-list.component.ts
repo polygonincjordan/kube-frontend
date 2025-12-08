@@ -28,6 +28,7 @@ export class ProgressNoteListComponent implements OnInit {
   cancelReason: string = '';
   deleteProgressNoteForm: FormGroup;
   isFormSubmitted: boolean = false;
+  currentUsername: string;
 
   constructor(
     public modalService: BsModalService,
@@ -40,6 +41,18 @@ export class ProgressNoteListComponent implements OnInit {
     this.userProfileDetail = this._storageService.getUserProfile();
     this.getCancelReason();
     this.progressNoteForm();
+    this.setCurrentUserId();
+  }
+
+  setCurrentUserId(): void {
+    const storedUserId = localStorage.getItem('amc_qa_gpart');
+    if (storedUserId) {
+      this.currentUsername = JSON.parse(storedUserId);
+    }
+  }
+
+  isCurrentUser(noteUser: string): boolean {
+    return noteUser === this.currentUsername;
   }
 
   progressNoteForm() {

@@ -102,3 +102,17 @@ export enum AssessmentType {
   NoEquipment$ = 'No Equipment',
   UseOfEquipment$ = 'Use Of Equipment',
 }
+
+export  const OrderType:Record<string, string> = {
+    '10': 'Standard',
+    '20': 'Planned Administration',
+    '25': 'Home Leave',
+    '30': 'Discharge',
+    '35': 'Dispensing',
+    '45': 'Anamnesis',
+    '55': 'RX',
+    '60': 'ADHOC',
+    '70': 'Anesthesia',
+    '80': 'Surgery',
+    '90': 'Verbal',
+  };

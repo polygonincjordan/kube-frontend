@@ -14,6 +14,7 @@ import { DataShareService } from '@services/data-share.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { ActionType } from '@services/interfaces/common.enum';
 import { AdmissionService } from '@services/admission/admission.service';
+import { OrderType } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-nursing-initial-assessment',
@@ -25,6 +26,7 @@ export class NursingInitialAssessmentComponent implements OnInit {
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsForSBARComponent;
   @Input() isReadOnly: boolean = false;
 
+  orderType = OrderType;
   nursingFormGroup: FormGroup;
   activeTab: string = 'persoalData'
   activeTab3: string = 'postPartumAssessment'
