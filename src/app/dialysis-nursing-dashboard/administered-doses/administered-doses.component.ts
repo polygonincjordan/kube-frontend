@@ -47,7 +47,6 @@ export class AdministeredDosesComponent implements OnInit{
   riskFormitems: FormArray;
   updateRiskForm: FormGroup;
   modalRef: BsModalRef;
-  cartmodalRef: BsModalRef;
   colName: any;
   modalCommonDataArr: any;
   allergenValues: any;
@@ -78,46 +77,47 @@ export class AdministeredDosesComponent implements OnInit{
   tablelistshow1 = false;
   sampleOrderDescription: any;
   rightside:boolean = false;
-  isAllSelected: boolean = false;
   @Output() reloadTableData = new EventEmitter();
   @Output() openModuleKardex = new EventEmitter();
   @Output() openModuleAdmissionProcessEvent = new EventEmitter();
   @Output() openModuleDischargeProcessEvent = new EventEmitter();
   isExpanded: boolean;
   value: any;
-  selectedColData: any;
   isSelected=false;
-  cardSection: boolean;
-  isCollapsed: boolean[] = [];
-  isCollapseded: boolean = false;
-  cartForm: FormGroup;
-  receiveCartData:any[]=[];
-  toContentData:any[]=[];
-  cartData:any;
-  private indexOfReceive:number;
-  private itemOfReceive:any;
-  public receviceCartForm:FormGroup
-  childCartDetails: any;
-    nurseUnitList = [
-      '4THFL-C',
-      '4THFLVIP',
-      '6FL-NURS',
-      '6FL-OROU',
-      '6FL-NICU',
-      'CATTUAMC',
-      'F9GOTAMC',
-      'LDRASMTU',
-      'LDRINTOU',
-      'F21IUAMC',
-      'F31IUAMC',
-      'F3CIUAMC',
-      'F51IUAMC',
-      'F6CIUAMC',
-      'F7IIUAMC',
-      'F9DIUAMC',
-      'F9IIUAMC',
-      'F2DTUAMC',
-    ]
+  drugArray:any;
+  checkValue:boolean = true;
+  
+  cartList: any[] = [];
+  cartDetails: any;
+  cartModalRef: BsModalRef;
+  isCollapsed: boolean = false;
+  receiveCartForm: FormGroup;
+  selectedCart: any;
+
+  get isAllSelected(): boolean {
+    return this.selectedCart?.TOCONTENT?.results?.every(medication => medication.isChecked);
+  }
+
+  nurseUnitList = [
+    '4THFL-C',
+    '4THFLVIP',
+    '6FL-NURS',
+    '6FL-OROU',
+    '6FL-NICU',
+    'CATTUAMC',
+    'F9GOTAMC',
+    'LDRASMTU',
+    'LDRINTOU',
+    'F21IUAMC',
+    'F31IUAMC',
+    'F3CIUAMC',
+    'F51IUAMC',
+    'F6CIUAMC',
+    'F7IIUAMC',
+    'F9DIUAMC',
+    'F9IIUAMC',
+    'F2DTUAMC',
+  ];
   
   constructor(
     private emergencyService: EmergencyService,
@@ -153,6 +153,7 @@ export class AdministeredDosesComponent implements OnInit{
       Adcomment: [''],
       AdcommentLt: [''],
     });
+
     this.updateRiskForm = this.formBuilder.group({
       Rsfnr: [''],
       Rsfna: ['', [Validators.required]],
@@ -161,28 +162,19 @@ export class AdministeredDosesComponent implements OnInit{
       Repdt: [''],
     });
 
-    let currentTime = this.datePipe.transform(new Date(), "hh:mm");
-    this.cartForm = this.formBuilder.group({
-      FromDt: [new Date()],
-      ToDt: [new Date()],
-      FromTm: ['00:00'],
-      ToTm: ['23:59'],
-      Nursingou: ['F2DTUAMC']
-    })
-
-    this.receviceCartForm = this.formBuilder.group({
+    this.receiveCartForm = this.formBuilder.group({
       dateFrom: [new Date()],
       dateTo: [new Date()],
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
       nurseUnit: ['F2DTUAMC']
-    })
+    });
   }
+
   ngOnInit(): void {
     this.getMedicationAdministrationlist();
-    this.filterData();
-
   }
+
   redirectToeKardex(data) {
     this.openModuleKardex.emit(data);
   }
@@ -197,21 +189,21 @@ export class AdministeredDosesComponent implements OnInit{
     const fromDate = `${new DatePipe('en-US').transform(
       date ?  date[0] : new Date().setDate(new Date().getDate()),
       'yyyy-MM-dd'
-    )}T00:00:00`
-  const toDate = `${new DatePipe('en-US').transform(
-    date ?  date[1] : new Date().setDate(new Date().getDate()),
-    'yyyy-MM-dd'
-  )}T00:00:00`
-  this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
+      )}T00:00:00`
+    const toDate = `${new DatePipe('en-US').transform(
+      date ?  date[1] : new Date().setDate(new Date().getDate()),
+      'yyyy-MM-dd'
+      )}T00:00:00`
+    this.hospitalistService.getDialysisMedicationAdministrationSet(Deptcode,fromDate,toDate).subscribe((res:any)=>{
       this.missedMedPatientList = res.d.results;
       this.filteredPatients=res.d.results;
       this.dataToParent.emit(this.missedMedPatientList);
       this.sendErPatientCount.emit(this.missedMedPatientList?.length)
-   })
+    });
   }
 
-  getReceviceCartList() {
-    let data = this.receviceCartForm.value
+  getReceiveCartList() {
+    let data = this.receiveCartForm.value
     const timeFrom = this.formatTimeToISO8601(data.timeFrom);
     const timeTo = this.formatTimeToISO8601(data.timeTo);
     const fromDate = `${new DatePipe('en-US').transform(
@@ -223,17 +215,11 @@ export class AdministeredDosesComponent implements OnInit{
       'yyyy-MM-dd'
     )}T00:00:00`
 
-    this.emergencyService.getReceviceCart(fromDate, toDate, timeFrom, timeTo, data.nurseUnit).subscribe({
+    this.emergencyService.getReceiveCart(fromDate, toDate, timeFrom, timeTo, data.nurseUnit).subscribe({
       next: (res: any) => {
-        this.receiveCartData = res.d.results;
+        this.cartList = res.d.results;
         this.commanSorting('ShipDt');
-        if (this.itemOfReceive && this.indexOfReceive.toString()) {
-          let data = this.receiveCartData.find((item) => {
-            return item.Cartid == this.itemOfReceive.Cartid;
-          });
-          this.selectedColData = undefined;
-          this.selectDateColumn(this.indexOfReceive, data)
-        }
+        this.refreshSelectedCart();
       },
       error: (error) => {
         console.log(error);
@@ -241,22 +227,20 @@ export class AdministeredDosesComponent implements OnInit{
     })
   }
 
-  refresh(){
-    this.cartForm.patchValue({
-      FromDt:new Date(),
-      ToDt:new Date(),
-      FromTm:'',
-      ToTm:''
-    })
-    this.receviceCartForm.get('dateFrom').setValue(new Date());
-    this.receviceCartForm.get('dateTo').setValue(new Date());
-    this.receviceCartForm.get('timeFrom').setValue('00:00');
-    this.receviceCartForm.get('timeTo').setValue('23:59');
-    // this.getReceviceCartList();
-    this.receiveCartData=null;
-    this.toContentData = null;
+  refreshList(){
+    this.receiveCartForm.get('dateFrom').setValue(new Date());
+    this.receiveCartForm.get('dateTo').setValue(new Date());
+    this.receiveCartForm.get('timeFrom').setValue('00:00');
+    this.receiveCartForm.get('timeTo').setValue('23:59');
+    this.selectedCart = undefined;
+    this.getReceiveCartList();
+  }
 
-    this.modalRef.hide();
+  refreshSelectedCart() {
+    const cartId = this.selectedCart?.Cartid;
+    if (!cartId) return;
+
+    this.selectedCart = this.cartList?.find(cart => cart.Cartid == cartId);
   }
 
   formatDateFromTimestamp(timestamp: string): string {
@@ -279,7 +263,6 @@ export class AdministeredDosesComponent implements OnInit{
     return '';
   }
 
-
   formatDate(dateTimeString){
     if(dateTimeString){
       const date = new Date(dateTimeString).toISOString()
@@ -287,20 +270,21 @@ export class AdministeredDosesComponent implements OnInit{
       return `${dateDataArr[0]}T${dateDataArr[1].substring(0,8)}`
     }
   }
+
   formatTime(dateTimeString){
     if(dateTimeString){
       const dateDataArr = dateTimeString.split(':')
       return `PT${dateDataArr[0]}H${dateDataArr[1]}M${dateDataArr[2] ? dateDataArr[2] : '00'}S`
     }
   }
+
   handleEvent(value){
     this.rightside  = false;
     this.tablelistshow1 = false;
     this.tablelistshow = true;
   }
-  drugArray:any;
-  checkValue:boolean = true;
-   openRightside(item) {
+
+  openRightside(item) {
     this.checkValue = false;
     this.selectedmissedMedPatientList=item;
     this.tablelist = [];
@@ -341,14 +325,9 @@ export class AdministeredDosesComponent implements OnInit{
     this.isExpanded = !this.isExpanded;
   }
 
-
   openModuleDischargeProcess(data) {
     this.openModuleDischargeProcessEvent.emit(data);
     localStorage.removeItem('tabName');
-  }
-
-  filterData(){
-    // this.listItem.filter((data) => data.Us)
   }
 
   filterListData(event) {
@@ -381,23 +360,6 @@ export class AdministeredDosesComponent implements OnInit{
       console.log(this.missedMedPatientList);
   }
 
-
-  selectDateColumn(index: number, item:any) {
-    if (this.selectedColData === index) {
-      this.selectedColData = undefined;
-      this.cardSection= false;
-      this.indexOfReceive =  null;
-      this.itemOfReceive =  null;
-    } else {
-      this.selectedColData = index;
-      this.cardSection= true
-      this.indexOfReceive =  index;
-      this.itemOfReceive =  item;
-      this.childCartDetails = item;
-    }
-    this.toContentData = item;
-  }
-
   getDate(value) {
     if (value) {
       var str = value;
@@ -406,6 +368,7 @@ export class AdministeredDosesComponent implements OnInit{
       return date;
     }
   }
+
   public openModalForPhyOrder(template: TemplateRef<any>, data: any) {
     const config: ModalOptions = {
       class: 'modal-dialog-centered execute-delete-modal',
@@ -428,57 +391,41 @@ export class AdministeredDosesComponent implements OnInit{
       (_error: any) => {}
     );
   }
+
   openReceiveModal(template: TemplateRef<any>){
     const config: ModalOptions = { class: 'modal-dialog-centered er-vital-modal' };
-  this.modalRef = this.modalService.show(template,config);
-  this.modalRef.onHide.subscribe((reason: string | any) => {
-  });
-   }
+    this.modalRef = this.modalService.show(template, config);
+  }
 
-   openCartDetailModal(event:Event,template: TemplateRef<any>,item){
+  openCartDetailModal(event:Event,template: TemplateRef<any>, cart: any){
     event.stopPropagation();
+    this.selectedCart = undefined;
+    this.cartDetails = cart;
 
     const config: ModalOptions = { class: 'modal-dialog-centered lab-modal-size' };
-    this.cartmodalRef = this.modalService.show(template,config);
-    this.cartData=item;
-    this.cartmodalRef.onHide.subscribe((reason: string | any) => {
+    this.cartModalRef = this.modalService.show(template, config);
+  }
+
+  addReceiveCart(missed: boolean = false) {
+    const selectedMedications = this.selectedCart?.TOCONTENT?.results?.filter(medication => medication.isChecked);
+    if (!selectedMedications?.length) return;
+
+    // remove 'isChecked' key for SAP compatibility
+    const results = selectedMedications.map(({ isChecked: _isChecked, ...medication }) => medication); 
+    
+    const cart = { 
+      ...this.selectedCart, 
+      TOCONTENT: { ...this.selectedCart?.TOCONTENT, results: results }
+    };
+
+    if (missed) {
+      cart.Missed = 'X';
+    }
+
+    this.emergencyService.addReceiveCart(cart).subscribe(() => {
+      this.setSelection(false);
+      this.getReceiveCartList();
     });
-   }
-
-   toggleAccordion(index: number): void {
-    this.isCollapsed[index] = !this.isCollapsed[index];
-  }
-
-
-  addReceviceCard() {
-    this.receiveCartData.forEach((e) => {
-      if (e.isChecked) {
-        delete e.isChecked;
-        e.TOCONTENT?.results?.forEach((element)=>{
-          delete element.isChecked;
-        })
-        this.isAllSelected = false;
-        this.emergencyService.addReceviceCart(e).subscribe((res: any) => {
-          if (res) {
-            this.getReceviceCartList();
-          }
-        }, (error: any) => { })
-      }
-    })
-  }
-
-  addReceviceMissedCard() {
-    this.receiveCartData.forEach((e) => {
-      if (e.isChecked) {
-        delete e.isChecked;
-        e.Missed = "X";
-        this.emergencyService.addReceviceCart(e).subscribe((res: any) => {
-          if (res) {
-            this.getReceviceCartList();
-          }
-        }, (error: any) => { })
-      }
-    })
   }
 
   formatTimeToISO8601(time: string): string {
@@ -500,27 +447,36 @@ export class AdministeredDosesComponent implements OnInit{
     }
   }
 
-  checkboxChangedMedication(event: any, item: any, selectedRow: any) {
-    this.receiveCartData.find(x => x.CartExtId == item.CartExtId).isChecked = event.target.checked;
-    selectedRow.isChecked = event.target.checked;
-    this.isAllSelected = item.TOCONTENT.results.every(x => x.isChecked);
-    if(this.isAllSelected){
-      const event = { target: { checked: this.isAllSelected }};
-      this.selectAllMedication(event);
-    }
+  selectMedication(event: any, selectedMedication: any) {
+    const isChecked = event.target.checked;
+    selectedMedication.isChecked = isChecked;
   }
 
-  selectAllMedication(event: any) {
-    this.isAllSelected = event.target.checked;
-    const item = this.childCartDetails;
-    this.receiveCartData.find(x => x.CartExtId==item?.CartExtId).isChecked = event.target.checked;
-    this.childCartDetails?.TOCONTENT?.results.forEach(x => x.isChecked = event.target.checked);
+  selectAllMedications(event: any) {
+    const isChecked = event.target.checked;
+    this.setSelection(isChecked);
+  }
+
+  setSelection(value: boolean) {
+    this.selectedCart?.TOCONTENT?.results?.forEach(medication => medication.isChecked = value);
+  }
+
+  isSelectedCart(cart): boolean {
+    return this.selectedCart?.Cartid === cart?.Cartid;
+  }
+
+  toggleCartSelection(cart: any) {
+    // reset selection on cart change
+    this.setSelection(false);
+
+    // if selected cart is clicked again, deselect it
+    this.selectedCart = this.isSelectedCart(cart) ? undefined : cart;
   }
 
   commanSorting(keyName: string) {
     if (!this.asc) {
       this.asc = true;
-      this.receiveCartData.sort((a, b) => {
+      this.cartList.sort((a, b) => {
         const nameA = a[keyName].toUpperCase(); 
         const nameB = b[keyName].toUpperCase(); 
         if (nameA < nameB) {
@@ -534,7 +490,7 @@ export class AdministeredDosesComponent implements OnInit{
       });
     } else {
       this.asc = false;
-      this.receiveCartData.sort((a, b) => {
+      this.cartList.sort((a, b) => {
         const nameA = a[keyName].toUpperCase(); 
         const nameB = b[keyName].toUpperCase();
         if (nameA < nameB) {
