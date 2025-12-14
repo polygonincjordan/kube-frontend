@@ -147,7 +147,7 @@
     </div>
     <div class="receive-main" style="padding: 10px;">
       <div class="first-section justify-content-between align-items-center">
-        <form [formGroup]="receviceCartForm"class="first-section1">
+        <form [formGroup]="receiveCartForm" class="first-section1">
           <div class="p-2" style="display: contents;">
             <div class="maintain-secound-bar-vital-sign">
               <div class="progress-header">
@@ -258,7 +258,7 @@
                   </div>
                 </div>
                 <div class="header-button" style="margin-left: auto;">
-                  <button class="btn" (click)="getReceviceCartList()">Apply</button>
+                  <button class="btn" (click)="getReceiveCartList()">Apply</button>
                 </div>
               </div>
             </div>
@@ -273,7 +273,7 @@
                   External Cart ID
                 </th>
                 <th scope="col" style="padding-left: 0px;">
-                  Card Description
+                  Cart Description
                 </th>
                 <th scope="col">
                   Empl Name
@@ -291,20 +291,18 @@
               </tr>
             </thead>
             <tbody>
-
-                <ng-container *ngFor="let item of cartList; let i = index">
-                  <tr [ngClass]="selectedColData === i ? 'selectedCol' : ''"  (click)="selectDateColumn(i,item)">
-                    <td class="border-top-none" style="padding-left: 1px;">{{item.CartExtId}}</td>
-                    <td class="border-top-none"  style="padding-left: 1px;" title="Lorem Ipsum is simply">{{item.CartDescr}}</td>
-                    <td class="border-top-none" >{{item.EmpNm}}</td>
-                    <td class="border-top-none"  style="padding-left: 1px;">{{ getDate(item.ShipDt) | date : "dd.MM.y"}}</td>
-                    <td class="border-top-none"  style="padding-left: 1px;">{{ getTime(item.ShipTm)}}</td>
-                    <td class="border-top-none"  style="padding-left: 1px;">{{ item?.TOCONTENT?.results?.length==1 ? item?.TOCONTENT?.results[0]?.PrepstatNm : ''}}</td>
-                    <td class="border-top-none allergy"  style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden; text-align: center;">
-                      <img src="assets/img/information.jfif" style="width: 31px; height: 26px; cursor: pointer; position: relative; bottom: 5px;" title="Visit Comments" (click)="openCartDetailModal($event,cartDetails,item)">
-                    </td>
-                  </tr>
-
+              <ng-container *ngFor="let cart of cartList">
+                <tr [class.selectedCol]="isSelectedCart(cart)" (click)="toggleCartSelection(cart)">
+                  <td class="border-top-none" style="padding-left: 1px;">{{cart.CartExtId}}</td>
+                  <td class="border-top-none"  style="padding-left: 1px;" [title]="cart.CartDescr">{{cart.CartDescr}}</td>
+                  <td class="border-top-none" >{{cart.EmpNm}}</td>
+                  <td class="border-top-none"  style="padding-left: 1px;">{{ getDate(cart.ShipDt) | date : "dd.MM.y"}}</td>
+                  <td class="border-top-none"  style="padding-left: 1px;">{{ getTime(cart.ShipTm)}}</td>
+                  <td class="border-top-none"  style="padding-left: 1px;">{{ cart?.TOCONTENT?.results?.length==1 ? cart?.TOCONTENT?.results[0]?.PrepstatNm : ''}}</td>
+                  <td class="border-top-none allergy"  style="padding-left: 1px; min-width: 102px; max-width: 267px !important; overflow: hidden; text-align: center;">
+                    <img src="assets/img/information.jfif" style="width: 31px; height: 26px; cursor: pointer; position: relative; bottom: 5px;" title="Visit Comments" (click)="openCartDetailModal($event, cartDetailsTemplate, cart)">
+                  </td>
+                </tr>
               </ng-container>
             </tbody>
           </table>
@@ -312,238 +310,50 @@
             No results
           </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center" style="margin-top: 20px;">
-          <h3 class="mt-2 header-title" *ngIf="cardSection">Cart content: Patient Oriented</h3>
-        <div class="header-button mt-3" style="display: block; margin-left: 0px;" *ngIf="cardSection">
-          <button class="btn" (click)="addReceviceCard()"><img src="assets/img/Received.png" alt=""> <span class="ml-2">Received</span></button>
-          <button class="btn ml-1" (click)="addReceviceMissedCard()"><img src="assets/img/Missed.png" alt=""> <span class="ml-2"> Missed </span></button>
-        </div>
+        <div *ngIf="selectedCart" class="d-flex justify-content-between align-items-center" style="margin-top: 20px;">
+          <h3 class="mt-2 header-title">
+            Cart content: Patient Oriented
+          </h3>
+          <div class="header-button mt-3" style="display: block; margin-left: 0px;">
+            <button class="btn" (click)="addReceiveCart()">
+              <img src="assets/img/Received.png" alt="">
+              <span class="ml-2">Received</span>
+            </button>
+            <button class="btn ml-1" (click)="addReceiveCart(true)">
+              <img src="assets/img/Missed.png" alt="">
+              <span class="ml-2"> Missed </span>
+            </button>
+          </div>
         </div>
 
-        <!-- <div class="row"  *ngIf="cardSection">
-              <div class="accordion w-100" id="accordionExample">
-                  <div class="medication-table">
-                      <div class="card-header cardheader" id="headingTwo" style="display: flex; justify-content: space-between; align-items: center; height: 45px;">
-                          <h2 class="mb-0">
-                              <button class="btn btn-link btn-color" type="button" (click)="isCollapsed = !isCollapsed"
-                                  [attr.aria-expanded]="!isCollapsed" aria-controls="collapseTwo">
-                                  Test Patients For Demo
-                              </button>
-                          </h2>
-                          <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
-                font-size: 21px;color:#7a7f84" *ngIf="isCollapsed"></i>
-                          <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
-                font-size: 21px;color:#7a7f84" *ngIf="!isCollapsed"></i>
-                      </div>
-                      <div id="collapseTwo" [ngClass]="{'collapse': isCollapsed, 'show': !isCollapsed}"
-                          aria-labelledby="headingTwo" data-parent="#accordionExample">
-                          <div class="card-body" style="padding-top: 0">
-                            <table class="table checkin-table second-table custom-table-striped table-responsive-sm mt-3">
-                              <thead>
-                                <tr class="checkin-table-header">
-                                  <th scope="col"><input type="checkbox"></th>
-                                  <th scope="col" style="padding-left: 11px;">
-                                    Bed
-                                  </th>
-                                  <th scope="col" style="padding-left: 0px; ">
-                                    MRN
-                                  </th>
-                                  <th scope="col" style="padding-left: 0px; ">
-                                    Patient Name
-                                  </th>
-                                  <th scope="col" style="padding-left: 0px; ">
-                                    Prep. Status
-                                  </th>
-                                  <th scope="col" style="padding-left: 0px; ">
-                                    Quantity
-                                  </th>
-                                  <th scope="col" style="padding-left: 0px;">Quantity Unit</th>
-                                  <th scope="col" style="padding-left: 0px;">Drug Name</th>
-                                  <th scope="col" style="padding-left: 0px;">Fill Source</th>
-                                  <th scope="col" style="padding-left: 0px;">Reason Text</th>
-                                  <th scope="col" style="padding-left: 0px;">Drug Controlled</th>
-                                  <th scope="col" style="padding-left: 0px;">Ad. Supply Statu</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td class="border-top-none" style="padding-left: 1px;">
-                                    2027AMC
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;"> 000001002</td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Test Patients For Demo, T...
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Receiv....
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    1
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Table, extended release
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Voltaren 100 mg Oral Tablet (20)
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    CENTRAL_IN
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td class="border-top-none" style="padding-left: 1px;">
-                                    2027AMC
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;"> 000001002</td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Test Patients For Demo, T...
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Receiv....
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    1
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Table, extended release
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Voltaren 100 mg Oral Tablet (20)
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    CENTRAL_IN
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td class="border-top-none" style="padding-left: 1px;">
-                                    2027AMC
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;"> 000001002</td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Test Patients For Demo, T...
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Receiv....
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    1
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Table, extended release
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Voltaren 100 mg Oral Tablet (20)
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    CENTRAL_IN
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td><input type="checkbox"></td>
-                                  <td class="border-top-none" style="padding-left: 1px;">
-                                    2027AMC
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;"> 000001002</td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Test Patients For Demo, T...
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Receiv....
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    1
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Table, extended release
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    Voltaren 100 mg Oral Tablet (20)
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    CENTRAL_IN
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                  <td class="border-top-none patient" style="padding-left: 1px;">
-                                    -
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-      </div> -->
 
-      <div *ngIf="cardSection">
+      <div *ngIf="selectedCart">
         <table class="table checkin-table checkin-table-popup second-table custom-table-striped table-responsive-sm">
           <thead>
             <tr class="checkin-table-header">
-              <th style="width: 2%" class="text-start"> <input type="checkbox" class="card-checkbox" [checked]="isAllSelected" (change)="selectAllMedication($event)"></th>
-
-              <th scope="col" style="padding-left: 0px; width:5%">
-                Bed
+              <th style="width: 2%">
+                <div class="cart-checkbox">
+                  <input type="checkbox" [checked]="isAllSelected" (change)="selectAllMedications($event)"/>
+                </div>
               </th>
-              <th scope="col" style="padding-left: 0px; width:5%">
-                MRN
-              </th>
-              <th scope="col" style="padding-left: 0px; width:5%">
-                Patient Name
-              </th>
-              <th scope="col" style="padding-left: 0px; width:5%">
-                Prep. Status
-              </th>
-              <th scope="col" style="padding-left: 0px; width:5%">
-                Quantity
-              </th>
-              <th scope="col" style="padding-left: 0px;  width:5%">Quantity Unit</th>
-              <th scope="col" style="padding-left: 0px; width:5% ">Drug Name</th>
-              <th scope="col" style="padding-left: 0px; width:5%">Fill Source</th>
-              <th scope="col" style="padding-left: 0px; width:5%">Reason Text</th>
-              <th scope="col" style="padding-left: 0px;width:5%">Drug Controlled</th>
-              <th scope="col" style="padding-left: 0px;width:5%">Ad. Supply Statu</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Bed</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">MRN</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Patient Name</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Prep. Status</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Quantity</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Quantity Unit</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Drug Name</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Fill Source</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Reason Text</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Drug Controlled</th>
+              <th scope="col" style="padding-left: 0px; width: 5%">Ad. Supply Status</th>
             </tr>
           </thead>
         </table>
-        <div class="row"  *ngIf="cardSection">
+        <div class="row">
           <div class="accordion w-100" id="accordionExample">
             <div class="medication-table">
-                <div class="card-header cardheader" id="headingTwo" style="display: flex; justify-content:end; align-items: center; height: 30px;" (click)="isCollapsed = !isCollapsed">
+                <div class="card-header cardheader" id="headingTwo" style="display: flex; justify-content: end; align-items: center; height: 30px;" (click)="isCollapsed = !isCollapsed">
                     <i class="fa fa-caret-down" aria-hidden="true" style="line-height: 37px;
           font-size: 21px;color:#7a7f84" *ngIf="isCollapsed"></i>
                     <i class="fa fa-caret-up" aria-hidden="true" style="line-height: 37px;
@@ -557,28 +367,24 @@
                           <thead>
                             <tr >
                               <th style="width: 2%;"></th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
-                              <th scope="col" style="padding-left: 0px;width:5% "></th>
-                              <th scope="col" style="padding-left: 0px;width:5% ">
-
-                              </th>
-                              <th scope="col" style="padding-left: 0px;width:5% ">
-
-                              </th>
-                              <th scope="col" style="padding-left: 0px;width:5% ">
-
-                              </th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
-                              <th scope="col" style="padding-left: 0px;width:5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
+                              <th scope="col" style="padding-left: 0px; width: 5%"></th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let item of childCartDetails.TOCONTENT.results|| []">
-                              <td ><input type="checkbox" [checked]="item.isChecked" (change)="checkboxChangedMedication($event, childCartDetails, item)"></td>
+                            <tr *ngFor="let item of selectedCart.TOCONTENT.results|| []">
+                              <td class="cart-checkbox">
+                                <input type="checkbox" [checked]="item.isChecked" (change)="selectMedication($event, item)">
+                              </td>
                               <td class="border-top-none" style="padding-left: 1px; ">
                                 {{item.Bedou}}
                               </td>
@@ -592,7 +398,7 @@
                               <td class="border-top-none patient" style="padding-left: 1px;">
                                {{item.Qtotal}}
                               </td>
-                              <td class="border-top-none patient" style="padding-left: 1px;" title="Table, extended release">
+                              <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Qunit">
                                 {{item.Qunit}}
                               </td>
                               <td class="border-top-none patient" style="padding-left: 1px;" [title]="item.Descrlt">
@@ -627,47 +433,47 @@
  </ng-template>
 
 
- <ng-template #cartDetails>
+ <ng-template #cartDetailsTemplate>
   <div class="allergy-headers">
     <div style="font-size: 16px; color: #000; font-weight: bold">
       <span>Cart Details</span>
     </div>
     <div class="risk-history-main">
-          <img src="assets/img/CloseTab.svg" class="img-siz" width="25px" (click)="cartmodalRef.hide()"/>
+          <img src="assets/img/CloseTab.svg" class="img-siz" width="25px" (click)="cartModalRef.hide()"/>
     </div>
   </div>
   <div class="main p-3">
     <div class="detail-row">
         <div class="detail-label">Cart Description:</div>
-        <div class="detail-value">{{cartPopUpDetail.CartDescr}}</div>
+        <div class="detail-value">{{cartDetails.CartDescr}}</div>
     </div>
     <div class="detail-row">
         <div class="detail-label">Cart Type:</div>
-        <div class="detail-value">{{cartPopUpDetail.CartType}}</div>
+        <div class="detail-value">{{cartDetails.CartType}}</div>
     </div>
     <div class="detail-row">
         <div class="detail-label">Cart Template:</div>
-        <div class="detail-value">{{cartPopUpDetail.CartTempl}}</div>
+        <div class="detail-value">{{cartDetails.CartTempl}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Cart Status:</div>
-      <div class="detail-value">{{cartPopUpDetail.CartStatus}}</div>
+      <div class="detail-value">{{cartDetails.CartStatus}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Estimated Shipment:</div>
-      <div class="detail-value">{{getDate(cartPopUpDetail.EstShipDt) | date : "dd.MM.y" +' '+'|'+' '  + this.getTime(cartPopUpDetail.EstShipTm)}}</div>
+      <div class="detail-value">{{getDate(cartDetails.EstShipDt) | date : "dd.MM.y" +' '+'|'+' '  + this.getTime(cartDetails.EstShipTm)}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Prepare Durgs Up To:</div>
-      <div class="detail-value">{{getDate(cartPopUpDetail.PrepDrugDt) | date : "dd.MM.y"}}</div>
+      <div class="detail-value">{{getDate(cartDetails.PrepDrugDt) | date : "dd.MM.y"}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Include Urgent Preperation:</div>
-      <div class="detail-value">{{cartPopUpDetail.UrgPrep}}</div>
+      <div class="detail-value">{{cartDetails.UrgPrep}}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">Cart Content Header:</div>
-      <div class="detail-value">{{cartPopUpDetail.Cartid}}</div>
+      <div class="detail-value">{{cartDetails.Cartid}}</div>
     </div>
 
 </div>

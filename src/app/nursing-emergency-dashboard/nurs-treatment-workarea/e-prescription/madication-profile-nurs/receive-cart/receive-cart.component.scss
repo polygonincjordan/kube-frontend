@@ -558,4 +558,14 @@
   .modal-md .modal-content{
     border-radius: 1.1rem !important;
   }
+
+  .cart-checkbox {
+    display: flex;
+    align-items: center;
+
+    input {
+      height: 15px;
+      width: 15px;
+    }
+  }
   
