@@ -18,7 +18,7 @@ import { ScalesFacePainComponent } from 'src/app/day-case-dashboard/check-in/er-
 import { ScalesNumericRatingComponent } from 'src/app/day-case-dashboard/check-in/er-triage/scales-numeric-rating/scales-numeric-rating.component';
 import { ModifiedAldreteDocumentForInportComponent } from './modified-aldrete-document/modified-aldrete-document.component';
 import { ErVitalsForSBARComponent } from './er-vitals/er-vitals.component';
-
+import { OrderType } from '@services/interfaces/common.enum';
 @Component({
   selector: 'app-post-anesthesia-care-record',
   templateUrl: './post-anesthesia-care-record.component.html',
@@ -35,6 +35,7 @@ export class PostAnesthesiaCareRecordComponent implements OnInit, OnDestroy {
   postAssForm: FormGroup;
   paramsObject: any;
   public toVitalsArr: any = [];
+  orderType = OrderType;
 
   tabItems = [
     { label: 'Vital Signs', value: '1' },

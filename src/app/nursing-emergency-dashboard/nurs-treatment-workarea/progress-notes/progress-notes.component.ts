@@ -279,6 +279,7 @@ export class ProgressNotesComponent implements OnInit {
   }
   cancelProgressNote() {
     this.initForm();
+    this.actionType = null;
     this.templteContent = null;
   }
 
