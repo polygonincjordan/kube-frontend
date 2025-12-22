@@ -22,11 +22,12 @@
       </div>
     </div>
     <div class="action-img mr-3">
-      <img (click)="copyProgressNotesBind(item, 'replace')"
+      <img  (click)=" isCurrentUser(item.EmployeeResp) && copyProgressNotesBind(item, 'replace')"
         width="20px"
         class="mr-3 cursor-pointer"
         src="assets/img/progress_replace.jpg"
         title="Replace"
+        [ngClass]="{'disabled-icon': !isCurrentUser(item.EmployeeResp)}"
       />
       <img (click)="copyProgressNotesBind(item, 'copy')"
         width="30px"

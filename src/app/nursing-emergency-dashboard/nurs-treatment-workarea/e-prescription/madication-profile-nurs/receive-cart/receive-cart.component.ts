@@ -11,17 +11,18 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
   styleUrls: ['./receive-cart.component.scss']
 })
 export class ReceiveCartComponent implements OnInit {
-
   cartList: any;
-  cartPopUpDetail: any;
-  modalRef: BsModalRef;
-  cartmodalRef: BsModalRef;
+  cartDetails: any;
+  cartModalRef: BsModalRef;
   isCollapsed: boolean = false;
 
-  receviceCartForm: FormGroup
-  cardSection: boolean;
-  selectedColData: any;
-  childCartDetails: any;
+  receiveCartForm: FormGroup;
+  selectedCart: any;
+
+  get isAllSelected(): boolean {
+    return this.selectedCart?.TOCONTENT?.results?.every(medication => medication.isChecked);
+  }
+  
   nurseUnitList = [
     '4THFL-C',
     '4THFLVIP',
@@ -41,7 +42,8 @@ export class ReceiveCartComponent implements OnInit {
     'F9DIUAMC',
     'F9IIUAMC',
     'EMEEUAMC'
-  ]
+  ];
+
   constructor(private formBuilder: FormBuilder, private emergencyService: EmergencyService, private modalService: BsModalService, private storageService: StorageService) { }
 
   ngOnInit(): void {
@@ -49,26 +51,26 @@ export class ReceiveCartComponent implements OnInit {
   }
 
   initForm() {
-    this.receviceCartForm = this.formBuilder.group({
+    this.receiveCartForm = this.formBuilder.group({
       dateFrom: [new Date()],
       dateTo: [new Date()],
       timeFrom: ['00:00'],
       timeTo: ['23:59'],
       nurseUnit: ['EMEEUAMC']
-    })
+    });
   }
 
   refreshList() {
-    this.receviceCartForm.get('dateFrom').setValue(new Date());
-    this.receviceCartForm.get('dateTo').setValue(new Date());
-    this.receviceCartForm.get('timeFrom').setValue('00:00');
-    this.receviceCartForm.get('timeTo').setValue('23:59');
-    this.cardSection = false
-    this.getReceviceCartList()
+    this.receiveCartForm.get('dateFrom').setValue(new Date());
+    this.receiveCartForm.get('dateTo').setValue(new Date());
+    this.receiveCartForm.get('timeFrom').setValue('00:00');
+    this.receiveCartForm.get('timeTo').setValue('23:59');
+    this.selectedCart = undefined;
+    this.getReceiveCartList();
   }
 
-  getReceviceCartList() {
-    let data = this.receviceCartForm.value
+  getReceiveCartList() {
+    let data = this.receiveCartForm.value
     const timeFrom = this.formatTimeToISO8601(data.timeFrom);
     const timeTo = this.formatTimeToISO8601(data.timeTo);
     const fromDate = `${new DatePipe('en-US').transform(
@@ -79,11 +81,19 @@ export class ReceiveCartComponent implements OnInit {
       data.dateTo ? data.dateTo : new Date().setDate(new Date().getDate()),
       'yyyy-MM-dd'
     )}T00:00:00`
-    this.emergencyService.getReceviceCart(fromDate, toDate, timeFrom, timeTo, data.nurseUnit).subscribe((res: any) => {
+    this.emergencyService.getReceiveCart(fromDate, toDate, timeFrom, timeTo, data.nurseUnit).subscribe((res: any) => {
       if (res) {
-        this.cartList = res.d?.results
+        this.cartList = res.d?.results;
+        this.refreshSelectedCart();
       }
     }, (_error: any) => { })
+  }
+
+  refreshSelectedCart() {
+    const cartId = this.selectedCart?.Cartid;
+    if (!cartId) return;
+
+    this.selectedCart = this.cartList?.find(cart => cart.Cartid == cartId);
   }
 
   formatTimeToISO8601(time: string): string {
@@ -92,34 +102,41 @@ export class ReceiveCartComponent implements OnInit {
     return duration;
   }
 
-
-  filterData() {
-    // this.listItem.filter((data) => data.Us)
-  }
-
-  openCartDetailModal(event: Event, template: TemplateRef<any>, data) {
-    const config: ModalOptions = { class: 'modal-dialog-centered lab-modal-size' };
-    this.cartmodalRef = this.modalService.show(template, config);
-    this.cardSection = false;
+  openCartDetailModal(event: Event, template: TemplateRef<any>, cart: any) {
     event.stopPropagation();
-    this.cartPopUpDetail = data;
-    this.cartmodalRef.onHide.subscribe((reason: string | any) => {
-    });
+    this.selectedCart = undefined;
+    this.cartDetails = cart;
+    
+    const config: ModalOptions = { class: 'modal-dialog-centered lab-modal-size' };
+    this.cartModalRef = this.modalService.show(template, config);
   }
 
-  checkboxChangedMedication(event: any, item: any) {
-    this.cartList.find(x => x.CartExtId == item.CartExtId).isChecked = event.target.checked;
+  selectMedication(event: any, selectedMedication: any) {
+    const isChecked = event.target.checked;
+    selectedMedication.isChecked = isChecked;
   }
-  selectDateColumn(index: number, data: any) {
-    if (this.selectedColData === index) {
-      this.selectedColData = undefined;
-      this.cardSection = false
-    } else {
-      this.selectedColData = index;
-      this.cardSection = true
-      this.childCartDetails = data;
-    }
+
+  selectAllMedications(event: any) {
+    const isChecked = event.target.checked;
+    this.setSelection(isChecked);
   }
+  
+  setSelection(value: boolean) {
+    this.selectedCart?.TOCONTENT?.results?.forEach(medication => medication.isChecked = value);
+  }
+
+  isSelectedCart(cart): boolean {
+    return this.selectedCart?.Cartid === cart?.Cartid;
+  }
+
+  toggleCartSelection(cart: any) {
+    // reset selection on cart change
+    this.setSelection(false);
+
+    // if selected cart is clicked again, deselect it
+    this.selectedCart = this.isSelectedCart(cart) ? undefined : cart;
+  }
+
   getDate(value) {
     if (value) {
       var str = value;
@@ -142,26 +159,25 @@ export class ReceiveCartComponent implements OnInit {
     }
   }
 
-  addReceviceCard() {
-    this.cartList.forEach((e) => {
-      if (e.isChecked) {
-        delete e.isChecked;
-        this.emergencyService.addReceviceCart(e).subscribe((res: any) => {
-        }, (error: any) => { })
-      }
+  addReceiveCart(missed: boolean = false) {
+    const selectedMedications = this.selectedCart?.TOCONTENT?.results?.filter(medication => medication.isChecked);
+    if (!selectedMedications?.length) return;
 
-    })
+    // remove 'isChecked' key for SAP compatibility
+    const results = selectedMedications.map(({ isChecked: _isChecked, ...medication }) => medication); 
+    
+    const cart = { 
+      ...this.selectedCart, 
+      TOCONTENT: { ...this.selectedCart?.TOCONTENT, results: results }
+    };
 
-  }
+    if (missed) {
+      cart.Missed = 'X';
+    }
 
-  addReceviceMissedCard() {
-    this.cartList.forEach((e) => {
-      if (e.isChecked) {
-        delete e.isChecked;
-        e.Missed = "X";
-        this.emergencyService.addReceviceCart(e).subscribe((res: any) => {
-        }, (error: any) => { })
-      }
-    })
+    this.emergencyService.addReceiveCart(cart).subscribe(() => {
+      this.setSelection(false);
+      this.getReceiveCartList();
+    });
   }
 }

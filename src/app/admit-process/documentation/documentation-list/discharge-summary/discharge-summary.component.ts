@@ -22,7 +22,7 @@ import { StorageService } from '@services/storage.service';
 import Swal from 'sweetalert2';
 import { GynDiagnosisComponent } from '../obs-gyn/diagnosis/diagnosis.component';
 import { SharedService } from '@services/shared.service';
-
+import { OrderType } from '@services/interfaces/common.enum';
 @Component({
   selector: 'app-discharge-summary',
   templateUrl: './discharge-summary.component.html',
@@ -32,7 +32,8 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   @Input() soapFormEvent: string;
   @Output() reloadTableList = new EventEmitter();
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: GynDiagnosisComponent;
-
+  
+  orderType = OrderType;
   inPatientPhdisDataSet: FormGroup;
   dischargeDispositionList: any = [
     { Desc: 'Discharge Home', Value: '0' },

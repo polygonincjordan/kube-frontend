@@ -58,6 +58,10 @@
     margin-left: 10px;
     display: flex;
     align-items: center;
+
+    .disabled-icon {
+     cursor: not-allowed;
+    }
   }
 }
 

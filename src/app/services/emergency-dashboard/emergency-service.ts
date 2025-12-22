@@ -206,7 +206,7 @@ export class EmergencyService {
     });
   }
 
-  getReceviceCart(
+  getReceiveCart(
     dateFrom?: any,
     dateTo?: any,
     timeFrom?: any,
@@ -236,7 +236,7 @@ export class EmergencyService {
     );
   }
 
-  addReceviceCart(json) {
+  addReceiveCart(json) {
     return this.http.post(this.url + 'addReceiveCart', json, {
       withCredentials: true,
     });

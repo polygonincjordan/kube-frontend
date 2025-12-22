@@ -30,6 +30,7 @@ export class ProgressNoteListComponent implements OnInit {
   isFormSubmitted: boolean = false;
   cancalReasonList: any;
   cancelReason: null;
+  currentUsername: string;
   constructor(
     private modalService: BsModalService,
     private _admissionservice: AdmissionService,
@@ -39,6 +40,18 @@ export class ProgressNoteListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCancelReason();
+    this.setCurrentUserId();
+  }
+
+  setCurrentUserId(): void {
+    const storedUserId = localStorage.getItem('amc_qa_gpart');
+    if (storedUserId) {
+      this.currentUsername = JSON.parse(storedUserId);
+    }
+  }
+
+  isCurrentUser(noteUser: string): boolean {
+    return noteUser === this.currentUsername;
   }
 
   public getImageBorderLogic(item) {
@@ -101,7 +114,7 @@ export class ProgressNoteListComponent implements OnInit {
     if (data && data.length) {
       let hours = data.substring(2, 4);
       let minute = data.substring(5, 7);
-    
+
       return `${hours}:${minute}`;
     }
   }
@@ -122,7 +135,7 @@ export class ProgressNoteListComponent implements OnInit {
   }
 
   deleteProgressNote(note: any) {
-   
+
     this._admissionservice.deleteProgressNote(note).subscribe(
       (_success: any) => {
         this.reloadPhyOrderList.next(true);
@@ -158,7 +171,7 @@ export class ProgressNoteListComponent implements OnInit {
     let gpart =  this.storageService.getGpart()
     if (note.EmployeeResp !== gpart)  {
       this.warningSwalModel("You are not allowed to delete others' notes");
-      return; 
+      return;
     }
     const config: ModalOptions = {
       class: 'kardex-notes-delete modal-dialog-centered',
@@ -168,15 +181,15 @@ export class ProgressNoteListComponent implements OnInit {
     this.isFormSubmitted = false;
   }
   warningSwalModel(message: string) {
-  Swal.fire({
-    icon: 'warning',
-    title: 'Not Allowed',
+    Swal.fire({
+      icon: 'warning',
+      title: 'Not Allowed',
     text: message
-  });
-}
+    });
+  }
   deleteProgressNoteAPI() {
     this.isFormSubmitted = true;
-     if (this.deleteProgressNoteForm.invalid) {
+    if (this.deleteProgressNoteForm.invalid) {
       return;
     }
     this._admissionservice
