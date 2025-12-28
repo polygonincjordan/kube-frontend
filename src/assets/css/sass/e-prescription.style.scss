@@ -2174,11 +2174,29 @@ bs-daterangepicker-container{
 
 .drug-event {
   max-width: 70% !important;
+  height: 90vh !important;
+}
+
+.drug-event .modal-dialog {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .drug-event .modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   border-radius: 1.5rem !important;
   background: white !important;
+}
+
+.drug-event .modal-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
 }
 
 .drug-event input {
