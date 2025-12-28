@@ -15,6 +15,8 @@ import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 
+type AdministrationEventType = 'Administered' | 'QAdministered' | 'NotAdministered' | 'AddSupply' | 'DrugReturn' | 'EventsDetails';
+
 @Component({
   selector: 'app-drug-events-admin',
   templateUrl: './drug-events-admin.component.html',
@@ -31,11 +33,6 @@ export class DrugEventsAdminComponent implements OnInit {
   public FillSource: any[] = [];
   @ViewChild('drugEventMain', { static: true }) drugEventMain: TemplateRef<any>;
   @ViewChild('Witnessid') Witnessid: EmarWitnessComponent;
-  administered: boolean = true;
-  qadministered: boolean = false;
-  notadministered: boolean = false;
-  addsupply: boolean = false;
-  drugreturn: boolean = false;
   public isFormSubmitted: boolean = false;
   public getUserConfigData: UserConfig;
   public AdminiOrderingList: any[] = [];
@@ -45,16 +42,24 @@ export class DrugEventsAdminComponent implements OnInit {
   public isDisabledFsource: boolean;
   public Merespdata: any;
   public isEndedDisabled: boolean;
-  emarActive: boolean = false;
   public RequestStatus: any;
-  public eventDetails: boolean=false;
   public eventDetailList: any;
   private mainEvent: any;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>
   @Input() set medicationData(data: PrescriptionList) {
     console.log(data);
-
+    
   }
+
+  administrationEvent: AdministrationEventType = 'Administered';
+
+  get isAdministered() { return this.administrationEvent === 'Administered'; }
+  get isQAdministered() { return this.administrationEvent === 'QAdministered'; }
+  get isNotAdministered() { return this.administrationEvent === 'NotAdministered'; }
+  get isAddSupply() { return this.administrationEvent === 'AddSupply'; }
+  get isDrugReturn() { return this.administrationEvent === 'DrugReturn'; }
+  get isEventsDetails() { return this.administrationEvent === 'EventsDetails'; }
+
   constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService,public emergencyService:EmergencyService) { }
 
   ngOnInit() {
@@ -65,6 +70,10 @@ export class DrugEventsAdminComponent implements OnInit {
     })
     this.employeeordering();
     this.loadMedicationAdministrative();
+  }
+
+  setActiveEvent(event: AdministrationEventType): void {
+    this.administrationEvent = event;
   }
 
   employeeordering() {
@@ -101,8 +110,6 @@ export class DrugEventsAdminComponent implements OnInit {
 
 
   openModalForDrugsEvents(item, data) {
-    console.log(item);
-
     this.administratiForm = this.AdministerEventForm(item, data);
     this.getMainEvent(data.Meordid);
     this.administratiForm.get('AdditionalSupply').patchValue({ Nursingou: this.medicationAdministrative.OrderingTo });
@@ -131,52 +138,7 @@ export class DrugEventsAdminComponent implements OnInit {
     // this.AdministerTimeReason()
     // this.AdministerDoseReason();
   }
-  changeEvents(item) {
-    if (item == 'Administered') {
-      this.administered = true;
-      this.qadministered = false;
-      this.notadministered = false;
-      this.addsupply = false;
-      this.drugreturn = false;
-      this.eventDetails = false;
-    } else if (item == 'QAdministered') {
-      this.administered = false;
-      this.qadministered = true;
-      this.notadministered = false;
-      this.addsupply = false;
-      this.drugreturn = false;
-      this.eventDetails = false;
-    } else if (item == 'NotAdministered') {
-      this.administered = false;
-      this.qadministered = false;
-      this.notadministered = true;
-      this.addsupply = false;
-      this.drugreturn = false;
-      this.eventDetails = false;
-    } else if (item == 'AddSupply') {
-      this.administered = false;
-      this.qadministered = false;
-      this.notadministered = false;
-      this.addsupply = true;
-      this.drugreturn = false;
-      this.eventDetails = false;
-    } else if (item == 'DrugReturn') {
-      this.administered = false;
-      this.qadministered = false;
-      this.notadministered = false;
-      this.addsupply = false;
-      this.drugreturn = true;
-      this.eventDetails = false;
-    }
-    else if (item == 'EventDetails') {
-      this.administered = false;
-      this.qadministered = false;
-      this.notadministered = false;
-      this.addsupply = false;
-      this.drugreturn = false;
-      this.eventDetails = true;
-    }
-  }
+  
   AdministerEventForm(item, data) {
     this.FSourcevalueaction(item.Events)
     return new FormGroup({
@@ -297,7 +259,7 @@ export class DrugEventsAdminComponent implements OnInit {
   }
   Administerdata() {
     this.isFormSubmitted = true;
-    if (this.administered) {
+    if (this.isAdministered) {
       if (this.mainEvent) this.administratiForm.get('Administrator.Meevtid').setValue(this.mainEvent);
       if ((this.administratiForm.get('Administrator').get('Prncond').value === '' && this.administratiForm.get('Administrator').get('Prn').value) || (!this.administratiForm.get('Administrator').get('Prn').value && this.administratiForm.get('Administrator').get('Prncond').value !== '')) {
         this.showErrorPopup(null, 'Confirmation that administration conditions were checked, is required!', 'Error')
@@ -306,7 +268,7 @@ export class DrugEventsAdminComponent implements OnInit {
           this.showErrorPopup(null, 'Witness is required to administer the drug', 'Warn').then(
             (result) => {
               if (result.value) {
-                this.Witnessid.showPopup(this.notadministered)
+                this.Witnessid.showPopup(this.isNotAdministered)
                 this.Witnessid.onUpdateData.subscribe((resp) => {
                   if (this.LoginSubscription) { this.LoginSubscription.unsubscribe(); }
                   this.LoginSubscription = this.authService
@@ -324,10 +286,10 @@ export class DrugEventsAdminComponent implements OnInit {
                             Meresp1: this.getUserConfigData.VMA,
                             Rbtad: `${this.parseTime(this.administratiForm.get('Administrator').value.Rbdad)}`,
                             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
-                             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
+                            Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
                           }
                           const { Quanunit,DosageStr, Prncond, ...payload } = PayloadData;
-                          
+
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been Administered!", payload)
@@ -360,14 +322,14 @@ export class DrugEventsAdminComponent implements OnInit {
         }
       }
     }
-    else if (this.notadministered) {
-      if (this.notadministered) {
+    else if (this.isNotAdministered) {
+      if (this.isNotAdministered) {
         if (this.mainEvent) this.administratiForm.get('NotAdminister.Meevtid').setValue(this.mainEvent);
         if (this.administratiForm.get('Secwitness').value === 'X') {
           this.showErrorPopup(null, 'Witness is required to administer the drug', 'Warn').then(
             (result) => {
               if (result.value) {
-                this.Witnessid.showPopup(this.notadministered)
+                this.Witnessid.showPopup(this.isNotAdministered)
                 this.Witnessid.onUpdateData.subscribe((resp) => {
                   if (this.LoginSubscription) { this.LoginSubscription.unsubscribe(); }
                   this.LoginSubscription = this.authService
@@ -422,17 +384,17 @@ export class DrugEventsAdminComponent implements OnInit {
         }
       }
     }
-    else if (this.drugreturn) {
+    else if (this.isDrugReturn) {
       const PayloadData = {
         ...this.administratiForm.get('DrugAdminister').value,
         Empid: this.getUserConfigData.VMA,
         Pamount:`${this.administratiForm.get('DrugAdminister').value.Pamount}`,
-         Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
+        Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
         // Pamount: (this.administratiForm.get('DrugAdminister').value.Pamount === '' || this.administratiForm.get('DrugAdminister').value.Pamount === null) ? '0.000' : `${this.administratiForm.get('DrugAdminister').value.Pamount}`,
       }
       this.DrugReturnEventaction("Your Return Request has been Submitted!", PayloadData)
     }
-    else if (this.addsupply) {
+    else if (this.isAddSupply) {
       const PayloadData = {
         ...this.administratiForm.get('AdditionalSupply').value,
         Empid: this.getUserConfigData.VMA,
@@ -698,7 +660,7 @@ export class DrugEventsAdminComponent implements OnInit {
     } as any);
   }
 
-  private getMainEvent(selectedId?: any): void {
+ private getMainEvent(selectedId?: any): void {
     if (!selectedId) return;
 
     const { emarevents: events, emardata: data } = this.ePrescriptionService;
