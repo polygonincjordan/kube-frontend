@@ -1,19 +1,41 @@
-.events-leftbar-inactive {
-  box-shadow: 2px 2px 6px 3px skyblue;
-  height: 34px;
-  border-radius: 13px;
-  text-align: center;
-  line-height: 34px;
+.patient-info {
+  flex: 0 0 auto;
+  margin-bottom: 10px;
 }
 
-.events-leftbar-active {
-  box-shadow: 2px 2px 6px 3px skyblue;
-  height: 34px;
-  border-radius: 13px;
+.drug-event-info {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
+}
+
+.drug-event-navbar,
+.drug-event-form {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.events-nav-item {
+  font-size: 15px;
+  font-weight: bold;
   text-align: center;
-  line-height: 34px;
+  background: #fff;
+  color: black;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 5px;
+  box-shadow: 2px 2px 6px 3px skyblue;
+}
+
+.events-nav-item.active {
   background: linear-gradient(180deg, #2758fd, #2856fa 60%, #2144c8 85%) !important;
   color: white !important;
+}
+
+.events-nav-item[disabled] {
+  background: lightgray;
+  color: gray;
+  box-shadow: none;
 }
 
 .event-font {
@@ -21,75 +43,29 @@
   font-weight: bold;
 }
 
-::ng-deep .input-data .ng-select-container {
+::ng-deep .input-data.ng-select,
+::ng-deep .input-data.ng-select .ng-select-container, 
+::ng-deep .input-data.ng-select .ng-select-container .ng-input input {
+  height: 32px !important;
+  min-height: 32px !important;
+}
+
+::ng-deep .input-data.ng-select .ng-select-container {
+  font-size: 11px !important;
   border-radius: 5px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+::ng-deep .input-data.ng-select .ng-select-container .ng-input {
+  top: 0px !important;
+}
+
+::ng-deep .input-data.ng-select .ng-select-container .ng-input input {
+  box-sizing: border-box !important;
 }
 
 ::ng-deep .ep-error-message,
 .ep-error-message .ng-select-container {
   border-color: red !important;
-}
-
-.modal-hidden {
-  height: 472px;
-}
-
-.mar-data {
-  margin-left: -5px;
-}
-
-.data {
-  margin-right: 10px;
-}
-
-.drug-hight {
-  height: 372px;
-}
-
-.position-dru {
-  bottom: 0;
-  right: 0;
-}
-
-.color-data {
-  background: #fff;
-  border: none;
-  color: black;
-}
-
-.span-dr {
-  line-height: 34px;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.form-dru {
-  width: 87%;
-}
-
-
-@media only screen and (max-width: 1880px) {
-  .dose-data {
-    margin-left: 3px !important;
-  }
-
-  .form-dru {
-    width: 85% !important;
-  }
-}
-
-@media only screen and (max-width: 1542px) {
-  .dose-data {
-    margin-left: 11px !important;
-  }
-
-  .form-dru {
-    width: 84% !important;
-  }
-}
-
-@media only screen and (max-width: 1880px) {
-  .addMedia {
-    width:14% !important ;
-  }
 }
