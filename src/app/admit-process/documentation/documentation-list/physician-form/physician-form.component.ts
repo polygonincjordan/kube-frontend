@@ -23,6 +23,7 @@ import Swal from 'sweetalert2';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '@services/shared.service';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-physician-form',
@@ -102,6 +103,8 @@ export class PhysicianFormComponent implements OnInit {
   enableCreatePMed: boolean = false;
   enableCreatePSurg: boolean = false;
   enableCreateFamily: boolean;
+
+  orderType = MedicationOrderTypeLabels;
 
   constructor(
     public modalService: BsModalService,
@@ -2200,7 +2203,7 @@ export class PhysicianFormComponent implements OnInit {
     this.selectedMedicationOrder.forEach(element => {
       this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
         "Dockey": "",
-        "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        "OrderType": this.orderType[element.MotypId],
         "Description": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
         "HomeMedication": false,
         "PatientOwnMed": false,

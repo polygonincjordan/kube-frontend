@@ -22,7 +22,8 @@ import { StorageService } from '@services/storage.service';
 import Swal from 'sweetalert2';
 import { GynDiagnosisComponent } from '../obs-gyn/diagnosis/diagnosis.component';
 import { SharedService } from '@services/shared.service';
-import { OrderType } from '@services/interfaces/common.enum';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
+
 @Component({
   selector: 'app-discharge-summary',
   templateUrl: './discharge-summary.component.html',
@@ -33,7 +34,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   @Output() reloadTableList = new EventEmitter();
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: GynDiagnosisComponent;
   
-  orderType = OrderType;
+  orderType = MedicationOrderTypeLabels;
   inPatientPhdisDataSet: FormGroup;
   dischargeDispositionList: any = [
     { Desc: 'Discharge Home', Value: '0' },
@@ -390,8 +391,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     this.selectedMedicationOrder.forEach((element) => {
       this.medicationImportDrugArray.push({
         Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        OrderType: MedicationOrderTypeLabels[element.MotypId],
         OrderDesc:
           element.Descrlt +
           element.Quan +

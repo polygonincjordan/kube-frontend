@@ -17,7 +17,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { PhysicianErVitalsComponent } from '../physician-form/physician-er-vitals/physician-er-vitals.component';
 import Swal from 'sweetalert2';
-import { OrderType } from '@services/interfaces/common.enum';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 @Component({
   selector: 'app-transfer-assessment',
   templateUrl: './transfer-assessment.component.html',
@@ -49,7 +49,7 @@ export class TransferAssessmentComponent implements OnInit {
   toProc: any = [];
   noMedicationOrder: any = false;
   noVitalSigns: any = false;
-  orderType = OrderType;
+  orderType = MedicationOrderTypeLabels;
 
   orgUnits = [
     { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
@@ -574,8 +574,7 @@ export class TransferAssessmentComponent implements OnInit {
     this.selectedMedicationOrder.forEach((element) => {
       this.medicationImportDrugArray.push({
         Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        OrderType: this.orderType[element.MotypId],
         Descr:
           element.Descrlt +
           element.Quan +
