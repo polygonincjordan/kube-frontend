@@ -645,22 +645,24 @@ export class DocumentationComponent implements OnInit {
       )
       .subscribe((resp) => {
         if (resp && resp.results && resp.results.length) {
-          const FormData = resp.results[0].ToFormData.results[0];
-          const saveDataList = {
-            patientFormData: FormData,
-            releaseForm: true,
-          };
-          this.admissionService
-            .saveInPatientPhdisData(
-              saveDataList,
-              this.admissionService.dichargeUserConfig,
-              this.paramsObject
-            )
-            .subscribe((resp) => {
-              this.admissionService.cancelAllForm();
-              this.admissionService.isSaveEducationData.next(true);
-              this.admissionService.isRealoadData.next(true);
-            });
+          const ToFormData = resp.results[0].ToFormData.results[0];
+          const ToDischargeMed = resp.results[0].ToDischargeMed.results;
+          const ToHospitalMed = resp.results[0].ToHospitalMed.results;
+          const ToDiagnosis = resp.results[0].ToDiagnosis.results;
+
+          const data = {
+            Release: true,
+            ToFormData,
+            ToDiagnosis,
+            ToHospitalMed,
+            ToDischargeMed,
+          }
+          
+          this.admissionService.saveInPatientPhdisData(data, this.admissionService.dichargeUserConfig, this.paramsObject).subscribe(() => {
+            this.admissionService.cancelAllForm();
+            this.admissionService.isSaveEducationData.next(true);
+            this.admissionService.isRealoadData.next(true);
+          });
         }
       });
   }

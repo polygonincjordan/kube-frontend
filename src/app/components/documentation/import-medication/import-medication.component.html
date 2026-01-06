@@ -1,0 +1,105 @@
+<div>
+  <!-- navigation tabs -->
+  <div class="tab-navigation-part p-0">
+    <div class="tab-navigate">
+      <div class="tab-nav w-100">
+        <ul class="m-0 p-0 d-flex mb-2">
+          <li *ngFor="let tab of medicationTabTypes" class="d-flex m-0 align-items-center" [class.active]="selectedTab === tab" (click)="selectedTab = tab">
+            <img src="./assets/img/grid-icon.svg" />
+            <p class="d-inline-block m-0">{{ tab }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- medication tab content -->
+  <div>
+    <!-- medication tab actions (set no applicable, import) -->
+    <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <input type="checkbox" style="width: 36px; height: 22px" [(ngModel)]="noMedicationApplicable" [disabled]="!!activeTabSelectedMedications.size" />
+        <label class="my-0">{{ noMedicationApplicableLabels[selectedTab] }}</label>
+      </div>
+      <button class="tab-action" (click)="openModal(medicationOrderCase)" [disabled]="noMedicationApplicable">Import</button>
+    </div>
+
+    <!-- medication table -->
+    <ng-container [ngTemplateOutlet]="medicationTable" [ngTemplateOutletContext]="{ isImport: false }"></ng-container>
+  </div>
+</div>
+
+<ng-template #medicationOrderCase>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Import Current Medication Order for {{ patientName }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <div style="display: flex; justify-content: end; padding-right: 1rem">
+      <button class="tab-action m-3" (click)="medicationImport()">Import</button>
+    </div>
+    <div style="max-height: 296px; overflow: auto">
+      <!-- medication table -->
+      <ng-container [ngTemplateOutlet]="medicationTable" [ngTemplateOutletContext]="{ isImport: true }"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<!-- medication table template -->
+<ng-template #medicationTable let-isImport="isImport">
+  <table class="table table-bordered past-table">
+    <thead style="background-color: #e4edf5 !important; color: black; text-align: center; position: sticky; top: 0;">
+      <tr>
+        <th *ngIf="isImport">
+          <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll()" style="width: 20px; height: 20px;" />
+        </th>
+        <th>Order Type</th>
+        <th style="width: 270px">Description</th>
+        <th>Home Medication</th>
+        <th>Patient's Own Medications</th>
+        <th>PRN</th>
+        <th>Dose</th>
+        <th>Frequency</th>
+        <th>Status</th>
+        <th>Validity</th>
+        <th>Route</th>
+        <th>Rate</th>
+        <th>The</th>
+        <th>ID</th>
+        <th>Ordering Physician</th>
+        <th>Cycle</th>
+      </tr>
+    </thead>
+    <tbody style="background-color: hsl(225, 100%, 99%)">
+      <tr *ngFor="let medication of (isImport ? activeTabMedications : importedMedications)" style="text-align: center;">
+        <td *ngIf="isImport">
+          <input type="checkbox" [checked]="isSelected(medication)" (change)="toggleSelection(medication)" style="width: 20px; height: 20px;" />
+        </td>
+        <td>{{ medication.OrderType }}</td>
+        <td style="width: 270px">{{ medication.OrderDesc }}</td>
+        <td>
+          <input type="checkbox" style="width: 18px; pointer-events: none" [checked]="medication.HomeMedication" readonly />
+        </td>
+        <td>
+          <input type="checkbox" style="width: 18px; pointer-events: none" [checked]="medication.OwnMedication" readonly />
+        </td>
+        <td>
+          <input type="checkbox" style="width: 18px; pointer-events: none" [checked]="medication.Prn" readonly />
+        </td>
+        <td>{{ medication.Dose }}</td>
+        <td></td> <!-- TODO: check from where to get "Frequency" -->
+        <td>{{ medication.Status }}</td>
+        <td>{{ medication.Validity }}</td>
+        <td>{{ medication.Route }}</td>
+        <td>{{ medication.Rate }}</td>
+        <td>{{ medication.RecommendedTherapy }}</td>
+        <td>{{ medication.OrderId }}</td>
+        <td>{{ medication.OrderingPhysician }}</td>
+        <td>{{ medication.Cycle }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
