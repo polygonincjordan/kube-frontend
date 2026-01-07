@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-obstetric-risk',
@@ -64,7 +65,8 @@ export class ObstetricRiskComponent implements OnInit {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private sharedService: SharedService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private docsService: DocsService
   ) {
     this.route.queryParams.subscribe((res) => {
       this.paramsObj = res;
@@ -461,14 +463,14 @@ export class ObstetricRiskComponent implements OnInit {
               this.admissionService.clearSoapEvent.next(true);
               this.admissionService.isEditObstetricRisk = false; 
               this.admissionService.isCloneObstetricRisk = false;
+              this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetric VTE Risk Assess&Mgt Postaprtum');
             }
           },
           (error) => {
             this.admissionService.isEditObstetricRisk = false; 
             this.admissionService.isCloneObstetricRisk = false;
             this.admissionService.clearSoapEvent.next(true);
-            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-            this.sharedService.waringSwallModel(`${errorMsg}`);
+            this.docsService.showErrorMsg(error);
           }
         );
   }
@@ -480,19 +482,19 @@ export class ObstetricRiskComponent implements OnInit {
       (resp) => {
       //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
       // }
-      this.reloadTableList.next(true);
-      this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
-            this.admissionService.isEditObstetricRisk = false; 
-            this.admissionService.isCloneObstetricRisk = false;
-          },
-          (error) => {
-            this.admissionService.isEditObstetricRisk = false; 
-            this.admissionService.isCloneObstetricRisk = false;
-            this.admissionService.clearSoapEvent.next(true);
-            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-            this.sharedService.waringSwallModel(`${errorMsg}`);
-          }
+        this.reloadTableList.next(true);
+        this.admissionService.cancelAllForm();
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isEditObstetricRisk = false; 
+        this.admissionService.isCloneObstetricRisk = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetric VTE Risk Assess&Mgt Postaprtum');
+      },
+      (error) => {
+        this.admissionService.isEditObstetricRisk = false; 
+        this.admissionService.isCloneObstetricRisk = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(error);
+      }
     );
   }
 
@@ -519,13 +521,13 @@ export class ObstetricRiskComponent implements OnInit {
             this.admissionService.clearSoapEvent.next(true);
             this.admissionService.isEditObstetricRisk = false; 
             this.admissionService.isCloneObstetricRisk = false;
+            this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetric VTE Risk Assess&Mgt Postaprtum');
           },
           (error) => {
             this.admissionService.isEditObstetricRisk = false; 
             this.admissionService.isCloneObstetricRisk = false;
             this.admissionService.clearSoapEvent.next(true);
-            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-            this.sharedService.waringSwallModel(`${errorMsg}`);
+            this.docsService.showErrorMsg(error);
           }
         );
   }

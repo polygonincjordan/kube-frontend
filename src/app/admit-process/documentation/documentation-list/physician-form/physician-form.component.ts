@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { Subscription } from 'rxjs';
 import { SharedService } from '@services/shared.service';
-
+import { DocsService } from '@services/docs.service';
 @Component({
   selector: 'app-physician-form',
   templateUrl: './physician-form.component.html',
@@ -111,6 +111,7 @@ export class PhysicianFormComponent implements OnInit {
     private datePipe: DatePipe,
     private sharedService: SharedService,
     public ePrescriptionService: EPrescriptionService,
+    private docsService: DocsService
   ) { }
 
   ngOnInit(): void {
@@ -1094,8 +1095,19 @@ export class PhysicianFormComponent implements OnInit {
     }
   }
 
-  async createPhysicianForm(isrelease: boolean) {
+  get isChiefComplaintEmpty(): boolean {
+  const value = this.physicianForm.get('ChiefComplaint')?.value;
+  return value == null || String(value).trim() === '';
+}
+
+
+  createPhysicianForm(isrelease: boolean) {
     let createJson = { ...this.physicianForm.value };
+    if (isrelease && this.isChiefComplaintEmpty){
+      this.docsService.showWarningMsg('Chief Complaint is required to release the document.');
+      this.admissionService.clearSoapEvent.next(true);
+      return;
+    }
 
     if (createJson["Dockey"] === null || createJson["Dockey"] === undefined || createJson["Dockey"] === "") {
       if (isrelease) {
@@ -1140,25 +1152,23 @@ export class PhysicianFormComponent implements OnInit {
     createJson['TOPSURGERIHIST'] = this.toPastSurgical;
     createJson['TOMEDICATION'] = this.medicationImportDrugArray;
     createJson['TOFAMILYHIST'] = this.toFamilyHistory;
-    await this.admissionService
+    this.admissionService
       .createPhysicianData(createJson)
       .subscribe(() => {
         // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         // }
         this.admissionService.cancelAllForm();
-        const message = createJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
-        this.sharedService.successSwallModel(message)
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isClonePhysicianForm = false;
         this.admissionService.isEditPhysicianForm = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Physician Assessment Document' );
       }, (error) => {
         this.admissionService.isClonePhysicianForm = false;
         this.admissionService.isEditPhysicianForm = false;
         this.admissionService.clearSoapEvent.next(true);
-        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-        this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.docsService.showErrorMsg(error);
       });
   }
   toPhyExamItems() {
@@ -1437,7 +1447,7 @@ export class PhysicianFormComponent implements OnInit {
     this.modalRefForComment.hide();
   }
 
-  async updatePhysicianForm() {
+  updatePhysicianForm() {
     let updateJson = { ...this.physicianForm.value };
     let createtime = '';
     if (updateJson.PhyAssdate != '') {
@@ -1460,28 +1470,32 @@ export class PhysicianFormComponent implements OnInit {
     updateJson['TOPSURGERIHIST'] = this.toPastSurgical;
     updateJson['TOMEDICATION'] = this.medicationImportDrugArray;
     updateJson['TOFAMILYHIST'] = this.toFamilyHistory;
-    await this.admissionService
+    this.admissionService
       .updatePhysicianData(updateJson)
       .subscribe(() => {
         //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
         // }
         this.admissionService.cancelAllForm();
-        const message = updateJson.DocStatus == '2' ? 'Physician Assessment Release Successfully' : 'Physician Assessment Create Successfully'
-        this.sharedService.successSwallModel(message)
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isClonePhysicianForm = false;
         this.admissionService.isEditPhysicianForm = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Physician Assessment Document' );
       }, (error) => {
         this.admissionService.isClonePhysicianForm = false;
         this.admissionService.isEditPhysicianForm = false;
         this.admissionService.clearSoapEvent.next(true);
-        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-        this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.docsService.showErrorMsg(error);
       });
   }
-  async releasePhysicianDoc() {
+  releasePhysicianDoc() {
+    if ( this.isChiefComplaintEmpty) {
+    this.docsService.showWarningMsg('Chief Complaint is required to release the document.');
+    this.admissionService.clearSoapEvent.next(true);
+    return;
+    }
+
     let updateJson = { ...this.physicianForm.value };
     let createtime = '';
     updateJson['DocStatus'] = '2';
@@ -1506,10 +1520,13 @@ export class PhysicianFormComponent implements OnInit {
     updateJson['TOMEDICATION'] = this.medicationImportDrugArray;
     this.admissionService.releasePhysicianDoc(updateJson).subscribe(() => {
       this.admissionService.cancelAllForm();
-      this.sharedService.successSwallModel('Physician Assessment Release Successfully')
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Physician Assessment Document' );
       this.admissionService.selectedCurrentDocDetails = '';
       this.admissionService.clearSoapEvent.next(true);
       this.realodEducationList.next(true);
+    }, error => {
+      this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showErrorMsg(error);
     });
   }
 

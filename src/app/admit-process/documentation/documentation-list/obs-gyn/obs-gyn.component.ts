@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { SharedService } from '@services/shared.service';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-obs-gyn',
@@ -52,7 +53,7 @@ export class ObsGynComponent implements OnInit,OnChanges {
   longComment='';
   formName: any;
   constructor(private storageService: StorageService,private route: ActivatedRoute,private formBuilder: FormBuilder,public admissionService: AdmissionService,private datePipe: DatePipe,private modalService: BsModalService,
-    private sharedService: SharedService
+    private sharedService: SharedService, private docsService: DocsService
   ) { 
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -70,7 +71,7 @@ export class ObsGynComponent implements OnInit,OnChanges {
     if(changes.soapFormEvent.currentValue == 'edit') {
       this.updateObsGynDoc();
     }
-    if(changes.soapFormEvent.currentValue == 'edit') {
+    if(changes.soapFormEvent.currentValue == 'saveClose') {
       if(this.admissionService.isEditObsGynDoc) {
         this.updateObsGynDoc();
       } else {
@@ -488,16 +489,16 @@ export class ObsGynComponent implements OnInit,OnChanges {
       this.admissionService.clearSoapEvent.next(true);
       this.admissionService.isEditObsGynDoc = false; 
       this.admissionService.isCloneObsGynDoc = false;
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetrics & Gynecology Physician Assess');
     }, (err) => {
       this.admissionService.isEditObsGynDoc = false; 
       this.admissionService.isCloneObsGynDoc = false;
       this.admissionService.clearSoapEvent.next(true);
-      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
+      this.docsService.showErrorMsg(err);
     })
   
   }
-  async updateObsGynDoc(){
+  updateObsGynDoc() {
     let updateJson = this.obsGynReportForm.value;
     let createtime = '';
     if (updateJson.Ddate != '') {
@@ -515,22 +516,25 @@ export class ObsGynComponent implements OnInit,OnChanges {
     updateJson['TOVITALSIGNS'] = this.toVitalsArr;
     updateJson['TOPHYEXAM'] = this.toPhyExamResponse();
     updateJson['TODIAGNOSES'] = this.toDiagnosisArr;
-    await this.admissionService.updateObsGynDoc(updateJson).subscribe(()=>{
-      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-      // }
-      this.admissionService.cancelAllForm();
-      this.admissionService.selectedCurrentDocDetails = '';
-      this.realodEducationList.next(true);
-      this.admissionService.clearSoapEvent.next(true);
-      this.admissionService.isEditObsGynDoc = false; 
-      this.admissionService.isCloneObsGynDoc = false;
-    }, (err) => {
-      this.admissionService.isEditObsGynDoc = false; 
-      this.admissionService.isCloneObsGynDoc = false;
-      this.admissionService.clearSoapEvent.next(true);
-      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
-    })
+    this.admissionService.updateObsGynDoc(updateJson).subscribe({
+      next: () => {
+        // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
+        // }
+        this.admissionService.cancelAllForm();
+        this.admissionService.selectedCurrentDocDetails = '';
+        this.realodEducationList.next(true);
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isEditObsGynDoc = false; 
+        this.admissionService.isCloneObsGynDoc = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetrics & Gynecology Physician Assess');
+      },
+      error: (err) => {
+        this.admissionService.isEditObsGynDoc = false; 
+        this.admissionService.isCloneObsGynDoc = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(err);
+      }
+    });
   }
 
   async releaseObsGynDoc(){
@@ -553,11 +557,15 @@ export class ObsGynComponent implements OnInit,OnChanges {
     updateJson['TOPHYEXAM'] = this.obsGynReportForm.value.TOPHYEXAM.results;
     updateJson['TODIAGNOSES'] = this.toDiagnosisArr;
     this.admissionService.releaseObsGynDoc(updateJson).subscribe(()=>{
-    this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
-    })
+      this.admissionService.cancelAllForm();
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.admissionService.clearSoapEvent.next(true);
+      this.realodEducationList.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetrics & Gynecology Physician Assess');
+    }, (err) => {
+      this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showErrorMsg(err);
+    });
    }
   getDate(value) {
     if (value) {

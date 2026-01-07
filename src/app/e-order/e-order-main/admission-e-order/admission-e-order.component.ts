@@ -65,8 +65,8 @@ export class AdmissionEOrderComponent implements OnInit {
       TrtoeText: [''],
       Orgfa: [''],
       OrgfaText: [''],
-      Wbgdt: [''],
-      Wbgzt: [''],
+      Wbgdt: ['', [Validators.required]],
+      Wbgzt: ['', [Validators.required]],
       Trtgp: [''],
       SurgeonName: [''],
       items: new FormArray([]),
@@ -382,6 +382,12 @@ export class AdmissionEOrderComponent implements OnInit {
   }
 
   saveAdmissionOrderData() {
+    if (this.phyOrderform.invalid) {
+      this.orderDashboardService.showErrorPopup('', 'Please fill all required fields', 'Error');
+      this.phyOrderform.markAllAsTouched();
+      return; 
+    }
+
     let physicianList: any = []
     if (
       typeof this.phyOrderform.value.Wbgdt === 'object' &&
@@ -426,7 +432,7 @@ export class AdmissionEOrderComponent implements OnInit {
     .pipe(
       untilDestroyed(this),
       catchError((err) => {
-        const errorMessage = err?.error?.error?.innererror?.errordetails?.[0]?.message || 'An error occurred';
+        const errorMessage = err?.error?.error?.innererror?.errordetails?.[0]?.message || err?.error?.error?.message?.value || 'An error occurred';
         this.orderDashboardService.showErrorPopup('', errorMessage, 'Error');
         return EMPTY;
       })
