@@ -1,25 +1,22 @@
 import { CommonModule, DatePipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef } from "@angular/core";
-import { EPrescriptionService } from "@services/e-Prescription/e-prescription.service";
-import { StorageService } from "@services/storage.service";
-import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
-import { getDate } from "@services/utiltiy.service";
-import { MedicationOrderTypeLabels, MedicationOrderTypeEnum } from "@services/interfaces/common.enum";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { take } from "rxjs";
+import { BsModalRef, BsModalService, ModalOptions } from "ngx-bootstrap/modal";
+import { EPrescriptionService } from "@services/e-Prescription/e-prescription.service";
+import { MedicationOrderTypeEnum, MedicationOrderTypeLabels } from "@services/interfaces/common.enum";
+import { StorageService } from "@services/storage.service";
+import { getDate } from "@services/utiltiy.service";
 
 const MedicationTabTypes = ['Hospital Medication', 'Discharge Medication'] as const;
 type MedicationTabType = typeof MedicationTabTypes[number];
 
-interface IMedication {
+interface IDischargeMedication {
   OrderId: string;
-  DocKey: string;
+  Dockey: string;
   OrderType: string;
   OrderDesc: string;
-  Status: string;
-  HomeMedication: boolean;
+  // HomeMedication: boolean;
   OwnMedication: boolean;
-  Prn: boolean;
   Dose: string;
   Validity: string;
   Route: string;
@@ -30,7 +27,23 @@ interface IMedication {
   Cycle: string;
 }
 
-export interface IMedicationImportData extends Record<MedicationTabType, { applicable: boolean; importedMedications: IMedication[] }> {}
+interface IHospitalMedication {
+  EventId: string;
+  Dockey: string;
+  EventDesc: string;
+  Dose: string;
+  Validity: string;
+  Route: string;
+  Rate: string;
+  Cycle: string;
+}
+
+type MedicationUnion = IDischargeMedication | IHospitalMedication;
+
+export interface IMedicationImportData {
+  'Hospital Medication': { applicable: boolean; importedMedications: IHospitalMedication[] };
+  'Discharge Medication': { applicable: boolean; importedMedications: IDischargeMedication[] };
+}
 
 @Component({
   standalone: true,
@@ -42,19 +55,35 @@ export interface IMedicationImportData extends Record<MedicationTabType, { appli
 })
 export class ImportMedicationComponent implements OnInit {
   @Input() data: IMedicationImportData;
+  @Output() dataChange = new EventEmitter<IMedicationImportData>();
 
   readonly medicationTabTypes = MedicationTabTypes;
   readonly noMedicationApplicableLabels: Record<MedicationTabType, string> = {
     'Hospital Medication': 'No Medication Order Applicable',
     'Discharge Medication': 'No Discharge Medication Order Applicable',
   };
-  
+
   patientName: string;
   selectedTab: MedicationTabType = 'Hospital Medication';
 
   private modalRef: BsModalRef;
-  private medications: Record<MedicationTabType, IMedication[]>;
-  private selectedMedications: Record<MedicationTabType, Set<string>>;
+  private allMedications: Record<MedicationTabType, MedicationUnion[]>;
+  private availableMedications: Record<MedicationTabType, MedicationUnion[]>;
+  private selectedForImport: Record<MedicationTabType, Set<string>>;
+  private medicationStatusMap: Map<string, string> = new Map();
+
+  constructor(
+    private modalService: BsModalService,
+    private ePrescriptionService: EPrescriptionService,
+    private storageService: StorageService
+  ) {}
+
+  ngOnInit(): void {
+    this.patientName = this.storageService.patientData.name;
+    this.initializeData();
+    this.initializeSelections();
+    this.loadMedicationHistoryData();
+  }
 
   get noMedicationApplicable(): boolean {
     return this.data[this.selectedTab].applicable;
@@ -62,153 +91,236 @@ export class ImportMedicationComponent implements OnInit {
 
   set noMedicationApplicable(value: boolean) {
     this.data[this.selectedTab].applicable = value;
+    this.dataChange.emit(this.data);
   }
 
-  get importedMedications(): IMedication[] {
-    return this.data[this.selectedTab].importedMedications;
+  get importedMedications(): MedicationUnion[] {
+    return this.data[this.selectedTab].importedMedications as MedicationUnion[];
   }
 
-  set importedMedications(imported: IMedication[]) {
-    this.data[this.selectedTab].importedMedications = imported;
+  get activeTabMedications(): MedicationUnion[] {
+    return this.availableMedications?.[this.selectedTab] ?? [];
   }
 
-  get activeTabMedications(): IMedication[] {
-    return this.medications[this.selectedTab];
+  get activeTabSelections(): Set<string> {
+    if (!this.selectedForImport) {
+      this.initializeSelections();
+    }
+    return this.selectedForImport[this.selectedTab];
   }
 
-  get activeTabSelectedMedications(): Set<string> {
-    return this.selectedMedications[this.selectedTab];
+
+  isSelected(medication: MedicationUnion): boolean {
+    return this.activeTabSelections.has(this.getIdentifier(medication));
   }
 
-  constructor(
-    private modalService: BsModalService, 
-    private ePrescriptionService: EPrescriptionService,
-    private storageService: StorageService) {
-  }
+  toggleSelection(medication: MedicationUnion): void {
+    const identifier = this.getIdentifier(medication);
+    const selections = this.activeTabSelections;
 
-  ngOnInit(): void {
-    this.init();
-    this.loadMedicationHistoryData();
-  };
-
-  isSelected(medication: IMedication): boolean {
-    return this.activeTabSelectedMedications.has(medication.OrderId);
-  }
-
-  toggleSelection(medication: IMedication): void {
-    const id = medication.OrderId;
-    if (this.activeTabSelectedMedications.has(id))
-      this.activeTabSelectedMedications.delete(id);
-    else 
-      this.activeTabSelectedMedications.add(id);
+    if (selections.has(identifier)) {
+      selections.delete(identifier);
+    } else {
+      selections.add(identifier);
+    }
   }
 
   isAllSelected(): boolean {
-    return this.activeTabMedications.every(med => this.activeTabSelectedMedications.has(med.OrderId));
+    const medications = this.activeTabMedications;
+    if (medications.length === 0) return false;
+
+    return medications.every(med => this.activeTabSelections.has(this.getIdentifier(med)));
   }
 
   toggleAll(): void {
-    if (this.isAllSelected())
-      this.activeTabSelectedMedications.clear();
-    else
-      this.activeTabMedications.forEach(medication => this.activeTabSelectedMedications.add(medication.OrderId));
-  }
+    const medications = this.activeTabMedications;
+    if (medications.length === 0) return;
 
-  medicationImport() {
-    const selectedMedications = this.activeTabMedications.filter(medication => this.activeTabSelectedMedications.has(medication.OrderId));
-    this.importedMedications = selectedMedications;
-    this.modalRef?.hide();
-  }
+    const selections = this.activeTabSelections;
+    const allSelected = this.isAllSelected();
 
-  openModal(template: TemplateRef<any>) {
-    const config: ModalOptions = { class: 'modal-dialog modal-dialog-centered medication-order-case modal-xl' };
-    this.modalRef = this.modalService.show(template, config);
-    
-    this.modalRef.onHide.pipe(take(1)).subscribe(() => {
-      this.setSelectedMedicationsToImports();
+    medications.forEach(med => {
+      const identifier = this.getIdentifier(med);
+      allSelected ? selections.delete(identifier) : selections.add(identifier);
     });
   }
 
-  private init() {
-    // get patient name from storage service
-    this.patientName = this.storageService.patientData.name;
-
-    // if no data, initialize with default values
-    if (!this.data) {
-      this.data = {
-        "Hospital Medication": { applicable: false, importedMedications: [] },
-        "Discharge Medication": { applicable: false, importedMedications: [] },
-      };
-    }
-
-    // set selected medications based on input data
-    this.setSelectedMedicationsToImports();
+  openModal(template: TemplateRef<any>): void {
+    this.initializeSelections();
+    const config: ModalOptions = { 
+      class: 'modal-dialog modal-dialog-centered medication-order-case modal-xl' 
+    };
+    this.modalRef = this.modalService.show(template, config);
   }
 
-  private setSelectedMedicationsToImports() {
-    this.selectedMedications = {
-      'Hospital Medication': new Set<string>(this.data?.['Hospital Medication']?.importedMedications?.map(med => med.OrderId) ?? []),
-      'Discharge Medication': new Set<string>(this.data?.['Discharge Medication']?.importedMedications?.map(med => med.OrderId) ?? []),
+  medicationImport(): void {
+    const selectedMedications = this.activeTabMedications.filter(med =>
+      this.activeTabSelections.has(this.getIdentifier(med))
+    );
+
+    const existingImported = this.data[this.selectedTab].importedMedications || [];
+    this.data[this.selectedTab].importedMedications = [
+      ...existingImported,
+      ...selectedMedications
+    ] as any;
+
+    this.emitDataChange();
+    this.activeTabSelections.clear();
+    this.updateAvailableMedications();
+    this.modalRef?.hide();
+  }
+
+  deleteMedication(medication: MedicationUnion): void {
+    const identifier = this.getIdentifier(medication);
+    const filteredMedications = this.importedMedications.filter(
+      med => this.getIdentifier(med) !== identifier
+    );
+
+    this.data[this.selectedTab].importedMedications = filteredMedications as any;
+    this.emitDataChange();
+    this.updateAvailableMedications();
+  }
+
+  getDischargeMedication(medication: MedicationUnion): IDischargeMedication {
+    return medication as IDischargeMedication;
+  }
+
+  getHospitalMedication(medication: MedicationUnion): IHospitalMedication {
+    return medication as IHospitalMedication;
+  }
+
+  getMedicationStatus(medication: MedicationUnion): string {
+    const id = this.getIdentifier(medication);
+    return this.medicationStatusMap.get(id) || '';
+  }
+
+  private getIdentifier(medication: MedicationUnion): string {
+    return this.selectedTab === 'Hospital Medication'
+      ? (medication as IHospitalMedication).EventId
+      : (medication as IDischargeMedication).OrderId;
+  }
+
+  private emitDataChange(): void {
+    this.dataChange.emit(this.data);
+  }
+
+  private initializeData(): void {
+    if (!this.data) {
+      this.data = {
+        'Hospital Medication': { applicable: false, importedMedications: [] },
+        'Discharge Medication': { applicable: false, importedMedications: [] },
+      };
+    }
+  }
+
+  private initializeSelections(): void {
+    this.selectedForImport = {
+      'Hospital Medication': new Set<string>(),
+      'Discharge Medication': new Set<string>(),
     };
   }
 
-  private loadMedicationHistoryData() {
-    const entitySet = `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`;
-    this.ePrescriptionService
-      .loadData(entitySet, false, false, false, false)
-      .subscribe((res: any) => {
-        // if no data, return
-        if (!res?.body?.d?.results?.length) return;
-        
-        // map returned data to medication items, and filter out null items
-        const medicationItems: IMedication[] = res.body.d.results
-          ?.map((medication: any) => this.mapMedication(medication))
-          ?.filter((medication: IMedication) => !!medication);
-        
-        // initialize medications record
-        this.medications = {
-          'Hospital Medication': [ ...medicationItems?.filter(item => !this.isDischargeType(item))],
-          'Discharge Medication': [ ...medicationItems?.filter(item => this.isDischargeType(item))],
-        };
+  private loadMedicationHistoryData(): void {
+    const { einri, falnr } = this.ePrescriptionService.parameters;
+    const entitySet = `e-prescription/OrderHistorylist?Einri=${einri}&Falnr=${falnr}`;
 
-        debugger
+    this.ePrescriptionService.loadData(entitySet, false, false, false, false).subscribe((res: any) => {
+      const results = res?.body?.d?.results;
+      if (!results?.length) return;
+
+      const isDischarge = (med: any) => med?.MotypId === MedicationOrderTypeEnum.Discharge;
+
+      this.allMedications = {
+        'Discharge Medication': results
+          .filter(isDischarge)
+          .map((med: any) => this.mapToDischargeMedication(med))
+          .filter(Boolean),
+        'Hospital Medication': results
+          .filter((med: any) => !isDischarge(med))
+          .map((med: any) => this.mapToHospitalMedication(med))
+          .filter(Boolean),
+      } as any;
+      this.updateAvailableMedications();
+    });
+  }
+
+  private updateAvailableMedications(): void {
+    const getImportedIds = (tab: MedicationTabType) => {
+      const medications = this.data[tab].importedMedications;
+      return tab === 'Hospital Medication'
+        ? new Set((medications as IHospitalMedication[]).map(m => m.EventId))
+        : new Set((medications as IDischargeMedication[]).map(m => m.OrderId));
+    };
+
+    const filterAvailable = (tab: MedicationTabType): MedicationUnion[] => {
+      const importedIds = getImportedIds(tab);
+      return (this.allMedications?.[tab] ?? []).filter(med => {
+        const id = this.selectedTab === tab ? this.getIdentifier(med) : 
+          tab === 'Hospital Medication' 
+            ? (med as IHospitalMedication).EventId 
+            : (med as IDischargeMedication).OrderId;
+        return !importedIds.has(id);
       });
+    };
+
+    this.availableMedications = {
+      'Hospital Medication': filterAvailable('Hospital Medication'),
+      'Discharge Medication': filterAvailable('Discharge Medication'),
+    } as any;
   }
 
-  private isDischargeType(medication: IMedication): boolean {
-    return medication?.OrderType === MedicationOrderTypeLabels[MedicationOrderTypeEnum.Discharge];
-  }
+  private mapToDischargeMedication(med: any): IDischargeMedication | null {
+    if (!med) return null;
 
-  private mapMedication(medication: any): IMedication {
-    if (!medication) return null;
+    const { Meordid, Dockey, MotypId, Descrlt, Quan, Quanunit, Routedescr, N1id, Pom, EmpRespNm, MosidDesc } = med;
+
+    if (Meordid && MosidDesc) {
+      this.medicationStatusMap.set(Meordid, MosidDesc);
+    }
 
     return {
-      OrderId: medication.Meordid,
-      DocKey: '',
-      OrderType: MedicationOrderTypeLabels[medication.MotypId],
-      OrderDesc: `${medication.Descrlt}, ${medication.Quan}, ${medication.Quanunit}, ${medication.Routedescr}, ${medication.N1id}`,
-      Status: medication.MosidDesc,
-      HomeMedication: medication.MotypId ? medication.MotypId === MedicationOrderTypeEnum.Anamnesis : true,
-      OwnMedication: medication.Pom === '1',
-      Prn: medication.Prn,
-      Dose: `${medication.Quan} ${medication.Quanunit}`,
-      Validity: this.getValidityDate(medication),
-      Route: medication.Routedescr,
+      OrderId: Meordid,
+      Dockey: Dockey || '',
+      OrderType: MedicationOrderTypeLabels[MotypId],
+      OrderDesc: `${Descrlt}, ${Quan}, ${Quanunit}, ${Routedescr}, ${N1id}`,
+      // HomeMedication: MotypId === MedicationOrderTypeEnum.Anamnesis,
+      OwnMedication: !!Pom,
+      Dose: `${Quan} ${Quanunit}`,
+      Validity: this.formatValidityDate(med),
+      Route: Routedescr,
       Amount: '',
       Rate: '',
       RecommendedTherapy: '00000',
-      OrderingPhysician: medication.EmpRespNm,
-      Cycle: medication.N1id,
+      OrderingPhysician: EmpRespNm,
+      Cycle: N1id,
     };
   }
 
-  private getValidityDate(element: any) {
-    const from = new DatePipe('en-US').transform(getDate(element.StartD), 'dd.MM.yyyy');
-    const to = new DatePipe('en-US').transform(getDate(element.EndD), 'dd.MM.yyyy');
+  private mapToHospitalMedication(med: any): IHospitalMedication | null {
+    if (!med) return null;
 
-    let date = `${from}`;
-    if (to) date += ` - ${to}`;
+    const { Meordid, Dockey, Descrlt, Quan, Quanunit, Routedescr, N1id, } = med;
 
-    return date;
+    return {
+      EventId: Meordid,
+      Dockey: Dockey || '',
+      EventDesc: Descrlt || '',
+      Dose: `${Quan} ${Quanunit}`,
+      Validity: this.formatValidityDate(med),
+      Route: Routedescr,
+      Rate: '',
+      Cycle: N1id,
+    };
+  }
+  
+
+  private formatValidityDate(med: any): string {
+    const datePipe = new DatePipe('en-US');
+    const formatDate = (date: any) => datePipe.transform(getDate(date), 'dd.MM.yyyy');
+    
+    const fromDate = formatDate(med.StartD);
+    const toDate = formatDate(med.EndD);
+    
+    return toDate ? `${fromDate} - ${toDate}` : fromDate;
   }
 }
