@@ -39,15 +39,8 @@ export class ProgressNoteListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.currentUsername = this.storageService.getGpart();
     this.getCancelReason();
-    this.setCurrentUserId();
-  }
-
-  setCurrentUserId(): void {
-    const storedUserId = localStorage.getItem('amc_qa_gpart');
-    if (storedUserId) {
-      this.currentUsername = JSON.parse(storedUserId);
-    }
   }
 
   isCurrentUser(noteUser: string): boolean {
