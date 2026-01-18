@@ -170,6 +170,8 @@ export class DrugEventsAdminComponent implements OnInit {
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
         DosageStr: new FormControl(item?.Events?.DosageStr),
+        Quan2: new FormControl(item?.Events?.Quan2),
+        SCRAP: new FormControl(item?.Events?.SCRAP),
       }),
       NotAdminister: new FormGroup({
         Rdrugdq: new FormControl(''),
@@ -186,7 +188,9 @@ export class DrugEventsAdminComponent implements OnInit {
         Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Quanunit: new FormControl(data.Unit),
         Meresp2: new FormControl(item.Events.WitnessEmp),
-        DosageStr: new FormControl(item?.Events?.DosageStr)
+        DosageStr: new FormControl(item?.Events?.DosageStr),
+        Quan2: new FormControl(item?.Events?.Quan2),
+        SCRAP: new FormControl(item?.Events?.SCRAP),
       }),
       DrugAdminister: new FormGroup({
         Fsource: new FormControl(item.Events.Fsource),
@@ -291,6 +295,7 @@ export class DrugEventsAdminComponent implements OnInit {
                           const { Quanunit,DosageStr, Prncond, ...payload } = PayloadData;
 
                           delete payload.DosageStr
+                          delete payload.SCRAP
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been Administered!", payload)
                         }
@@ -317,6 +322,7 @@ export class DrugEventsAdminComponent implements OnInit {
           }
           const { Quanunit, Prncond, ...payload } = PayloadData;
           delete payload.DosageStr
+          delete payload.SCRAP
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been Administered!", payload)
         }
@@ -353,6 +359,7 @@ export class DrugEventsAdminComponent implements OnInit {
 
                           const { Quanunit,DosageStr, ...payload } = PayloadData;
                           delete payload.DosageStr
+                          delete payload.SCRAP
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been NotAdminustered!", payload)
                         }
@@ -379,6 +386,7 @@ export class DrugEventsAdminComponent implements OnInit {
           const { Quanunit, ...payload } = PayloadData;
 
           delete payload.DosageStr
+          delete payload.SCRAP
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been NotAdminustered!", payload)
         }

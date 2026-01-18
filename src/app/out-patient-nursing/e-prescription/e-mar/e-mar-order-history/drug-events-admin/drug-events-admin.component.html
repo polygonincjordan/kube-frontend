@@ -67,6 +67,16 @@
                 <label for="adminDoseUnit" class="mb-0">Admin Dose Unit</label>
                 <input id="adminDoseUnit" type="text" class="form-control event-font" formControlName="Quanunit" [readOnly]="isEndedDisabled" />
               </div>
+              <div class="col-3">
+                <label for="administeredDose" class="mb-0">Administered Dose</label>
+                <input id="administeredDose" type="text" class="form-control event-font" formControlName="Quan2" />
+              </div>
+              <div class="col-3">
+                <label for="scrabDosageAdmin" class="mb-0">Scrab Dosage</label>
+                <input id="scrabDosageAdmin" type="text" class="form-control event-font" formControlName="SCRAP" [readonly]="true" />
+              </div>
+            </div>
+            <div class="row mb-2">
               <div class="col-6">
                 <label for="doseChangeReason" class="mb-0">Change Reason</label>
                 <ng-select id="doseChangeReason" class="event-font input-data" formControlName="Rdosdif" [readonly]="isEndedDisabled" (click)="AdministerDoseReason()">
@@ -144,6 +154,16 @@
                 <label for="adminDoseUnit" class="mb-0">Admin Dose Unit</label>
                 <input id="adminDoseUnit" type="text" class="form-control event-font" formControlName="Quanunit" readonly />
               </div>
+              <div class="col-3">
+                <label for="administeredDoseNA" class="mb-0">Administered Dose</label>
+                <input id="administeredDoseNA" type="text" class="form-control event-font" formControlName="Quan2" [readonly]="true" [disabled]="true" />
+              </div>
+              <div class="col-3">
+                <label for="scrabDosageNA" class="mb-0">Scrab Dosage</label>
+                <input id="scrabDosageNA" type="text" class="form-control event-font" formControlName="SCRAP" [readonly]="true" [disabled]="true" />
+              </div>
+            </div>
+            <div class="row mb-2">
               <div class="col-6">
                 <label for="dosageChangeReason" class="mb-0">Change Reason</label>
                 <ng-select id="dosageChangeReason" class="event-font input-data" formControlName="Rdosdif" (click)="this.AdministerDoseReason()">
