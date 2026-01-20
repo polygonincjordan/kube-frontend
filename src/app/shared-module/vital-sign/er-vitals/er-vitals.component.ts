@@ -331,6 +331,23 @@ export class ErVitalsComponentComman implements OnInit {
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
         "ObsidVers": "0000",
         "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "4522139805EB1FD0BC8A25C3E8D7BADE",
+        "ValidVers": "0000",
+        "Bcpid": "C000C29D2E09C1ED9A5D54D616DB4CEDE",
+        "Extid": "MEWS SCORE",
+        "Name": "MEWS Score",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "UnLess",
+        "NormalRange": "0.000 - 0.999",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "4522139805EB1FD0BC8A25C3E8D79ADE",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       }
     ];
     this.openModalForErVital()
@@ -822,6 +839,7 @@ export class ErVitalsComponentComman implements OnInit {
       "Stoid": this.cancelReasonValue,
       "Odate": createDate,
       "Otime": createTime,
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "TOITEM": this.maintainVitalFormitems.value
     }
     this.emergencyService.updateVitalSigns(json).subscribe(
@@ -863,7 +881,7 @@ export class ErVitalsComponentComman implements OnInit {
       "Origin": "",
       "Odate": createDate,
       "Otime": createTime,
-      "Descr": "TEsting Test",
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "Storn": false,
       "Stoid": this.selectedColData.Stoid,
       "TOITEM": EnteredvitalArr
