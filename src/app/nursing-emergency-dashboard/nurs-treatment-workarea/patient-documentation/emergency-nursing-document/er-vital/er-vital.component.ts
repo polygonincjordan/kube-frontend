@@ -124,7 +124,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -141,7 +142,42 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
+        "ValidVers": "0000",
+        "Bcpid": "C0050568120581EE8B8E4B9B228DEECC5",
+        "Extid": "HEIGHT",
+        "Name": "Height",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "cm",
+        "NormalRange": "00.000 - 00.000",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
+        "ValidVers": "0000",
+        "Bcpid": "C0050568120581EE8B8E4B5DCAA436CC5",
+        "Extid": "WEIGHT",
+        "Name": "Weight",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "kg",
+        "NormalRange": "00.000 - 00.000",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -158,7 +194,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -175,7 +212,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -192,7 +230,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -209,7 +248,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
 
@@ -226,7 +266,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
         "Einri": "",
@@ -242,7 +283,8 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
       },
       {
         "Einri": "",
@@ -258,10 +300,28 @@ export class ErVitalComponent implements OnInit {
         "Origin": "",
         "Descr": "",
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
+        "ObsidVers": "0000",
+        "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "4522139805EB1FD0BC8A25C3E8D7BADE",
+        "ValidVers": "0000",
+        "Bcpid": "C000C29D2E09C1ED9A5D54D616DB4CEDE",
+        "Extid": "MEWS SCORE",
+        "Name": "MEWS Score",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "UnLess",
+        "NormalRange": "0.000 - 0.999",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "4522139805EB1FD0BC8A25C3E8D79ADE",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       }
     ];
-    //this.deleteReasonsList();
+    this.deleteReasonsList();
 
   }
   openModalForErVital(checkinitem) {
@@ -277,159 +337,7 @@ export class ErVitalComponent implements OnInit {
     this.getVitalList();
     this.getAllVitalList();
     this.isFormSubmitted = false;
-    this.vitalDefaultListResp = [
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F05E72",
-        "ValidVers": "0000",
-        "Bcpid": "C000C29D2E09C1ED9999E4DE4F9F884F0",
-        "Extid": "SYSTOLIC BLOOD PRESSURE",
-        "Name": "Systolic Blood Pressure",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "mmHg",
-        "NormalRange": "80.000 - 110.000",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F07E72",
-        "ValidVers": "0000",
-        "Bcpid": "C000C29D2E09C1ED9999E552CFF3AE50F",
-        "Extid": "DIASTOLIC BLOOD PRESSURE",
-        "Name": "Diastolic Blood Pressure",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "mmHg",
-        "NormalRange": "50.000 - 70.000",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F09E72",
-        "ValidVers": "0000",
-        "Bcpid": "C000C29D2E09C1ED9A4BEDCC0AC61B5A2",
-        "Extid": "PAIN SCORE",
-        "Name": "Pain score",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "UnLess",
-        "NormalRange": "0.000 - 3.000",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F0BE72",
-        "ValidVers": "0000",
-        "Bcpid": "C000C29D2E09C1ED9A5D22D8A6C6B2972",
-        "Extid": "RESPIRATORY RATE",
-        "Name": "Respiratory Rate",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "bpm",
-        "NormalRange": "12.000 - 30.000",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F0DE72",
-        "ValidVers": "0000",
-        "Bcpid": "C000C29D2E09C1EE98E8803F5593B50A7",
-        "Extid": "OXYGEN SATURATION",
-        "Name": "Oxygen Saturation",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "%",
-        "NormalRange": "90.000 - 99.000",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F0FE72",
-        "ValidVers": "0000",
-        "Bcpid": "C000C29D2E09C1EE98E8803F5593E50A7",
-        "Extid": "HEART RATE",
-        "Name": "Heart Rate",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "bpm",
-        "NormalRange": "80.000 - 120.000",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F15E72",
-        "ValidVers": "0000",
-        "Bcpid": "C0050568120581EE98CD1ABD87BC9ECD8",
-        "Extid": "TEMP_AXIL",
-        "Name": "Temperature-Axila",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "°C",
-        "NormalRange": "36.100 - 36.700",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F17E72",
-        "ValidVers": "0000",
-        "Bcpid": "C0050568120581EE98CD1ABD87BCA2CD8",
-        "Extid": "TEMP_ORAL",
-        "Name": "Temperature-Oral",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "°C",
-        "NormalRange": "36.600 - 37.200",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      },
-      {
-        "Einri": "",
-        "Valid": "E10989D8963E1EEE81C5B8A334F19E72",
-        "ValidVers": "0000",
-        "Bcpid": "C0050568120581EE98CD1ABD87BCAACD8",
-        "Extid": "TEMP_TYMP",
-        "Name": "Temperature Tympanic",
-        "Value": "",
-        "ValueString": "",
-        "UnitTxt": "°C",
-        "NormalRange": "35.500 - 37.500",
-        "Origin": "",
-        "Descr": "",
-        "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
-        "ObsidVers": "0000"
-      }
-    ];
+    // Use the vitalDefaultListResp already initialized in ngOnInit()
     this.CreateVitalList();
   }
   getVitalList() {
@@ -747,6 +655,7 @@ export class ErVitalComponent implements OnInit {
       "Stoid": this.selectedColData.Stoid,
       "Odate": createDate,
       "Otime": createTime,
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "TOITEM": this.maintainVitalFormitems.value
     }
     this.emergencyService.updateVitalSigns(json).subscribe(
@@ -783,7 +692,7 @@ export class ErVitalComponent implements OnInit {
       "Origin": "",
       "Odate": createDate,
       "Otime": createTime,
-      "Descr": "TEsting Test",
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "Storn": false,
       "Stoid": this.selectedColData.Stoid,
       "TOITEM": EnteredvitalArr
@@ -827,6 +736,10 @@ export class ErVitalComponent implements OnInit {
 
   CreateVitalList() {
     this.showMaintain = true;
+    // Clear the form array first to prevent duplicates
+    this.maintainVitalFormitems = this.maintainvitalform.get('maintainVitalFormitems') as FormArray;
+    this.maintainVitalFormitems.clear();
+    
     let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S';
     // if (this.vitalListResp.length != 0) {
     //   this.maintainVitalBarForm.controls.Orgdo.setValue(this.vitalListResp[0].Orgdo);
