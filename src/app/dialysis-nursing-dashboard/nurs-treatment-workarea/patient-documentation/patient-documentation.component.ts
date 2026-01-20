@@ -1103,6 +1103,7 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openNursingCarePlans) {
       this.NursingCarePlansComp?.ngOnDestroy();
     }
+    this.refreshPatientDocumentation();
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getTriageLatestDocuments();
@@ -3448,6 +3449,11 @@ cleanPayload(payload: any) {
     // Recalculate content height whenever the window is resized
     // This will automatically update the height of the scrollable div
     this.getContentHeight();
+  }
+
+   refreshPatientDocumentation() {
+     this.getPatientProfile();
+      this.fetchLatestDetails();
   }
 
 }
