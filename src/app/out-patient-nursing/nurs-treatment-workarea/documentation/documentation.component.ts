@@ -666,6 +666,9 @@ export class DocumentationComponent implements OnInit {
     if (this.openCPRDocument) {
       this.CprDocumentComp.ngOnDestroy();
     }
+    this.asc = true;
+    this.desc = false;
+    this.refreshPatientDocumentation();
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getMedLatestAssessment();
@@ -1610,5 +1613,9 @@ async deleteCorrespondenceDoc(docKey: string) {
   closePdfModal() {
     this.releaseDocumentImage = '';
     this.modalRef.hide();
+  }
+
+  refreshPatientDocumentation() {
+     this.getPatientProfile();
   }
 }
