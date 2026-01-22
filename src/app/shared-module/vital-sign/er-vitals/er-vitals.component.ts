@@ -488,8 +488,14 @@ export class ErVitalsComponentComman implements OnInit {
       this.emergencyService.deleteVitalList(json).subscribe(
         (_success: any) => {
           this.getVitalList();
-          this.modalRef.hide();
-          this.modalRefForDelete.hide();
+          if (this.modalRef) {
+            this.modalRef.hide();
+            this.modalRef = null;
+          }
+          if (this.modalRefForDelete) {
+            this.modalRefForDelete.hide();
+            this.modalRefForDelete = null;
+          }
           this.isFormSubmitted = false;
           this.cancelReasonValue = '';
           Swal.fire({
@@ -919,7 +925,7 @@ export class ErVitalsComponentComman implements OnInit {
     this.edit = false;
   }
 
-  //create
+ 
 
   CreateVitalList() {
     this.showMaintain = true;
