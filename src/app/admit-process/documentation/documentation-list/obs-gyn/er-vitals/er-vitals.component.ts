@@ -326,7 +326,7 @@ export class ErVitalsComponent implements OnInit {
         "Addinfo": ""
       }
     ];
-    //this.deleteReasonsList();
+    this.deleteReasonsList();//fix delete reasons list
     
   }
   openModalForErVital(checkinitem) {
