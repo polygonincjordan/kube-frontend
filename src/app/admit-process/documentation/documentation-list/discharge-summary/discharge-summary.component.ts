@@ -6,7 +6,6 @@ import {
   SimpleChanges,
   EventEmitter,
   Output,
-  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -15,15 +14,16 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
-import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { StorageService } from '@services/storage.service';
 import Swal from 'sweetalert2';
 import { GynDiagnosisComponent } from '../obs-gyn/diagnosis/diagnosis.component';
 import { SharedService } from '@services/shared.service';
-import { OrderType } from '@services/interfaces/common.enum';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
+import { IMedicationImportData } from 'src/app/components/documentation/import-medication/import-medication.component';
 import { DocsService } from '@services/docs.service';
+
 @Component({
   selector: 'app-discharge-summary',
   templateUrl: './discharge-summary.component.html',
@@ -34,7 +34,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   @Output() reloadTableList = new EventEmitter();
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: GynDiagnosisComponent;
   
-  orderType = OrderType;
+  orderType = MedicationOrderTypeLabels;
   inPatientPhdisDataSet: FormGroup;
   dischargeDispositionList: any = [
     { Desc: 'Discharge Home', Value: '0' },
@@ -52,6 +52,8 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   @Input() set userConfigSet(data: UserConfig) {
     this.userConfig = data;
   }
+
+  medicationImportData: IMedicationImportData;
 
   userConfig: UserConfig = {} as UserConfig;
   paramsObj
@@ -139,7 +141,18 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
           })
         }
         this.toDiagnosisArr = this.inPatientDischargeData.ToDiagnosis.results;
-        this.medicationImportDrugArray = this.inPatientDischargeData.ToDischargeMed.results;
+
+        this.medicationImportData = {
+          'Hospital Medication': {
+            applicable: this.inPatientPhdisDataSet.value.NomedSubstancesAppl,
+            importedMedications: this.inPatientDischargeData.ToHospitalMed.results,
+          },
+          'Discharge Medication': {
+            applicable: this.inPatientPhdisDataSet.value.NoMedordAppl,
+            importedMedications: this.inPatientDischargeData.ToDischargeMed.results,
+          },
+        };
+
         if (isRelease) {
           this.savePhysicianDischarge(true);
         }
@@ -163,81 +176,81 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   }
 
   savePhysicianDischarge(isRelease) {
-    // if(this.admissionService.isCloneDischargeSummery) {
-    //   this.inPatientPhdisDataSet.value.Dockey = '';  
-    // }
-    // this.inPatientPhdisDataSet.patchValue({
-    //   Time: this.parsePayloadFormateTime(this.inPatientPhdisDataSet.value.Time),
-    // });
+    const ToFormData = this.inPatientPhdisDataSet.value;
+    ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
+    ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
 
-    let payloadDicharge = this.inPatientPhdisDataSet.value;
-    payloadDicharge.Time = this.parsePayloadFormateTime(payloadDicharge.Time)
-    payloadDicharge.Date = payloadDicharge.Date !== undefined && payloadDicharge.Date !== null
-      ? this.sanitizeSAPDateFormat(payloadDicharge.Date)
-      : null;
+    const ToDiagnosis = this.toDiagnosisArr;
+    ToFormData['NoDiagnosis'] = this.inPatientPhdisDataSet.value.NoDiagnosis;
+    
+    const ToHospitalMed = this.medicationImportData?.['Hospital Medication']?.importedMedications;
+    ToFormData['NomedSubstancesAppl'] = this.medicationImportData?.['Hospital Medication']?.applicable;
 
-    payloadDicharge['ToDiagnosis'] = this.toDiagnosisArr;
-    payloadDicharge['ToDischargeMed'] = this.medicationImportDrugArray;
+    const ToDischargeMed = this.medicationImportData?.['Discharge Medication']?.importedMedications;
+    ToFormData['NoMedordAppl'] = this.medicationImportData?.['Discharge Medication']?.applicable;
 
-    console.log(payloadDicharge, "payloadDicharge")
-    const saveDataList = {
-      patientFormData: payloadDicharge,
-      releaseForm: isRelease,
+    const data = { 
+      Release: isRelease, 
+      ToFormData, 
+      ToDiagnosis, 
+      ToHospitalMed, 
+      ToDischargeMed 
     };
-    this.admissionService
-      .saveInPatientPhdisData(
-        saveDataList,
-        this.userConfig,
-        this.paramsObj,
-        'physicianDischargeSumm'
-      )
-      .subscribe((resp) => {
-        // if (this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
-        //   this.reloadTableList.next(true);
-        //   this.admissionService.cancelAllForm();
-        // }
+
+    this.admissionService.saveInPatientPhdisData(data, this.userConfig, this.paramsObj).subscribe({
+      next: () => {
         this.reloadTableList.next(true);
         this.admissionService.cancelAllForm();
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditDischargeSummery = false;
         this.admissionService.isCloneDischargeSummery = false;
         this.docsService.showSuccessMsg(this.soapFormEvent,'Physician Discharge Summary');
-      }, (error: any) => {
+      },
+      error: (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isCloneNicuForm = false;
         this.admissionService.isEditNicuForm = false;
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
         this.docsService.showErrorMsg(error);
-      });
-    // this.updateEvent.emit(true);
+      },
+    });
   }
 
   updatePhysicianDischarge(isRelease) {
-    let payload: any = this.inPatientPhdisDataSet.value;
-    // this.inPatientPhdisDataSet.patchValue({
-    payload.Time = this.parsePayloadFormateTime(payload.Time),
-      payload.Date = payload.Date !== undefined && payload.Date !== null
-        ? this.sanitizeSAPDateFormat(payload.Date)
-        : null;
-    // });
-    const saveDataList = {
-      patientFormData: payload.Time,
-      releaseForm: isRelease,
+    const ToFormData = this.inPatientPhdisDataSet.value;
+    ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
+    ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
+
+    const ToDiagnosis = this.toDiagnosisArr;
+    ToFormData['NoDiagnosis'] = this.inPatientPhdisDataSet.value.NoDiagnosis;
+    
+    const ToHospitalMed = this.medicationImportData?.['Hospital Medication']?.importedMedications;
+    ToFormData['NomedSubstancesAppl'] = this.medicationImportData?.['Hospital Medication']?.applicable;
+
+    const ToDischargeMed = this.medicationImportData?.['Discharge Medication']?.importedMedications;
+    ToFormData['NoMedordAppl'] = this.medicationImportData?.['Discharge Medication']?.applicable;
+
+    const data = { 
+      Release: isRelease, 
+      ToFormData, 
+      ToDiagnosis, 
+      ToHospitalMed, 
+      ToDischargeMed 
     };
-    this.admissionService
-      .updateInPatientPhdisData(
-        saveDataList,
-        this.userConfig,
-        this.paramsObj
-      )
-      .subscribe((resp) => {
+
+    this.admissionService.updateInPatientPhdisData(data, this.userConfig, this.paramsObj).subscribe({
+      next: () => {
         this.reloadTableList.next(true);
         this.admissionService.cancelAllForm();
         this.admissionService.clearSoapEvent.next(true);
-        // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
-      }, (error: any) => {
+        this.sharedService.successSwallModel('Physician Discharge Summary Updated successfully');
+      },
+      error: (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
-      });
-    // this.updateEvent.emit(true);
+        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
+        this.sharedService.waringSwallModel(`${errorMsg}`);
+      },
+    });
   }
 
   sanitizeSAPDateFormat(date: any) {
@@ -331,120 +344,8 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     return null;
   }
 
-  handleCheckboxVitals() {
-    throw new Error('Method not implemented.');
-  }
-
-  modalRefUpdateName: BsModalRef;
-  selectedMedicationOrder: any[] = [];
-  drugArray: any[] = [];
-  medicationImportDrugArray: any;
   toDiagnosisArr: any = [];
   duplicates: any = [];
-
-  openModal(template: TemplateRef<any>) {
-    const config: ModalOptions = {
-      class:
-        'modal-dialog modal-dialog-centered medication-order-case modal-xl',
-    };
-    this.modalRefUpdateName = this.modalService.show(template, config);
-    this.loadMedicationHistoryData();
-    // this.medicationImportDrugArray=[];
-  }
-
-  loadMedicationHistoryData() {
-    this.selectedMedicationOrder = [];
-    this.drugArray = [];
-    const profileOrderHistory: Subscription = this.ePrescriptionService
-      .loadData(
-        `e-prescription/OrderHistorylist?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}`,
-        false,
-        false,
-        false,
-        false
-      )
-      .subscribe(
-        (resp: any) => {
-          if (
-            resp.body &&
-            resp.body.d &&
-            resp.body.d.results &&
-            resp.body.d.results.length
-          ) {
-            //this.configurationData = resp.body.d.results;
-            this.drugArray = resp.body.d.results;
-            // this.medicationImportDrugArray=[];
-          }
-          //   this.filterEvents();
-        },
-        () => {
-          profileOrderHistory.unsubscribe();
-        }
-      );
-  }
-
-  medicationImport() {
-    if (!this.medicationImportDrugArray) {
-      this.medicationImportDrugArray = [];
-    }
-
-    this.selectedMedicationOrder.forEach((element) => {
-      this.medicationImportDrugArray.push({
-        Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
-        OrderDesc:
-          element.Descrlt +
-          element.Quan +
-          element.Quanunit +
-          element.Routedescr +
-          element.N1id,
-        HomeMedication: false,
-        OwnMedication: false,
-        Dose: element.Quan + element.Quanunit,
-        Validity: `${new DatePipe('en-US').transform(
-          this.getDate(element.StartD),
-          'dd.MM.yyyy'
-        )}-${new DatePipe('en-US').transform(
-          this.getDate(element.EndD),
-          'dd.MM.yyyy'
-        )}`,
-        Route: element.Routedescr,
-        Amount: '',
-        Rate: '',
-        RecommendedTherapy: '00000',
-        Id: null,
-        OrderingPhysician: element.EmpRespNm,
-        Cycle: element.N1id,
-      });
-    });
-    this.modalRefUpdateName.hide();
-  }
-  collectAllMedicationIData(event: any) {
-    if (event.target.checked) {
-      this.selectedMedicationOrder = Object.assign([], this.drugArray);
-    } else {
-      this.selectedMedicationOrder = [];
-    }
-  }
-  isChecked(item: any): boolean {
-    return this.selectedMedicationOrder.some((x) => x.Meordid == item.Meordid);
-  }
-
-  collectMedicationIData(event, item) {
-    if (event.target.checked) {
-      this.selectedMedicationOrder.push(item);
-      // this.medicationImportDrugArray.push(item);
-    } else {
-      const indexOf = this.selectedMedicationOrder.findIndex(
-        (x) => x.Meordid == item.Meordid
-      );
-      if (indexOf !== -1) this.selectedMedicationOrder.splice(indexOf, 1);
-      // this.medicationImportDrugArray.splice(index, 1);
-    }
-  }
-
-
 
 
   importDiagnosisData(data) {
@@ -476,6 +377,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     }
 
   }
+
   findDuplicatesDiagnosis() {
     let tempArr = []
     const lookup = this.toDiagnosisArr.reduce((a, e) => {
@@ -490,6 +392,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     )
 
   }
+
   errorMsgForDuplicatesDiagnosis() {
     let codeArr = [];
     this.duplicates.forEach(element => {
@@ -503,6 +406,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
       customClass: { popup: 'myalertpopup' }
     })
   }
+
   deleteDiagnosisFromTable(item, index) {
     this.toDiagnosisArr.splice(index, 1);
   }

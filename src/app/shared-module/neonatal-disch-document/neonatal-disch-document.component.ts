@@ -8,7 +8,7 @@ import { SharedService } from '@services/shared.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { ActivatedRoute } from '@angular/router';
 import { DataShareService } from '@services/data-share.service';
-import { ActionType } from '@services/interfaces/common.enum';
+import { ActionType, MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 import { AdmissionService } from '@services/admission/admission.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
@@ -92,6 +92,9 @@ export class NeonatalDischDocumentComponent implements OnInit {
   docKey: any;
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
+
+  orderType = MedicationOrderTypeLabels;
+
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService, private datePipe: DatePipe, private modalService: BsModalService, private ePrescriptionService: EPrescriptionService,
     private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService, private admissionService: AdmissionService, private docsService: DocsService) {
     this._route.queryParams.subscribe((params) => {
@@ -864,8 +867,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
     this.selectedMedicationOrder.forEach((element) => {
       this.medicationImportDrugArrayForHosp.push({
         Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        OrderType: this.orderType[element.MotypId],
         Descr:
           element.Descrlt +
           element.Quan +
@@ -909,8 +911,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
     this.selectedMedicationOrder.forEach((element) => {
       this.medicationImportDrugArray.push({
         Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        OrderType: this.orderType[element.MotypId],
         Descr:
           element.Descrlt +
           element.Quan +

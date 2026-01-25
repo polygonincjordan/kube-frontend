@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { DataShareService } from '@services/data-share.service';
-import { ActionType } from '@services/interfaces/common.enum';
+import { ActionType, MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 import { SharedService } from '@services/shared.service';
 
 @Component({
@@ -55,6 +55,8 @@ export class CprDocumentComponent implements OnInit {
 
   private subscription: Subscription;
   private actionTypeSubscription$: Subscription;
+
+  orderType = MedicationOrderTypeLabels;
 
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService,
     private modalService: BsModalService, public ePrescriptionService: EPrescriptionService, private dataShareService: DataShareService,
@@ -543,7 +545,7 @@ export class CprDocumentComponent implements OnInit {
     this.selectedMedicationOrder.forEach(element => {
       this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
         "Dockey": "",
-        "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        "OrderType": this.orderType[element.MotypId],
         "Description": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
         "HomeMedication": false,
         "PatientOwnMed": false,

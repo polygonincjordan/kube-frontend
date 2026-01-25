@@ -23,6 +23,7 @@ import { PhysicianErVitalsComponent } from './physician-er-vitals/physician-er-v
 import { PhysicianPastMedicalComponent } from './physician-past-medical/physician-past-medical.component';
 import { PhysicianFamilyHistoryComponent } from './physician-family-history/physician-family-history.component';
 import { PhysicianPastSurgicalComponent } from './physician-past-surgical/physician-past-surgical.component';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 
 
 @Component({
@@ -103,6 +104,8 @@ export class PhysicianFormComponent implements OnInit {
   enableCreatePMed: boolean = false;
   enableCreatePSurg: boolean = false;
   enableCreateFamily: boolean;
+
+  orderType = MedicationOrderTypeLabels;
 
   constructor(
     public modalService: BsModalService,
@@ -2441,7 +2444,7 @@ export class PhysicianFormComponent implements OnInit {
     this.selectedMedicationOrder.forEach(element => {
       this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
         "Dockey": "",
-        "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        "OrderType": this.orderType[element.MotypId],
         "Description": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
         "HomeMedication": false,
         "PatientOwnMed": false,

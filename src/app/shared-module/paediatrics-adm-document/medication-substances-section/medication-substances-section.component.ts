@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { DatePipe } from '@angular/common';
 import { StorageService } from '@services/storage.service';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-medication-substances-section',
@@ -22,6 +23,9 @@ export class MedicationSubstancesSectionComponent implements OnInit, OnChanges {
   @Input() toADMMEDImportedData: any[] = [];
 
   @Output() medicationImportDrugArrayList: EventEmitter<any> = new EventEmitter();
+
+  orderType = MedicationOrderTypeLabels;
+
   constructor(public modalService: BsModalService, public storageService: StorageService, private datePipe: DatePipe, public ePrescriptionService: EPrescriptionService,) { }
 
   ngOnInit(): void {
@@ -81,7 +85,7 @@ export class MedicationSubstancesSectionComponent implements OnInit, OnChanges {
     this.selectedMedicationOrder.forEach(element => {
       this.medicationImportDrugArray = this.medicationImportDrugArray.concat({
         "Dockey": "",
-        "OrderType": element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        "OrderType": this.orderType[element.MotypId],
         "EventDesc": element.Descrlt + element.Quan + element.Quanunit + element.Routedescr + element.N1id,
         "HomeMedication": false,
         "PatientOwnMed": false,

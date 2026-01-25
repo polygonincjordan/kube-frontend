@@ -124,7 +124,7 @@
           <td>{{item.Quan}} {{item.Quanunit }}</td>
           <td></td>
           <td>{{item.MosidDesc}}</td>
-          <td>{{item.MotypId == '30' ? 'Planned Administration':'Discharge'}}</td>
+          <td>{{ orderType[item.MotypId] }}</td>
           <td></td>
           </tr>
         </tbody>

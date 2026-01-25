@@ -1,0 +1,138 @@
+<div>
+  <!-- navigation tabs -->
+  <div class="tab-navigation-part p-0">
+    <div class="tab-navigate">
+      <div class="tab-nav w-100">
+        <ul class="m-0 p-0 d-flex mb-2">
+          <li *ngFor="let tab of medicationTabTypes" class="d-flex m-0 align-items-center" [class.active]="selectedTab === tab" (click)="selectedTab = tab">
+            <img src="./assets/img/grid-icon.svg" />
+            <p class="d-inline-block m-0">{{ tab }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- medication tab content -->
+  <div>
+    <!-- medication tab actions (set no applicable, import) -->
+    <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <input type="checkbox" style="width: 36px; height: 22px" [(ngModel)]="noMedicationApplicable" [disabled]="activeTabSelections.size > 0" />
+        <label class="my-0">{{ noMedicationApplicableLabels[selectedTab] }}</label>
+      </div>
+      <button class="tab-action" (click)="openModal(medicationOrderCase)" [disabled]="noMedicationApplicable">Import</button>
+    </div>
+
+    <!-- medication table -->
+    <ng-container [ngTemplateOutlet]="medicationTable" [ngTemplateOutletContext]="{ isImport: false }"></ng-container>
+  </div>
+</div>
+
+<ng-template #medicationOrderCase>
+  <div>
+    <div class="allergy-header">
+      <div style="font-size: 23px; font-weight: bold">
+        <span>Import Current Medication Order for {{ patientName }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" style="padding: 0 11px 0px">
+    <div style="display: flex; justify-content: end; padding-right: 1rem">
+      <button class="tab-action m-3" (click)="medicationImport()">Import</button>
+    </div>
+    <div style="max-height: 296px; overflow: auto">
+      <!-- medication table -->
+      <ng-container [ngTemplateOutlet]="medicationTable" [ngTemplateOutletContext]="{ isImport: true }"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<!-- medication table template -->
+<ng-template #medicationTable let-isImport="isImport">
+  <!-- Discharge Medication Table -->
+  <table *ngIf="selectedTab === 'Discharge Medication'" class="table table-bordered past-table">
+    <thead style="background-color: #e4edf5 !important; color: black; text-align: center; position: sticky; top: 0;">
+      <tr>
+        <th [class.d-none]="!isImport">
+          <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll()" style="width: 20px; height: 20px;" />
+        </th>
+        <th>Order Type</th>
+        <th style="width: 270px">Description</th>
+        <th [class.d-none]="isImport">Patient's Own Medications</th>
+        <th>Dose</th>
+        <th [class.d-none]="!isImport">Status</th>
+        <th>Validity</th>
+        <th [class.d-none]="isImport">Route</th>
+        <th [class.d-none]="isImport">Rate</th>
+        <th [class.d-none]="isImport">Recommended Therapy</th>
+        <th [class.d-none]="isImport">Ordering Physician</th>
+        <th>Cycle</th>
+        <th [class.d-none]="isImport" style="width: 50px">Actions</th>
+      </tr>
+    </thead>
+    <tbody style="background-color: hsl(225, 100%, 99%)">
+      <tr *ngFor="let medication of (isImport ? activeTabMedications : importedMedications)" style="text-align: center;">
+        <td [class.d-none]="!isImport">
+          <input type="checkbox" [checked]="isSelected(medication)" (change)="toggleSelection(medication)" style="width: 20px; height: 20px;" />
+        </td>
+        <td>{{ getDischargeMedication(medication).OrderType }}</td>
+        <td style="width: 270px">{{ getDischargeMedication(medication).OrderDesc }}</td>
+        <td [class.d-none]="isImport">
+          <input type="checkbox" style="width: 18px; pointer-events: none" [checked]="getDischargeMedication(medication).OwnMedication" readonly />
+        </td>
+        <td>{{ medication.Dose }}</td>
+        <td [class.d-none]="!isImport">{{ getMedicationStatus(medication) }}</td>
+        <td>{{ medication.Validity }}</td>
+        <td [class.d-none]="isImport">{{ medication.Route }}</td>
+        <td [class.d-none]="isImport">{{ medication.Rate }}</td>
+        <td [class.d-none]="isImport">{{ getDischargeMedication(medication).RecommendedTherapy }}</td>
+        <td [class.d-none]="isImport">{{ getDischargeMedication(medication).OrderingPhysician }}</td>
+        <td>{{ medication.Cycle }}</td>
+        <td [class.d-none]="isImport">
+          <button (click)="deleteMedication(medication)" style="background: none; border: none; cursor: pointer;" title="Delete">
+            <img src="./assets/img/Delete.svg" alt="Delete" style="width: 16px; height: 16px;" />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Hospital Medication Table -->
+  <table *ngIf="selectedTab === 'Hospital Medication'" class="table table-bordered past-table">
+    <thead style="background-color: #e4edf5 !important; color: black; text-align: center; position: sticky; top: 0;">
+      <tr>
+        <th [class.d-none]="!isImport">
+          <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll()" style="width: 20px; height: 20px;" />
+        </th>
+        <th>Event Description</th>
+        <th [class.d-none]="!isImport">Order Number</th>
+        <th [class.d-none]="isImport">Dose</th>
+        <th [class.d-none]="isImport">Validity</th>
+        <th [class.d-none]="isImport">Route</th>
+        <th [class.d-none]="isImport">Rate</th>
+        <th [class.d-none]="isImport">Cycle</th>
+        <th [class.d-none]="isImport" style="width: 50px">Actions</th>
+      </tr>
+    </thead>
+    <tbody style="background-color: hsl(225, 100%, 99%)">
+      <tr *ngFor="let medication of (isImport ? activeTabMedications : importedMedications)" style="text-align: center;">
+        <td [class.d-none]="!isImport">
+          <input type="checkbox" [checked]="isSelected(medication)" (change)="toggleSelection(medication)" style="width: 20px; height: 20px;" />
+        </td>
+        <td>{{ getHospitalMedication(medication).EventDesc }}</td>
+        <td [class.d-none]="!isImport">{{ getHospitalMedication(medication).EventId}}</td>
+        <td [class.d-none]="isImport">{{ medication.Dose }}</td>
+        <td [class.d-none]="isImport">{{ medication.Validity }}</td>
+        <td [class.d-none]="isImport">{{ medication.Route }}</td>
+        <td [class.d-none]="isImport">{{ medication.Rate }}</td>
+        <td [class.d-none]="isImport">{{ medication.Cycle }}</td>
+        <td [class.d-none]="isImport">
+          <button (click)="deleteMedication(medication)" style="background: none; border: none; cursor: pointer;" title="Delete">
+            <img src="./assets/img/Delete.svg" alt="Delete" style="width: 16px; height: 16px;" />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
