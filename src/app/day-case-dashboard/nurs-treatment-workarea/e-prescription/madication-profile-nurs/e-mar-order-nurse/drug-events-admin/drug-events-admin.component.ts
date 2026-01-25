@@ -197,6 +197,8 @@ export class DrugEventsAdminComponent implements OnInit {
         Meevtid: new FormControl(item.Events.Meevtid),
         Rdrugdq: new FormControl(item.Events.Quan),
         AmountPrescribed: new FormControl(item.Events.AmountPrescribed),
+        PlanDQ: new FormControl(`${item.Events.PlanDQ} ${item.Events.PlanUN}`),
+        PlanUN: new FormControl(item.Events.PlanUN),
         Rbdad: new FormControl(new Date()),
         Rbtad: new FormControl(''),
         Rdosdif: new FormControl(''),
@@ -208,10 +210,14 @@ export class DrugEventsAdminComponent implements OnInit {
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
         DosageStr: new FormControl(item?.Events?.DosageStr),
+        Quan2: new FormControl( this.isSignedMed(item.Events.Mesid) ? item.Events.Quan2 : item.Events.PlanDQ ),
+        SCRAP: new FormControl( Number(item?.Events?.SCRAP) === 0 ? '' : `${item?.Events?.SCRAP} ${item.Events.PlanUN}`),
       }),
       NotAdminister: new FormGroup({
         Rdrugdq: new FormControl(''),
         AmountPrescribed: new FormControl(item.Events.AmountPrescribed),
+        PlanDQ: new FormControl(`${item.Events.PlanDQ} ${item.Events.PlanUN}`),
+        PlanUN: new FormControl(item.Events.PlanUN),
         Einri: new FormControl(data.Einri),
         Falnr: new FormControl(item.Events.Falnr),
         Meevtid: new FormControl(item.Events.Meevtid),
@@ -224,7 +230,9 @@ export class DrugEventsAdminComponent implements OnInit {
         Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Quanunit: new FormControl(data.Unit),
         Meresp2: new FormControl(item.Events.WitnessEmp),
-        DosageStr: new FormControl(item?.Events?.DosageStr)
+        DosageStr: new FormControl(item?.Events?.DosageStr),
+        Quan2: new FormControl( this.isSignedMed(item.Events.Mesid) ? item.Events.Quan2 : item.Events.PlanDQ ),
+        SCRAP: new FormControl( Number(item?.Events?.SCRAP) === 0 ? '' : `${item?.Events?.SCRAP} ${item.Events.PlanUN}`),
       }),
       DrugAdminister: new FormGroup({
         Fsource: new FormControl(item.Events.Fsource),
@@ -295,6 +303,11 @@ export class DrugEventsAdminComponent implements OnInit {
     }
     return null;
   }
+
+  isSignedMed(value: string): boolean {
+    const states = ['400', '500', '600'];
+    return states.includes(value);
+  }
   Administerdata() {
     this.isFormSubmitted = true;
     if (this.administered) {
@@ -326,7 +339,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
                              Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
                           }
-                          const { Quanunit,DosageStr, Prncond, ...payload } = PayloadData;
+                          const { Quanunit,DosageStr, Prncond, SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
                           
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
@@ -353,7 +366,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
              Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
           }
-          const { Quanunit, Prncond, ...payload } = PayloadData;
+          const { Quanunit, Prncond,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
           delete payload.DosageStr
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been Administered!", payload)
@@ -389,7 +402,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
 
-                          const { Quanunit,DosageStr, ...payload } = PayloadData;
+                          const { Quanunit,DosageStr,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been NotAdminustered!", payload)
@@ -414,7 +427,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbtad: `${this.parseTime(this.administratiForm.get('NotAdminister').value.Rbdad)}`,
             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
           }
-          const { Quanunit, ...payload } = PayloadData;
+          const { Quanunit,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
 
           delete payload.DosageStr
           delete payload.AmountPrescribed
