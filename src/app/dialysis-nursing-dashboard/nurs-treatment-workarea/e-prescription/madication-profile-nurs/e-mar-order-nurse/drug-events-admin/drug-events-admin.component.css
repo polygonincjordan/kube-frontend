@@ -31,7 +31,7 @@
 }
 
 .modal-hidden {
-  height: 472px;
+  height: 710px;
 }
 
 .mar-data {
@@ -47,8 +47,8 @@
 }
 
 .position-dru {
-  bottom: 0;
-  right: 0;
+  bottom: -100px;
+right: 0;
 }
 
 .color-data {
