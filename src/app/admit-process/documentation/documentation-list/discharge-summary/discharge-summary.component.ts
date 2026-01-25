@@ -22,6 +22,7 @@ import { GynDiagnosisComponent } from '../obs-gyn/diagnosis/diagnosis.component'
 import { SharedService } from '@services/shared.service';
 import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 import { IMedicationImportData } from 'src/app/components/documentation/import-medication/import-medication.component';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -68,6 +69,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     public storageService: StorageService,
     public ePrescriptionService: EPrescriptionService,
     public sharedService: SharedService,
+    private docsService: DocsService
 
   ) {
     this.route.queryParams.subscribe((res) => {
@@ -82,23 +84,23 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.soapFormEvent.currentValue == 'add') {
-      this.savePhysicianDischarge(false);
-    }
+        this.savePhysicianDischarge(false);
+      }
     if (changes.soapFormEvent.currentValue == 'saveClose') {
-      this.savePhysicianDischarge(false);
-    }
+        this.savePhysicianDischarge(false);
+      }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
-      this.savePhysicianDischarge(false);
-    }
+        this.savePhysicianDischarge(false);
+      }
 
     if (changes.soapFormEvent.currentValue == 'release') {
       this.savePhysicianDischarge(true)
-    }
+      }
 
     if (changes.soapFormEvent.currentValue == 'toReleaseDis') {
-      this.getDichargeDataByDockey(true);
-    }
+        this.getDichargeDataByDockey(true);
+      }
     if (this.admissionService.isCloneDischargeSummery || this.admissionService.isEditDischargeSummery) {
       if (!this.isCheckAPICall) {
         this.getDichargeDataByDockey(false);
@@ -202,14 +204,14 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditDischargeSummery = false;
         this.admissionService.isCloneDischargeSummery = false;
-        this.sharedService.successSwallModel('Physician Discharge Summary Created successfully');
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Physician Discharge Summary');
       },
       error: (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isCloneNicuForm = false;
         this.admissionService.isEditNicuForm = false;
         const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-        this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.docsService.showErrorMsg(error);
       },
     });
   }

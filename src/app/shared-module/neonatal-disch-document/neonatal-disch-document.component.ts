@@ -12,6 +12,7 @@ import { ActionType, MedicationOrderTypeLabels } from '@services/interfaces/comm
 import { AdmissionService } from '@services/admission/admission.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-neonatal-disch-document',
@@ -95,7 +96,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
   orderType = MedicationOrderTypeLabels;
 
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService, private datePipe: DatePipe, private modalService: BsModalService, private ePrescriptionService: EPrescriptionService,
-    private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService, private admissionService: AdmissionService) {
+    private dataShareService: DataShareService, private dayCaseDashboard: DayCaseDashboardService, private sharedService: SharedService, private admissionService: AdmissionService, private docsService: DocsService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -752,10 +753,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
         .subscribe({
           next: (data: any) => { },
           error: (err: any) => {
-            this.sharedService.waringSwallModel(`Error ${err}`);
-            this.sharedService.waringSwallModel(
-              `PUT Error at Neonatal Discharge document : ${err}`
-            );
+          this.docsService.showErrorMsg(err)
           },
           complete: () => {
             resolve(true);
@@ -763,15 +761,7 @@ export class NeonatalDischDocumentComponent implements OnInit {
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
             this.admissionService?.clearSoapEvent?.next(true);
-            if (actiontype === 'edit') {
-              this.sharedService.successSwallModel(
-                'Neonatal Discharge document updated successfully'
-              );
-            } else {
-              this.sharedService.successSwallModel(
-                'Neonatal Discharge document created successfully'
-              );
-            }
+            this.docsService.showSuccessMsg(this.soapFormEvent,'Neonatal Discharge Summary')
           },
         });
     });

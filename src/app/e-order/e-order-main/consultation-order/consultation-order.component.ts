@@ -6,7 +6,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { EEmrService } from '@services/e-emr.service';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Subject, catchError, debounceTime, of } from 'rxjs';
+import { EMPTY, Subject, catchError, debounceTime, of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 @UntilDestroy()
 @Component({
@@ -398,7 +398,9 @@ export class ConsultationOrderComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         catchError((err) => {
-          return of([]);
+          const errorMessage = err?.error?.error?.innererror?.errordetails?.[0]?.message || 'An error occurred';
+          this.orderDashboardService.showErrorPopup('', errorMessage, 'Error');
+          return EMPTY;
         })
       )
       .subscribe((data: any) => {

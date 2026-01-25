@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdmissionService } from '@services/admission/admission.service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-neonatal-medical-report',
@@ -15,7 +16,7 @@ export class NeonatalMedicalReportComponent implements OnInit {
   @Output() realodEducationList = new EventEmitter();
   neoNatalForm: FormGroup;
   selectedPatientDetails: any;
-  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe, private sharedService: SharedService) { }
+  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe, private sharedService: SharedService, private docsService: DocsService) { }
 
   ngOnInit() {
     this.initForm();
@@ -178,12 +179,12 @@ export class NeonatalMedicalReportComponent implements OnInit {
       this.admissionService.isEditNeonatalMR = false;
       this.admissionService.isCloneNeonatalMR = false;
       this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Neonatal Medical Report');
     }, (err) => {
       this.admissionService.isEditNeonatalMR = false;
       this.admissionService.isCloneNeonatalMR = false;
       this.admissionService.clearSoapEvent.next(true);
-      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
+      this.docsService.showErrorMsg(err);
     })
   
   }
@@ -220,12 +221,12 @@ export class NeonatalMedicalReportComponent implements OnInit {
       this.admissionService.isEditNeonatalMR = false;
       this.admissionService.isCloneNeonatalMR = false;
       this.admissionService.clearSoapEvent.next(true);
-    }, (err) => {
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Neonatal Medical Report');
+    }, error => {
       this.admissionService.isEditNeonatalMR = false;
       this.admissionService.isCloneNeonatalMR = false;
       this.admissionService.clearSoapEvent.next(true);
-      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
+      this.docsService.showErrorMsg(error);
     })
   } 
   async releaseNeoNatalMRDoc(){
@@ -253,12 +254,18 @@ export class NeonatalMedicalReportComponent implements OnInit {
     updateJson.Timee = 'PT'+createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     updateJson.BirthTime = 'PT'+createbtime[0] + 'H' + createbtime[1] + 'M' + '00S';
     updateJson.AdmTime = 'PT'+createatime[0] + 'H' + createatime[1] + 'M' + '00S';
-    this.admissionService.releaseNeoNatalMRDoc(updateJson).subscribe(()=>{
-      this.admissionService.cancelAllForm();
+    this.admissionService.releaseNeoNatalMRDoc(updateJson).subscribe(
+    () => {
+    this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';
     this.admissionService.clearSoapEvent.next(true);
     this.realodEducationList.next(true);
-    })
+    this.docsService.showSuccessMsg(this.soapFormEvent, 'Neonatal Medical Report');
+  },
+  (error) => {
+    this.docsService.showErrorMsg(error);
+  }
+);
    }
   getDate(value) {
     if (value) {
