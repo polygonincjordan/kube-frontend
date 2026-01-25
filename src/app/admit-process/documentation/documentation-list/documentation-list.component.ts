@@ -233,7 +233,9 @@ export class DocumentationListComponent implements OnInit {
         }
       });
     } else {
-      this.currentVisitDocumet = this.currentVisitDocumetClone
+      this.currentVisitDocumet = this.currentVisitDocumetClone;
+      this.selectedIndex = undefined;
+      this.seletcedCurrentDoc = null;
     }
   }
 

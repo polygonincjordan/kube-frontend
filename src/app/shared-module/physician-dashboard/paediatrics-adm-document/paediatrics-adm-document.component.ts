@@ -25,6 +25,7 @@ import { PhysicianDiagnosisComponent } from './physician-diagnosis/physician-dia
 import { PhysicianPastMedicalComponent } from './physician-past-medical/physician-past-medical.component';
 import { PhysicianPastSurgicalComponent } from './physician-past-surgical/physician-past-surgical.component';
 import { PhysicianFamilyHistoryComponent } from './physician-family-history/physician-family-history.component';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-paediatrics-adm-document',
@@ -263,7 +264,8 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
     private dayCaseDashboard: DayCaseDashboardService,
     private modalService: BsModalService,
     private admissionService: AdmissionService,
-    private ePrescriptionService: EPrescriptionService
+    private ePrescriptionService: EPrescriptionService,
+    private docsService: DocsService
   ) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -1341,8 +1343,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         },
         error: (err: any) => {
           // Handle errors if the request fails
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`POST Error at Pediatrics Admission Assessment : ${err}`);
+          this.docsService.showErrorMsg(err)
         },
         complete: () => {
           this.admissionService.cancelAllForm();
@@ -1351,13 +1352,7 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
           this.realodEducationList.next(true);
           // Handle completion (optional), invoked when the observable completes
           resolve(true); // Resolve the promise with formValue
-          if (status === '1') {
-            this.sharedService.successSwallModel('Pediatrics Admission Assessment created successfully');
-          } else if (status === '5') {
-            this.sharedService.successSwallModel('Pediatrics Admission Assessment New version Created & Released successfully');
-          } else if (status === '1') {
-            this.sharedService.successSwallModel('Pediatrics Admission Assessment Released successfully');
-          }
+          this.docsService.showSuccessMsg(this.soapFormEvent,'Pediatrics Admission Assessment')
         }
       });
     });

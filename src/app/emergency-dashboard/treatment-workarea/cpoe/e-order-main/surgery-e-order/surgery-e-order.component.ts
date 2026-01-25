@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Subject, catchError, debounceTime, of } from 'rxjs';
+import { EMPTY, Subject, catchError, debounceTime, of } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -240,7 +240,9 @@ export class SurgeryEOrderComponent implements OnInit {
       .pipe(
         untilDestroyed(this),
         catchError((err) => {
-          return of([]);
+          const errorMessage = err?.error?.error?.innererror?.errordetails?.[0]?.message || 'An error occurred';
+          this.orderDashboardService.showErrorPopup('', errorMessage, 'Error');
+          return EMPTY;
         })
       )
       .subscribe((data: any) => {

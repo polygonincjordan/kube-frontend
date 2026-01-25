@@ -16,6 +16,7 @@ import { catchError, of } from 'rxjs';
 import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { SharedService } from '@services/shared.service';
+import { DocsService } from '@services/docs.service';
 import { DatePipe } from '@angular/common';
 @UntilDestroy()
 @Component({
@@ -55,6 +56,7 @@ export class DocumentationComponent implements OnInit {
     private emergencyService: EmergencyService,
     private dayCaseDashboardService: DayCaseDashboardService,
     private sharedService: SharedService,
+    private docsService: DocsService,
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -245,20 +247,16 @@ export class DocumentationComponent implements OnInit {
             this.dayCaseDashboardService.saveNeonatalDischargeDocument({ d: paylaod }).subscribe({
             next: (data: any) => { },
             error: (err: any) => {
-              this.sharedService.waringSwallModel(`Error ${err}`);
-              this.sharedService.waringSwallModel(`POST Error at Nurse Endorsment : ${err}`);
+              this.docsService.showErrorMsg(err)
             },
             complete: () => {
-              this.sharedService.successSwallModel('Neonatal Discharge Summary released successfully');
+              this.docsService.showSuccessMsg('release','Neonatal Discharge Summary')
               this.admissionService.isRealoadData.next(true);
             }
           });
         },
         error: (err: any) => {
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(
-            `POST Error at Nurse Endorsment : ${err}`
-          );
+          this.docsService.showErrorMsg(err)
         }
       });
   }
@@ -431,8 +429,13 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.saveEducationData(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
+          this.docsService.showSuccessMsg('release', 'Education Assessment');
+        }, error => {
+          this.docsService.showErrorMsg(error);
         }
       );
+    }, error => {
+      this.docsService.showErrorMsg(error);
     })
   }
 
@@ -448,10 +451,14 @@ export class DocumentationComponent implements OnInit {
       d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
        this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
         (result) => {
-          this.sharedService.successSwallModel('Paediatrics Physician Admission Assessment Document Release Successfully')
+          this.docsService.showSuccessMsg('release','Pediatrics Admission Assessment')
           this.admissionService.isRealoadData.next(true);
-        }
+        }, error => {
+      this.docsService.showErrorMsg(error);
+    }
       );
+    }, error => {
+      this.docsService.showErrorMsg(error);
     })
   }
   releasePhysicianDoc() {
@@ -483,9 +490,14 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.releaseTransferDoc(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-        }
+          this.docsService.showSuccessMsg('release', 'Transfer Assessment Document');
+        }, error => {
+      this.docsService.showErrorMsg(error);
+    }
       );
-    })
+    }, error => {
+      this.docsService.showErrorMsg(error);
+    });
   }
   releaseSurgaryDoc() {
     let json = {
@@ -529,9 +541,13 @@ export class DocumentationComponent implements OnInit {
       this.inPatientConfigurationService.saveSurgery(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-           this.sharedService.successSwallModel('Department of Surgery - Operation Notes Release Successfully')
-        }
+           this.docsService.showSuccessMsg('release','Department of Surgery - Operation Notes')
+        }, error => {
+      this.docsService.showErrorMsg(error);
+    }
       );
+    }, error =>  {
+      this.docsService.showErrorMsg(error);
     })
   }
 
@@ -556,8 +572,13 @@ export class DocumentationComponent implements OnInit {
             .toReleaseSoapPatientVisitData(patientData)
             .then((res: any) => {
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release', 'SOAP Document');  
+            }, error => {
+      this.docsService.showErrorMsg(error);
+    });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -572,8 +593,13 @@ export class DocumentationComponent implements OnInit {
           this.admissionService
             .updateObstetricDoc(obstetricData).subscribe((resp) => {
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release','Obstetric VTE Risk Assess&Mgt Postaprtum');
+            }, error => {
+        this.docsService.showErrorMsg(error);
+      });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -587,8 +613,13 @@ export class DocumentationComponent implements OnInit {
           this.admissionService
             .updateObsVteAntDoc(obstetricData).subscribe((resp) => {
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release','Obstetric VTE Risk Assess&Mgt Antepartum');
+            }, error => {
+        this.docsService.showErrorMsg(error);
+      });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -632,9 +663,14 @@ export class DocumentationComponent implements OnInit {
               this.admissionService.cancelAllForm();
               this.admissionService.isSaveEducationData.next(true);
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release', 'Operation Report');
+            }, error => {
+        this.docsService.showErrorMsg(error);
+      });
           // this.inPatientOrrptDataSet.patchValue(res.PATDOCTOOPERRPTDOCDETAIL.results[0])
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -660,8 +696,14 @@ export class DocumentationComponent implements OnInit {
               this.admissionService.cancelAllForm();
               this.admissionService.isSaveEducationData.next(true);
               this.admissionService.isRealoadData.next(true);
+              this.docsService.showSuccessMsg('release', 'Discharge Summary');
+              
+            },error=>{
+              this.docsService.showErrorMsg(error);
             });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -733,9 +775,13 @@ export class DocumentationComponent implements OnInit {
             .releaseMedDoc(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
-              this.sharedService.successSwallModel('Medical Report Document Relesed Successfully');
-            });
+              this.docsService.showSuccessMsg('release', 'Medical Report Report');
+            }, error => {
+        this.docsService.showErrorMsg(error);
+      });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
   // obs gyn
@@ -767,8 +813,13 @@ export class DocumentationComponent implements OnInit {
             .releaseObsGynDoc(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release', 'Obstetrics & Gynecology Physician Assess');
+            }, error => {
+        this.docsService.showErrorMsg(error);
+      });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
   //
@@ -800,8 +851,11 @@ export class DocumentationComponent implements OnInit {
             .releaseNeoNatalDoc(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release', 'Neonatal Progress Note');
+            }, error => {this.docsService.showErrorMsg(error); });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
   //
@@ -833,8 +887,13 @@ export class DocumentationComponent implements OnInit {
             .releaseNeoNatalMRDoc(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
-            });
+              this.docsService.showSuccessMsg('release', 'Neonatal Medical Report');
+            }, error => {
+        this.docsService.showErrorMsg(error);
+      });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
   //
@@ -916,15 +975,25 @@ export class DocumentationComponent implements OnInit {
       )
       .subscribe((patientResult: any) => {
         let patientData = patientResult?.results[0];
+        const chiefComplaint = patientData['ChiefComplaint'];
+        if (chiefComplaint == null || String(chiefComplaint).trim() === '') {
+           this.docsService.showWarningMsg('Chief Complaint is required to release the document.');
+           this.admissionService.clearSoapEvent.next(true);
+           return;
+          }
         if (patientData) {
           patientData['DocStatus'] = '2';
           this.admissionService
             .createPhysicianData(patientData)
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
-              this.sharedService.successSwallModel('Physician Assessment Release Successfully')
+              this.docsService.showSuccessMsg('release', 'Physician Assessment Document');
+            }, error => {
+              this.docsService.showErrorMsg(error);
             });
         }
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -939,6 +1008,9 @@ export class DocumentationComponent implements OnInit {
       .releaseVisitNoteDoc(json)
       .subscribe((patientResult: any) => {
         this.admissionService.isRealoadData.next(true);
+        this.docsService.showSuccessMsg('release','Visit Note Document')
+      }, error => {
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -951,8 +1023,13 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.createNewBorn(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-        }
+          this.docsService.showSuccessMsg('release','Newborn Physician Assessment');
+        }, error => {
+        this.docsService.showErrorMsg(error);
+      }
       );
+    },error => {
+      this.docsService.showErrorMsg(error);
     })
   }
   releaseNicu() {
@@ -964,9 +1041,14 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.createNicuSet(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-        }
+          this.docsService.showSuccessMsg('release','NICU Admission Note');
+        }, error => {
+        this.docsService.showErrorMsg(error);
+      }
       );
-    })
+    }, error => {
+      this.docsService.showErrorMsg(error);
+    });
   }
   //
 }
