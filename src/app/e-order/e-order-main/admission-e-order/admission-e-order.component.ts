@@ -6,7 +6,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { EEmrService } from '@services/e-emr.service';
 import { OrdersDashboardService } from '@services/orders-dashboard/orders-dashboard.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { Subject, catchError, debounceTime, of } from 'rxjs';
+import { EMPTY, Subject, catchError, debounceTime, of } from 'rxjs';
 @UntilDestroy()
 @Component({
   selector: 'app-admission-e-order',
@@ -65,8 +65,8 @@ export class AdmissionEOrderComponent implements OnInit {
       TrtoeText: [''],
       Orgfa: [''],
       OrgfaText: [''],
-      Wbgdt: [''],
-      Wbgzt: [''],
+      Wbgdt: ['', [Validators.required]],
+      Wbgzt: ['', [Validators.required]],
       Trtgp: [''],
       SurgeonName: [''],
       items: new FormArray([]),
@@ -382,6 +382,12 @@ export class AdmissionEOrderComponent implements OnInit {
   }
 
   saveAdmissionOrderData() {
+    if (this.phyOrderform.invalid) {
+      this.orderDashboardService.showErrorPopup('', 'Please fill all required fields', 'Error');
+      this.phyOrderform.markAllAsTouched();
+      return; 
+    }
+
     let physicianList: any = []
     if (
       typeof this.phyOrderform.value.Wbgdt === 'object' &&
@@ -426,7 +432,9 @@ export class AdmissionEOrderComponent implements OnInit {
     .pipe(
       untilDestroyed(this),
       catchError((err) => {
-        return of([]);
+        const errorMessage = err?.error?.error?.innererror?.errordetails?.[0]?.message || err?.error?.error?.message?.value || 'An error occurred';
+        this.orderDashboardService.showErrorPopup('', errorMessage, 'Error');
+        return EMPTY;
       })
     )
     .subscribe((data: any) => {

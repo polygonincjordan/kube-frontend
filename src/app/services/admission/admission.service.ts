@@ -1012,88 +1012,37 @@ export class AdmissionService {
     return this.http.get(`${environment.eKardexApiUrl}/inpatientData/getDischargeSummarySet?Einri=${paramsObj.einri}&Falnr=${paramsObj.falnr}`, { withCredentials: true })
   }
 
-  saveInPatientPhdisData(data: any, userConfiguration: any, paramsObj, type?: any) {
-    let payload: any
-    if(type == 'physicianDischargeSumm') {
-      const payloadData = {
-            Dockey: data.patientFormData.Dockey !== undefined ? data.patientFormData.Dockey : "",
-            Einri: paramsObj.einri,
-            Patnr: paramsObj.patnr,
-            Falnr: paramsObj.falnr,
-            Orgdo: "",
-            Mitarb: "",
-            Dtid: "",
-            Dtvers: "",
-            Dodat: `\/Date(${new Date().getTime()})\/`,
-            Dotim: "PT17H55M55S",
-            Erusr: userConfiguration.UserId,
-            Erdat: `\/Date(${new Date().getTime()})\/`,
-            Dokst: "",
-            Lfdbew: paramsObj.lfdnr,
-            Orgfa: "",
-            Orgpf: "",
-            Released: data.releaseForm
-          }
-          // payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: data.patientFormData.ToDiagnosis }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: data.patientFormData.ToDischargeMed } };
-           payload = {
-    ...payloadData,
-    ToFormData: [data.patientFormData],
-    ToDiagnosis: data.patientFormData.ToDiagnosis || [],
-    ToHospitalMed: [], // or actual data
-    ToDischargeMed: data.patientFormData.ToDischargeMed || []
-  };
-          // delete payload.ToFormData.results[0].ToDiagnosis
-          // delete payload.ToFormData.results[0].ToDischargeMed
-            delete data.patientFormData.ToDiagnosis;
-  delete data.patientFormData.ToDischargeMed;
-    } else {
-
-      const payloadData = {
-        Dockey: data.patientFormData.Dockey !== undefined ? data.patientFormData.Dockey : "",
-        Einri: paramsObj.einri,
-        Patnr: paramsObj.patnr,
-        Falnr: paramsObj.falnr,
-        Orgdo: "",
-        Mitarb: "",
-        Dtid: "",
-        Dtvers: "",
-        Dodat: `\/Date(${new Date().getTime()})\/`,
-        Dotim: "PT17H55M55S",
-        Erusr: userConfiguration.UserId,
-        Erdat: `\/Date(${new Date().getTime()})\/`,
-        Dokst: "",
-        Lfdbew: paramsObj.lfdnr,
-        Orgfa: "",
-        Orgpf: "",
-        Released: data.releaseForm
-      }
-      // payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: [] }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: [] } };
-        payload = {
-    ...payloadData,
-    ToFormData: [data.patientFormData],
-    ToDiagnosis:  [],
-    ToHospitalMed: [], // or actual data
-    ToDischargeMed:  []
-  };
+  saveInPatientPhdisData(data: { Release: boolean, ToFormData: any, ToDiagnosis: any, ToHospitalMed: any, ToDischargeMed: any }, userConfiguration: any, paramsObj: any) {
+    const payloadData = {
+      Dockey: data.ToFormData?.Dockey ?? "",
+      Einri: paramsObj.einri,
+      Patnr: paramsObj.patnr,
+      Falnr: paramsObj.falnr,
+      Orgdo: "",
+      Mitarb: "",
+      Dtid: "",
+      Dtvers: "",
+      Dodat: `\/Date(${new Date().getTime()})\/`,
+      Dotim: "PT17H55M55S",
+      Erusr: userConfiguration.UserId,
+      Erdat: `\/Date(${new Date().getTime()})\/`,
+      Dokst: "",
+      Lfdbew: paramsObj.lfdnr,
+      Orgfa: "",
+      Orgpf: "",
+      Released: data.Release,
     }
-    console.log(payload , "----------");
+
+    const payload = {
+      ...payloadData,
+      ToFormData: [data.ToFormData],
+      ToDiagnosis: data.ToDiagnosis || [],
+      ToHospitalMed: data.ToHospitalMed || [],
+      ToDischargeMed: data.ToDischargeMed || [],
+    };
+
     const url = `${environment.eKardexApiUrl}/inpatientData/saveReleaseDischargeSummarySet`;
     return this.http.post(url, payload, { withCredentials: true });
-    // const savePatientConfig$ = this.http.post(url, payload, { withCredentials: true })
-    //   .pipe(
-    //     // tap((data) => {
-    //     //   console.log('test',data);
-    //     //   //this.getListOfAllPatientVisitDataSet();
-    //     // }),
-    //     map((data: any) => {
-    //       console.log(data)
-    //        return data }),
-    //     catchError((error: HttpErrorResponse) => {
-    //       console.error(error);
-    //       return throwError(() => error);
-    //     })
-    //   );
-    // await lastValueFrom(savePatientConfig$)
   }
 
   getPatientVisitDataByDocKey(docKey: string, einri: string, patnr: string): Observable<InPatientDataResult> {
@@ -1120,9 +1069,9 @@ export class AdmissionService {
     return `${environment.eKardexApiUrl}/inPatientData/getInPatientDocumentSet?einri=${einri}&patnr=${patnr}&docKey=${docKey}`;
   }
 
-  updateInPatientPhdisData(data: any, userConfiguration: any, paramsObj) {
+  updateInPatientPhdisData(data: { Release: boolean, ToFormData: any, ToDiagnosis: any, ToHospitalMed: any, ToDischargeMed: any }, userConfiguration: any, paramsObj: any) {
     const payloadData = {
-      Dockey: data.patientFormData.Dockey !== undefined ? data.patientFormData.Dockey : "",
+      Dockey: data.ToFormData?.Dockey ?? "",
       Einri: paramsObj.einri,
       Patnr: paramsObj.patnr,
       Falnr: paramsObj.falnr,
@@ -1138,26 +1087,19 @@ export class AdmissionService {
       Lfdbew: paramsObj.lfdnr,
       Orgfa: "",
       Orgpf: "",
-      Released: data.releaseForm
+      Released: data.Release,
     }
-    const payload = { ...payloadData, ToFormData: { results: [data.patientFormData] }, ToDiagnosis: { results: [] }, ToHospitalMed: { results: [] }, ToDischargeMed: { results: [] } };
+
+    const payload = {
+      ...payloadData,
+      ToFormData: [data.ToFormData],
+      ToDiagnosis: data.ToDiagnosis || [],
+      ToHospitalMed: data.ToHospitalMed || [],
+      ToDischargeMed: data.ToDischargeMed || [],
+    };
+
     const url = `${environment.eKardexApiUrl}/inpatientData/updateReleaseDischargeSummarySet`;
     return this.http.put(url, payload, { withCredentials: true });
-    // const savePatientConfig$ = this.http.post(url, payload, { withCredentials: true })
-    //   .pipe(
-    //     // tap((data) => {
-    //     //   console.log('test',data);
-    //     //   //this.getListOfAllPatientVisitDataSet();
-    //     // }),
-    //     map((data: any) => {
-    //       console.log(data)
-    //        return data }),
-    //     catchError((error: HttpErrorResponse) => {
-    //       console.error(error);
-    //       return throwError(() => error);
-    //     })
-    //   );
-    // await lastValueFrom(savePatientConfig$)
   }
 
   // obstetric Form API

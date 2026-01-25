@@ -103,16 +103,30 @@ export enum AssessmentType {
   UseOfEquipment$ = 'Use Of Equipment',
 }
 
-export  const OrderType:Record<string, string> = {
-    '10': 'Standard',
-    '20': 'Planned Administration',
-    '25': 'Home Leave',
-    '30': 'Discharge',
-    '35': 'Dispensing',
-    '45': 'Anamnesis',
-    '55': 'RX',
-    '60': 'ADHOC',
-    '70': 'Anesthesia',
-    '80': 'Surgery',
-    '90': 'Verbal',
-  };
+export enum MedicationOrderTypeEnum {
+  Standard = '10',
+  PlannedAdministration = '20',
+  HomeLeave = '25',
+  Discharge = '30',
+  Dispensing = '35',
+  Anamnesis = '45',
+  RX = '55',
+  ADHOC = '60',
+  Anesthesia = '70',
+  Surgery = '80',
+  Verbal = '90',
+}
+
+export const MedicationOrderTypeLabels: Record<MedicationOrderTypeEnum, string> = {
+  '10': 'Standard',
+  '20': 'Planned Administration',
+  '25': 'Home Leave',
+  '30': 'Discharge',
+  '35': 'Dispensing',
+  '45': 'Anamnesis',
+  '55': 'RX',
+  '60': 'ADHOC',
+  '70': 'Anesthesia',
+  '80': 'Surgery',
+  '90': 'Verbal',
+};

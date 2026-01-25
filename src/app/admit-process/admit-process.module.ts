@@ -68,11 +68,12 @@ import { DietMealOrderComponentNew } from './diet-meal-order-new/diet-meal-order
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { SurgeryOperationNoteModule } from '../shared-module/surgery-operation-note/surgery-operation-note.module';
 import { PaediatricsAdmDocumentModule } from '../shared-module/physician-dashboard/paediatrics-adm-document/paediatrics-adm-document.module';
-
+import { ImportMedicationComponent } from '../components/documentation/import-medication/import-medication.component';
 
 export const ePrescriptionRoutes: Routes = [
   { path: '**', component: AdmitProcessComponent },
 ];
+
 @NgModule({
   declarations: [
     AdmitProcessComponent,
@@ -140,7 +141,8 @@ export const ePrescriptionRoutes: Routes = [
     NeonatalDischDocumentModule,
     PaediatricPhysicianAssessmentModule,
     SurgeryOperationNoteModule,
-    PaediatricsAdmDocumentModule
+    PaediatricsAdmDocumentModule,
+    ImportMedicationComponent,
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

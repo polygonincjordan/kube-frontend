@@ -18,7 +18,7 @@ import { StorageService } from '@services/storage.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { catchError, of } from 'rxjs';
 import { berriers, healthLiteracy, informationTought, learnerNeedPlan, literacyEducationLevel, needsInterpreter, patientResponse, personTaught, readLinessToLearn, toolsList, understanding } from 'src/app/core/constants';
-
+import { DocsService } from 'src/app/services/docs.service';
 @UntilDestroy()
 @Component({
   selector: 'app-education-form',
@@ -142,7 +142,8 @@ export class EducationFormComponent implements OnInit, OnChanges {
     private patientService: PatientService,
     private datePipe: DatePipe,
     private sharedService: SharedService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private docsService: DocsService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -407,13 +408,14 @@ export class EducationFormComponent implements OnInit, OnChanges {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditEducationAsset = false;
         this.admissionService.isCloneEducationAsset = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent, 'Education Assessment');
       },
       (err) => {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditEducationAsset = false;
         this.admissionService.isCloneEducationAsset = false;
         const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-        this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.docsService.showErrorMsg(err);
         this.admissionService.isSaveEducationData.next(false);
       }
     );
@@ -466,15 +468,19 @@ export class EducationFormComponent implements OnInit, OnChanges {
             this.reloadTableList.next(true);
             this.admissionService.cancelAllForm();
             this.admissionService.clearSoapEvent.next(true);
+            this.docsService.showSuccessMsg(this.soapFormEvent, 'Education Assessment');
+          }, error => {
+            this.docsService.showErrorMsg(error);
           });
         } else {
           this.reloadTableList.next(true);
-            this.admissionService.cancelAllForm();
-            this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.cancelAllForm();
+          this.admissionService.clearSoapEvent.next(true);
         }
       },
       (err) => {
         this.admissionService.isSaveEducationData.next(false);
+        this.docsService.showErrorMsg(err);
       }
     );
   }
