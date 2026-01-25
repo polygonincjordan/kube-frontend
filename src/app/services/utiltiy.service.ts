@@ -1,5 +1,13 @@
 import { environment } from 'src/environments/environment';
 
+export const getDate = (value: string) => {
+  if (!value) return null;
+  
+  const num = parseInt(value.replace(/[^0-9]/g, ''));
+  const date = new Date(num);
+  return date;
+}
+
 export const camelCase = (str: string): string => {
   if (str) {
     str = str.replace(/[^a-zA-Z0-9 ]/g, ' ');

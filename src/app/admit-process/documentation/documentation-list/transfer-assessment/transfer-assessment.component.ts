@@ -17,7 +17,8 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { PhysicianErVitalsComponent } from '../physician-form/physician-er-vitals/physician-er-vitals.component';
 import Swal from 'sweetalert2';
-import { OrderType } from '@services/interfaces/common.enum';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
+import { DocsService } from '@services/docs.service';
 @Component({
   selector: 'app-transfer-assessment',
   templateUrl: './transfer-assessment.component.html',
@@ -49,7 +50,7 @@ export class TransferAssessmentComponent implements OnInit {
   toProc: any = [];
   noMedicationOrder: any = false;
   noVitalSigns: any = false;
-  orderType = OrderType;
+  orderType = MedicationOrderTypeLabels;
 
   orgUnits = [
     { code: '4THFL-C', name: '4th Floor-Zone C-IP' },
@@ -98,7 +99,8 @@ export class TransferAssessmentComponent implements OnInit {
     private formBuilder: FormBuilder,
     private admissionService: AdmissionService,
     private datePipe: DatePipe,
-    public ePrescriptionService: EPrescriptionService
+    public ePrescriptionService: EPrescriptionService,
+    private docsService: DocsService
   ) {}
 
   ngOnInit(): void {
@@ -112,7 +114,7 @@ export class TransferAssessmentComponent implements OnInit {
     if (changes.soapFormEvent.currentValue == 'edit') {
       this.updateTransferAssessForm();
     }
-    if (changes.soapFormEvent.currentValue == 'edit') {
+    if (changes.soapFormEvent.currentValue == 'saveClose') {
       if (this.admissionService.isEditTransferAssestForm) {
         this.updateTransferAssessForm();
       } else {
@@ -223,7 +225,7 @@ export class TransferAssessmentComponent implements OnInit {
       });
   }
 
-  async createTransferAssessForm(isrelease: boolean) {
+  createTransferAssessForm(isrelease: boolean) {
     let createJson = this.transferAssessForm.value;
     console.log(createJson);
     if (
@@ -285,7 +287,7 @@ export class TransferAssessmentComponent implements OnInit {
             Datetimee: element.Datetimee,
           }))
       : [];
-    await this.admissionService
+      this.admissionService
       .createTansferAssessData(createJson)
       .subscribe((x) => {
         console.log(x);
@@ -295,10 +297,14 @@ export class TransferAssessmentComponent implements OnInit {
         this.admissionService.selectedCurrentDocDetails = '';
         this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Transfer Assessment');
+      }, error => {
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(error);
       });
   }
 
-  async updateTransferAssessForm() {
+  updateTransferAssessForm() {
     let updateJson = this.transferAssessForm.value;
     let createtime = '';
     if (updateJson.Datee != '') {
@@ -338,16 +344,20 @@ export class TransferAssessmentComponent implements OnInit {
             Datetimee: element.Datetimee,
           }))
       : [];
-    await this.admissionService.updateTransferDoc(updateJson).subscribe(() => {
+    this.admissionService.updateTransferDoc(updateJson).subscribe(() => {
       // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') {
       // }
       this.admissionService.cancelAllForm();
       this.admissionService.selectedCurrentDocDetails = '';
       this.admissionService.clearSoapEvent.next(true);
       this.realodEducationList.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Transfer Assessment');
+    }, (error) => {
+      this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showErrorMsg(error);
     });
   }
-  async releaseTransferAssessForm() {
+  releaseTransferAssessForm() {
     let updateJson = this.transferAssessForm.value;
     let createtime = '';
     if (updateJson.Datee != '') {
@@ -361,7 +371,7 @@ export class TransferAssessmentComponent implements OnInit {
       updateJson.Timee =
         'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
     }
-    updateJson['DocStatus'] = '1';
+    updateJson['DocStatus'] = '2';
     updateJson['TOVITALSIGNS'] = this.toVitalsArr;
     updateJson['TOPROCE'] = [];
     updateJson['TOEXAM'] = [];
@@ -392,6 +402,10 @@ export class TransferAssessmentComponent implements OnInit {
       this.admissionService.selectedCurrentDocDetails = '';
       this.admissionService.clearSoapEvent.next(true);
       this.realodEducationList.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Transfer Assessment');
+    }, (error) => {
+      this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showErrorMsg(error);
     });
   }
 
@@ -574,8 +588,7 @@ export class TransferAssessmentComponent implements OnInit {
     this.selectedMedicationOrder.forEach((element) => {
       this.medicationImportDrugArray.push({
         Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        OrderType: this.orderType[element.MotypId],
         Descr:
           element.Descrlt +
           element.Quan +

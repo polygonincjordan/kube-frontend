@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdmissionService } from '@services/admission/admission.service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
-
+import { DocsService } from '@services/docs.service';
 @Component({
   selector: 'app-neonatal-progress-note',
   templateUrl: './neonatal-progress-note.component.html',
@@ -15,7 +15,7 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
   @Output() realodEducationList = new EventEmitter();
   neoNatalForm: FormGroup;
   selectedPatientDetails: any;
-  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe, private sharedService: SharedService) { }
+  constructor(private formBuilder: FormBuilder,private storageService:StorageService,public admissionService: AdmissionService,private datePipe: DatePipe, private sharedService: SharedService, private docsService: DocsService) { }
 
   ngOnInit() {
     this.initForm();
@@ -156,12 +156,13 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
       this.admissionService.isEditNeonatal = false;
       this.admissionService.isCloneNeonatal = false;
       this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Neonatal Progress Note');
     }, (err) => {
       this.admissionService.isEditNeonatal = false;
       this.admissionService.isCloneNeonatal = false;
       this.admissionService.clearSoapEvent.next(true);
       const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
+      this.docsService.showErrorMsg(errorMsg);
     });
   }
   async updateNeoNatalDoc(){
@@ -183,12 +184,13 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
       this.admissionService.isEditNeonatal = false;
       this.admissionService.isCloneNeonatal = false;
       this.admissionService.clearSoapEvent.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Neonatal Progress Note');
     }, (err) => {
       this.admissionService.isEditNeonatal = false;
       this.admissionService.isCloneNeonatal = false;
       this.admissionService.clearSoapEvent.next(true);
       const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
+      this.docsService.showErrorMsg(errorMsg);
     });
   } 
   async releaseNeoNatalDoc(){
@@ -206,10 +208,13 @@ export class NeonatalProgressNoteComponent implements OnInit,OnChanges {
    
     this.admissionService.releaseNeoNatalDoc(updateJson).subscribe(()=>{
       this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
-    this.admissionService.clearSoapEvent.next(true);
-    this.realodEducationList.next(true);
-    })
+      this.admissionService.selectedCurrentDocDetails = '';
+      this.admissionService.clearSoapEvent.next(true);
+      this.realodEducationList.next(true);
+      this.docsService.showSuccessMsg(this.soapFormEvent,'Neonatal Progress Note');
+    }, error=> {
+      this.docsService.showErrorMsg(error);
+    });
    }
   getDate(value) {
     if (value) {

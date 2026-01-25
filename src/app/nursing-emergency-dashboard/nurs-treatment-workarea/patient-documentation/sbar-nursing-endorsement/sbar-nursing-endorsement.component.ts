@@ -19,7 +19,7 @@ import { GlosGowCommaScalePopupComponent } from 'src/app/shared-module/paediatri
 import { MorseFallScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/morse-fall-scale/morse-fall-scale.component';
 import { BradenScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/braden-scale/braden-scale.component';
 import { AdmissionService } from '@services/admission/admission.service';
-import { OrderType } from '@services/interfaces/common.enum';
+import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 
 @Component({
   selector: 'app-sbar-nursing-endorsement',
@@ -37,7 +37,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
   toAllergyArr: any = [];
   toDiagnosisArr: any = [];
   selectedScales: any[] = [];
-  orderType = OrderType;
+  orderType = MedicationOrderTypeLabels;
 
   sbarNursingForm: FormGroup;
   yesNoOptions = [
@@ -750,8 +750,7 @@ export class SbarNursingEndorsementComponent implements OnInit {
     this.selectedMedicationOrder.forEach((element) => {
       this.medicationImportDrugArray.push({
         Dockey: '',
-        OrderType:
-          element.MotypId == '30' ? 'Planned Administration' : 'Discharge',
+        OrderType: this.orderType[element.MotypId],
         Description:
           element.Descrlt +
           element.Quan +

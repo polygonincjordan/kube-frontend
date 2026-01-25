@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 import { DataShareService } from '@services/data-share.service';
 import { SharedService } from '@services/shared.service';
 import { ActionType } from '@services/interfaces/common.enum';
-
+import { DocsService } from '@services/docs.service';
 @Component({
   selector: 'app-newborn-assessment',
   templateUrl: './newborn-assessment.component.html',
@@ -81,7 +81,7 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
   private actionTypeSubscription$: Subscription;
   isFemale: boolean;
   constructor(private formBuilder: FormBuilder, private _route: ActivatedRoute, public storageService: StorageService, public admissionService: AdmissionService, private sharedService: SharedService, private dataShareService: DataShareService,
-    private modalService: BsModalService) {
+    private modalService: BsModalService, private docsService: DocsService) {
     this._route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       if (this.paramsObject.lfdnr) {
@@ -121,7 +121,12 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
       this.createDoc('1', 'edit')
     }
     if (changes.soapFormEvent.currentValue == 'release') {
-      this.createDoc('2', 'edit')
+      if (this.admissionService.isEditBornForm) {
+        this.createDoc('2', 'release')
+      } else {
+        this.createDoc('4', 'release')
+      }
+        
     }
     if (
       this.admissionService.isEditBornForm ||
@@ -636,6 +641,7 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
     let json = {
       Dockey: this.admissionService.selectedCurrentDocDetails.Dockey,
     };
+    this.docKey = json.Dockey;
     this.admissionService
       .getNewBornDocument(json.Dockey)
       .subscribe({
@@ -652,13 +658,16 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
   }
 
   public createDoc(status?: any, actionType?: any) {
+    const headCircumValue = this.newBornForm.get('HeadCircum')?.value;
+    if (headCircumValue == null || String(headCircumValue).trim() === '') {
+      this.docsService.showWarningMsg('Head Circumference field is required');
+      this.admissionService.clearSoapEvent.next(true);
+      return;
+    }
+
     if (this.admissionService.isCloneNewBornForm) {
       status = '3',
         actionType = 'copy'
-    }
-    if (this.admissionService.isEditBornForm) {
-      status = '1',
-        actionType = 'edit'
     }
     if (this.newBornForm.invalid) {
       this.newBornForm.markAllAsTouched(); // Mark all fields as touched to show errors
@@ -817,7 +826,7 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
       formData.Gestation = formData.Gestation ? Number(formData.Gestation) : null;
       let payload = {
         ...formData,
-        Dockey: actionType === 'edit' || actionType === 'copy' ? this.docKey : '',
+        Dockey: actionType !== 'add' ? this.docKey : '',
         Dtid: 'ZMED_NBASM',
         Einri: this.paramsObject.einri,
         Patnr: this.paramsObject.patnr,
@@ -828,7 +837,7 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
         DocStatus: status,
         TOVITALSIGNS: checkVitalList
       }
-
+      
       this.subscription = this.admissionService.createNewBorn(payload).subscribe({
         next: (data: any) => {
           this.admissionService.cancelAllForm();
@@ -836,18 +845,14 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
           this.admissionService.clearSoapEvent.next(true);
           this.realodEducationList.next(true);
           this.sharedService.changeMessage(true);
+          this.docsService.showSuccessMsg(this.soapFormEvent,'Newborn Physician Assessment');
         },
         error: (err: any) => {
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(`PUT Error at new born : ${err}`);
+          this.admissionService.clearSoapEvent.next(true);
+          this.docsService.showErrorMsg(err);
         },
         complete: () => {
           resolve(true);
-          if (status === 'edit') {
-            this.sharedService.successSwallModel('new born updated successfully');
-          } else {
-            this.sharedService.successSwallModel('new born created successfully');
-          }
           this.successEvent.next(true)
         }
       });

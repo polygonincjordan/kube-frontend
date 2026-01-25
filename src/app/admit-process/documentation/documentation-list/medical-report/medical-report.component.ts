@@ -5,6 +5,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-medical-report',
@@ -18,7 +19,7 @@ export class MedicalReportComponent implements OnInit,OnChanges {
   paramsObject: any;
   selectedPatientDetails: any;
   constructor(private formBuilder: FormBuilder,private storageService:StorageService,private emergencyService:EmergencyService,private route: ActivatedRoute,
-    public admissionService: AdmissionService, private sharedService: SharedService) {
+    public admissionService: AdmissionService, private sharedService: SharedService, private docsService:DocsService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -26,36 +27,64 @@ export class MedicalReportComponent implements OnInit,OnChanges {
 
   ngOnInit() {
     this.initForm();
+    this.handleDocLoadingIfNeeded();
   }
+  
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.soapFormEvent.currentValue == 'add') {
-      this.createMedDoc(false);
-    }
-    if(changes.soapFormEvent.currentValue == 'edit') {
-      this.updateMedDoc();
-    }
-    if(changes.soapFormEvent.currentValue == 'saveClose') {
-      if(this.admissionService.isEditMedicalDoc) {
-        this.updateMedDoc();
-      } else {
-        this.createMedDoc(false);
-      }
-    }
+    this.handleSoapFormEvent();
+  }
 
-    if(changes.soapFormEvent.currentValue == 'release') {
-      if(this.admissionService.isCloneMedicalDoc) {
-        this.createMedDoc(true)
-      } else {
-        this.releaseMedDoc()
-      }
+  private handleSoapFormEvent(): void {
+    switch (this.soapFormEvent) {
+      case 'add':
+        this.handleAddEvent();
+        break;
+      case 'edit':
+        this.handleEditEvent();
+        break;
+      case 'release':
+        this.handleReleaseEvent();
+        break;
     }
+  }
 
+  private handleDocLoadingIfNeeded(): void {
     if (this.admissionService.isEditMedicalDoc || this.admissionService.isCloneMedicalDoc) {
       this.getMedReportData();
     }
   }
 
-  initForm(){
+
+  private handleAddEvent(): void {
+    const docStatus = this.resolveDocStatus();
+    this.createMedDoc(docStatus);
+  }
+
+  private handleEditEvent(): void {
+    this.updateMedDoc();
+  }
+
+  private handleReleaseEvent(): void {
+    if (this.admissionService.isEditMedicalDoc) {
+      this.releaseMedDoc();
+    } else {
+      const docStatus = this.resolveDocStatus();
+      this.createMedDoc(docStatus);
+    }
+  }
+
+  private resolveDocStatus(): string {
+    if (this.soapFormEvent === 'add') {
+      return this.admissionService.isCloneMedicalDoc ? '3' : '1';
+    }
+
+    if (this.soapFormEvent === 'release') {
+      return this.admissionService.isCloneMedicalDoc ? '5' : '4';
+    }
+    return '1';
+  }
+
+  initForm() {
     this.medReportForm = this.formBuilder.group({
       "Dockey": [''],
       "Dtid": ["ZMED_MEDRP"],
@@ -82,70 +111,74 @@ export class MedicalReportComponent implements OnInit,OnChanges {
   getMedReportData() {
     const json = {
       Dockey:this.admissionService.selectedCurrentDocDetails.Dockey,
-    }
+    };
     this.emergencyService.getMedReportData(json).subscribe(
       (patientResult: any) => {
-        this.selectedPatientDetails = patientResult?.d?.results[0]; 
+        this.selectedPatientDetails = patientResult?.d?.results[0];
         this.medReportForm.patchValue(patientResult?.d?.results[0]);
         this.medReportForm.patchValue({
           Dockey:patientResult?.d?.results[0]?.Dockey
-        })
+        });
       },
       (_error: any) => {}
     );
   } 
-   async createMedDoc(isrelease:boolean){
-    let createJson = this.medReportForm.value;
-    createJson['DocStatus'] = '1';
-   await this.emergencyService.createMedDoc(createJson).subscribe(()=>{
-    // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-    // }
+  private createMedDoc(docStatus: string): void {
+    const payload = {
+      ...this.medReportForm.value,
+      DocStatus: docStatus
+    };
+
+    this.emergencyService.createMedDoc(payload).subscribe({
+      next: () => this.handleSuccess(),
+      error: (err) => this.handleError(err)
+    });
+  }
+
+  private updateMedDoc(): void {
+    const payload = {
+      ...this.medReportForm.value,
+      DocStatus: '1'
+    };
+
+    this.emergencyService.updateMedDoc(payload).subscribe({
+      next: () => this.handleSuccess(),
+      error: (err) => this.handleError(err)
+    });
+  }
+
+  private releaseMedDoc(): void {
+    const payload = {
+      ...this.medReportForm.value,
+      DocStatus: '2'
+    };
+
+    this.emergencyService.releaseMedDoc(payload).subscribe({
+      next: () => this.handleSuccess(),
+      error: (err) => this.handleError(err)
+    });
+  }
+
+  private handleSuccess(): void {
+    this.resetDocumentState();
+    this.docsService.showSuccessMsg(this.soapFormEvent, 'Medical Report Document');
+    this.emitReloadEvent();
+  }
+
+  private handleError(err: any): void {
+    this.resetDocumentState();
+    this.docsService.showErrorMsg(err);
+  }
+
+  private resetDocumentState(): void {
     this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';
-    this.realodEducationList.next(true);
-      this.admissionService.clearSoapEvent.next(true);
-      this.admissionService.isEditMedicalDoc = false;
-      this.admissionService.isCloneMedicalDoc = false;
-      this.sharedService.successSwallModel('Medical Report Document Created Successfully');
-    },(err) =>{
-      this.admissionService.clearSoapEvent.next(true);
-      this.admissionService.isEditMedicalDoc = false;
-      this.admissionService.isCloneMedicalDoc = false;
-      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
-    })
-  }
-  async updateMedDoc(){
-    let updateJson = this.medReportForm.value;
-    updateJson['DocStatus'] = '1';
-    await this.emergencyService.updateMedDoc(updateJson).subscribe(()=>{
-      // if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-      // }
-      this.admissionService.cancelAllForm();
-      this.admissionService.selectedCurrentDocDetails = '';
-      this.realodEducationList.next(true);
-      this.admissionService.clearSoapEvent.next(true);
-      this.admissionService.isEditMedicalDoc = false;
-      this.admissionService.isCloneMedicalDoc = false;
-      this.sharedService.successSwallModel('Medical Report Document Edited Successfully');
-    },(err) =>{
-      this.admissionService.clearSoapEvent.next(true);
-      this.admissionService.isEditMedicalDoc = false;
-      this.admissionService.isCloneMedicalDoc = false;
-      const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-      this.sharedService.waringSwallModel(`${errorMsg}`);
-    })
-  }
-  async releaseMedDoc(){
-   
-    let updateJson = this.medReportForm.value;
-    updateJson['DocStatus'] = '2';  
-    this.emergencyService.releaseMedDoc(updateJson).subscribe(()=>{
-      this.admissionService.cancelAllForm();
-    this.admissionService.selectedCurrentDocDetails = '';
     this.admissionService.clearSoapEvent.next(true);
-    this.sharedService.successSwallModel('Medical Report Document Released Successfully');
+    this.admissionService.isEditMedicalDoc = false;
+    this.admissionService.isCloneMedicalDoc = false;
+  }
+
+  private emitReloadEvent(): void {
     this.realodEducationList.next(true);
-    })
-   }
+  }
 }

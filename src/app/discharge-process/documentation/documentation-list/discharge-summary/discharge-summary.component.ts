@@ -140,65 +140,61 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   }
 
   savePhysicianDischarge(isRelease) {
-    // if(this.admissionService.isCloneDischargeSummery) {
-    //   this.inPatientPhdisDataSet.value.Dockey = '';  
-    // }
-    // this.inPatientPhdisDataSet.patchValue({
-    //   Time: this.parsePayloadFormateTime(this.inPatientPhdisDataSet.value.Time),
-    // });
+    const ToFormData = this.inPatientPhdisDataSet.value;
+    ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
+    ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
 
-    let payloadDicharge = this.inPatientPhdisDataSet.value;
-    payloadDicharge.Time = this.parsePayloadFormateTime(payloadDicharge.Time)  
-    payloadDicharge.Date = payloadDicharge.Date !== undefined && payloadDicharge.Date !== null
-        ? this.sanitizeSAPDateFormat(payloadDicharge.Date)
-        : null;
-    const saveDataList = {
-      patientFormData: this.inPatientPhdisDataSet.value,
-      releaseForm: isRelease,
+    const ToDischargeMed = this.inPatientDischargeData?.results[0]?.ToDischargeMed?.results;
+    const ToHospitalMed = this.inPatientDischargeData?.results[0]?.ToHospitalMed?.results;
+    const ToDiagnosis = this.inPatientDischargeData?.results[0]?.ToDiagnosis?.results;
+
+    const data = { 
+      Release: isRelease, 
+      ToFormData, 
+      ToDiagnosis, 
+      ToHospitalMed, 
+      ToDischargeMed 
     };
-    this.admissionService
-      .saveInPatientPhdisData(
-        saveDataList,
-        this.userConfig,
-        this.paramsObj
-      )
-      .subscribe((resp) => {
+
+    this.admissionService.saveInPatientPhdisData(data, this.userConfig, this.paramsObj).subscribe({
+      next: () => {
         this.reloadTableList.next(true);
         this.admissionService.cancelAllForm();
         this.admissionService.clearSoapEvent.next(true);
-      }, (error: any)=>{
+      },
+      error: (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
-      });
-    // this.updateEvent.emit(true);
+      },
+    });
   }
 
   updatePhysicianDischarge(isRelease) {
-    let payload: any = this.inPatientPhdisDataSet.value;
-    // this.inPatientPhdisDataSet.patchValue({
-      payload.Time = this.parsePayloadFormateTime(payload.Time),
-      payload.Date = payload.Date !== undefined && payload.Date !== null
-          ? this.sanitizeSAPDateFormat(payload.Date)
-          : null;
-    // });
-    const saveDataList = {
-      patientFormData: payload.Time,
-      releaseForm: isRelease,
+    const ToFormData = this.inPatientPhdisDataSet.value;
+    ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
+    ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
+
+    const ToDischargeMed = this.inPatientDischargeData?.results[0]?.ToDischargeMed?.results;
+    const ToHospitalMed = this.inPatientDischargeData?.results[0]?.ToHospitalMed?.results;
+    const ToDiagnosis = this.inPatientDischargeData?.results[0]?.ToDiagnosis?.results;
+
+    const data = { 
+      Release: isRelease, 
+      ToFormData, 
+      ToDiagnosis, 
+      ToHospitalMed, 
+      ToDischargeMed 
     };
-    this.admissionService
-      .updateInPatientPhdisData(
-        saveDataList,
-        this.userConfig,
-        this.paramsObj
-      )
-      .subscribe((resp) => {
+
+    this.admissionService.updateInPatientPhdisData(data, this.userConfig, this.paramsObj).subscribe({
+      next: () => {
         this.reloadTableList.next(true);
         this.admissionService.cancelAllForm();
         this.admissionService.clearSoapEvent.next(true);
-        // this.inPatientConfigurationService.getListOfAllPatientVisitDataSet();
-      }, (error: any)=>{
+      },
+      error: (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
-      });
-    // this.updateEvent.emit(true);
+      },
+    });
   }
 
   sanitizeSAPDateFormat(date: any) {

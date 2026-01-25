@@ -22,5 +22,5 @@ export const environment = {
   eKardexApiUrl: 'http://abdaliwebserver.ach.jo:6057',
   labChartUrl: 'http://achemr01.ach.jo:8000/sap/bc/ui5_ui5/sap/zn_ish_enav/index.html?sap-client=300&',
   visitNoteUrl: 'http://achemr01.ach.jo:8000/sap/bc/ui5_ui5/sap/zn_ish_enav/index.html?sap-client=300&',
-  radiologyUrl: 'https://www.evjd01.philips.com/portal/?user_name=Amer.Malkawi&password=amc@123&key_images=true&',
+  radiologyUrl: 'https://radportal.ach.jo/portal/?user_name=amcamc&password=amc123&key_images=true&',
 };
