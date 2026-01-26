@@ -755,15 +755,30 @@ export class ErVitalsComponentComman implements OnInit {
   EditVitalList() {
      if (this.isSelected) {
        if (this.selectedColData) {
+         // Validation: Prevent editing if reading is older than 24 hours or in the future
+         const readingDate = this.getDate(this.selectedColData.Odate);
+         const now = new Date();
+         if (readingDate && (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000) {
+           Swal.fire({
+             text: "You cannot edit a vital reading older than 24 hours.",
+             icon: 'error',
+             confirmButtonText: 'Ok',
+             customClass: { popup: 'myalertpopup' }
+           });
+           return;
+         }
+         if (readingDate && readingDate > now) {
+           Swal.fire({
+             text: "You cannot set a future date for vital readings.",
+             icon: 'error',
+             confirmButtonText: 'Ok',
+             customClass: { popup: 'myalertpopup' }
+           });
+           return;
+         }
          this.showMaintain = true;
          this.edit = true
          this.selectedColData.TOITEM.results.forEach(element => {
-           // if(element.Name.includes('Temperature')){
-           //   element['Value'] = parseFloat(element.Value).toFixed(2);
-           // }
-           // else{
-           //   element['Value'] = parseInt(element.Value);
-           // }
            this.addItemForVital(element);
          });
          this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo);
@@ -771,7 +786,6 @@ export class ErVitalsComponentComman implements OnInit {
          this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
          this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
          this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);
- 
        }
      } else {
        Swal.fire({
@@ -836,43 +850,76 @@ export class ErVitalsComponentComman implements OnInit {
   updateVitalSigns() {
      this.isFormSubmitted = true;
     if (this.cancelReasonValue !== '') {
-    let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
-    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
-    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
-    const json = {
-      "Obsid": this.selectedColData.Obsid,
-      "ObsidVers": this.selectedColData.ObsidVers,
-      "Stoid": this.cancelReasonValue,
-      "Odate": createDate,
-      "Otime": createTime,
-      "Descr": this.maintainVitalBarForm.controls.Descr.value,
-      "TOITEM": this.maintainVitalFormitems.value
-    }
-    this.emergencyService.updateVitalSigns(json).subscribe(
-      (_success: any) => {
-        this.getVitalList();
-        this.resetAllMaintainValues();
-        this.showMaintain = false
-          //this.modalRef.hide();
-          this.modalRefForDelete.hide();
-          this.cancelReasonValue = '';
-          this.isSelected = false;
+      // Validation: Prevent updating to a future date or if reading is older than 24 hours
+      const selectedDate = this.maintainVitalBarForm.controls.Odate.value;
+      const now = new Date();
+      if (selectedDate && selectedDate > now) {
         Swal.fire({
-          text: "Vital signs updated successfully",
-          icon: 'success',
+          text: "You cannot set a future date for vital readings.",
+          icon: 'error',
           confirmButtonText: 'Ok',
           customClass: { popup: 'myalertpopup' }
-        } as any)
-      },
-      (_error: any) => { }
-    );
-  }
+        });
+        return;
+      }
+      if (selectedDate && (now.getTime() - selectedDate.getTime()) > 24 * 60 * 60 * 1000) {
+        Swal.fire({
+          text: "You cannot edit a vital reading older than 24 hours.",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        });
+        return;
+      }
+      let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
+      createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+      let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
+      const json = {
+        "Obsid": this.selectedColData.Obsid,
+        "ObsidVers": this.selectedColData.ObsidVers,
+        "Stoid": this.cancelReasonValue,
+        "Odate": createDate,
+        "Otime": createTime,
+        "Descr": this.maintainVitalBarForm.controls.Descr.value,
+        "TOITEM": this.maintainVitalFormitems.value
+      }
+      this.emergencyService.updateVitalSigns(json).subscribe(
+        (_success: any) => {
+          this.getVitalList();
+          this.resetAllMaintainValues();
+          this.showMaintain = false
+            //this.modalRef.hide();
+            this.modalRefForDelete.hide();
+            this.cancelReasonValue = '';
+            this.isSelected = false;
+          Swal.fire({
+            text: "Vital signs updated successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: { popup: 'myalertpopup' }
+          } as any)
+        },
+        (_error: any) => { }
+      );
+    }
   }
   createVitalSigns() {
     let EnteredvitalArr = [];
     let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
-    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
+    let createDateObj = this.maintainVitalBarForm.controls.Odate.value;
+    let now = new Date();
+    // Validation: Prevent creating with a future date
+    if (createDateObj && createDateObj > now) {
+      Swal.fire({
+        text: "You cannot set a future date for vital readings.",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      });
+      return;
+    }
+    let createDate = createDateObj.getFullYear() + '-' + String(createDateObj.getMonth() + 1).padStart(2, '0') + '-' + String(createDateObj.getDate()).padStart(2, '0') + 'T00:00:00';
     EnteredvitalArr = this.maintainVitalFormitems.value;
     EnteredvitalArr = EnteredvitalArr.filter(element => element.Value !== '')
     const json = {
