@@ -512,20 +512,9 @@ export class ErVitalsComponent implements OnInit {
       if (this.selectedColData) {
         // Validation: Prevent editing if reading is older than 24 hours
         const readingDate = this.getDate(this.selectedColData.Odate);
-        const now = new Date();
-        if (readingDate && (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000) {
+        if (this.isPasssed24Hours(readingDate)){
           Swal.fire({
             text: "You cannot edit a vital reading older than 24 hours.",
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            customClass: { popup: 'myalertpopup' }
-          });
-          return;
-        }
-        // Validation: Prevent editing if reading date is in the future
-        if (readingDate && readingDate > now) {
-          Swal.fire({
-            text: "You cannot set a future date for vital readings.",
             icon: 'error',
             confirmButtonText: 'Ok',
             customClass: { popup: 'myalertpopup' }
@@ -610,20 +599,9 @@ export class ErVitalsComponent implements OnInit {
     if (this.cancelReasonValue !== '') {
       // Validation: Prevent updating to a future date
       const selectedDate = this.maintainVitalBarForm.controls.Odate.value;
-      const now = new Date();
-      if (selectedDate && selectedDate > now) {
+      if (this.isFutureDate(selectedDate)){
         Swal.fire({
           text: "You cannot set a future date for vital readings.",
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          customClass: { popup: 'myalertpopup' }
-        });
-        return;
-      }
-      // Validation: Prevent updating if reading is older than 24 hours
-      if (selectedDate && (now.getTime() - selectedDate.getTime()) > 24 * 60 * 60 * 1000) {
-        Swal.fire({
-          text: "You cannot edit a vital reading older than 24 hours.",
           icon: 'error',
           confirmButtonText: 'Ok',
           customClass: { popup: 'myalertpopup' }
@@ -826,4 +804,14 @@ export class ErVitalsComponent implements OnInit {
   redirectBMDI(){
     window.open("https://achemr01.ach.jo:5200/sap/bc/webdynpro/sap/n1prec_application_v2?caseid="+ this.erListSelectedData.Falnr +"&fpm_work_protect_mode=APPLICATION_ONLY&institution=1000&movementid="+ this.erListSelectedData.Lfdnr +"&orgunit="+ this.erListSelectedData.Deptou +"&patientid="+ this.erListSelectedData.Patnr +"&precconfigid=&prof_grp=NURS&sap-client=300&sap-ep-tstamp=20250530165302149&sap-ep-version=7&sap-language=EN&sap-nwbc-context=03DA333035D633D33336348AF2B372F50DB2720BF5B30A700C0908F2773330343530B3D03330D0B334303274330001632FD700036363101300&sap-wd-tstamp=20250530165302149&unit=F9IIUAMC&sap-accessibility=", '_blank');
   }
+
+   isPasssed24Hours(readingDate:any): boolean {
+         const now = new Date();
+         return (readingDate&& (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000);
+  }
+
+  isFutureDate(createDateObj:any): boolean {
+    return (createDateObj&&createDateObj > new Date());
+  }
+
 }
