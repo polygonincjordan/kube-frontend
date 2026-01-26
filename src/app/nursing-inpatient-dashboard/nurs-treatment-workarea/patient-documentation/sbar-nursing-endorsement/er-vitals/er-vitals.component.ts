@@ -504,19 +504,9 @@ export class ErVitalsForSBARComponent implements OnInit {
       if (this.selectedColData) {
         // Validation: Prevent editing if reading is older than 24 hours or in the future
         const readingDate = this.getDate(this.selectedColData.Odate);
-        const now = new Date();
-        if (readingDate && (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000) {
+        if (this.isPasssed24Hours(readingDate)) {
           Swal.fire({
             text: "You cannot edit a vital reading older than 24 hours.",
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            customClass: { popup: 'myalertpopup' }
-          });
-          return;
-        }
-        if (readingDate && readingDate > now) {
-          Swal.fire({
-            text: "You cannot set a future date for vital readings.",
             icon: 'error',
             confirmButtonText: 'Ok',
             customClass: { popup: 'myalertpopup' }
@@ -599,21 +589,11 @@ export class ErVitalsForSBARComponent implements OnInit {
   updateVitalSigns() {
     this.isFormSubmitted = true;
     if (this.cancelReasonValue !== '') {
-      // Validation: Prevent updating to a future date or if reading is older than 24 hours
+      // Validation: Prevent updating to a future date 
       const selectedDate = this.maintainVitalBarForm.controls.Odate.value;
-      const now = new Date();
-      if (selectedDate && selectedDate > now) {
+      if (this.isFutureDate(selectedDate)) {
         Swal.fire({
           text: "You cannot set a future date for vital readings.",
-          icon: 'error',
-          confirmButtonText: 'Ok',
-          customClass: { popup: 'myalertpopup' }
-        });
-        return;
-      }
-      if (selectedDate && (now.getTime() - selectedDate.getTime()) > 24 * 60 * 60 * 1000) {
-        Swal.fire({
-          text: "You cannot edit a vital reading older than 24 hours.",
           icon: 'error',
           confirmButtonText: 'Ok',
           customClass: { popup: 'myalertpopup' }
@@ -664,9 +644,8 @@ export class ErVitalsForSBARComponent implements OnInit {
     let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     let createDateObj = this.maintainVitalBarForm.controls.Odate.value;
-    let now = new Date();
     // Validation: Prevent creating with a future date
-    if (createDateObj && createDateObj > now) {
+    if (this.isFutureDate(createDateObj)) {
       Swal.fire({
         text: "You cannot set a future date for vital readings.",
         icon: 'error',
@@ -812,5 +791,14 @@ export class ErVitalsForSBARComponent implements OnInit {
     this.importEvent.emit(value);
     this.modalRef.hide();
     // this.vitalsArr = [];
+  }
+
+   isPasssed24Hours(readingDate:any): boolean {
+         const now = new Date();
+         return (readingDate&& (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000);
+  }
+
+  isFutureDate(createDateObj:any): boolean {
+    return (createDateObj&&createDateObj > new Date());
   }
 }
