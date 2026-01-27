@@ -18,7 +18,7 @@
     <!-- medication tab actions (set no applicable, import) -->
     <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
       <div style="display: flex; align-items: center; gap: 10px">
-        <input type="checkbox" style="width: 36px; height: 22px" [(ngModel)]="noMedicationApplicable" [disabled]="activeTabSelections.size > 0" />
+        <input type="checkbox" style="width: 36px; height: 22px" [style.cursor]="importedMedications.length > 0 ? 'not-allowed' : 'pointer'" [(ngModel)]="noMedicationApplicable" [disabled]="activeTabSelections.size > 0 || importedMedications.length > 0" />
         <label class="my-0">{{ noMedicationApplicableLabels[selectedTab] }}</label>
       </div>
       <button class="tab-action" (click)="openModal(medicationOrderCase)" [disabled]="noMedicationApplicable">Import</button>
@@ -54,7 +54,7 @@
   <table *ngIf="selectedTab === 'Discharge Medication'" class="table table-bordered past-table">
     <thead style="background-color: #e4edf5 !important; color: black; text-align: center; position: sticky; top: 0;">
       <tr>
-        <th [class.d-none]="!isImport">
+        <th [class.d-none]="!isImport || activeTabMedications.length === 0">
           <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll()" style="width: 20px; height: 20px;" />
         </th>
         <th>Order Type</th>
@@ -102,10 +102,10 @@
   <table *ngIf="selectedTab === 'Hospital Medication'" class="table table-bordered past-table">
     <thead style="background-color: #e4edf5 !important; color: black; text-align: center; position: sticky; top: 0;">
       <tr>
-        <th [class.d-none]="!isImport">
+        <th [class.d-none]="!isImport || activeTabMedications.length === 0">
           <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAll()" style="width: 20px; height: 20px;" />
         </th>
-        <th>Event Description</th>
+        <th>Description</th>
         <th [class.d-none]="!isImport">Order Number</th>
         <th [class.d-none]="isImport">Dose</th>
         <th [class.d-none]="isImport">Validity</th>

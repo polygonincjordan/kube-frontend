@@ -171,7 +171,7 @@ export class DrugEventsAdminComponent implements OnInit {
   }
   AdministerEventForm(item, data) {
     this.FSourcevalueaction(item.Events)
-    return new FormGroup({
+    const form = new FormGroup({
       Fsource: new FormControl(item.Events.Fsource),
       Descr: new FormControl(item.Events.Descr),
       Descrlt: new FormControl(data.Descrlt),
@@ -190,7 +190,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Rdrugdq: new FormControl(item.Events.Quan),
         Rbdad: new FormControl( this.isSignedMed(item.Events.Mesid) || item.Events.Notgiven ? this.sanitizeSAPDateFormat(item.Events.Rbdad, item.Events.Rbtad) ?? new Date() : new Date()),
         Rbtad: new FormControl(''),
-        Rdosdif: new FormControl('', Validators.required),
+        Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
@@ -223,7 +223,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Quanunit: new FormControl(data.Unit),
         Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
-        Quan2: new FormControl( this.isSignedMed(item.Events.Mesid) ? item.Events.Quan2 : item.Events.PlanDQ ),
+        Quan2: new FormControl(''),
         PlanDQ: new FormControl(`${item.Events.PlanDQ} ${item.Events.PlanUN}`),
         PlanUN: new FormControl(item.Events.PlanUN),
         SCRAP: new FormControl( Number(item?.Events?.SCRAP) === 0 ? '' : `${item?.Events?.SCRAP} ${item.Events.PlanUN}`),
@@ -259,7 +259,26 @@ export class DrugEventsAdminComponent implements OnInit {
         Empid: new FormControl(this.getUserConfigData.UserId)
       }),
 
-    })
+    });
+
+    const administratorQuan2 = form.get('Administrator.Quan2');
+    const administratorRdosdif = form.get('Administrator.Rdosdif');
+
+    const originalAdministratorQuan2 = administratorQuan2?.value;
+
+    if (administratorQuan2) {
+      administratorQuan2.valueChanges.subscribe(newValue => {
+        if (newValue !== originalAdministratorQuan2) {
+          administratorRdosdif?.setValidators([Validators.required]);
+          administratorRdosdif?.updateValueAndValidity();
+        } else {
+          administratorRdosdif?.setValidators([]);
+          administratorRdosdif?.updateValueAndValidity();
+        }
+      });
+    }
+
+    return form;
   }
 
 

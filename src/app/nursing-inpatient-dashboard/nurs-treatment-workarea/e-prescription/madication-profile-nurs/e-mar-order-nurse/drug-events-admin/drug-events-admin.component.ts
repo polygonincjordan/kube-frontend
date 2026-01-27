@@ -179,7 +179,7 @@ export class DrugEventsAdminComponent implements OnInit {
   }
   AdministerEventForm(item, data) {
     this.FSourcevalueaction(item.Events)
-    return new FormGroup({
+    const form = new FormGroup({
       Fsource: new FormControl(item.Events.Fsource),
       Descr: new FormControl(item.Events.Descr),
       Descrlt: new FormControl(item?.Events?.EventDesc),
@@ -201,7 +201,7 @@ export class DrugEventsAdminComponent implements OnInit {
         PlanUN: new FormControl(item.Events.PlanUN),
         Rbdad: new FormControl( this.isSignedMed(item.Events.Mesid) || item.Events.Notgiven ? this.sanitizeSAPDateFormat(item.Events.Rbdad, item.Events.Rbtad) ?? new Date() : new Date()),
         Rbtad: new FormControl(''),
-        Rdosdif: new FormControl('', Validators.required),
+        Rdosdif: new FormControl(''),
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Fsource: new FormControl(item.Events.Fsource == null ? '' : item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
@@ -235,7 +235,7 @@ export class DrugEventsAdminComponent implements OnInit {
         Quanunit: new FormControl(data.Unit),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         DosageStr: new FormControl(item?.Events?.DosageStr),
-        Quan2: new FormControl( this.isSignedMed(item.Events.Mesid) ? item.Events.Quan2 : item.Events.PlanDQ ),
+        Quan2: new FormControl(''),
         SCRAP: new FormControl( Number(item?.Events?.SCRAP) === 0 ? '' : `${item?.Events?.SCRAP} ${item.Events.PlanUN}`),
       }),
       DrugAdminister: new FormGroup({
@@ -267,7 +267,26 @@ export class DrugEventsAdminComponent implements OnInit {
         Empid: new FormControl(this.getUserConfigData.UserId)
       }),
 
-    })
+    });
+
+    const administratorQuan2 = form.get('Administrator.Quan2');
+    const administratorRdosdif = form.get('Administrator.Rdosdif');
+
+    const originalAdministratorQuan2 = administratorQuan2?.value;
+
+    if (administratorQuan2) {
+      administratorQuan2.valueChanges.subscribe(newValue => {
+        if (newValue !== originalAdministratorQuan2) {
+          administratorRdosdif?.setValidators([Validators.required]);
+          administratorRdosdif?.updateValueAndValidity();
+        } else {
+          administratorRdosdif?.setValidators([]);
+          administratorRdosdif?.updateValueAndValidity();
+        }
+      });
+    }
+
+    return form;
   }
 
   isSignedMed(value: string): boolean {
