@@ -46,6 +46,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public isEndedDisabled: boolean;
   emarActive: boolean = false;
   public RequestStatus: any;
+  public isEventFinalized: boolean = false;
   constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService) { }
 
   ngOnInit() {
@@ -92,6 +93,7 @@ export class DrugEventsAdminComponent implements OnInit {
 
 
   openModalForDrugsEvents(item, data) {
+    this.isEventFinalized = item.Events.Mesid === '600';
     this.administratiForm = this.AdministerEventForm(item, data);
     this.administratiForm.get('AdditionalSupply').patchValue({ Nursingou: this.medicationAdministrative.OrderingTo });
     const config: ModalOptions = { class: 'modal-dialog-centered drug-event' };
@@ -170,9 +172,9 @@ export class DrugEventsAdminComponent implements OnInit {
         Falnr: new FormControl(item.Events.Falnr),
         Meevtid: new FormControl(item.Events.Meevtid),
         Rdrugdq: new FormControl(item.Events.Quan),
-        Rbdad: new FormControl(new Date()),
+        Rbdad: new FormControl( this.isSignedMed(item.Events.Mesid) || item.Events.Notgiven ? this.sanitizeSAPDateFormat(item.Events.Rbdad, item.Events.Rbtad) ?? new Date() : new Date()),
         Rbtad: new FormControl(''),
-        Rdosdif: new FormControl(''),
+        Rdosdif: new FormControl('', Validators.required),
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
@@ -193,9 +195,13 @@ export class DrugEventsAdminComponent implements OnInit {
         Rbdad: new FormControl(new Date(), Validators.required),
         Rbtad: new FormControl(''),
         Notgiven: new FormControl(true),
-        Rdosdif: new FormControl(''),
+        Rdosdif: new FormControl('', Validators.required),
         Rtimdif: new FormControl(item.Events.Rtimdif),
-        Adnotestx: new FormControl(item.Events.Prncond),
+        Adnotestx: new FormControl(
+         `${item.Events.Prncond ? `PRN Cond:\n ${item.Events.Prncond}` : ''}` +
+         `${item.Events.Prncond && data.Comments ? '\n' : ''}` +
+         `${data.Comments ? `Comments:\n ${data.Comments}` : ''}`
+          ),
         Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Quanunit: new FormControl(data.Unit),
         Meresp2: new FormControl(item.Events.WitnessEmp),
@@ -279,8 +285,15 @@ export class DrugEventsAdminComponent implements OnInit {
     return states.includes(value);
   }
   Administerdata() {
+    if (this.isEventFinalized) return;
+    const RdosdifControl = this.administratiForm.get('Administrator.Rdosdif');
+    const RdosdifNotControl = this.administratiForm.get('NotAdminister.Rdosdif');
     this.isFormSubmitted = true;
     if (this.administered) {
+      if (RdosdifControl?.invalid) {
+        RdosdifControl.markAsTouched();
+        return;         
+      }
       if ((this.administratiForm.get('Administrator').get('Prncond').value === '' && this.administratiForm.get('Administrator').get('Prn').value) || (!this.administratiForm.get('Administrator').get('Prn').value && this.administratiForm.get('Administrator').get('Prncond').value !== '')) {
         this.showErrorPopup(null, 'Confirmation that administration conditions were checked, is required!', 'Error')
       } else {
@@ -339,6 +352,10 @@ export class DrugEventsAdminComponent implements OnInit {
     }
     else if (this.notadministered) {
       if (this.notadministered) {
+        if (RdosdifNotControl?.invalid) {
+          RdosdifNotControl.markAsTouched();
+          return;         
+        }
         if (this.administratiForm.get('Secwitness').value === 'X') {
           this.showErrorPopup(null, 'Witness is required to administer the drug', 'Warn').then(
             (result) => {

@@ -105,7 +105,7 @@
             <div class="mb-1 d-flex justify-content-between w-100">
               <div class="mb-1 d-flex w-33">
                 <label for="adminDose" class=" col-form-label" style="width: 49%;">Administered Dose</label>
-                <input id="adminDose" type="text" class="form-control event-font w-30 mr-3" formControlName="Quan2" />
+                <input id="adminDose" type="text" class="form-control event-font w-30 mr-3" formControlName="Quan2" [readonly]="isEventFinalized" />
                 <input id="adminDose" type="text" class="form-control event-font w-20 mr-3" formControlName="PlanUN" [readonly]="true" />
               </div>
 
@@ -129,8 +129,8 @@
               <div class="d-flex w-50">
                 <label for="inputPassword" class=" col-form-label" style="width: 30%;">Admin Time</label>
                 <input type="text" class="form-control event-font w-70 mr-3" type="text" title="{{administratiForm.value.Rbdad}}" formControlName="Rbdad"
-                  [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}" bsDatepicker
-                  [isDisabled]="administratiForm.value.Descr ==='Administered' ? true : false" [readonly]="isEndedDisabled" />
+                  [bsConfig]="{withTimepicker: !isEventFinalized,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}" bsDatepicker
+                  [isDisabled]="isEventFinalized" [readonly]="isEventFinalized" />
               </div> 
               
               <div class="d-flex w-50">
