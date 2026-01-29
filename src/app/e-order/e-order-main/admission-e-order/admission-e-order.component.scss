@@ -173,5 +173,10 @@
 }
 
 input.ng-touched.ng-invalid {
-  border: 1px solid red;
+  border-color: red;
+}
+
+ng-select.ng-touched.ng-invalid {
+  outline: 1px solid red;
+  border-radius: 2px;
 }

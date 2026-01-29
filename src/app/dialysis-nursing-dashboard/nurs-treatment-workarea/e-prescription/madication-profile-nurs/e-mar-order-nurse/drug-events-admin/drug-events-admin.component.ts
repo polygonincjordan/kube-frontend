@@ -51,6 +51,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public RequestStatus: any;
   public eventDetailList: any;
   public mainEvent: any;
+  public isEventFinalized: boolean = false;
   constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService,public emergencyService:EmergencyService) { }
 
   ngOnInit() {
@@ -97,6 +98,7 @@ export class DrugEventsAdminComponent implements OnInit {
 
 
   openModalForDrugsEvents(item, data) {
+    this.isEventFinalized = item.Events.Mesid === '600';
     this.administratiForm = this.AdministerEventForm(item, data);
     this.getMainEvent(data.Meordid);
     this.administratiForm.get('AdditionalSupply').patchValue({ Nursingou: this.medicationAdministrative.OrderingTo });
@@ -122,8 +124,8 @@ export class DrugEventsAdminComponent implements OnInit {
     this.AdministerDrugReason()
     this.RequestStataction();
     this.getEventChangeLogList(item)
-    // this.AdministerTimeReason()
-    // this.AdministerDoseReason();
+    this.AdministerTimeReason()
+    this.AdministerDoseReason();
   }
   changeEvents(item) {
     if (item == 'Administered') {
@@ -173,7 +175,7 @@ export class DrugEventsAdminComponent implements OnInit {
   }
   AdministerEventForm(item, data) {
     this.FSourcevalueaction(item.Events)
-    return new FormGroup({
+    const form = new FormGroup({
       Fsource: new FormControl(item.Events.Fsource),
       Descr: new FormControl(item.Events.Descr),
       Descrlt: new FormControl(item?.Events?.EventDesc),
@@ -191,13 +193,14 @@ export class DrugEventsAdminComponent implements OnInit {
         Meevtid: new FormControl(item.Events.Meevtid),
         Rdrugdq: new FormControl(item.Events.Quan),
         AmountPrescribed: new FormControl(item.Events.AmountPrescribed),
-        Rbdad: new FormControl(new Date()),
+        Rbdad: new FormControl( this.isSignedMed(item.Events.Mesid) || item.Events.Notgiven ? this.sanitizeSAPDateFormat(item.Events.Rbdad, item.Events.Rbtad) ?? new Date() : new Date()),
         Rbtad: new FormControl(''),
-        Rdosdif: new FormControl(''),
+        Rdosdif: new FormControl(item.Events.RCODEID),
         Rtimdif: new FormControl(item.Events.Rtimdif),
         Fsource: new FormControl(item.Events.Fsource),
         Adnotestx: new FormControl(data.Comments),
-        Prn: new FormControl(false),
+        Prn: new FormControl(item.Events.Prn),
+        Vfcoind:new FormControl(item.Events.Vfcoind),
         Meresp1: new FormControl(item.Events.Mesid === "600" ? item.Events.Erusr : this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         Quanunit: new FormControl(item.Events.Unit),
@@ -216,16 +219,20 @@ export class DrugEventsAdminComponent implements OnInit {
         Rbdad: new FormControl(new Date(), Validators.required),
         Rbtad: new FormControl(''),
         Notgiven: new FormControl(true),
-        Rdosdif: new FormControl(''),
+        Rdosdif: new FormControl(item.Events.RCODEID, Validators.required),
         Rtimdif: new FormControl(item.Events.Rtimdif),
-        Adnotestx: new FormControl(item.Events.Prncond),
+        Adnotestx: new FormControl(
+         `${item.Events.Prncond ? `PRN Cond:\n ${item.Events.Prncond}` : ''}` +
+         `${item.Events.Prncond && data.Comments ? '\n' : ''}` +
+         `${data.Comments ? `Comments:\n ${data.Comments}` : ''}`
+          ),
         Quanunit: new FormControl(data.Unit),
         Meresp1: new FormControl(item.Events.Mesid === "600" ? "" :  this.getUserConfigData.UserId),
         Meresp2: new FormControl(item.Events.WitnessEmp),
         DosageStr: new FormControl(item?.Events?.DosageStr),
         PlanDQ: new FormControl(`${item.Events.PlanDQ} ${item.Events.PlanUN}`),
         PlanUN: new FormControl(item.Events.PlanUN),
-        Quan2: new FormControl( this.isSignedMed(item.Events.Mesid) ? item.Events.Quan2 : item.Events.PlanDQ ),
+        Quan2: new FormControl(''),
         SCRAP: new FormControl( Number(item?.Events?.SCRAP) === 0 ? '' : `${item?.Events?.SCRAP} ${item.Events.PlanUN}`),
       }),
       DrugAdminister: new FormGroup({
@@ -257,7 +264,29 @@ export class DrugEventsAdminComponent implements OnInit {
         Empid: new FormControl(this.getUserConfigData.UserId)
       }),
 
-    })
+    });
+
+    const administratorQuan2 = form.get('Administrator.Quan2');
+    const administratorRdosdif = form.get('Administrator.Rdosdif');
+    const administratorVfcoind = form.get('Administrator.Vfcoind');
+    if (item.Events.Prncond == "") {
+      administratorVfcoind?.disable();
+    }
+    const originalAdministratorQuan2 = administratorQuan2?.value;
+
+    if (administratorQuan2) {
+      administratorQuan2.valueChanges.subscribe(newValue => {
+        if (newValue !== originalAdministratorQuan2) {
+          administratorRdosdif?.setValidators([Validators.required]);
+          administratorRdosdif?.updateValueAndValidity();
+        } else {
+          administratorRdosdif?.setValidators([]);
+          administratorRdosdif?.updateValueAndValidity();
+        }
+      });
+    }
+
+    return form;
   }
 
 
@@ -302,11 +331,27 @@ export class DrugEventsAdminComponent implements OnInit {
     const states = ['400', '500', '600'];
     return states.includes(value);
   }
+
+  isPrnConditionEmpty(): boolean {
+    return this.administratiForm.get('Administrator').get('Prncond').value == ''
+  }
+
+  isPrnChecked(): boolean {
+    return this.administratiForm.get('Administrator').get('Vfcoind').value;
+  }
+
   Administerdata() {
+    if (this.isEventFinalized) return;
+    const RdosdifControl = this.administratiForm.get('Administrator.Rdosdif');
+    const RdosdifNotControl = this.administratiForm.get('NotAdminister.Rdosdif');
     this.isFormSubmitted = true;
     if (this.administered) {
+      if (RdosdifControl?.invalid) {
+          RdosdifControl.markAsTouched();
+          return;         
+      }
       if (this.mainEvent) this.administratiForm.get('Administrator.Meevtid').setValue(this.mainEvent);
-      if ((this.administratiForm.get('Administrator').get('Prncond').value === '' && this.administratiForm.get('Administrator').get('Prn').value) || (!this.administratiForm.get('Administrator').get('Prn').value && this.administratiForm.get('Administrator').get('Prncond').value !== '')) {
+      if (!this.isPrnChecked() && !this.isPrnConditionEmpty()) {
         this.showErrorPopup(null, 'Confirmation that administration conditions were checked, is required!', 'Error')
       } else {
         if (this.administratiForm.get('Secwitness').value === 'X') {
@@ -370,6 +415,10 @@ export class DrugEventsAdminComponent implements OnInit {
     }
     else if (this.notadministered) {
       if (this.notadministered) {
+        if (RdosdifNotControl?.invalid) {
+          RdosdifNotControl.markAsTouched();
+          return;         
+        }
         if (this.mainEvent) this.administratiForm.get('NotAdminister.Meevtid').setValue(this.mainEvent);
         if (this.administratiForm.get('Secwitness').value === 'X') {
           this.showErrorPopup(null, 'Witness is required to administer the drug', 'Warn').then(
