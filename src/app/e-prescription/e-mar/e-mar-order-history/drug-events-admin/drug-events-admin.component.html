@@ -114,8 +114,8 @@
                 <input type="text" class="form-control event-font w-55 mr-3" formControlName="SCRAP" readonly>
               </div>
               <div class="mb-1 d-flex w-33">
-                <label class="col-form-label w-45">Change Reason</label>
-                <ng-select formControlName="Rdosdif" [readonly]="isEndedDisabled" class="event-font input-data w-55" (click)="this.AdministerDoseReason()">
+                <label class="col-form-label w-45">RSN for dose difference</label>
+                <ng-select formControlName="Rdosdif" [readonly]="isEndedDisabled" class="event-font input-data w-55">
                   <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
                     {{ administeredReason.Descr }}
                   </ng-option>
@@ -130,8 +130,8 @@
                   [isDisabled]="isEventFinalized" [readonly]="isEventFinalized" />
               </div>
               <div class="mb-1 d-flex w-50">
-                <label class="col-form-label w-30">Change Reason</label>
-                <ng-select formControlName="Rtimdif" [readonly]="isEndedDisabled" class="event-font input-data w-70" (click)="this.AdministerTimeReason()">
+                <label class="col-form-label w-30">RSN for time difference</label>
+                <ng-select formControlName="Rtimdif" [readonly]="isEndedDisabled" class="event-font input-data w-70" >
                   <ng-option *ngFor=" let administeredReason  of TimeReason" [value]="administeredReason.Rcodeid">
                     {{ administeredReason.Descr }}
                   </ng-option>
@@ -141,7 +141,7 @@
             <div class="mb-2 d-flex justify-content-between w-100">
               <div class="w-20">
                 <label  class="col-form-label" for="inputPassword" style="width: 60%;">Check Cond.</label>
-                <input type="checkbox" formControlName="Prn" [readOnly]="isEndedDisabled">
+                <input type="checkbox" formControlName="Vfcoind" [readOnly]="isEndedDisabled">
               </div>
               <div class="w-80 d-flex">
                 <textarea type="text" formControlName="Prncond" [readOnly]="true" [disabled]="true" class="form-control event-font"></textarea>
@@ -199,8 +199,8 @@
                 <input type="text" class="form-control event-font w-55 mr-3" formControlName="SCRAP" [readonly]="true" [disabled]="true" />
               </div>
               <div class="mb-1 d-flex w-33">
-                <label class="col-form-label w-45">Change Reason</label>
-                <ng-select formControlName="Rdosdif" class="event-font input-data w-55" (click)="this.AdministerDoseReason()">
+                <label class="col-form-label w-45">RSN for dose difference</label>
+                <ng-select formControlName="Rdosdif" class="event-font input-data w-55" >
                   <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
                     {{ administeredReason.Descr }}
                   </ng-option>
