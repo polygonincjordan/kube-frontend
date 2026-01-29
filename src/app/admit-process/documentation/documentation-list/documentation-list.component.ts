@@ -33,6 +33,27 @@ import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-d
   styleUrls: ['./documentation-list.component.scss'],
 })
 export class DocumentationListComponent implements OnInit {
+  private readonly ALLOWED_DOCUMENTS = [
+    "Paediatrics Physician Admission Assessment",
+    "Education Assessment",
+    "Neonatal Discharge Summary",
+    "Transfer Assessment",
+    "Operation Report",
+    "Physician Assessment",
+    "Document Attachment",
+    "Medical Report",
+    "NewBorn Assessment Form",
+    "Neonatal Medical Report",
+    "Neonatal Progress Note",
+    "NICU Admission Note",
+    "Obstetric VTE Risk Assess&Mgt Antepartum",
+    "Obstetrics & Gynecology Physician Assessment",
+    "Obstetric VTE Risk Assess&Mgt Postaprtum",
+    "Department of Surgery - Operation Notes",
+    "Physician Discharge Summary",
+    "SOAP",
+    "Visit Note"
+  ];
   @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @ViewChild('diagnosisHistory', { static: true })
   diagnosisHistory: DiagnosisHistoryPopupComponent;
@@ -549,13 +570,13 @@ export class DocumentationListComponent implements OnInit {
               res.DtidText = 'Department of Surgery - Operation Notes'
             }
           })
-          this.currentVisitDocumetClone = data?.d.results;
-          this.currentVisitDocumet = data?.d.results;
+          this.currentVisitDocumetClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENTS.includes(item.DtidText));
+          this.currentVisitDocumet = data?.d.results.filter(item => this.ALLOWED_DOCUMENTS.includes(item.DtidText));
           this.currentVisitDocumentNameList = Array.from(
             new Set(this.currentVisitDocumet.map(res => res.DtidText))
           );
         } else {
-          this.documentTypeFilterValueClone = data?.d.results;
+          this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENTS.includes(item.DtidText));
           // this.documentTypeFilterValue = _success.d.results;
           this.filterByPeriod();
           this.sort();
