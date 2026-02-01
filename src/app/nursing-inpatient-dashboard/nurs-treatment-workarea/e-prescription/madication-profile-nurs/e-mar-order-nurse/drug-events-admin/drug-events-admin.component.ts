@@ -187,7 +187,7 @@ export class DrugEventsAdminComponent implements OnInit {
       Quanunit: new FormControl(data.Unit),
       N1znr: new FormControl(),
       Secwitness: new FormControl(item.Events.Secwitness),
-      time: new FormControl(item.Events.Prn || item.Events.Prncond !== "" ? new Date() : this.sanitizeSAPDateFormat(item.Events.Pbdad, item.Events.Pbtad), Validators.required),
+      time: new FormControl(item.Events.Prn ? new Date() : this.sanitizeSAPDateFormat(item.Events.Pbdad, item.Events.Pbtad), Validators.required),
       CombineofDose: new FormControl(`${data.Quan} ${data.Unit} ${data.Routedescr} ${data.Formatdescr} ${data.N1ztxt}`),
       Admindose: new FormControl(`${item.Events.Quan} ${item.Events.Unit}`),
       Administrator: new FormGroup({
