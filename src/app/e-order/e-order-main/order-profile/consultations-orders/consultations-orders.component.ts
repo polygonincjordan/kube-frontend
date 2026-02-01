@@ -14,6 +14,7 @@ import { untilDestroyed } from '@ngneat/until-destroy';
 import { EEmrService } from '@services/e-emr.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { eOrderService } from '@services/eorder.service';
 import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { catchError, of } from 'rxjs';
@@ -27,6 +28,7 @@ import Swal from 'sweetalert2';
 })
 export class ConsultationsOrdersComponent implements OnInit {
   @Output() reloadTableData = new EventEmitter();
+  @Output() deleteItem = new EventEmitter<any>();
   // @ViewChild('progressNotesKardexId') progressNotesKardex: ProgressNotesKardexComponent;
 
   @Input() consultationsOrdersList: any;
@@ -43,6 +45,7 @@ export class ConsultationsOrdersComponent implements OnInit {
     'Request Date',
     'Request Time',
     'Action',
+    'Delete',
   ];
   progressEntryForm: FormGroup;
   phyOrderform1: FormGroup;
@@ -67,7 +70,8 @@ export class ConsultationsOrdersComponent implements OnInit {
     private modalService: BsModalService,
     private storageService: StorageService,
     private sanitizer: DomSanitizer,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public eorderService: eOrderService
   ) {
     this.phyOrderform1 = this.formBuilder.group({
       items: new FormArray([]),

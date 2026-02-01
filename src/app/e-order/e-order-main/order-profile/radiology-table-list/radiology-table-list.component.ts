@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, TemplateRef, ViewChild, Output,EventEmitter  } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { eOrderService } from '@services/eorder.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
@@ -14,6 +15,7 @@ export class RadiologyTableListComponent implements OnInit,OnChanges {
 
   @ViewChild('labpdfmodal') labpdfmodal: TemplateRef<HTMLDivElement>;
   @Output() reloadTableData = new EventEmitter();
+  @Output() deleteItem = new EventEmitter<any>();
 
   @Input() radiologyList: any;
   @Input() searchString: any;
@@ -30,6 +32,7 @@ export class RadiologyTableListComponent implements OnInit,OnChanges {
     'Comments',
     'Created By',
     'Action',
+    'Delete',
   ];
   isCollpseOpen: boolean;
   record: any;
@@ -39,7 +42,8 @@ export class RadiologyTableListComponent implements OnInit,OnChanges {
   text: string;
   constructor(public emergencyService: EmergencyService,private _dataServices: EEmrService,
     private modalService: BsModalService, private hospitalistService: HospitalistService,
-    private sanitizer: DomSanitizer,) { }
+    private sanitizer: DomSanitizer,
+    public eorderService: eOrderService) { }
 
   ngOnInit(): void {
   }

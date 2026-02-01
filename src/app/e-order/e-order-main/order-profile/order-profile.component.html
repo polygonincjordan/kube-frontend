@@ -54,8 +54,8 @@
             <div class="card">
               <div class="card-body p-1">
                 
-                <app-laboratory-table-list  *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [laboratoryList]="laboratoryList"></app-laboratory-table-list>
-                <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()"></app-radiology-table-list>
+                <app-laboratory-table-list  *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [laboratoryList]="laboratoryList" (deleteItem)="onDeleteOrderItem($event.item, $event.type)"></app-laboratory-table-list>
+                <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()" (deleteItem)="onDeleteOrderItem($event.item, $event.type)"></app-radiology-table-list>
                 <div class="card mt-2" *ngIf="isMedication || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)">
                   <div class="card-body p-0 medication-emer-table">
                     <accordion [closeOthers]="true">
@@ -77,6 +77,7 @@
                               <th class="white-space">Physician</th>
                               <th class="white-space">Status</th>
                               <th class="white-space"></th>
+                              <th class="white-space text-center">Delete</th>
                             </thead>
                             <tbody>
                               <tr *ngFor="let item of madicationList; let i = index;">
@@ -109,7 +110,13 @@
                                   <img class="width-25 mr-2" src="assets/img/add-emr.svg" alt="" (click)="openMoDetailPanel(i, item, orderMedication)"/>
                                   <img class="width-25 mr-2" src="assets/img/three-dot-emr.svg" alt="" />
                                   <img class="width-25" src="assets/img/red-info-emr.svg" alt="" />
-                             
+                                </td>
+                                <td class="white-space text-center">
+                                  <span class="trash-icon cursor-pointer" (click)="onDeleteOrderItem(item, 'MED')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">
+                                      <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                                    </svg>
+                                  </span>
                                 </td>
                               </tr>
                             </tbody>
@@ -119,8 +126,8 @@
                     </accordion>
                   </div>
                 </div>
-                <app-surgery-table-list *ngIf="isSurgery || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [surgeryList]="surgeryList" (reloadTableData)="resetAllFilter()"></app-surgery-table-list>
-                <app-consultations-orders *ngIf="isConsultations || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [consultationsOrdersList]="consultationsOrdersList" (reloadTableData)="resetAllFilter()"></app-consultations-orders>
+                <app-surgery-table-list *ngIf="isSurgery || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [surgeryList]="surgeryList" (reloadTableData)="resetAllFilter()" (deleteItem)="onDeleteOrderItem($event.item, $event.type)"></app-surgery-table-list>
+                <app-consultations-orders *ngIf="isConsultations || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [consultationsOrdersList]="consultationsOrdersList" (reloadTableData)="resetAllFilter()" (deleteItem)="onDeleteOrderItem($event.item, $event.type)"></app-consultations-orders>
               </div>
             </div>
           </div>
