@@ -2477,7 +2477,7 @@ export class eOrderService {
     }
   }
 
-  deleteOrderItemFromProfile(postObject: any, callback?: any) {
+  deleteOrderItemFromProfile(postObject: any, callback?: any, errorCallback?: any) {
     this.spinner.show();
     this.dataService.postData('OrderSet', postObject, false).subscribe(
       (success: any) => {
@@ -2486,8 +2486,8 @@ export class eOrderService {
           postObject.TOLABSET.length +
           postObject.TORADSET.length +
           postObject.TOMEDICSET.length + 
-          postObject.TOSURG.length + 
-          postObject.TOCONS.length
+          postObject.TOSUGSET.length + 
+          postObject.TOCONSET.length
         swal
           .fire({
             title: totalOrders > 1 ? 'eOrder Deleted' : 'Service has been deleted.',
@@ -2523,6 +2523,11 @@ export class eOrderService {
             backdrop: true,
             icon: 'error',
           })
+          .then(() => {
+            if (errorCallback) {
+              errorCallback();
+            }
+          });
       }
     );
   }
