@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { EEmrService } from '@services/e-emr.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { eOrderService } from '@services/eorder.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-surgery-table-list',
@@ -12,6 +13,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class SurgeryTableListComponent implements OnInit,OnChanges {
 
   @Output() reloadTableData = new EventEmitter();
+  @Output() deleteItem = new EventEmitter<any>();
 
   @Input() surgeryList: any;
   @Input() searchString: any;
@@ -26,7 +28,8 @@ export class SurgeryTableListComponent implements OnInit,OnChanges {
     'Department OU',
     'Created By',
     'Anesthesia Required',
-    'Additional Info'
+    'Additional Info',
+    'Delete',
   ];
   isCollpseOpen: boolean;
   record: any;
@@ -36,7 +39,8 @@ export class SurgeryTableListComponent implements OnInit,OnChanges {
   text: string;
   constructor(public emergencyService: EmergencyService,private _dataServices: EEmrService,
     private modalService: BsModalService, private hospitalistService: HospitalistService,
-    private sanitizer: DomSanitizer,) { }
+    private sanitizer: DomSanitizer,
+    public eorderService: eOrderService) { }
 
   ngOnInit() {
   }
