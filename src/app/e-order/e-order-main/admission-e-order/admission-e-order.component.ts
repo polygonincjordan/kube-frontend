@@ -61,9 +61,9 @@ export class AdmissionEOrderComponent implements OnInit {
   admissionForm() {
     this.phyOrderform = this.formBulider.group({
       Patnr: [this.paramsObj.patnr],
-      Trtoe: [''],
+      Trtoe: ['', [Validators.required]],
       TrtoeText: [''],
-      Orgfa: [''],
+      Orgfa: ['', [Validators.required]],
       OrgfaText: [''],
       Wbgdt: ['', [Validators.required]],
       Wbgzt: ['', [Validators.required]],
@@ -337,7 +337,7 @@ export class AdmissionEOrderComponent implements OnInit {
       orderDate: [new Date()],
       orderTime: [this.currentTime],
       ProfessionalGroup: ['NURS'],
-      OrderShortText: ['', [Validators.required]],
+      OrderShortText: [''],
     });
   }
 

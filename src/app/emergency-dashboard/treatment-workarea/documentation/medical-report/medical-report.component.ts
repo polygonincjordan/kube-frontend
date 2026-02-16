@@ -123,8 +123,9 @@ export class MedicalReportComponent implements OnInit {
 
   }
   resetAll(){
+    this.docDetails = [];
     this.medReportForm.reset();
-   this.medReportForm = this.formBuilder.group({
+    this.medReportForm = this.formBuilder.group({
         "Dockey": [''],
         "Dtid": ["ZMED_MEDRP"],
         "Einri": [''],
@@ -146,7 +147,7 @@ export class MedicalReportComponent implements OnInit {
         "AttendPhy": [this.storageService.getGpart()],
         "DocStatus": ['']
     });
-   }
+  }
    
    
 }
