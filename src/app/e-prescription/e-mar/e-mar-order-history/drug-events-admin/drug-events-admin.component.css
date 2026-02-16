@@ -117,3 +117,8 @@ thead {
 tbody {
   background-color: #fbfcff;
 }
+
+ng-select.ng-touched.ng-invalid {
+  outline: 1px solid red;
+  border-radius: 5px;
+}
