@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter,Output,OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -30,6 +31,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public FillSource: any[] = [];
   @ViewChild('drugEventMain', { static: true }) drugEventMain: TemplateRef<any>;
   @ViewChild('Witnessid') Witnessid: EmarWitnessComponent;
+   @Output() onClose: EventEmitter<any> = new EventEmitter<any>
   administered: boolean = true;
   qadministered: boolean = false;
   notadministered: boolean = false;
@@ -47,7 +49,7 @@ export class DrugEventsAdminComponent implements OnInit {
   emarActive: boolean = false;
   public RequestStatus: any;
   public isEventFinalized: boolean = false;
-  constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService) { }
+  constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService,private sharedService: SharedService) { }
 
   ngOnInit() {
 
@@ -416,6 +418,8 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
                           const { Quanunit, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+                            // Set Quan2="0" (string) only for NotAdministered
+                            payload.Quan2 = "0";
                           this.AdministerEventaction("The event has been NotAdminustered!", payload)
                         }
                       },
@@ -439,6 +443,8 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
           }
           const { Quanunit, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+            // Set Quan2="0" (string) only for NotAdministered
+            payload.Quan2 = "0";
           this.AdministerEventaction("The event has been NotAdminustered!", payload)
         }
       }
@@ -525,7 +531,21 @@ export class DrugEventsAdminComponent implements OnInit {
         })
       },
       error: (error: any) => {
-        this.showErrorPopup("", error.error.error.message.value, "Error")
+        const errorMessage = error?.error?.error?.message?.value;
+        if (errorMessage === "Last package dont have enough amount for administration") {
+          this.sharedService.customConfirmPopup(
+            errorMessage,
+            this.administratiForm.get('Descrlt').value,
+            () => {
+              this.newPackageClick({ Events: data }, data);
+            },
+            () => {
+              this.samePackageClick({ Events: data }, data);
+            }
+          );
+        } else {
+          this.showErrorPopup("", errorMessage, "Error");
+        }
       }
     })
   }
@@ -709,4 +729,87 @@ export class DrugEventsAdminComponent implements OnInit {
       icon: messageType === 'Error' ? 'error' : messageType === 'Warn' ? 'warning' : 'success'
     } as any);
   }
+   // Handle newPackage click
+    newPackageClick(item, data) {
+      const payload = {
+        Einri: data.Einri,
+        Falnr: item.Events.Falnr,
+        Meevtid: item.Events.Meevtid,
+        Rdrugdq: item.Events.Quan,
+        Rbdad: this.parseDate(new Date()),
+        Rbtad: this.parseTime(new Date()),
+        Fsource: item.Events.Fsource ?? '',
+        Meresp1: this.getUserConfigData.VMA,
+        Meresp2: '',
+        Prn: item.Events.Prn,
+        Quan2: item.Events.PlanDQ,
+        Rdosdif: '',
+        Rtimdif: '',
+        Adnotestx: '',
+        UserResponse: 'Y'
+      };
+      this.ePrescriptionService.postData('e-prescription/getAdministerEvent', payload).subscribe({
+        next: (resp: any) => {
+          swal.fire({
+            title: 'The event has been Administered!',
+            confirmButtonColor: '#0890c5',
+            cancelButtonColor: '#84898c',
+            confirmButtonText: 'OK',
+            customClass: { popup: 'myalertpopup' },
+            icon: 'success'
+          } as any).then(() => {
+            this.modalRef.hide();
+            this.onClose.emit({
+              filterData: this.ePrescriptionService.checkedFilterData,
+              medicationData: this.ePrescriptionService.prescriptionList
+            });
+          });
+        },
+        error: (error: any) => {
+          this.showErrorPopup('', error?.error?.error?.message?.value, 'Error');
+        }
+      });
+    }
+  
+    // Handle samePackage click
+    samePackageClick(item, data) {
+      const payload = {
+        Einri: data.Einri,
+        Falnr: item.Events.Falnr,
+        Meevtid: item.Events.Meevtid,
+        Rdrugdq: item.Events.Quan,
+        Rbdad: this.parseDate(new Date()),
+        Rbtad: this.parseTime(new Date()),
+        Fsource: item.Events.Fsource ?? '',
+        Meresp1: this.getUserConfigData.VMA,
+        Meresp2: '',
+        Prn: item.Events.Prn,
+        Quan2: item.Events.PlanDQ,
+        Rdosdif: '',
+        Rtimdif: '',
+        Adnotestx: '',
+        UserResponse: 'N'
+      };
+      this.ePrescriptionService.postData('e-prescription/getAdministerEvent', payload).subscribe({
+        next: (resp: any) => {
+          swal.fire({
+            title: 'The event has been Administered!',
+            confirmButtonColor: '#0890c5',
+            cancelButtonColor: '#84898c',
+            confirmButtonText: 'OK',
+            customClass: { popup: 'myalertpopup' },
+            icon: 'success'
+          } as any).then(() => {
+            this.modalRef.hide();
+            this.onClose.emit({
+              filterData: this.ePrescriptionService.checkedFilterData,
+              medicationData: this.ePrescriptionService.prescriptionList
+            });
+          });
+        },
+        error: (error: any) => {
+          this.showErrorPopup('', error?.error?.error?.message?.value, 'Error');
+        }
+      });
+    }
   }
