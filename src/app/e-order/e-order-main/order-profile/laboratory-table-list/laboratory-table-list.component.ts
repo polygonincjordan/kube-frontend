@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { eOrderService } from '@services/eorder.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
@@ -15,6 +16,7 @@ import { environment } from 'src/environments/environment';
 export class LaboratoryTableListComponent implements OnInit ,OnChanges{
 
   @ViewChild('labpdfmodal') labpdfmodal: TemplateRef<HTMLDivElement>;
+  @Output() deleteItem = new EventEmitter<any>();
 
   @Input() searchString: any;
   @Input() laboratoryList: any[] = [];
@@ -31,6 +33,7 @@ export class LaboratoryTableListComponent implements OnInit ,OnChanges{
     'Created By',
     'Action',
     'Details',
+    'Delete',
   ];
   record: any;
   pdfUrl: any;
@@ -45,7 +48,8 @@ export class LaboratoryTableListComponent implements OnInit ,OnChanges{
     private _dataServices: EEmrService,
     private sanitizer: DomSanitizer,
     private modalService: BsModalService,
-    private hospitalistService: HospitalistService) {}
+    private hospitalistService: HospitalistService,
+    public eorderService: eOrderService) {}
 
   ngOnInit(): void {
    
