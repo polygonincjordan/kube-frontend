@@ -195,9 +195,11 @@ export class ImportMedicationComponent implements OnInit {
   }
 
   private getIdentifier(medication: MedicationUnion): string {
-    return this.selectedTab === 'Hospital Medication'
-      ? (medication as IHospitalMedication).EventId
-      : (medication as IDischargeMedication).OrderId;
+    if ('EventId' in medication) {
+      return (medication as IHospitalMedication).EventId;
+    } else if ('OrderId' in medication) {
+      return (medication as IDischargeMedication).OrderId;
+    }
   }
 
   private emitDataChange(): void {
