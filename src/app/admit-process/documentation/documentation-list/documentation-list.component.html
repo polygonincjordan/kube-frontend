@@ -7,8 +7,9 @@
           <h6 class="font-weight-bold ml-3">Current visit document</h6>
         </div>
         <ng-select class="w-30" [searchable]="true" placeholder="Search a document to create" (change)="documentFilter($event)">
-          <ng-option *ngFor="let data of currentVisitDocumentNameList" [value]="data">{{
-          data }}</ng-option>
+          <ng-option *ngFor="let data of currentVisitDocumentNameList" [value]="data">
+            <span title="{{ data }}">{{ data }}</span>
+          </ng-option>
         </ng-select>
       </div>
       <div class="document-detail-list">

@@ -171,3 +171,12 @@
   border-radius: 14px;
   font-weight: 700;
 }
+
+input.ng-touched.ng-invalid {
+  border-color: red;
+}
+
+ng-select.ng-touched.ng-invalid {
+  outline: 1px solid red;
+  border-radius: 2px;
+}

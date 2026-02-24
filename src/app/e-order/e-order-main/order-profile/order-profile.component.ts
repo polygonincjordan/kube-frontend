@@ -8,10 +8,12 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { eOrderService } from '@services/eorder.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { patientHeaderCheckbox } from 'src/app/core/constants';
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-order-profile',
   templateUrl: './order-profile.component.html',
@@ -62,7 +64,8 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
     public administrationService: AddministrationService,
     private datePipe: DatePipe,
     public sharedService: SharedService,
-    public _dataServices:EEmrService
+    public _dataServices:EEmrService,
+    public eorderService: eOrderService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.storageService.setEinri(params['einri']);
@@ -289,5 +292,134 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
   }
   getQuanValue(value){
    return parseFloat(value).toFixed(3);
+  }
+
+  onDeleteOrderItem(item: any, itemType: string) {
+    if (!item) return;
+
+    swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this order item?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.performDelete(item, itemType);
+      }
+    });
+  }
+
+  private performDelete(item: any, itemType: string) {
+    console.log('Deleting item:', item, 'Type:', itemType);
+    
+    let postObject: any = {
+      einri: this.storageService.getLocal('einri') || '1000',
+      falnr: this.storageService.getLocal('falnr') || '0000',
+      lfdnr: this.storageService.getLocal('lfdnr') || '0000',
+      Eorderid: item.Eorderid || item.EorderId || '',
+      TOLABSET: [],
+      TORADSET: [],
+      TOSUGSET: [],
+      TOMEDICSET: [],
+      TOCONSET: [],
+    };
+
+    switch (itemType) {
+      case 'LAB':
+        postObject.TOLABSET = [
+          {
+            Cordtypid: (item.Cordtypid && item.Cordtypid.replace) ? item.Cordtypid.replace(/-/g, '') : '',
+            Eorderid: item.Eorderid || '',
+            Eorderitemid: item.Eorderitemid || '',
+            Talst: item.Leistung || '',
+            Trtoe: item.Trtoe || '',
+            Storn: 'X',
+          },
+        ];
+        break;
+
+      case 'RAD':
+        postObject.TORADSET = [
+          {
+            Cordtypid: (item.Cordtypid && item.Cordtypid.replace) ? item.Cordtypid.replace(/-/g, '') : '',
+            Eorderid: item.Eorderid || '',
+            Eorderitemid: item.Eorderitemid || '',
+            Talst: item.Leistung || '',
+            Trtoe: item.Trtoe || '',
+            Storn: 'X',
+          },
+        ];
+        break;
+
+      case 'MED':
+        postObject.TOMEDICSET = [
+          {
+            DRUGID: ((item.Drugid && item.Drugid.replace) ? item.Drugid.replace(/-/g, '') : '') || item.DRUGID || '',
+            FORMATDESCR: item.Formatdescr || item.FORMATDESCR || '',
+            PHFORMID: item.Phformid || item.PHFORMID || '',
+            QUAN: (item.Quan || item.QUAN || '0').toString(),
+            APROUTEID: item.Aprouteid || item.APROUTEID || '',
+            N1ZNR: item.N1znr || item.N1ZNR || '',
+            PDUR: (item.Pdur || item.PDUR || '0').toString(),
+            PDURU: item.Pduru || item.PDURU || '',
+            AGENTID: ((item.Agentid && item.Agentid.replace) ? item.Agentid.replace(/-/g, '') : '') || item.AGENTID || '',
+            PRSCRID: item.Prscrid || item.PRSCRID || '',
+            STORN: 'X',
+            STOID: item.Stoid || item.STOID || '',
+            UPDMODE: 'X',
+            LFDNR: item.Lfdnr || item.LFDNR || '',
+            PRN: item.Prn === 'X' || item.PRN === 'X' ? 'X' : '',
+            PRNCOND: item.Prncond || item.PRNCOND || '',
+            DRUG: item.Drug || item.DRUG || '',
+            Eorderid: item.Eorderid || item.EorderId || '',
+            Eorderitemid: item.Eorderitemid || item.EorderItemId || '',
+          },
+        ];
+        break;
+
+      case 'SURG':
+        postObject.TOSUGSET = [
+          {
+            Cordtypid: (item.Cordtypid && item.Cordtypid.replace) ? item.Cordtypid.replace(/-/g, '') : '',
+            Eorderid: item.Eorderid || '',
+            Eorderitemid: item.Eorderitemid || '',
+            Talst: item.Leistung || '',
+            Trtoe: item.Trtoe || '',
+            Storn: 'X',
+          },
+        ];
+        break;
+
+      case 'CONSULT':
+        postObject.TOCONSET = [
+          {
+            Cordtypid: (item.Cordtypid && item.Cordtypid.replace) ? item.Cordtypid.replace(/-/g, '') : '',
+            Eorderid: item.Eorderid || '',
+            Eorderitemid: item.Eorderitemid || '',
+            Talst: item.Leistung || '',
+            Trtoe: item.Trtoe || '',
+            Storn: 'X',
+          },
+        ];
+        break;
+    }
+
+    this.eorderService.deleteOrderItemFromProfile(
+      postObject,
+      () => {
+        // Success, refresh the table
+        console.log('Delete successful');
+        this.getPatientTableList('', '', this.storageService.falnr);
+        this.initialPatientList();
+      },
+      () => {
+        // Error, do nothing
+        console.log('Delete failed');
+      }
+    );
   }
 }

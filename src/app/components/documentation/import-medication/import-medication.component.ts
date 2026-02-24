@@ -234,7 +234,8 @@ export class ImportMedicationComponent implements OnInit {
         'Discharge Medication': results
           .filter(isDischarge)
           .map((med: any) => this.mapToDischargeMedication(med))
-          .filter(Boolean),
+          .filter(Boolean)
+          .filter((med: any) => this.getMedicationStatus(med)?.toLowerCase() === 'active'),
         'Hospital Medication': results
           .filter((med: any) => !isDischarge(med))
           .map((med: any) => this.mapToHospitalMedication(med))

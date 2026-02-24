@@ -20,7 +20,7 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 import { SharedService } from '@services/shared.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
-
+import { DocsService } from '@services/docs.service';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -108,18 +108,18 @@ export class DocumentationComponent implements OnInit {
       label: 'Medical Report',
       value: 'MER'
     },
-    {
-      label: 'ER Discharge Summary',
-      value: 'EDS'
-    },
+    // {
+    //   label: 'ER Discharge Summary',
+    //   value: 'EDS'
+    // },
     {
       label: 'Education Assessment',
       value: 'EDA'
     },
-    {
-      label: 'Correspondence Document',
-      value: 'COD'
-    },
+    // {
+    //   label: 'Correspondence Document',
+    //   value: 'COD'
+    // },
     {
       label: 'Attachments Document',
       value: 'ATD'
@@ -139,7 +139,7 @@ export class DocumentationComponent implements OnInit {
   private subscription: Subscription;
 
   constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, 
-    private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, private sharedService: SharedService, private dayCaseDashboardService: DayCaseDashboardService) {
+    private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, private sharedService: SharedService, private dayCaseDashboardService: DayCaseDashboardService, private docsService: DocsService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -173,6 +173,7 @@ export class DocumentationComponent implements OnInit {
       this.medReport = false;
       this.attachments = false;
       this.educationAssessment = true;
+      this.isCorrespondenceDocument = false;
       this.selectedDocName = 'Education Assessment'
     } else if (name == 'phy') {
       this.phyAssess = true;
@@ -180,6 +181,7 @@ export class DocumentationComponent implements OnInit {
       this.medReport = false;
       this.attachments = false;
       this.educationAssessment = false;
+      this.isCorrespondenceDocument = false;
       this.selectedDocName = 'ER Physician Assessment'
     } else if (name == 'medreport') {
       this.phyAssess = false;
@@ -187,6 +189,7 @@ export class DocumentationComponent implements OnInit {
       this.medReport = true;
       this.attachments = false;
       this.educationAssessment = false;
+      this.isCorrespondenceDocument = false;
       this.selectedDocName = 'Medical Report'
     } else if (name == 'attachments') {
       this.phyAssess = false;
@@ -194,6 +197,7 @@ export class DocumentationComponent implements OnInit {
       this.medReport = false;
       this.attachments = true;
       this.educationAssessment = false;
+      this.isCorrespondenceDocument = false;
       this.selectedDocName = 'Attachments Document'
     } else if (name == 'isCorrespondenceDocument') {
       this.phyAssess = false;
@@ -488,7 +492,9 @@ export class DocumentationComponent implements OnInit {
             this.phyComp.resetAll();
             this.refresh();
           },
-          (_error: any) => { }
+          (_error: any) => { 
+              this.docsService.showErrorMsg(_error);
+          }
         );
       }
     });
@@ -514,6 +520,12 @@ export class DocumentationComponent implements OnInit {
   }
   async createAndRelease() {
     (await this.phyComp.createPhyDoc()).subscribe((res: any) => {
+      Swal.fire({
+        text: "Document is created and released successfully",
+        icon: 'success',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      } as any)
       this.phyComp.resetAll();
       this.refresh();
     }, (_error: any) => {
@@ -696,8 +708,9 @@ export class DocumentationComponent implements OnInit {
     } else if (this.educationAssessment) {
       if (action == 'create') {
         this.openEducationAssessment = true;
+        this.educationAssList = [];
         // this.educationAssessmentComp.resetAll();
-        // this.educationAssessmentComp.ngOnInit();
+         // this.educationAssessmentComp.ngOnInit();
 
       } else if (action == 'edit') {
         this.openEducationAssessment = true;
@@ -813,10 +826,7 @@ async deleteCorrespondenceDoc(docKey: string) {
           });
         },
         error: (err: any) => {
-          this.sharedService.waringSwallModel(`Error ${err}`);
-          this.sharedService.waringSwallModel(
-            `POST Error at Nurse Endorsment : ${err}`
-          );
+          this.docsService.showErrorMsg(err);
         }
       });
   }
@@ -1206,7 +1216,9 @@ async deleteCorrespondenceDoc(docKey: string) {
       } as any)
       this.medComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => {
+        this.docsService.showErrorMsg(_error);
+     });
   }
   async deleteMedReport() {
     Swal.fire({
@@ -1231,7 +1243,9 @@ async deleteCorrespondenceDoc(docKey: string) {
             this.medComp.resetAll();
             this.refresh();
           },
-          (_error: any) => { }
+          (_error: any) => { 
+            this.docsService.showErrorMsg(_error);
+          }
         );
       }
     });
@@ -1246,7 +1260,9 @@ async deleteCorrespondenceDoc(docKey: string) {
       } as any)
       this.medComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        this.docsService.showErrorMsg(_error);
+    });
   }
   async releaseMed() {
     (await this.medComp.releaseMedDoc()).subscribe((res: any) => {
@@ -1258,7 +1274,9 @@ async deleteCorrespondenceDoc(docKey: string) {
       } as any)
       this.medComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        this.docsService.showErrorMsg(_error);
+    });
   }
   getMedReleasedDoc(id) {
     const json = {
@@ -1289,13 +1307,17 @@ async deleteCorrespondenceDoc(docKey: string) {
       } as any)
       this.phyComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        this.docsService.showErrorMsg(_error);
+    });
   }
   async createAndReleaseMed() {
     (await this.medComp.createMedDoc()).subscribe((res: any) => {
       this.medComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        this.docsService.showErrorMsg(_error);
+    });
   }
   openMedReleasePdf(id) {
     this.pdfUrl = '';
@@ -1331,7 +1353,9 @@ async deleteCorrespondenceDoc(docKey: string) {
       } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        this.docsService.showErrorMsg(_error);
+    });
   }
 
   async deleteEducationAss() {
@@ -1357,7 +1381,9 @@ async deleteCorrespondenceDoc(docKey: string) {
               } as any)
               this.refresh();
             },
-            (_error: any) => { }
+            (_error: any) => {
+              this.docsService.showErrorMsg(_error);
+             }
           );
       }
     });
@@ -1373,7 +1399,9 @@ async deleteCorrespondenceDoc(docKey: string) {
       } as any)
       this.educationAssessmentComp.resetAll();
       this.refresh();
-    }, (_error: any) => { });
+    }, (_error: any) => { 
+        this.docsService.showErrorMsg(_error);
+    });
   }
 
   releaseEducationAss() {
