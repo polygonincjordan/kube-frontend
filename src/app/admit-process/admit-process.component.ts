@@ -44,6 +44,7 @@ export class AdmitProcessComponent implements OnInit {
   filterDateValue: any;
   soapFormEvent: any = '';
   isDocumentTypeFilter: boolean = false;
+  medicalDocType: any;
   inHospitalist: any[] = [];
   inLDRAttendPhyList: any;
   unsavedProgressNote: any = false;
@@ -134,6 +135,10 @@ export class AdmitProcessComponent implements OnInit {
     if(event) {
       this.isDocumentTypeFilter = true;
     }
+  }
+
+  medicalDocTypeEvent(event: any) {
+    this.medicalDocType = event;
   }
 
   phyOrderTableList() {

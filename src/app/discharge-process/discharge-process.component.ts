@@ -39,6 +39,7 @@ export class DischargeProcessComponent implements OnInit {
   filterDateValue: any;
   soapFormEvent: any;
   isDocumentTypeFilter: boolean = false;
+  medicalDocType: any;
   unsavedProgressNote: boolean = false;
 
   checkCounterPatient: any={
@@ -89,6 +90,10 @@ export class DischargeProcessComponent implements OnInit {
     if(event) {
       this.isDocumentTypeFilter = true;
     }
+  }
+
+  medicalDocTypeEvent(event: any) {
+    this.medicalDocType = event;
   }
 
   phyOrderTableList() {
