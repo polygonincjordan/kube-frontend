@@ -28,12 +28,11 @@ import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentingDeliveryComponent } from './documenting-delivery/documenting-delivery.component';
-
 @UntilDestroy()
 @Component({
   selector: 'app-In-Patients',
-  templateUrl: './in-patients.component.html',
-  styleUrls: ['./in-patients.component.scss'],
+  templateUrl: './In-Patients.component.html',
+  styleUrls: ['./In-Patients.component.scss'],
 })
 export class InPatientsComponent implements OnInit {
   @Output() public dataCount = new EventEmitter<any>();

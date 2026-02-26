@@ -31,8 +31,8 @@ import { DocumentingDeliveryComponent } from './documenting-delivery/documenting
 @UntilDestroy()
 @Component({
   selector: 'app-In-Patients',
-  templateUrl: './in-patients.component.html',
-  styleUrls: ['./in-patients.component.scss'],
+  templateUrl: './In-Patients.component.html',
+  styleUrls: ['./In-Patients.component.scss'],
 })
 export class InPatientsComponent implements OnInit {
   @Output() public dataCount = new EventEmitter<any>();
