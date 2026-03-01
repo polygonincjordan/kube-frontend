@@ -2477,6 +2477,61 @@ export class eOrderService {
     }
   }
 
+  deleteOrderItemFromProfile(postObject: any, callback?: any, errorCallback?: any) {
+    this.spinner.show();
+    this.dataService.postData('OrderSet', postObject, false).subscribe(
+      (success: any) => {
+        this.spinner.hide();
+        const totalOrders =
+          postObject.TOLABSET.length +
+          postObject.TORADSET.length +
+          postObject.TOMEDICSET.length + 
+          postObject.TOSUGSET.length + 
+          postObject.TOCONSET.length
+        swal
+          .fire({
+            title: totalOrders > 1 ? 'eOrder Deleted' : 'Service has been deleted.',
+            text: totalOrders > 1 ? 'e-Order has been deleted' : '',
+            confirmButtonColor: '#0890c5',
+            confirmButtonText: 'OK',
+            backdrop: true,
+            icon: 'success',
+            customClass: { popup: 'myalertpopup' },
+          })
+          .then((result) => {
+            if (callback) {
+              callback();
+            }
+          });
+      },
+      (error: any) => {
+        this.spinner.hide();
+        let errorMessage = 'Error deleting order';
+        try {
+          errorMessage = JSON.parse(error._body).error?.message?.value || errorMessage;
+        } catch (e) {
+          errorMessage = error.statusText || error.message || errorMessage;
+        }
+
+        swal
+          .fire({
+            title: error.statusText || 'Error',
+            text: errorMessage,
+            confirmButtonColor: '#096798',
+            confirmButtonText: 'close',
+            customClass: { popup: 'myalertpopup' },
+            backdrop: true,
+            icon: 'error',
+          })
+          .then(() => {
+            if (errorCallback) {
+              errorCallback();
+            }
+          });
+      }
+    );
+  }
+
   onDeleteSelect(element: any) {
     let postObject: any = {};
     postObject['einri'] = this.constants.einri;

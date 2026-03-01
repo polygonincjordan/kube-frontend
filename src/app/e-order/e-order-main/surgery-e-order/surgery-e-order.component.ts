@@ -206,6 +206,7 @@ export class SurgeryEOrderComponent implements OnInit {
         'Please provide all require data in surgery.',
         'Error'
       );
+      this.surgeryFormArray.markAllAsTouched();
       return;
     }
 
