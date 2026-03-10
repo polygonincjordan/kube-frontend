@@ -380,11 +380,13 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
 
   private performDelete(item: any, itemType: string, reason: any) {
     console.log('Deleting item:', item, 'Type:', itemType, 'Reason:', reason);
-    
+
+    const { einri, falnr, lfdnr } = this.getEncounterIds();
+
     let postObject: any = {
-      einri: this.storageService.getLocal('einri') || '1000',
-      falnr: this.storageService.getLocal('falnr') || '0000',
-      lfdnr: this.storageService.getLocal('lfdnr') || '0000',
+      einri,
+      falnr,
+      lfdnr,
       Eorderid: item.Eorderid || item.EorderId || '',
       IsGroup: item.Leistung && item.Leistung.includes(',') ? 'X' : '',
       TOLABSET: [],
@@ -492,5 +494,24 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
         console.log('Delete failed');
       }
     );
+  }
+
+  private getEncounterIds(): { einri: string; falnr: string; lfdnr: string } {
+    let einri = this.storageService.getLocal('einri') || this.storageService.einri || '1000';
+    let falnr = this.storageService.getLocal('falnr') || this.storageService.falnr || '0000';
+    let lfdnr = this.storageService.getLocal('lfdnr') || this.storageService.lfdnr || '0000';
+
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        einri = url.searchParams.get('einri') || einri;
+        falnr = url.searchParams.get('falnr') || falnr;
+        lfdnr = url.searchParams.get('lfdnr') || lfdnr;
+      } catch {
+        // ignore URL parsing errors and fall back to storage values
+      }
+    }
+
+    return { einri, falnr, lfdnr };
   }
 }
