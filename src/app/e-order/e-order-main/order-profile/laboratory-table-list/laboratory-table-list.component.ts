@@ -384,7 +384,7 @@ export class LaboratoryTableListComponent implements OnInit ,OnChanges{
         : '',
       Eorderid: service.Eorderid || item.Eorderid || '',
       Eorderitemid: service.Eorderitemid || '',
-      Talst: service.Leistung || service.Talst || '',
+      Talst: service.Leist || '',
       Trtoe: service.Trtoe || item.Trtoe || '',
       Storn: 'X',
       Reason: reason.Stoid || reason,
