@@ -20,6 +20,7 @@ import { UserConfigurationService } from '@services/e-kardex/user-configuration.
 import { SharedService } from '@services/shared.service';
 import { Subscription, catchError, of } from 'rxjs';
 import { ConfigPopup } from 'src/app/core/config-popup/config-popup.component';
+import { DocsService } from '@services/docs.service';
 
 @UntilDestroy()
 @Component({
@@ -60,7 +61,8 @@ export class OperationReportComponent implements OnInit, OnChanges {
     private datePipe: DatePipe,
     private userConfigurationService: UserConfigurationService,
     private sharedService: SharedService,
-    private inPatientConfigurationService: InPatientConfigurationService
+    private inPatientConfigurationService: InPatientConfigurationService,
+    private docsService: DocsService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -85,19 +87,19 @@ export class OperationReportComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.soapFormEvent.currentValue == 'add') {
-      this.saveOperation(false);
-    }
+        this.saveOperation(false);
+      }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
-      this.saveOperation(false);
-    }
+        this.saveOperation(false);
+      }
     if (changes.soapFormEvent.currentValue == 'saveClose') {
-      this.saveOperation(false);
-    }
+        this.saveOperation(false);
+      }
 
     if (changes.soapFormEvent.currentValue == 'release') {
-      this.saveOperation(true);
-    }
+        this.saveOperation(true);
+      }
 
     if (this.admissionService.isEditOperationReport || this.admissionService.isCloneOperationReport) {
       this.getOperationReport();
@@ -288,16 +290,16 @@ export class OperationReportComponent implements OnInit, OnChanges {
         // }
         this.reloadTableList.next(true);
         this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isCloneOperationReport = false;
-          this.admissionService.isEditOperationReport = false;
-        }, (error) => {
-            this.admissionService.isCloneOperationReport = false; 
-            this.admissionService.isEditOperationReport = false;
-            this.admissionService.clearSoapEvent.next(true);
-            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-            this.sharedService.waringSwallModel(`${errorMsg}`);
-        }
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isCloneOperationReport = false;
+        this.admissionService.isEditOperationReport = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Operation Report');
+      }, (error) => {
+        this.admissionService.isCloneOperationReport = false; 
+        this.admissionService.isEditOperationReport = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(error);
+      }
     );
   }
 

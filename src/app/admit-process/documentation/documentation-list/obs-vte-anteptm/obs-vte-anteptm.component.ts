@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
+import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-obs-vte-anteptm',
@@ -25,7 +26,8 @@ export class ObsVTEAnteptmComponent implements OnInit {
     private datePipe: DatePipe,
     private storageService: StorageService,
     private sharedService: SharedService,
-    private admissionService: AdmissionService
+    private admissionService: AdmissionService,
+    private docsService: DocsService
   ) {
     this.route.queryParams.subscribe((res) => {
       this.paramsObj = res;
@@ -34,35 +36,35 @@ export class ObsVTEAnteptmComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.soapFormEvent.currentValue == 'add') {
-      this.createObsVteAntDoc(false);
-      return;
-    }
+        this.createObsVteAntDoc(false);
+        return;
+      }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
-      this.updateObsVteAnt(false);
-      return;
-    }
+        this.updateObsVteAnt(false);
+        return;
+      }
 
     if (changes.soapFormEvent.currentValue == 'saveClose') {
-      if (this.admissionService.isEditObsVteAnt) {
-        this.updateObsVteAnt(true);
-      } else {
-        this.createObsVteAntDoc(true);
+        if (this.admissionService.isEditObsVteAnt) {
+          this.updateObsVteAnt(true);
+        } else {
+          this.createObsVteAntDoc(true);
+        }
+        return;
       }
-      return;
-    }
     if (changes.soapFormEvent.currentValue == 'release') {
-      if (this.admissionService.isEditObsVteAnt) {
-        this.updateObsVteAnt(true);
-      } else {
-        this.createObsVteAntDoc(true);
+        if (this.admissionService.isEditObsVteAnt) {
+          this.updateObsVteAnt(true);
+        } else {
+          this.createObsVteAntDoc(true);
+        }
+        return;
       }
-      return;
-    }
 
     if (changes.soapFormEvent.currentValue == 'copy') {
-      this.enableAllField();
-    }
+        this.enableAllField();
+      }
 
     if (this.admissionService.isCloneObsVteAnt || this.admissionService.isEditObsVteAnt) {
       if(!this.isCheckAPICall) {
@@ -145,14 +147,14 @@ export class ObsVTEAnteptmComponent implements OnInit {
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneObsVteAnt = false; 
           this.admissionService.isEditObsVteAnt = false;
+          this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetric VTE Risk Assess&Mgt Antepartum');
         }
       },
       (error) => {
         this.admissionService.isCloneObsVteAnt = false; 
         this.admissionService.isEditObsVteAnt = false;
         this.admissionService.clearSoapEvent.next(true);
-        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-        this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.docsService.showErrorMsg(error);
         this.admissionService.clearSoapEvent.next(true);
       }
     );
@@ -198,18 +200,18 @@ export class ObsVTEAnteptmComponent implements OnInit {
         // }
         this.reloadTableList.next(true);
         this.admissionService.cancelAllForm();
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isCloneObsVteAnt = false; 
-          this.admissionService.isEditObsVteAnt = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isCloneObsVteAnt = false; 
+        this.admissionService.isEditObsVteAnt = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetric VTE Risk Assess&Mgt Antepartum');
       },
       (error) => {
         this.admissionService.isCloneObsVteAnt = false; 
         this.admissionService.isEditObsVteAnt = false;
         this.admissionService.clearSoapEvent.next(true);
-        const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-        this.sharedService.waringSwallModel(`${errorMsg}`);
-          this.admissionService.clearSoapEvent.next(true);
-       }
+        this.docsService.showErrorMsg(error);
+        this.admissionService.clearSoapEvent.next(true);
+      }
     );
   }
 
@@ -238,19 +240,19 @@ export class ObsVTEAnteptmComponent implements OnInit {
           // }
           this.reloadTableList.next(true);
           this.admissionService.cancelAllForm();
-              this.admissionService.clearSoapEvent.next(true);
-              this.admissionService.isCloneObsVteAnt = false; 
-              this.admissionService.isEditObsVteAnt = false;
-          },
-          (error) => {
-            this.admissionService.isCloneObsVteAnt = false; 
-            this.admissionService.isEditObsVteAnt = false;
-            this.admissionService.clearSoapEvent.next(true);
-            const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-            this.sharedService.waringSwallModel(`${errorMsg}`);
-              this.admissionService.clearSoapEvent.next(true);
-           }
-        );
+          this.admissionService.clearSoapEvent.next(true);
+          this.admissionService.isCloneObsVteAnt = false; 
+          this.admissionService.isEditObsVteAnt = false;
+          this.docsService.showSuccessMsg(this.soapFormEvent,'Obstetric VTE Risk Assess&Mgt Antepartum');
+        },
+        (error) => {
+          this.admissionService.isCloneObsVteAnt = false; 
+          this.admissionService.isEditObsVteAnt = false;
+          this.admissionService.clearSoapEvent.next(true);
+          this.docsService.showErrorMsg(error);
+          this.admissionService.clearSoapEvent.next(true);
+        }
+      );
   }
 
   totalValue(value, control) {

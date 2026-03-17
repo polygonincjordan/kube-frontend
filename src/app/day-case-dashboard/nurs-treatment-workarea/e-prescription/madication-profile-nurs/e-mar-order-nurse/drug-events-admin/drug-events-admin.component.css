@@ -31,7 +31,7 @@
 }
 
 .modal-hidden {
-  height: 472px;
+  height: 710px;
 }
 
 .mar-data {
@@ -47,7 +47,7 @@
 }
 
 .position-dru {
-  bottom: 0;
+  bottom: -100px;
   right: 0;
 }
 
@@ -111,4 +111,9 @@ thead {
 
 tbody {
   background-color: #fbfcff;
+}
+
+ng-select.ng-touched.ng-invalid {
+  outline: 1px solid red;
+  border-radius: 5px;
 }

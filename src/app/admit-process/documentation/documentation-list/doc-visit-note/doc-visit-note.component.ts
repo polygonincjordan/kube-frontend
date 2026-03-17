@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 import { SharedService } from '@services/shared.service';
+import { DocsService } from '@services/docs.service';
 
 @UntilDestroy()
 @Component({
@@ -112,7 +113,8 @@ export class DocVisitNoteComponent implements OnInit {
     private route: ActivatedRoute,
     private sharedService: SharedService,
     private storageService: StorageService,
-    private userConfigurationService:UserConfigurationService
+    private userConfigurationService:UserConfigurationService,
+    private docsService: DocsService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -306,16 +308,6 @@ export class DocVisitNoteComponent implements OnInit {
         this.patientVisitFormData.ToDiagnosis = this.patientVisitFormData.ToDiagnosis == undefined
         ? { results: [] } : this.patientVisitFormData.ToDiagnosis;
 
-      let message = 'Your visit note has been created';
-      if(this.patientVisitFormData.Dockey && this.patientVisitFormData.Released) {
-        message = "Your visit note has been released";
-      }
-      if(this.patientVisitFormData.Dockey && !this.patientVisitFormData.Released){
-        message = "Your visit note has been updated";
-      }
-      if(!this.patientVisitFormData.Dockey && this.patientVisitFormData.Released){
-        message = "Your visit note has been created and released";
-      }
 
       this._admissionService.saveVisitNoteDoc(this.patientVisitFormData).subscribe(
         (result: any) => {
@@ -326,34 +318,25 @@ export class DocVisitNoteComponent implements OnInit {
             this._admissionService.isCloneVisitForm = false;
             this._admissionService.isEditVisitForm = false;
             this._admissionService.clearSoapEvent.next(true);
-              Swal.fire({
-                title: message,
-                confirmButtonColor: '#0890c5',
-                cancelButtonColor: '#84898c',
-                confirmButtonText: 'OK',
-                customClass: { popup: 'myalertpopup' },
-                icon: 'success'
-              } as any), (error) => {
-                alert('The document dose not saved in Red color and caution');
-              }
+            this.docsService.showSuccessMsg(this.soapFormEvent, 'Visit Note');
         },
         (err) => {
           this._admissionService.clearSoapEvent.next(true);
           this._admissionService.isSaveEducationData.next(false);
           this._admissionService.isCloneVisitForm = false;
           this._admissionService.isEditVisitForm = false;
-          const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-          this.sharedService.waringSwallModel(`${errorMsg}`);
+          this.docsService.showErrorMsg(err);
         }
       );
      
     } else {
-      alert('Reason for visit cannot be empty');
+      this._admissionService.clearSoapEvent.next(true);
+      this.docsService.showWarningMsg('Reason for visit cannot be empty');
     }
-
+    
   }
-
-  showErrorPopup(title: any, text: any, messageType) {
+  
+    showErrorPopup(title: any, text: any, messageType) {
     return Swal.fire({
       title: title ? title : '',
       text: text ? text : '',
@@ -400,26 +383,18 @@ export class DocVisitNoteComponent implements OnInit {
               this.reloadTableList.next(true);
               this._admissionService.cancelAllForm();
               this._admissionService.clearSoapEvent.next(true);
-              Swal.fire({
-                title: 'Your visit note has been released!',
-                confirmButtonColor: '#0890c5',
-                cancelButtonColor: '#84898c',
-                confirmButtonText: 'OK',
-                customClass: { popup: 'myalertpopup' },
-                icon: 'success'
-              } as any), (error) => {
-                alert('The document dose not saved in Red color and caution');
-              }
+              this.docsService.showSuccessMsg(this.soapFormEvent, 'Visit Note');
         },
         (err) => {
           this._admissionService.clearSoapEvent.next(true);
           this._admissionService.isSaveEducationData.next(false);
+          this.docsService.showErrorMsg(err)
         }
       );
      
     } else {
       this._admissionService.clearSoapEvent.next(true);
-      alert('Reason for visit cannot be empty');
+      this.docsService.showWarningMsg('Reason for visit cannot be empty');
     }
   }
 

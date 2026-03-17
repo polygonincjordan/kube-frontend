@@ -24,6 +24,7 @@ import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { catchError, of, Subscription } from 'rxjs';
 import { ConfigPopup } from 'src/app/core/config-popup/config-popup.component';
+import { DocsService } from '@services/docs.service';
 @UntilDestroy()
 @Component({
   selector: 'app-surgery-operation-note',
@@ -55,7 +56,8 @@ export class SurgeryOperationNoteComponent implements OnInit {
     public userConfigurationService: UserConfigurationService,
     private dataShareService: DataShareService,
     public storageService: StorageService,
-    public sharedService:SharedService
+    public sharedService:SharedService,
+    private docsService:DocsService
   ) {
     this.inPatientDataSet = new FormGroup({
       DocKey: new FormControl(''),
@@ -266,37 +268,20 @@ export class SurgeryOperationNoteComponent implements OnInit {
         Released: status ? status : documentType,
         Etag: "",
         Erdattim: `\/Date(${new Date().getTime()})\/`,
-        AttendPhy: this.storageService.getUserProfile().Gpart
       }
       const payload = { ...payloadData, PATDOCTOOPERRPTDOCDETAIL: { results: [data.patientFormData] }, DOCCATTOATTACHMENTS: { results: [] }, PATDOCTOPOSTOPERATIVEDX: { results: data.postDiagnosisData }, PATDOCTOPREOPERATIVEDX: { results: data.preDiganosisData }, PATDOCTOSURGICALTEAM: { results: data.surgeryData } };
       this.inPatientConfigurationService.saveSurgery(payload).subscribe({
           next: (data: any) => { },
           error: (err: any) => {
-            this.sharedService.waringSwallModel(`Error ${err}`);
-            this.sharedService.waringSwallModel(
-              `PUT Error at Department of Surgery - Operation Notes : ${err}`
-            );
+            this.admissionService.clearSoapEvent.next(true);
+            this.docsService.showErrorMsg(err)
           },
           complete: () => {
             this.reloadTableList.next(true);
             this.admissionService.cancelAllForm();
             this.admissionService.selectedCurrentDocDetails = '';
             this.admissionService?.clearSoapEvent?.next(true);
-            if(payload?.Released){
-               this.sharedService.successSwallModel(
-                'Department of Surgery - Operation Notes Release successfully'
-              );
-              return
-            }
-            if (status === '2') {
-              this.sharedService.successSwallModel(
-                'Department of Surgery - Operation Notes updated successfully'
-              );
-            } else {
-              this.sharedService.successSwallModel(
-                'Department of Surgery - Operation Notes created successfully'
-              );
-            }
+            this.docsService.showSuccessMsg(this.soapFormEvent,'Department of Surgery - Operation Notes')
           },
         });
     }

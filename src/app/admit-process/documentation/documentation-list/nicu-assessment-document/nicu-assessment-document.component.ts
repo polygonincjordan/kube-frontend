@@ -7,6 +7,7 @@ import { StorageService } from '@services/storage.service';
 import { Subscription } from 'rxjs';
 import { NicuErVitalsComponent } from './er-vitals/er-vitals.component';
 import { DatePipe } from '@angular/common';
+import { DocsService } from '@services/docs.service';
 
 
 
@@ -162,7 +163,7 @@ export class NicuAssessmentDocumentComponent implements OnInit {
   genderString: any;
   isFemale: boolean;
   throwingError: boolean = false;
-  constructor(private _route: ActivatedRoute,public storageService: StorageService,private formBuilder: FormBuilder,public admissionService:AdmissionService,private sharedService: SharedService) { }
+  constructor(private _route: ActivatedRoute,public storageService: StorageService,private formBuilder: FormBuilder,public admissionService:AdmissionService,private sharedService: SharedService, private docsService: DocsService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -260,17 +261,21 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         this.createDoc('1','edit')
       }
       if (changes.soapFormEvent.currentValue == 'release') {
-        this.createDoc('2','edit')
+        if(this.admissionService.isEditNicuForm){
+          this.createDoc('2','edit')
+        } else{
+          this.createDoc('4','edit')
+        }
       }
       console.log(changes.soapFormEvent.currentValue, this.admissionService.isEditNicuForm, this.admissionService.isCloneNicuForm , "this.admissionService.isCloneNicuForm");
-      
-      if (
-        this.admissionService.isCloneNicuForm ||
-        this.admissionService.isEditNicuForm
-      ) {
-        if(this.admissionService.isCloneNicuForm) this.throwingError = true;
-        this.getDocument();
-      }
+    
+    if (
+      this.admissionService.isCloneNicuForm ||
+      this.admissionService.isEditNicuForm
+    ) {
+      if(this.admissionService.isCloneNicuForm) this.throwingError = true;
+      this.getDocument();
+    }
   }
 
   assessmentTabSelect(tabName: string) {
@@ -1170,16 +1175,11 @@ export class NicuAssessmentDocumentComponent implements OnInit {
           this.admissionService.clearSoapEvent.next(true);
           this.admissionService.isCloneNicuForm = false;
           this.admissionService.isEditNicuForm = false;
-          const errorMsg = err?.error?.error?.message?.value || 'Unknown error';
-          this.sharedService.waringSwallModel(`PUT Error at Nicu: ${errorMsg}`);
+          this.docsService.showErrorMsg(err);
         },
         complete: () => {
           resolve(true);
-          if(status === 'edit'){
-            this.sharedService.successSwallModel('Nicu updated successfully');
-          }else{
-            this.sharedService.successSwallModel('Nicu created successfully');
-          }
+          this.docsService.showSuccessMsg(this.soapFormEvent,'NICU Admission Note');
         }
       });
     })   

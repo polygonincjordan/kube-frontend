@@ -6,6 +6,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { PatientVisitService } from '@services/e-kardex/patient-visit.service';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 import { SharedService } from '@services/shared.service';
+import { DocsService } from '@services/docs.service';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +27,8 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
     public admissionService: AdmissionService,
     private patientVisitService: PatientVisitService,
     private sharedService: SharedService,
-    private userConfigurationService: UserConfigurationService
+    private userConfigurationService: UserConfigurationService,
+    private docsService: DocsService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -147,6 +149,10 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
         this.admissionService.cancelAllForm();
         this.admissionService.clearSoapEvent.next(true);
         this.realodEducationList.next(true);
+        this.docsService.showSuccessMsg(this.soapFormEvent,'SOAP Document');
+      }, (error) => {
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -169,15 +175,15 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isCloneSoapDoc = false;
-          this.admissionService.isEditSoapDoc = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isCloneSoapDoc = false;
+        this.admissionService.isEditSoapDoc = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'SOAP Document');
       }, (error) => {
-          this.admissionService.isCloneSoapDoc = false;
-          this.admissionService.isEditSoapDoc = false;
-          this.admissionService.clearSoapEvent.next(true);
-          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-          this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.admissionService.isCloneSoapDoc = false;
+        this.admissionService.isEditSoapDoc = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(error);
       });
   }
 
@@ -192,15 +198,15 @@ export class SopaDocumentComponent implements OnInit, OnChanges {
         this.admissionService.cancelAllForm();
         this.admissionService.selectedCurrentDocDetails = '';
         this.realodEducationList.next(true);
-          this.admissionService.clearSoapEvent.next(true);
-          this.admissionService.isCloneSoapDoc = false;
-          this.admissionService.isEditSoapDoc = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.admissionService.isCloneSoapDoc = false;
+        this.admissionService.isEditSoapDoc = false;
+        this.docsService.showSuccessMsg(this.soapFormEvent,'SOAP Document');
       }, (error) => {
-          this.admissionService.isCloneSoapDoc = false;
-          this.admissionService.isEditSoapDoc = false;
-          this.admissionService.clearSoapEvent.next(true);
-          const errorMsg = error?.error?.error?.message?.value || 'Unknown error';
-          this.sharedService.waringSwallModel(`${errorMsg}`);
+        this.admissionService.isCloneSoapDoc = false;
+        this.admissionService.isEditSoapDoc = false;
+        this.admissionService.clearSoapEvent.next(true);
+        this.docsService.showErrorMsg(error);
       });
   }
 

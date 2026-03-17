@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { EEmrService } from '@services/e-emr.service';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { eOrderService } from '@services/eorder.service';
+import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
@@ -14,6 +16,7 @@ import { environment } from 'src/environments/environment';
 })
 export class LaboratoryTableListComponent implements OnInit, OnChanges {
   @ViewChild('labpdfmodal') labpdfmodal: TemplateRef<HTMLDivElement>;
+  @Output() reloadTableData = new EventEmitter<any>();
 
   @Input() searchString: any;
   @Input() laboratoryList: any[] = [];
@@ -30,6 +33,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     'Created By',
     'Action',
     'Details',
+    'Delete',
   ];
   record: any;
   pdfUrl: any;
@@ -44,14 +48,17 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
   modalRefForLabCollcetion: BsModalRef;
   printUrl: any;
   sampleOrderDescription: any;
+  cancelReasons: any[] = [];
   constructor(public emergencyService: EmergencyService,
     private _dataServices: EEmrService,
     private sanitizer: DomSanitizer,
     private modalService: BsModalService,
-    private hospitalistService: HospitalistService) {}
+    private hospitalistService: HospitalistService,
+    public eorderService: eOrderService,
+    private storageService: StorageService) {}
 
   ngOnInit(): void {
-   
+    this.getCancelReasons();
   }
   
   ngOnChanges(changes: SimpleChanges): void {
@@ -198,10 +205,25 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     action: any
   ) {
     if (action == 'remove') {
-      const config: ModalOptions = { class: 'modal-dialog-centered execute-delete-modal'};
-      this.modalRef = this.modalService.show(template,config);
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered execute-delete-modal',
+      };
+      this.modalRef = this.modalService.show(template, config);
     }
     this.phyOrderData = data;
+  }
+
+  getCancelReasons() {
+    this.hospitalistService.cancelReasonList().subscribe(
+      (response: any) => {
+        if (response && response.d && response.d.results) {
+          this.cancelReasons = response.d.results;
+        }
+      },
+      (error) => {
+        console.error('Error fetching cancel reasons:', error);
+      }
+    );
   }
 
   createLabData(item) {
@@ -273,6 +295,259 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
         item.orderDetailsCollspe[i].isSelected = item.masterSelected;
       }
     }
+  }
+
+  deleteOrderItem(item: any) {
+    if (!item) {
+      return;
+    }
+
+    const reasonsOptions = this.cancelReasons.reduce((obj, reason) => {
+      obj[reason.Stoid] = reason.N1stotx;
+      return obj;
+    }, {} as any);
+
+    let selectedReasonId: any = null;
+
+    Swal.fire({
+      title: 'Delete Order Service',
+      html: `
+        <div style="text-align: left; margin: 20px 0;">
+          <p style="font-weight: 500; margin-bottom: 15px;">Are you sure you want to delete</p>
+          <select id="reason-select" class="swal2-input w-100" style="border: 2px solid #dc3545;" required>
+            <option value="" selected disabled>Please Select Reason</option>
+            ${Object.entries(reasonsOptions)
+              .map(([key, value]) => `<option value="${key}">${value}</option>`)
+              .join('')}
+          </select>
+          <div id="reason-error" style="color: #dc3545; font-size: 14px; margin-top: 8px; display: none;">
+            Please Select Reason
+          </div>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      customClass: { popup: 'myalertpopup' },
+      didOpen: () => {
+        const selectElement = document.getElementById(
+          'reason-select'
+        ) as HTMLSelectElement;
+        selectElement?.addEventListener('change', (e: any) => {
+          selectedReasonId = e.target.value;
+          const errorDiv = document.getElementById('reason-error');
+          if (errorDiv) {
+            errorDiv.style.display = 'none';
+          }
+        });
+      },
+      preConfirm: () => {
+        const selectElement = document.getElementById(
+          'reason-select'
+        ) as HTMLSelectElement;
+        const errorDiv = document.getElementById('reason-error');
+
+        if (!selectElement?.value) {
+          if (errorDiv) {
+            errorDiv.style.display = 'block';
+          }
+          return false;
+        }
+        return true;
+      },
+    }).then((result) => {
+      if (result.isConfirmed && selectedReasonId) {
+        const selectedReason = this.cancelReasons.find(
+          (r) => r.Stoid === selectedReasonId
+        );
+        if (selectedReason) {
+          this.performRowDelete(item, selectedReason);
+        }
+      }
+    });
+  }
+
+  private performRowDelete(item: any, reason: any) {
+    const { einri, falnr, lfdnr } = this.getEncounterIds();
+
+    const postObject: any = {
+      einri,
+      falnr,
+      lfdnr,
+      Eorderid: item.Eorderid || item.EorderId || '',
+      IsGroup: item.Leistung && item.Leistung.includes(',') ? 'X' : '',
+      TOLABSET: [
+        {
+          Cordtypid:
+            item.Cordtypid && item.Cordtypid.replace
+              ? item.Cordtypid.replace(/-/g, '')
+              : '',
+          Eorderid: item.Eorderid || '',
+          Eorderitemid: item.Eorderitemid || '',
+          Talst: item.Leistung ? item.Leistung.split(/,/g)[0] : '',
+          Trtoe: item.Trtoe || '',
+          Storn: 'X',
+          Reason: reason.Stoid || reason,
+        },
+      ],
+      TORADSET: [],
+      TOSUGSET: [],
+      TOMEDICSET: [],
+      TOCONSET: [],
+    };
+
+    this.eorderService.deleteOrderItemFromProfile(
+      postObject,
+      () => {
+        this.successSwalModel('Order service deleted successfully.');
+        this.reloadTableData.emit('labTable');
+      },
+      () => {
+        this.errorSwalModel('Failed to delete service. Please try again.');
+      }
+    );
+  }
+
+  deleteSelectedServices(item: any) {
+    const selectedServices = item.orderDetailsCollspe.filter(
+      (element) => element.isSelected
+    );
+
+    if (selectedServices.length < 1) {
+      this.warningSwalModel('Please select at least one service to delete.');
+      return;
+    }
+
+    const reasonsOptions = this.cancelReasons.reduce((obj, reason) => {
+      obj[reason.Stoid] = reason.N1stotx;
+      return obj;
+    }, {} as any);
+
+    let selectedReasonId: any = null;
+
+    Swal.fire({
+      title: 'Delete Service',
+      html: `
+        <div style="text-align: left; margin: 20px 0;">
+          <p style="font-weight: 500; margin-bottom: 15px;">Are you sure you want to delete the selected service(s)</p>
+          <select id="reason-select" class="swal2-input w-100" style="border: 2px solid #dc3545;" required>
+            <option value="" selected disabled>Please Select Reason</option>
+            ${Object.entries(reasonsOptions)
+              .map(([key, value]) => `<option value="${key}">${value}</option>`)
+              .join('')}
+          </select>
+          <div id="reason-error" style="color: #dc3545; font-size: 14px; margin-top: 8px; display: none;">
+            Please Select Reason
+          </div>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      customClass: { popup: 'myalertpopup' },
+      didOpen: () => {
+        const selectElement = document.getElementById(
+          'reason-select'
+        ) as HTMLSelectElement;
+        selectElement?.addEventListener('change', (e: any) => {
+          selectedReasonId = e.target.value;
+          const errorDiv = document.getElementById('reason-error');
+          if (errorDiv) {
+            errorDiv.style.display = 'none';
+          }
+        });
+      },
+      preConfirm: () => {
+        const selectElement = document.getElementById(
+          'reason-select'
+        ) as HTMLSelectElement;
+        const errorDiv = document.getElementById('reason-error');
+
+        if (!selectElement?.value) {
+          if (errorDiv) {
+            errorDiv.style.display = 'block';
+          }
+          return false;
+        }
+        return true;
+      },
+    }).then((result) => {
+      if (result.isConfirmed && selectedReasonId) {
+        const selectedReason = this.cancelReasons.find(
+          (r) => r.Stoid === selectedReasonId
+        );
+        if (selectedReason) {
+          this.performBulkDelete(item, selectedServices, selectedReason);
+        }
+      }
+    });
+  }
+
+  performBulkDelete(item: any, selectedServices: any[], reason: any) {
+    const uniqueServices = _.uniqBy(selectedServices, 'Eorderitemid');
+
+    const toLabSet = uniqueServices.map((service) => ({
+      Cordtypid:
+        service.Cordtypid && service.Cordtypid.replace
+          ? service.Cordtypid.replace(/-/g, '')
+          : '',
+      Eorderid: service.Eorderid || item.Eorderid || '',
+      Eorderitemid: service.Eorderitemid || '',
+      Talst: service.Leist || '',
+      Trtoe: service.Trtoe || item.Trtoe || '',
+      Storn: 'X',
+      Reason: reason.Stoid || reason,
+    }));
+
+    const { einri, falnr, lfdnr } = this.getEncounterIds();
+
+    const postObject: any = {
+      einri,
+      falnr,
+      lfdnr,
+      Eorderid: item.Eorderid || '',
+      TOLABSET: toLabSet,
+      TORADSET: [],
+      TOSUGSET: [],
+      TOMEDICSET: [],
+      TOCONSET: [],
+    };
+
+    this.eorderService.deleteOrderItemFromProfile(
+      postObject,
+      () => {
+        this.modalRef.hide();
+        this.reloadTableData.emit('labTable');
+      },
+      () => {
+        this.errorSwalModel('Failed to delete services. Please try again.');
+      }
+    );
+  }
+
+  private getEncounterIds(): { einri: string; falnr: string; lfdnr: string } {
+    let einri = this.storageService.getLocal('einri') || this.storageService.einri || '1000';
+    let falnr = this.storageService.getLocal('falnr') || this.storageService.falnr || '0000';
+    let lfdnr = this.storageService.getLocal('lfdnr') || this.storageService.lfdnr || '0000';
+
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        einri = url.searchParams.get('einri') || einri;
+        falnr = url.searchParams.get('falnr') || falnr;
+        lfdnr = url.searchParams.get('lfdnr') || lfdnr;
+      } catch {
+        // ignore URL parsing errors and fall back to storage values
+      }
+    }
+
+    return { einri, falnr, lfdnr };
   }
 
   warningSwalModel(warningMsg) {

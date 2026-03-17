@@ -30,15 +30,15 @@
     border-color: red !important;
   }
   
-  .modal-hidden {
-    height: 472px;
-  }
-  
-  .mar-data {
-    margin-left: -5px;
-  }
-  
-  .data {
+.modal-hidden {
+  height: 710px;
+}
+
+.mar-data {
+  margin-left: -5px;
+}  
+
+.data {
     margin-right: 10px;
   }
   
@@ -47,7 +47,7 @@
   }
   
   .position-dru {
-    bottom: 0;
+    bottom: -100px;
     right: 0;
   }
   
@@ -94,3 +94,7 @@
     }
   }
   
+ng-select.ng-touched.ng-invalid {
+  outline: 1px solid red;
+  border-radius: 5px;
+}
