@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-                <tr *ngFor="let element of toUniqueItemsArr">
+                <tr *ngFor="let element of toUniqueItemsArr" [hidden]="element[0].Storn">
              <td class="dec">{{element[0].Name}}</td>
               <td >{{element[0].UnitTxt}}</td>
               <td >{{element[0].NormalRange}}</td>
@@ -166,7 +166,7 @@
     <ul class="list-simple w-100 mb-2">
       <!-- <li class="icon-pdf" style="background-color: #e4edf5;"><img src="assets/img/Scorecard.svg" class="img-size"> </li>  -->
       <li class="icon-pdf" style="background-color: #e4edf5;"><img src="assets/img/Add.svg" class="img-size" (click)="addNewItemForVital()" title="Add row"> </li>
-      <li class="icon-pdf" style="background-color: #fff9f9;"><img src="assets/img/Delete.svg" class="img-size" (click)="rowDeleteFn()" title="Delete row"> </li>
+      <li class="icon-pdf" style="background-color: #fff9f9;"><img src="assets/img/Delete.svg" class="img-size" (click)="rowDeleteFn()" title="Delete row" [hidden]="true"> </li>
       </ul>
   </div>
   <div class="col-md-12">
@@ -188,7 +188,7 @@
         <tbody style="background: #fbfcff;">
           <ng-container formArrayName="maintainVitalFormitems">
             <ng-container *ngFor="let item of maintainvitalform.get('maintainVitalFormitems')['controls']; let i = index;">
-              <tr [formGroupName]="i" (click)="rowDelete(item, i)" (dblclick)="openAllVitalModal(allVitalSignModal, i)">
+              <tr [formGroupName]="i" (click)="rowDelete(item, i)" (dblclick)="openAllVitalModal(allVitalSignModal, i)" *ngIf="!item.value.Storn">
                 <td [title]="item.controls.Extid.value" [ngClass]="{'new-class': selectedRowsIndex === i && selectedColIndex === 0 }">
                   <input type="text" formControlName="Extid" id="cell-{{i}}-0" (keydown)="handleKeydown($event, i, 0)" style="font-weight:bold;pointer-events: none;">
                 </td>

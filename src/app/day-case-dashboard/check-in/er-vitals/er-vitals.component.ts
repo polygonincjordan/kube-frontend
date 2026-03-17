@@ -332,8 +332,24 @@ export class ErVitalsComponent implements OnInit {
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
         "ObsidVers": "0000",
         "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "4522139805EB1FD0BC8A25C3E8D7BADE",
+        "ValidVers": "0000",
+        "Bcpid": "C000C29D2E09C1ED9A5D54D616DB4CEDE",
+        "Extid": "MEWS SCORE",
+        "Name": "MEWS Score",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "UnLess",
+        "NormalRange": "0.000 - 0.999",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "4522139805EB1FD0BC8A25C3E8D79ADE",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       }
-     
     ];
   }
   openModalForErVital(checkinitem,tab?,documentType?) {
@@ -487,6 +503,17 @@ export class ErVitalsComponent implements OnInit {
   EditVitalList() {
     if (this.isSelected) {
       if (this.selectedColData) {
+        // Validation: Prevent editing if reading is older than 24 hours or in the future
+                 const readingDate = this.getDate(this.selectedColData.Odate);
+                 if(this.isPasssed24Hours(readingDate)){
+                     Swal.fire({
+                     text: "You cannot edit a vital reading older than 24 hours.",
+                     icon: 'error',
+                     confirmButtonText: 'Ok',
+                     customClass: { popup: 'myalertpopup' }
+                   });
+                   return
+                 }
         this.showMaintain = true;
         this.edit = true
         this.selectedColData.TOITEM.results.forEach(element => {
@@ -570,6 +597,17 @@ export class ErVitalsComponent implements OnInit {
   updateVitalSigns() {
     this.isFormSubmitted = true;
     if (this.cancelReasonValue !== '') {
+       // Validation: Prevent updating to a future date or if reading is older than 24 hours
+            const createDateObj = this.maintainVitalBarForm.controls.Odate.value;
+            if (this.isFutureDate(createDateObj)) {
+              Swal.fire({
+                text: "You cannot set a future date for vital readings.",
+                icon: 'error',
+                confirmButtonText: 'Ok',
+                customClass: { popup: 'myalertpopup' }
+              });
+              return;
+            }
       let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
     let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
@@ -616,6 +654,17 @@ export class ErVitalsComponent implements OnInit {
     let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
     EnteredvitalArr = this.maintainVitalFormitems.value;
     EnteredvitalArr = EnteredvitalArr.filter(element => element.Value !== '')
+    const createDateObj = this.maintainVitalBarForm.controls.Odate.value;
+       // Validation: Prevent creating with a future date
+       if(this.isFutureDate(createDateObj)){
+        Swal.fire({
+           text: "You cannot set a future date for vital readings.",
+           icon: 'error',
+           confirmButtonText: 'Ok',
+           customClass: { popup: 'myalertpopup' }
+         });
+         return;
+       }
     const json = {
       "Einri": this.erListSelectedData.Einri,
       "Patnr": this.erListSelectedData.Patnr,
@@ -623,7 +672,7 @@ export class ErVitalsComponent implements OnInit {
       "Lfdnr": this.erListSelectedData.Lfdbw,
       "Orgfa": "",
       "Orgpf": "",
-      "Orgdo": this.erListSelectedData?.Orgpf,
+      "Orgdo":  this.erListSelectedData?.Orgpf,
       "Mitarb": this.storageService.getGpart(),
       "Origin": "",
       "Odate": createDate,
@@ -676,7 +725,7 @@ export class ErVitalsComponent implements OnInit {
 
   //create
 
-  CreateVitalList() {
+   CreateVitalList() {
     this.showMaintain = true;
     let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S';
     // if (this.vitalListResp.length != 0) {
@@ -689,9 +738,10 @@ export class ErVitalsComponent implements OnInit {
     this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));
     this.vitalDefaultListResp.forEach(element => {
-      this.addItemForVital(element);
+    this.addItemForVital(element);
     });
-  }
+  } 
+ 
   openAllVitalModal(template: TemplateRef<any>, index) {
     this.selectedIndex = index;
     const config: ModalOptions = {
@@ -750,5 +800,14 @@ export class ErVitalsComponent implements OnInit {
     this.importEvent.emit(value);
     this.modalRef.hide();
     // this.vitalsArr = [];
+  }
+
+  isPasssed24Hours(readingDate:any): boolean {
+         const now = new Date();
+         return (readingDate&& (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000);
+  }
+
+  isFutureDate(createDateObj:any): boolean {
+    return (createDateObj&&createDateObj > new Date());
   }
 }

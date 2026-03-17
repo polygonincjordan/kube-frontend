@@ -16,7 +16,9 @@ import { Subscription } from 'rxjs';
 })
 export class MedicalReportComponent implements OnInit,OnChanges {
   @Input() soapFormEvent: string;
+  @Input() docType: any;
   @Output() realodEducationList = new EventEmitter();
+  @Output() doctypeLoaded = new EventEmitter<any>();
   medReportForm: FormGroup;
   paramsObject: any;
   selectedPatientDetails: any;
@@ -118,6 +120,10 @@ export class MedicalReportComponent implements OnInit,OnChanges {
         this.medReportForm.patchValue({
           Dockey:patientResult?.d?.results[0]?.Dockey
         })
+        // Emit the loaded Doctype to parent
+        if (patientResult?.d?.results[0]?.Doctype) {
+          this.doctypeLoaded.emit(patientResult?.d?.results[0]?.Doctype);
+        }
       },
       (_error: any) => {}
     );
@@ -138,7 +144,11 @@ export class MedicalReportComponent implements OnInit,OnChanges {
       if (this.medReportForm.invalid) {
         return;
       }
+      if (this.docType === undefined || this.docType === null || this.docType === '') {
+        return;
+      }
       this.medReportForm.value.DocStatus = docStatus;
+      this.medReportForm.value.Doctype = this.docType.toString();
       let paylaod = this.medReportForm.value;
 
       this.subscription = this.emergencyService
@@ -172,7 +182,11 @@ export class MedicalReportComponent implements OnInit,OnChanges {
       if (this.medReportForm.invalid) {
         return;
       }
+      if (this.docType === undefined || this.docType === null || this.docType === '') {
+        return;
+      }
       this.medReportForm.value.DocStatus = docStatus;
+      this.medReportForm.value.Doctype = this.docType.toString();
       let paylaod = this.medReportForm.value;
 
       this.subscription = this.emergencyService
@@ -206,7 +220,11 @@ export class MedicalReportComponent implements OnInit,OnChanges {
       if (this.medReportForm.invalid) {
         return;
       }
+      if (this.docType === undefined || this.docType === null || this.docType === '') {
+        return;
+      }
       this.medReportForm.value.DocStatus = docStatus;
+      this.medReportForm.value.Doctype = this.docType.toString();
       let paylaod = this.medReportForm.value;
 
       this.subscription = this.emergencyService.releaseMedDoc(paylaod)
