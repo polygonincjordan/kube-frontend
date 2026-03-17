@@ -14,6 +14,7 @@ import swal from 'sweetalert2';
 import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { SharedService } from '@services/shared.service';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -55,7 +56,7 @@ export class DrugEventsAdminComponent implements OnInit {
   @Input() set medicationData(data: PrescriptionList) {
     console.log(data);
   }
-  constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService, public emergencyService: EmergencyService) { }
+  constructor(private authService: AuthService, private modalService: BsModalService, private route: ActivatedRoute, private router: Router, public storageService: StorageService, private userConfigurationService: UserConfigurationService, public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService, public emergencyService: EmergencyService, private sharedService: SharedService) { }
 
   ngOnInit() {
 
@@ -385,7 +386,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
                           }
                           const { Quanunit,DosageStr, Prncond, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
-                          
+                          // Do not set Quan2=0 for Administered, only for NotAdministered
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been Administered!", payload)
@@ -395,7 +396,8 @@ export class DrugEventsAdminComponent implements OnInit {
                       error: (err) => {
                         const errorBody = JSON.parse(err._body);
                         let errorMessage = errorBody?.error?.message.value;
-                        this.showErrorPopup(null, errorMessage, 'Warn');
+                          this.showErrorPopup(null, errorMessage, 'Warn');
+                        
                       },
                     });
                 })
@@ -412,6 +414,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
           }
           const { Quanunit, Prncond, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+          // Do not set Quan2=0 for Administered, only for NotAdministered
           delete payload.DosageStr
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been Administered!", payload)
@@ -451,7 +454,8 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
                           const { Quanunit,DosageStr, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
-                          
+                          // Set Quan2="0" (string) only for NotAdministered
+                          payload.Quan2 = "0";
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been NotAdminustered!", payload)
@@ -477,6 +481,8 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
           }
           const { Quanunit, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+          // Set Quan2="0" (string) only for NotAdministered
+          payload.Quan2 = "0";
           delete payload.DosageStr
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been NotAdminustered!", payload)
@@ -574,7 +580,21 @@ export class DrugEventsAdminComponent implements OnInit {
         })
       },
       error: (error: any) => {
-        this.showErrorPopup("", error.error.error.message.value, "Error")
+        const errorMessage = error?.error?.error?.message?.value;
+        if (errorMessage === "Last package dont have enough amount for administration") {
+          this.sharedService.customConfirmPopup(
+            errorMessage,
+            this.administratiForm.get('Descrlt').value,
+            () => {
+              this.newPackageClick({ Events: data }, data);
+            },
+            () => {
+              this.samePackageClick({ Events: data }, data);
+            }
+          );
+        } else {
+          this.showErrorPopup("", errorMessage, "Error");
+        }
       }
     })
   }
@@ -808,4 +828,87 @@ export class DrugEventsAdminComponent implements OnInit {
   }
 
 
+  // Handle newPackage click
+  newPackageClick(item, data) {
+    const payload = {
+      Einri: data.Einri,
+      Falnr: item.Events.Falnr,
+      Meevtid: item.Events.Meevtid,
+      Rdrugdq: item.Events.Quan,
+      Rbdad: this.parseDate(new Date()),
+      Rbtad: this.parseTime(new Date()),
+      Fsource: item.Events.Fsource ?? '',
+      Meresp1: this.getUserConfigData.VMA,
+      Meresp2: '',
+      Prn: item.Events.Prn,
+      Quan2: item.Events.PlanDQ,
+      Rdosdif: '',
+      Rtimdif: '',
+      Adnotestx: '',
+      UserResponse: 'Y'
+    };
+    this.ePrescriptionService.postData('e-prescription/getAdministerEvent', payload).subscribe({
+      next: (resp: any) => {
+        swal.fire({
+          title: 'The event has been Administered!',
+          confirmButtonColor: '#0890c5',
+          cancelButtonColor: '#84898c',
+          confirmButtonText: 'OK',
+          customClass: { popup: 'myalertpopup' },
+          icon: 'success'
+        } as any).then(() => {
+          this.modalRef.hide();
+          this.onClose.emit({
+            filterData: this.ePrescriptionService.checkedFilterData,
+            medicationData: this.ePrescriptionService.prescriptionList
+          });
+        });
+      },
+      error: (error: any) => {
+        this.showErrorPopup('', error?.error?.error?.message?.value, 'Error');
+      }
+    });
+  }
+
+  // Handle samePackage click
+  samePackageClick(item, data) {
+    const payload = {
+      Einri: data.Einri,
+      Falnr: item.Events.Falnr,
+      Meevtid: item.Events.Meevtid,
+      Rdrugdq: item.Events.Quan,
+      Rbdad: this.parseDate(new Date()),
+      Rbtad: this.parseTime(new Date()),
+      Fsource: item.Events.Fsource ?? '',
+      Meresp1: this.getUserConfigData.VMA,
+      Meresp2: '',
+      Prn: item.Events.Prn,
+      Quan2: item.Events.PlanDQ,
+      Rdosdif: '',
+      Rtimdif: '',
+      Adnotestx: '',
+      UserResponse: 'N'
+    };
+    this.ePrescriptionService.postData('e-prescription/getAdministerEvent', payload).subscribe({
+      next: (resp: any) => {
+        swal.fire({
+          title: 'The event has been Administered!',
+          confirmButtonColor: '#0890c5',
+          cancelButtonColor: '#84898c',
+          confirmButtonText: 'OK',
+          customClass: { popup: 'myalertpopup' },
+          icon: 'success'
+        } as any).then(() => {
+          this.modalRef.hide();
+          this.onClose.emit({
+            filterData: this.ePrescriptionService.checkedFilterData,
+            medicationData: this.ePrescriptionService.prescriptionList
+          });
+        });
+      },
+      error: (error: any) => {
+        this.showErrorPopup('', error?.error?.error?.message?.value, 'Error');
+      }
+    });
+  }
 }
