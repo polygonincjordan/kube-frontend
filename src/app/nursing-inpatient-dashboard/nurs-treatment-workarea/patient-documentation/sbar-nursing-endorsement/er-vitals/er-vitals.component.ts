@@ -331,6 +331,23 @@ export class ErVitalsForSBARComponent implements OnInit {
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
         "ObsidVers": "0000",
         "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "4522139805EB1FD0BC8A25C3E8D7BADE",
+        "ValidVers": "0000",
+        "Bcpid": "C000C29D2E09C1ED9A5D54D616DB4CEDE",
+        "Extid": "MEWS SCORE",
+        "Name": "MEWS Score",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "UnLess",
+        "NormalRange": "0.000 - 0.999",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "4522139805EB1FD0BC8A25C3E8D79ADE",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       }
 
     ];
@@ -485,15 +502,20 @@ export class ErVitalsForSBARComponent implements OnInit {
   EditVitalList() {
     if (this.isSelected) {
       if (this.selectedColData) {
+        // Validation: Prevent editing if reading is older than 24 hours or in the future
+        const readingDate = this.getDate(this.selectedColData.Odate);
+        if (this.isPasssed24Hours(readingDate)) {
+          Swal.fire({
+            text: "You cannot edit a vital reading older than 24 hours.",
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            customClass: { popup: 'myalertpopup' }
+          });
+          return;
+        }
         this.showMaintain = true;
         this.edit = true
         this.selectedColData.TOITEM.results.forEach(element => {
-          // if(element.Name.includes('Temperature')){
-          //   element['Value'] = parseFloat(element.Value).toFixed(2);
-          // }
-          // else{
-          //   element['Value'] = parseInt(element.Value);
-          // }
           this.addItemForVital(element);
         });
         this.maintainVitalBarForm.controls.Orgdo.setValue(this.storageService?.patientData?.deptOrgUnit);
@@ -501,7 +523,6 @@ export class ErVitalsForSBARComponent implements OnInit {
         this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
         this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
         this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);
-
       }
     } else {
       Swal.fire({
@@ -568,6 +589,17 @@ export class ErVitalsForSBARComponent implements OnInit {
   updateVitalSigns() {
     this.isFormSubmitted = true;
     if (this.cancelReasonValue !== '') {
+      // Validation: Prevent updating to a future date 
+      const selectedDate = this.maintainVitalBarForm.controls.Odate.value;
+      if (this.isFutureDate(selectedDate)) {
+        Swal.fire({
+          text: "You cannot set a future date for vital readings.",
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        });
+        return;
+      }
       let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
       createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
       let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
@@ -611,7 +643,18 @@ export class ErVitalsForSBARComponent implements OnInit {
     let EnteredvitalArr = [];
     let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
-    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
+    let createDateObj = this.maintainVitalBarForm.controls.Odate.value;
+    // Validation: Prevent creating with a future date
+    if (this.isFutureDate(createDateObj)) {
+      Swal.fire({
+        text: "You cannot set a future date for vital readings.",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      });
+      return;
+    }
+    let createDate = createDateObj.getFullYear() + '-' + String(createDateObj.getMonth() + 1).padStart(2, '0') + '-' + String(createDateObj.getDate()).padStart(2, '0') + 'T00:00:00';
     EnteredvitalArr = this.maintainVitalFormitems.value;
     EnteredvitalArr = EnteredvitalArr.filter(element => element.Value !== '')
     const json = {
@@ -748,5 +791,14 @@ export class ErVitalsForSBARComponent implements OnInit {
     this.importEvent.emit(value);
     this.modalRef.hide();
     // this.vitalsArr = [];
+  }
+
+   isPasssed24Hours(readingDate:any): boolean {
+         const now = new Date();
+         return (readingDate&& (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000);
+  }
+
+  isFutureDate(createDateObj:any): boolean {
+    return (createDateObj&&createDateObj > new Date());
   }
 }

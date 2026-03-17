@@ -170,7 +170,7 @@
             <!-- <li class="icon-pdf" style="background-color: #e4edf5;"><img src="assets/img/Scorecard.svg" class="img-size"> </li>  -->
             <li class="icon-pdf" style="background-color: #e4edf5;"><img src="assets/img/Add.svg" class="img-size"
                 (click)="addNewItemForVital()" title="Add row"> </li>
-            <li class="icon-pdf" style="background-color: #fff9f9;"><img src="assets/img/Delete.svg" class="img-size"
+            <li class="icon-pdf" style="background-color: #fff9f9;" [hidden]="true">><img src="assets/img/Delete.svg" class="img-size"
                 (click)="rowDeleteFn()" title="Delete row"> </li>
           </ul>
         </div>

@@ -265,6 +265,7 @@ export class SurgicalPassportComponent implements OnInit {
       Lfdnr: this.paramsObject.lfdnr,
       Patient: this.storageService?.patientData?.name,
       admissionDate: this.storageService.patientData.periodStart,
+      Orgpf: this.storageService.patientData.deptOrgUnit,
     };
     this.erVitalsModal.openModalForErVital(item,'', 'surgical');
   }
