@@ -6,6 +6,7 @@ import { EEmrService } from '@services/e-emr.service';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
 import { SharedService } from '@services/shared.service';
 import { StorageService } from '@services/storage.service';
 import { eOrderService } from '@services/eorder.service';
@@ -54,6 +55,9 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
   selectedTable: string;
   isCollpseOpen: boolean = false;
   
+  // Delete reason properties
+  cancelReasons: any[] = [];
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -65,7 +69,8 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
     private datePipe: DatePipe,
     public sharedService: SharedService,
     public _dataServices:EEmrService,
-    public eorderService: eOrderService
+    public eorderService: eOrderService,
+    private _hospitallistService: HospitalistService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.storageService.setEinri(params['einri']);
@@ -106,6 +111,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
     this.getPatientCaseStepperData();
     this.getPatientTableList('', '', this.storageService.falnr);
     this.initialPatientList();
+    this.getCancelReasons();
     if(this.administrationService.durationUnitList) {
       this.durationUnit = this.patientCaseDetails?.Pduru !== null && this.patientCaseDetails?.Pduru !== "" ? this.administrationService?.durationUnitList.find(d => d.Unit == this.patientCaseDetails?.Pduru)?.Text : "";
     }
@@ -294,33 +300,95 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
    return parseFloat(value).toFixed(3);
   }
 
+  getCancelReasons() {
+    this._hospitallistService.cancelReasonList().subscribe(
+      (result: any) => {
+        if (result && result.d && result.d.results) {
+          this.cancelReasons = result.d.results;
+        }
+      },
+      (error) => {
+        console.error('Error loading cancel reasons:', error);
+      }
+    );
+  }
+
   onDeleteOrderItem(item: any, itemType: string) {
     if (!item) return;
 
+    const reasonsOptions = this.cancelReasons.reduce((obj, reason) => {
+      obj[reason.Stoid] = reason.N1stotx;
+      return obj;
+    }, {} as any);
+
+    let selectedReasonId: any = null;
+
     swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to delete this order item?',
+      title: 'Delete Order Service',
+      html: `
+        <div style="text-align: left; margin: 20px 0;">
+          <p style="font-weight: 500; margin-bottom: 15px;">Are you sure you want to delete</p>
+          <select id="reason-select" class="swal2-input w-100" style="border: 2px solid #dc3545;" required>
+            <option value="" selected disabled>Please Select Reason</option>
+            ${Object.entries(reasonsOptions).map(([key, value]) => `<option value="${key}">${value}</option>`).join('')}
+          </select>
+          <div id="reason-error" style="color: #dc3545; font-size: 14px; margin-top: 8px; display: none;">
+            Please Select Reason
+          </div>
+        </div>
+      `,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      customClass: { popup: 'myalertpopup' },
+      didOpen: () => {
+        const selectElement = document.getElementById('reason-select') as HTMLSelectElement;
+        selectElement?.addEventListener('change', (e: any) => {
+          selectedReasonId = e.target.value;
+          const errorDiv = document.getElementById('reason-error');
+          if (errorDiv) {
+            errorDiv.style.display = 'none';
+          }
+        });
+      },
+      preConfirm: () => {
+        const selectElement = document.getElementById('reason-select') as HTMLSelectElement;
+        const errorDiv = document.getElementById('reason-error');
+        
+        if (!selectElement?.value) {
+          if (errorDiv) {
+            errorDiv.style.display = 'block';
+          }
+          return false;
+        }
+        return true;
+      }
     }).then((result) => {
-      if (result.isConfirmed) {
-        this.performDelete(item, itemType);
+      if (result.isConfirmed && selectedReasonId) {
+        const selectedReason = this.cancelReasons.find(
+          r => r.Stoid === selectedReasonId
+        );
+        if (selectedReason) {
+          this.performDelete(item, itemType, selectedReason);
+        }
       }
     });
   }
 
-  private performDelete(item: any, itemType: string) {
-    console.log('Deleting item:', item, 'Type:', itemType);
-    
+  private performDelete(item: any, itemType: string, reason: any) {
+    console.log('Deleting item:', item, 'Type:', itemType, 'Reason:', reason);
+
+    const { einri, falnr, lfdnr } = this.getEncounterIds();
+
     let postObject: any = {
-      einri: this.storageService.getLocal('einri') || '1000',
-      falnr: this.storageService.getLocal('falnr') || '0000',
-      lfdnr: this.storageService.getLocal('lfdnr') || '0000',
+      einri,
+      falnr,
+      lfdnr,
       Eorderid: item.Eorderid || item.EorderId || '',
+      IsGroup: item.Leistung && item.Leistung.includes(',') ? 'X' : '',
       TOLABSET: [],
       TORADSET: [],
       TOSUGSET: [],
@@ -335,9 +403,10 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
             Cordtypid: (item.Cordtypid && item.Cordtypid.replace) ? item.Cordtypid.replace(/-/g, '') : '',
             Eorderid: item.Eorderid || '',
             Eorderitemid: item.Eorderitemid || '',
-            Talst: item.Leistung || '',
+            Talst: item.Leistung.split(/,/g)[0] || '',
             Trtoe: item.Trtoe || '',
             Storn: 'X',
+            Reason: reason.Stoid || reason,
           },
         ];
         break;
@@ -351,6 +420,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
             Talst: item.Leistung || '',
             Trtoe: item.Trtoe || '',
             Storn: 'X',
+            Reason: reason.Stoid || reason,
           },
         ];
         break;
@@ -377,6 +447,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
             DRUG: item.Drug || item.DRUG || '',
             Eorderid: item.Eorderid || item.EorderId || '',
             Eorderitemid: item.Eorderitemid || item.EorderItemId || '',
+            Reason: reason.Stoid || reason,
           },
         ];
         break;
@@ -390,6 +461,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
             Talst: item.Leistung || '',
             Trtoe: item.Trtoe || '',
             Storn: 'X',
+            Reason: reason.Stoid || reason,
           },
         ];
         break;
@@ -403,6 +475,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
             Talst: item.Leistung || '',
             Trtoe: item.Trtoe || '',
             Storn: 'X',
+            Reason: reason.Stoid || reason,
           },
         ];
         break;
@@ -421,5 +494,24 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
         console.log('Delete failed');
       }
     );
+  }
+
+  private getEncounterIds(): { einri: string; falnr: string; lfdnr: string } {
+    let einri = this.storageService.getLocal('einri') || this.storageService.einri || '1000';
+    let falnr = this.storageService.getLocal('falnr') || this.storageService.falnr || '0000';
+    let lfdnr = this.storageService.getLocal('lfdnr') || this.storageService.lfdnr || '0000';
+
+    if (typeof window !== 'undefined') {
+      try {
+        const url = new URL(window.location.href);
+        einri = url.searchParams.get('einri') || einri;
+        falnr = url.searchParams.get('falnr') || falnr;
+        lfdnr = url.searchParams.get('lfdnr') || lfdnr;
+      } catch {
+        // ignore URL parsing errors and fall back to storage values
+      }
+    }
+
+    return { einri, falnr, lfdnr };
   }
 }

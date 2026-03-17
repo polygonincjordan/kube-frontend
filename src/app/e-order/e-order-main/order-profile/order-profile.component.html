@@ -54,7 +54,7 @@
             <div class="card">
               <div class="card-body p-1">
                 
-                <app-laboratory-table-list  *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [laboratoryList]="laboratoryList" (deleteItem)="onDeleteOrderItem($event.item, $event.type)"></app-laboratory-table-list>
+                <app-laboratory-table-list  *ngIf="isLaboratory || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [laboratoryList]="laboratoryList" (deleteItem)="onDeleteOrderItem($event.item, $event.type)" (reloadTableData)="resetAllFilter()"></app-laboratory-table-list>
                 <app-radiology-table-list *ngIf="isRadiology || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)" [searchString]="searchString" [radiologyList]="radiologyList" (reloadTableData)="resetAllFilter()" (deleteItem)="onDeleteOrderItem($event.item, $event.type)"></app-radiology-table-list>
                 <div class="card mt-2" *ngIf="isMedication || (!isLaboratory && !isRadiology && !isMedication && !isSurgery && !isConsultations)">
                   <div class="card-body p-0 medication-emer-table">
@@ -198,8 +198,6 @@
       </div>
     </div>
   </ng-template>
-  
-  
   <ng-template #orderMedication>
     <div class="d-flex justify-content-center align-items-center mt-2">
       Medication Name - <p class="font-weight-bold p-0 m-0">{{patientCaseDetails?.ResultDrugName}}</p>

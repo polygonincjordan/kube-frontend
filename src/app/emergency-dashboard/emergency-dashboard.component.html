@@ -317,7 +317,29 @@ font-weight: bold;width: 99%;">
 
   </div>
 
-  <div class="col-md-2" style="padding: 0;">
+
+      <div class="header-tooltip d-flex justify-content-center ">
+      <div class="header-tooltip-wrapper d-flex justify-content-between">
+        <div *ngIf="patient?.flagsIcons?.riskFactorInd?.active" [tooltip]="patient?.flagsIcons?.riskFactorInd?.text"
+          placement="bottom">
+          <img src="assets/img/warning-icon.svg" width="24" height="24" style="margin-inline-end: 5px;">
+        </div>
+        <div *ngIf="patient?.flagsIcons?.isolationInd?.active" [tooltip]="patient?.flagsIcons?.isolationInd?.text"
+          placement="bottom">
+          <img src="assets/img/bed.svg" width="25" height="25" style="margin-inline-end: 5px;">
+        </div>
+        <div *ngIf="patient?.flagsIcons?.patCatInd?.active" [tooltip]="patient?.flagsIcons?.patCatInd?.text"
+          placement="bottom">
+          <img src="assets/img/manage-account.svg" width="25" height="25">
+        </div>
+        <div *ngIf="patient?.flagsIcons?.clinicPharmctStdInd?.active" [tooltip]="patient?.flagsIcons?.clinicPharmctStdInd?.text"
+          placement="bottom">
+          <img src="assets/img/clinic-pharmct-std.png" width="30" height="25">
+        </div>
+      </div>
+    </div>
+
+  <div  style="padding: 0;">
     <img src="assets/img/er-treatment.png" style="width: 189px;
 height: 78px;
 float: right;" />
