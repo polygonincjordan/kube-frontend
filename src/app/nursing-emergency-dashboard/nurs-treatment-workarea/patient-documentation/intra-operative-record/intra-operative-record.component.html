@@ -1,0 +1,2571 @@
+<div id="exTab1">
+  <ul class="nav nav-pills">
+    <li
+      [class.active]="activeTab === 'surgicalsafetychecklist'"
+      (click)="setActiveTab('surgicalsafetychecklist')"
+    >
+      Surgical Safety CheckList
+    </li>
+    <li
+      [class.active]="activeTab === 'fireriskassessment'"
+      (click)="setActiveTab('fireriskassessment')"
+    >
+      Fire Risk Assessment
+    </li>
+    <li
+      [class.active]="activeTab === 'intraoperativedata'"
+      (click)="setActiveTab('intraoperativedata')"
+    >
+      Intra-Operative Data
+    </li>
+    <li
+      [class.active]="activeTab === 'intraoperativedataII'"
+      (click)="setActiveTab('intraoperativedataII')"
+    >
+      Intra-Operative Data II
+    </li>
+    <li
+      [class.active]="activeTab === 'postoperativedata'"
+      (click)="setActiveTab('postoperativedata')"
+    >
+      Post-Operative Data
+    </li>
+  </ul>
+</div>
+<form [formGroup]="criticalForm">
+  <div class="d-flex mt-3" *ngIf="activeTab == 'surgicalsafetychecklist'">
+    <label class="mr-2 mt-3">Date</label>
+    <div class="header-date p-0">
+      <span
+        _ngcontent-ufq-c103=""
+        style="
+          position: relative;
+          top: 35px;
+          right: 30px;
+          float: right;
+          margin-top: -26px;
+          font-size: 18px;
+          z-index: 1;
+        "
+      >
+        <img src="assets/img/Calender.svg" alt="" />
+      </span>
+      <input
+        class="form-control ml-0 col-1"
+        style="color: #000; border-radius: 8px"
+        type="text"
+        placeholder=""
+        [minDate]=""
+        [maxDate]=""
+        readonly
+        #dp="bsDatepicker"
+        formControlName="SDate"
+        style="min-width: 200px"
+        readonly
+        bsDatepicker
+        [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+        }"
+      />
+    </div>
+  </div>
+  <div class="d-flex mt-3" *ngIf="activeTab == 'fireriskassessment'">
+    <label class="mr-2 mt-3">Date</label>
+    <div class="header-date p-0">
+      <span
+        _ngcontent-ufq-c103=""
+        style="
+          position: relative;
+          top: 35px;
+          right: 30px;
+          float: right;
+          margin-top: -26px;
+          font-size: 18px;
+          z-index: 1;
+        "
+      >
+        <img src="assets/img/Calender.svg" alt="" />
+      </span>
+      <input
+        class="form-control ml-0 col-1"
+        style="color: #000; border-radius: 8px"
+        type="text"
+        placeholder=""
+        [minDate]=""
+        [maxDate]=""
+        readonly
+        #dp="bsDatepicker"
+        formControlName="FDate"
+        style="min-width: 200px"
+        readonly
+        bsDatepicker
+        [bsConfig]="{
+          showWeekNumbers: false,
+          dateInputFormat: 'DD.MM.YYYY'
+        }"
+      />
+    </div>
+  </div>
+  <div class="tab-content clearfix">
+    <div *ngIf="activeTab === 'surgicalsafetychecklist'">
+      <div class="scale-container p-2">
+        <h6 class="scale-result">Sign In</h6>
+        <div class="d-flex">
+          <label class="col-md-1 p-0 mt-1 mb-2">Time</label>
+          <input
+            class="form-control"
+            type="time"
+            formControlName="SsiTime"
+            [value]="currentTime"
+          />
+        </div>
+        <div class="mews-container">
+          <div class="mews-table">
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                Patient has to confirm the following 5 points:
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiPatientId"
+                  name="resp"
+                />
+                Patient ID
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiProcedureName"
+                  name="resp"
+                />
+                Procedure Name
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiProcedureSide"
+                  class="mr-1"
+                  name="resp"
+                />Procedure Side
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0"></div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiProcedureSite"
+                  name="resp"
+                />
+                Procedure site/marking
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiConsentFromSigned"
+                  name="resp"
+                />
+                Consent from signed
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                Anaesthetist to confirm the following points:
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiPreAnaesthesia"
+                  name="resp"
+                />
+                Pre Anaesthesla checklist (PAC)
+              </div>
+              <div class="position-set"></div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiEquipment"
+                  class="mr-1"
+                  name="resp"
+                />Equipment, images & implants checked
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0"></div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiAirway"
+                  name="resp"
+                />
+                Airway Difficulty Assessed
+              </div>
+              <div class="position-set"></div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiAspiration"
+                  class="mr-1"
+                  name="resp"
+                />Aspiration risk
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0"></div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiRiskBlood"
+                  name="resp"
+                />
+                Riks of blood loss Assessed
+              </div>
+              <div class="position-set"></div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsiAllergies"
+                  class="mr-1"
+                  name="resp"
+                />Allergies checked
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0"></div>
+              <div class="position-set wdth135">
+                <input
+                  type="checkbox"
+                  formControlName="SsiAnaesthesiaEquipment"
+                  name="resp"
+                />
+                The anaesthesia equipment is on the patient and functioning
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0"></div>
+              <div class="position-set wdth135">
+                <input
+                  type="checkbox"
+                  formControlName="SsiVerificationCritical"
+                  name="resp"
+                />
+                Verification of critical steps that require special equipment,
+                implants or prepa
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0"></div>
+              <div class="position-set wdth135">
+                <input
+                  type="checkbox"
+                  formControlName="SsiVerificationExistence"
+                  name="resp"
+                />
+                Verification of the existence of an anaesthetic problem
+              </div>
+            </div>
+          </div>
+        </div>
+        <h6 class="scale-result">
+          Time Out: Cirulating Nurse Verbalize to all team before skin incision
+        </h6>
+        <div class="d-flex">
+          <label class="col-md-1 p-0 mt-1 mb-2">Time</label>
+          <input
+            class="form-control"
+            type="time"
+            formControlName="StTime"
+            [value]="currentTime"
+          />
+        </div>
+        <div class="mews-container">
+          <div class="mews-table">
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StTeamOrientation"
+                  name="resp"
+                />
+                Team orientation (All team introduced by name & role)
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="StIdConfirmation"
+                  name="resp"
+                />
+                ID confirmation
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StProcedureName"
+                  name="resp"
+                />
+                Procedure Name
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="StProcedureSide"
+                  name="resp"
+                />
+                Procedure Side
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StProcedureSite"
+                  name="resp"
+                />
+                Procedure site/marking
+              </div>
+              <div class="position-set wdth135">
+                <input
+                  type="checkbox"
+                  formControlName="StAnticipated"
+                  class="mr-1"
+                  name="resp"
+                />Anticipated critical events (Surgeon, anaesthetist, nurse)
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StImplantsReady"
+                  name="resp"
+                />
+                Implants available
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="StAntibiotic"
+                  class="mr-1"
+                  name="resp"
+                />Antibiotic prophylaxis given
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input type="checkbox" name="resp" /> Equipment checked
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="StImageDisplayed"
+                  class="mr-1"
+                  name="resp"
+                />Image displayed
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">SURGEON:</div>
+              <div class="position-set">NURSING:</div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StSWhatAre"
+                  name="resp"
+                />
+                What are the critical or non-routine steps?
+              </div>
+              <div class="position-set wdth135">
+                <input
+                  type="checkbox"
+                  formControlName="StNHasSterility"
+                  class="mr-1"
+                  name="resp"
+                />Has sterility (including indicator results) been confirmed?
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StSHowLong"
+                  name="resp"
+                />
+                How long will the case take?
+              </div>
+              <div class="position-set wdth135">
+                <input
+                  type="checkbox"
+                  formControlName="StAAreThere"
+                  class="mr-1"
+                  name="resp"
+                />Are there any patient-specific concerns?
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="StSWhatIs"
+                  name="resp"
+                />
+                What is the anticipated blood loss?
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="col-md-2 p-0">ANAESTHETIST:</div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="StNAreThere"
+                  class="mr-1"
+                  name="resp"
+                />Are there any patient-specific concerns?
+              </div>
+            </div>
+          </div>
+        </div>
+        <h6 class="scale-result">
+          Sign Out: Circulating nurse, anaesthetist and surgeon before leaving
+          OT
+        </h6>
+        <div class="d-flex">
+          <label class="mr-2 mt-1">Time</label>
+          <input
+            class="form-control"
+            type="time"
+            formControlName="SsoTime"
+            [value]="currentTime"
+          />
+        </div>
+        <div class="mews-container">
+          <div class="mews-table">
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="SsoProcedureName"
+                  name="resp"
+                />
+                Procedure Name specified
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsoInstrumentCount"
+                  name="resp"
+                />
+                Instrument Count correct
+              </div>
+              <div class="position-set">
+                <input
+                  type="checkbox"
+                  formControlName="SsoSpecimenLabelled"
+                  name="resp"
+                />
+                Specimen labelled
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">Equipment problems</div>
+              <div class="row">
+                <div class="position-set col-md-5 p-0">
+                  <ng-select
+                    [items]="equipment"
+                    bindLabel="label"
+                    bindValue="value"
+                    formControlName="SsoEquipmentProblems"
+                    (change)="
+                      onSelectChange(
+                        'SsoEquipmentProblems',
+                        'SsoEquipmentProblemsTxt'
+                      )
+                    "
+                  >
+                  </ng-select>
+                </div>
+                <div class="position-set col-md-7">
+                  <input
+                    type="text"
+                    name="resp"
+                    class="form-control"
+                    formControlName="SsoEquipmentProblemsTxt"
+                    [readOnly]="
+                      criticalForm.get('SsoEquipmentProblems')?.value != '0'
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="SsoProblemEncountered"
+                  (change)="
+                    toggleInputText(
+                      'SsoProblemEncountered',
+                      'SsoProblemEncounteredTxt'
+                    )
+                  "
+                />
+                Problem encountered
+              </div>
+              <div class="row">
+                <div class="position-set pl-0 col-md-12 w-100">
+                  <input
+                    type="text"
+                    name="resp"
+                    class="form-control"
+                    formControlName="SsoProblemEncounteredTxt"
+                    [readOnly]="
+                      !criticalForm.get('SsoProblemEncountered')?.value
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="SsoKeyConcerns"
+                  class="mr-1"
+                  name="resp"
+                />
+                Key concerns in recovery: Surgeon / Anaesthetist / Nurse
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === 'fireriskassessment'">
+      <div class="scale-container p-2">
+        <div class="mews-container">
+          <div class="mews-table">
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                1. Procedure Site or Incision above xiphoid
+              </div>
+              <div class="position-set">
+                <ng-select
+                  [items]="yesNoOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  formControlName="FProcedureSite"
+                  (change)="calculateTotal()"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                2. Open Oxygen Source (Face mask/Nasal cannula)
+              </div>
+              <div class="position-set">
+                <ng-select
+                  [items]="yesNoOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  formControlName="FOpenOxygen"
+                  (change)="calculateTotal()"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-12 p-0">
+                3. Ignition Source (Cautery, laser, fibre optic light)
+              </div>
+              <div class="position-set">
+                <ng-select
+                  [items]="yesNoOptions"
+                  bindLabel="label"
+                  bindValue="value"
+                  formControlName="FIgnitionSource"
+                  (change)="calculateTotal()"
+                >
+                </ng-select>
+              </div>
+            </div>
+            <div class="mews-row">
+              <div class="col-md-10 p-0" style="text-align: end">Total</div>
+              <div class="position-set">
+                <input
+                  class="form-control"
+                  type="text"
+                  style="height: 36px"
+                  formControlName="FTotal"
+                  readOnly
+                />
+              </div>
+            </div>
+            <div class="d-flex">
+              <label class="mr-2 mt-2">Comments</label>
+              <input
+                class="col-md-6 form-control"
+                type="text"
+                formControlName="FComments"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === 'intraoperativedata'">
+      <div class="scale-container p-2">
+        <h6 class="scale-result">Surgical Diagnosis</h6>
+        <div class="mews-container">
+          <div class="mews-table">
+            <div class="mews-row d-flex">
+              <div class="col-md-10 p-0">
+                <input
+                  type="checkbox"
+                  formControlName="Iod1NoDiagnoses"
+                  class="mr-1"
+                  name="resp"
+                />
+                No diagnoses applicable
+              </div>
+              <div class="button-Import ml-auto" style="display: flex">
+                <button
+                  class="btn action-doc"
+                  (click)="openModalForDiagnosis()"
+                >
+                  Create/Import
+                </button>
+              </div>
+            </div>
+            <table class="table table-bordered">
+              <thead
+                style="
+                  position: sticky;
+                  top: -10px;
+                  z-index: 9;
+                  background: #e4edf5;
+                "
+              >
+                <tr>
+                  <th>Code</th>
+                  <th>Description</th>
+                  <th>Remarks</th>
+                  <th>Admission diagnosis</th>
+                  <th>Discharge diagnosis</th>
+                  <th>Working diagnosis</th>
+                  <th>Preoperative diagnosis</th>
+                  <th>Surgery diagnosis</th>
+                  <th>Cause of death if applicable</th>
+                  <th>Department main diagnosis</th>
+                  <th>Hospital main diagnosis</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody style="background: #fbfcff">
+                <tr *ngFor="let item of toDiagnosisArr; let i = index">
+                  <td>{{ item.DCode }}</td>
+                  <td>{{ item.DDescription }}</td>
+                  <td>{{ item.DRemarks }}</td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DAdmission"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DDischarge"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DWorking"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DPreoperative"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DSurgery"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DDeath"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DDepartment"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td class="text-center">
+                    <input type="checkbox" [(ngModel)]="item.DHospital"  [ngModelOptions]="{standalone: true}"/>
+                  </td>
+                  <td
+                    style="text-align: center; width: 5%"
+                    (click)="deleteDiagnosisFromTable(item, i)"
+                  >
+                    <img
+                      src="assets/img/Delete.svg"
+                      style="position: relative; top: 6px"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h6 class="scale-result">Surgical Team</h6>
+            <div
+              class="button-Import justify-content-end"
+              style="display: flex"
+            >
+              <button class="btn action-doc">Create/Import</button>
+            </div>
+            <table class="table table-bordered">
+              <thead
+                style="
+                  position: sticky;
+                  top: -10px;
+                  z-index: 9;
+                  background: #e4edf5;
+                "
+              >
+                <tr>
+                  <th></th>
+                  <th scope="col">Code</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Employee Responsible</th>
+                  <th scope="col">Employee Name</th>
+                  <th scope="col">Date In</th>
+                  <th scope="col">Time In</th>
+                  <th scope="col">Date Out</th>
+                  <th scope="col">Time Out</th>
+                </tr>
+              </thead>
+              <tbody style="background: #fbfcff">
+                <tr class="c-pointer">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>00:00:00</td>
+                  <td></td>
+                  <td>00:00:00</td>
+                </tr>
+                <tr class="c-pointer">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>00:00:00</td>
+                  <td></td>
+                  <td>00:00:00</td>
+                </tr>
+                <tr class="c-pointer">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>00:00:00</td>
+                  <td></td>
+                  <td>00:00:00</td>
+                </tr>
+                <tr class="c-pointer">
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>00:00:00</td>
+                  <td></td>
+                  <td>00:00:00</td>
+                </tr>
+              </tbody>
+            </table>
+            <h6 class="scale-result">Procedure</h6>
+            <div class="mews-container">
+              <div class="mews-table">
+                <div class="mews-row d-flex">
+                  <div class="col-md-10 p-0">
+                    <input
+                      type="checkbox"
+                      formControlName="Iod1NoProcedure"
+                      class="mr-1"
+                      name="resp"
+                    />
+                    No Procedure applicable
+                  </div>
+                  <div
+                    class="button-Import ml-auto"
+                    style="text-align: end; display: flex"
+                  >
+                    <button class="btn action-doc">Create/Import</button>
+                  </div>
+                </div>
+                <table class="table table-bordered">
+                  <thead
+                    style="
+                      position: sticky;
+                      top: -10px;
+                      z-index: 9;
+                      background: #e4edf5;
+                    "
+                  >
+                    <tr>
+                      <th></th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Code</th>
+                      <th scope="col">Catalog</th>
+                      <th scope="col">Timestamp for procedure</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Remarks</th>
+                      <th scope="col">Anesthesia technique</th>
+                    </tr>
+                  </thead>
+                  <tbody style="background: #fbfcff">
+                    <tr class="c-pointer">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="c-pointer">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="c-pointer">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="c-pointer">
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === 'intraoperativedataII'">
+      <div class="scale-container p-2">
+        <div class="mews-container">
+          <div class="row">
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-2">Date</label>
+              <input
+                type="text"
+                class="form-control"
+                bsDatepicker
+                [bsConfig]="{
+                  dateInputFormat: 'DD.MM.YYYY',
+                  showWeekNumbers: false
+                }"
+                formControlName="Iod2Date"
+                readOnly
+              />
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3">Surgery</label>
+              <ng-select
+                [items]="surgeryTypes"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Select Surgery Type"
+                style="width: 100%"
+                formControlName="Iod2Surgery"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3">Surgery Room Type</label>
+              <ng-select
+                [items]="surgeryRoomTypes"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Select Surgery Room Type"
+                style="width: 100%"
+                formControlName="Iod2RoomType"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-2">Classification</label>
+              <ng-select
+                [items]="classifications"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Select Classification"
+                style="width: 100%"
+                formControlName="Iod2Classification"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3">Room</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="Iod2RoomNo"
+              />
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <label class="mr-3">Position</label>
+              <ng-select
+                [items]="positions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Select Position"
+                formControlName="Iod2Positioning"
+                (change)="
+                  onSelectChange('Iod2Positioning', 'Iod2PositioningTxt')
+                "
+                style="width: 100%"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <input
+                class="form-control"
+                type="text"
+                formControlName="Iod2PositioningTxt"
+                [readOnly]="criticalForm.get('Iod2Positioning')?.value != '0'"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-4">
+            <div class="col-md-1" style="min-width: 150px">
+              SUPPORT DEVICES:
+            </div>
+            <div class="col-md-1 pl-3">
+              <input
+                type="checkbox"
+                formControlName="Iod2SSafetyBelts"
+                name="resp"
+              />
+              Safety belts
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SLateralSupport"
+                name="resp"
+              />
+              Lateral Support
+            </div>
+            <div class="col-md-1 pr-0">
+              <input
+                type="checkbox"
+                formControlName="Iod2SWarmingDevices"
+                class="mr-1"
+                name="resp"
+              />Warming Devices
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SPillows"
+                class="mr-1"
+                name="resp"
+              />Pillows
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SLeft"
+                class="mr-1"
+                name="resp"
+              />Left
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SRight"
+                class="mr-1"
+                name="resp"
+              />Right
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px"></div>
+            <div class="col-md-1 pl-3">
+              <input
+                type="checkbox"
+                formControlName="Iod2SGelPads"
+                class="mr-1"
+                name="resp"
+              />Gel pads
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SHeadRest"
+                class="mr-1"
+                name="resp"
+              />Head Rest
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SArmBoards"
+                class="mr-1"
+                name="resp"
+              />Arm Boards
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SOther"
+                class="mr-1"
+                name="resp"
+              />Other
+            </div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2SOtherTxt"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px">PADDING:</div>
+            <div class="col-md-1 pl-3">
+              <input type="checkbox" formControlName="Iod2PArms" name="resp" />
+              Arms
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PAxilla"
+                name="resp"
+              />
+              Axilla
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PHeals"
+                class="mr-1"
+                name="resp"
+              />Heals
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PHips"
+                class="mr-1"
+                name="resp"
+              />Hips
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PKnees"
+                class="mr-1"
+                name="resp"
+              />Knees
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PHead"
+                class="mr-1"
+                name="resp"
+              />Head
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px"></div>
+            <div class="col-md-1 pl-3">
+              <input
+                type="checkbox"
+                formControlName="Iod2PShoulders"
+                class="mr-1"
+                name="resp"
+              />Shoulders
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2POther"
+                class="mr-1"
+                name="resp"
+              />Other
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px">Hair Clipping</div>
+            <div class="col-md-1 pl-3">
+              <ng-select
+                [items]="yesNoOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Hair Clipping"
+                formControlName="Iod2HairClipping"
+                (change)="
+                  onSelectChange('Iod2HairClipping', 'Iod2HairClippingTxt')
+                "
+                style="width: 100%"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-1">If Yes, by,</div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2HairClippingTxt"
+                [readOnly]="criticalForm.get('Iod2HairClipping')?.value != '0'"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px">
+              SKIN PREPARATION
+            </div>
+            <div class="col-md-1 pl-3">
+              <input
+                type="checkbox"
+                formControlName="Iod2SkPovidoneIodine"
+                name="resp"
+              />
+              Povidone Iodine
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2SkChlorhexidine"
+                name="resp"
+              />
+              Chlorhexidine
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2SkOther"
+                (change)="toggleInputText('Iod2SkOther', 'Iod2SkOtherTxt')"
+              />Other
+            </div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2SkOtherTxt"
+                [readOnly]="!criticalForm.get('Iod2SkOther')?.value"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px">Warming Blanket</div>
+            <div class="col-md-1 pl-3">
+              <ng-select
+                [items]="yesNoOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder=""
+                style="width: 100%"
+                formControlName="Iod2WarmingBlanket"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-1" style="min-width: fit-content">
+              Electro Cautry Machine
+            </div>
+            <div class="col-md-1">
+              <ng-select
+                [items]="yesNoOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder=""
+                style="width: 100%"
+                formControlName="Iod2ElectroCautry"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2AssetsNo"
+                (change)="toggleInputText('Iod2AssetsNo', 'Iod2AssetsNoTxt')"
+              />
+              Assets No.
+            </div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2AssetsNoTxt"
+                [readOnly]="!criticalForm.get('Iod2AssetsNo')?.value"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px">
+              PATIENT PLATE LOCATION
+            </div>
+            <div class="col-md-1 pl-3">
+              <input type="checkbox" formControlName="Iod2PaArm" name="resp" />
+              Arms
+            </div>
+            <div class="col-md-1">
+              <input type="checkbox" formControlName="Iod2PaLeg" name="resp" />
+              Leg
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PaButtocks"
+                class="mr-1"
+                name="resp"
+              />Buttocks
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PaLeft"
+                class="mr-1"
+                name="resp"
+              />Left
+            </div>
+            <div class="col-md-1">
+              <input
+                type="checkbox"
+                formControlName="Iod2PaRight"
+                class="mr-1"
+                name="resp"
+              />Right
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px"></div>
+            <div class="col-md-1 pl-3">
+              <input
+                type="checkbox"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2PaOther"
+                (change)="toggleInputText('Iod2PaOther', 'Iod2PaOtherTxt')"
+              />Other
+            </div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2PaOtherTxt"
+                [readOnly]="!criticalForm.get('Iod2PaOther')?.value"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1" style="min-width: 150px">
+              Skin Condition after removal of Plate
+            </div>
+            <div class="col-md-1 pl-3">
+              <ng-select
+                [items]="skinConditions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Select Skin Condition"
+                style="width: 100%"
+                formControlName="Iod2SkinCondition"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <h6 class="scale-result">Tourniquet</h6>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-1">Tourniquet</div>
+            <div class="col-md-1">
+              <ng-select
+                [items]="yesNoOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder=""
+                formControlName="Iod2TTourniquet"
+                (change)="onSelectChange('Iod2TTourniquet', 'Iod2TAssetNo')"
+                style="width: 100%"
+              >
+              </ng-select>
+            </div>
+            <div class="col-md-1">Asset No.</div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1 w-100"
+                name="resp"
+                formControlName="Iod2TAssetNo"
+                [readOnly]="criticalForm.get('Iod2TTourniquet')?.value != '0'"
+                style="min-width: auto"
+              />
+            </div>
+            <div class="col-md-1">Applied By</div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                class="mr-1"
+                name="resp"
+                formControlName="Iod2TAppliedBy"
+                [readOnly]="criticalForm.get('Iod2TTourniquet')?.value != '0'"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-2">Tourniquet pressure control</div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="Iod2TLeftLimb"
+                  (change)="
+                    toggleInputText('Iod2TLeftLimb', 'Iod2TLTimeApplied')
+                  "
+                />
+                Left Limb
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Applied</div>
+                <div class="col-md-3">
+                  <input
+                    type="time"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    [value]="currentTime"
+                    name="resp"
+                    formControlName="Iod2TLTimeApplied"
+                    [readOnly]="!criticalForm.get('Iod2TLeftLimb')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Pressure</div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TLPressure"
+                    [readOnly]="!criticalForm.get('Iod2TLeftLimb')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Deflated</div>
+                <div class="col-md-3">
+                  <input
+                    type="time"
+                    [value]="currentTime"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TLTimeDeflated"
+                    [readOnly]="!criticalForm.get('Iod2TLeftLimb')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Removed</div>
+                <div class="col-md-3">
+                  <input
+                    type="time"
+                    [value]="currentTime"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TLTimeRemoved"
+                    [readOnly]="!criticalForm.get('Iod2TLeftLimb')?.value"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  class="mr-1"
+                  name="resp"
+                  formControlName="Iod2TRightLimb"
+                  (change)="
+                    toggleInputText('Iod2TRightLimb', 'Iod2TRTimeInflated')
+                  "
+                />
+                Right Limb
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Inflated</div>
+                <div class="col-md-3">
+                  <input
+                    type="time"
+                    [value]="currentTime"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TRTimeInflated"
+                    [readOnly]="!criticalForm.get('Iod2TRightLimb')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Pressure</div>
+                <div class="col-md-3">
+                  <input
+                    type="text"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TRPressure"
+                    [readOnly]="!criticalForm.get('Iod2TRightLimb')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Deflated</div>
+                <div class="col-md-3">
+                  <input
+                    type="time"
+                    [value]="currentTime"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TRTimeDeflated"
+                    [readOnly]="!criticalForm.get('Iod2TRightLimb')?.value"
+                  />
+                </div>
+              </div>
+              <div class="row Safety d-flex mt-2">
+                <div class="col-md-1">Time Removed</div>
+                <div class="col-md-3">
+                  <input
+                    type="time"
+                    [value]="currentTime"
+                    placeholder="00:00:00"
+                    class="mr-1"
+                    name="resp"
+                    formControlName="Iod2TRTimeRemoved"
+                    [readOnly]="!criticalForm.get('Iod2TRightLimb')?.value"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row Safety d-flex mt-2">
+            <div class="col-md-2"></div>
+           
+            <div class="col-md-1"></div>
+            
+            <div class="col-md-2"></div>
+            
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                placeholder="00:00:00"
+                class="mr-1"
+                name="resp"
+                formControlName="AppliedR"
+                [readOnly]="!criticalForm.get('rightLine')?.value"
+              />
+            </div>
+          </div> -->
+          <!-- <div class="row Safety d-flex mt-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-1">Pressure</div>
+            <div class="col-md-1"></div>
+            
+            <div class="col-md-2"></div>
+            <div class="col-md-1">Pressure</div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                placeholder="00:00:00"
+                class="mr-1"
+                name="resp"
+                formControlName="AppliedR"
+                [readOnly]="!criticalForm.get('rightLine')?.value"
+              />
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-1">Time Deflated</div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+             
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">Time Deflated</div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              
+            </div>
+          </div>
+          <div class="row Safety d-flex mt-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-1">Time Removed</div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+              <input
+                type="text"
+                placeholder="00:00:00"
+                class="mr-1"
+                name="resp"
+                formControlName="AppliedL"
+                [readOnly]="!criticalForm.get('leftLine')?.value"
+              />
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1">Time Removed</div>
+            <div class="col-md-1"></div>
+            <div class="col-md-1">
+             
+            </div>
+          </div> -->
+          <div class="row">
+            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 440px">
+              <div class="Safety d-flex mt-2 justify-content-between">
+                <div class="d-flex w-100" style="gap: 5px">
+                  <div class="col-md-1 mt-1 mr-2">Implants</div>
+                  <ng-select
+                    [items]="yesNoOptions"
+                    bindLabel="label"
+                    bindValue="value"
+                    class="col-md-2"
+                    placeholder="Implants"
+                    formControlName="Iod2TImplants"
+                    (change)="onSelectChange('Iod2TImplants', 'Implantstypes')"
+                  >
+                  </ng-select>
+                </div>
+                <button
+                  class="review-btn mb-2"
+                  (click)="addImplantsRow()"
+                  [disabled]="criticalForm.get('Iod2TImplants')?.value != '0'"
+                >
+                  <i class="fa fa-plus"></i> Add
+                </button>
+              </div>
+              <table class="table table-bordered mt-2">
+                <div style="max-height: 362px; overflow-y: auto">
+                  <thead
+                    sty-9="
+                    position: sticky;
+                    top: -10px;
+                    z-index: 9;
+                    background: #e4edf5;
+                  "
+                  >
+                    <tr>
+                      <th scope="col">Type</th>
+                      <th scope="col">Size</th>
+                      <th scope="col">Quantity</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="TOIMPLANTS">
+                    <tr
+                      *ngFor="let drain of TOIMPLANTS?.controls; let i = index"
+                      [formGroupName]="i"
+                    >
+                      <td>
+                        <input
+                          type="text"
+                          [readOnly]="
+                            criticalForm.get('Iod2TImplants')?.value !== '0'
+                          "
+                          formControlName="Type"
+                          class="form-control m-0"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          [readOnly]="
+                            criticalForm.get('Iod2TImplants')?.value !== '0'
+                          "
+                          formControlName="Size"
+                          class="form-control m-0"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          [readOnly]="
+                            criticalForm.get('Iod2TImplants')?.value !== '0'
+                          "
+                          formControlName="Quantity"
+                          class="form-control m-0"
+                        />
+                      </td>
+                      <td>
+                        <img
+                          [class.disabled]="
+                            criticalForm.get('Iod2TImplants')?.value !== '0'
+                          "
+                          class="all-notes cursor-pointer"
+                          src="assets/img/Delete.svg"
+                          (click)="removeImplants(i)"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </div>
+              </table>
+            </div>
+            <div class="col-md-6 mt-2">
+              <div class="bordercoloer">
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-2">Skin Closure</div>
+                  <select
+                    class="form-control col-md-2"
+                    id="exampleFormControlSelect1"
+                    formControlName="Iod2TSkinClosure"
+                  >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-2">Type</div>
+                  <ng-select
+                    [items]="sutureTypes"
+                    bindLabel="label"
+                    bindValue="value"
+                    class="col-md-2"
+                    placeholder="Select Type"
+                    style="padding-left: 0"
+                    formControlName="Iod2TType"
+                  >
+                  </ng-select>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-2">Method</div>
+                  <ng-select
+                    [items]="drainMethods"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select Method"
+                    class="col-md-2"
+                    style="padding-left: 0"
+                    formControlName="Iod2TMethod"
+                  >
+                  </ng-select>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-2">Other</div>
+                  <input
+                    type="text"
+                    class="mr-1 form-control col-md-2"
+                    name="resp"
+                    formControlName="Iod2TOthers"
+                  />
+                </div>
+              </div>
+              <div class="bordercoloer mt-2">
+                <h6 class="scale-result">Blood Loss/Swabs</h6>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-1 mt-2 mr-3">Swabs</div>
+                  <input
+                    type="text"
+                    class="mr-1 form-control col-md-2"
+                    name="resp"
+                    formControlName="Iod2TSwabs"
+                  />
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-1 mt-2 mr-3">Subction</div>
+                  <input
+                    type="text"
+                    class="mr-1 form-control col-md-2"
+                    name="resp"
+                    formControlName="Iod2TSuction"
+                  />
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-1 mt-2 mr-3">Total</div>
+                  <input
+                    type="text"
+                    class="mr-1 form-control col-md-2"
+                    name="resp"
+                    formControlName="Iod2TTotal"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mt-2 bordercoloer">
+              <div class="Safety d-flex mt-2 justify-content-between">
+                <div class="d-flex w-100" style="gap: 5px">
+                  <div class="col-md-1 mt-1 mr-2">Drains</div>
+                  <ng-select
+                    [items]="yesNoOptions"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Drains"
+                    class="col-md-2"
+                    formControlName="Iod2TDrains"
+                    (change)="onSelectChange('Iod2TDrains', 'type')"
+                  >
+                  </ng-select>
+                </div>
+                <button
+                  class="review-btn mb-2"
+                  (click)="addDrainRow()"
+                  [disabled]="criticalForm.get('Iod2TDrains')?.value != '0'"
+                >
+                  <i class="fa fa-plus"></i> Add
+                </button>
+              </div>
+              <table class="table table-bordered mt-2">
+                <div style="max-height: 362px; overflow-y: auto">
+                  <thead
+                    style="
+                      position: sticky;
+                      top: -10px;
+                      z-index: 9;
+                      background: #e4edf5;
+                    "
+                  >
+                    <tr>
+                      <th scope="col">Type</th>
+                      <th scope="col">Size</th>
+                      <th scope="col">Site</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="TODRAINS">
+                    <tr
+                      *ngFor="let drain of TODRAINS?.controls; let i = index"
+                      [formGroupName]="i"
+                    >
+                      <td>
+                        <input
+                          type="text"
+                          [readOnly]="
+                            criticalForm.get('Iod2TDrains')?.value !== '0'
+                          "
+                          formControlName="Type"
+                          class="form-control m-0"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          [readOnly]="
+                            criticalForm.get('Iod2TDrains')?.value !== '0'
+                          "
+                          formControlName="Size"
+                          class="form-control m-0"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          [readOnly]="
+                            criticalForm.get('Iod2TDrains')?.value !== '0'
+                          "
+                          formControlName="Site"
+                          class="form-control m-0"
+                        />
+                      </td>
+                      <td style="text-align: center">
+                        <img
+                          _ngcontent-fei-c288=""
+                          [class.disabled]="
+                            criticalForm.get('Iod2TDrains')?.value !== '0'
+                          "
+                          class="all-notes cursor-pointer"
+                          src="assets/img/Delete.svg"
+                          (click)="removeDrain(i)"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </div>
+              </table>
+            </div>
+            <div class="col-md-6 mt-2">
+              <div class="bordercoloer">
+                <div class="Safety d-flex mt-2 justify-content-between">
+                  <div class="d-flex w-100" style="gap: 5px">
+                    <div class="col-md-5 mt-1 mr-2">
+                      Packs/swabs left in cavities/wounds
+                    </div>
+                    <ng-select
+                      [items]="yesNoOptions"
+                      bindLabel="label"
+                      bindValue="value"
+                      placeholder="Packs/swabs left"
+                      class="col-md-2"
+                      formControlName="Iod2TPacks"
+                      (change)="onSelectChange('Iod2TPacks', 'types')"
+                    >
+                    </ng-select>
+                  </div>
+                  <button
+                    class="review-btn mb-2"
+                    (click)="addPacksRow()"
+                    [disabled]="criticalForm.get('Iod2TPacks')?.value != '0'"
+                  >
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+                <table class="table table-bordered mt-2">
+                  <div style="max-height: 362px; overflow-y: auto">
+                    <thead
+                      style="
+                        position: sticky;
+                        top: -10px;
+                        z-index: 9;
+                        background: #e4edf5;
+                      "
+                    >
+                      <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">No</th>
+                        <th scope="col">Site</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="TOPACKS">
+                      <tr
+                        *ngFor="let drain of TOPACKS?.controls; let i = index"
+                        [formGroupName]="i"
+                      >
+                        <td>
+                          <input
+                            type="text"
+                            [readOnly]="
+                              criticalForm.get('Iod2TPacks')?.value !== '0'
+                            "
+                            formControlName="Type"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            [readOnly]="
+                              criticalForm.get('Iod2TPacks')?.value !== '0'
+                            "
+                            formControlName="No"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            [readOnly]="
+                              criticalForm.get('Iod2TPacks')?.value !== '0'
+                            "
+                            formControlName="Site"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td style="text-align: center">
+                          <img
+                            class="all-notes cursor-pointer"
+                            src="assets/img/Delete.svg"
+                            [class.disabled]="
+                              criticalForm.get('Iod2TPacks')?.value !== '0'
+                            "
+                            (click)="
+                              criticalForm.get('Iod2TPacks')?.value === '0' &&
+                                removePacks(i)
+                            "
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </div>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row d-flex">
+            <div class="col-md-6 mt-2 bordercoloer" style="min-height: 480px">
+              <div class="col-md-12 p-0">
+                <div
+                  class="scale-result d-flex justify-content-between align-items-center mb-2 p-0"
+                >
+                  <h6 class="mb-0">Count</h6>
+                  <button class="review-btn mb-2" (click)="addCountRow()">
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+
+                <div class="table-scroll-container" style="overflow: auto">
+                  <table class="table table-bordered count-table w-100">
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="TOCOUNT">
+                      <tr
+                        *ngFor="let drain of TOCOUNT?.controls; let i = index"
+                        [formGroupName]="i"
+                      >
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="Item"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="IniCorrect"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="IniIncorrect"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="SecCorrect"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="SecIncorrect"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="FinCorrect"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="FinIncorrect"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td style="text-align: center">
+                          <img
+                            src="assets/img/Delete.svg"
+                            class="cursor-pointer"
+                            (click)="removeCount(i)"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bordercoloer mt-2">
+                <div class="scale-result d-flex justify-content-between p-0">
+                  <h6 class="d-flex">Specimens</h6>
+                  <button
+                    class="review-btn mb-2"
+                    (click)="addSpecimensRow()"
+                    [disabled]="!criticalForm.get('Iod2TSpecimensNa')?.value"
+                  >
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <input
+                    type="checkbox"
+                    class="mt-2 mr-2"
+                    name="resp"
+                    formControlName="Iod2TSpecimensNa"
+                    (change)="toggleInputText('Iod2TSpecimensNa', '')"
+                  />
+                  <div class="mr-2 mt-2">NA</div>
+                </div>
+
+                <div style="max-height: 390px; overflow-y: auto">
+                  <table class="table table-bordered mt-2 w-100 specimen-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Specimen Samples</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="TOSPECIMENS">
+                      <tr
+                        *ngFor="
+                          let drain of TOSPECIMENS?.controls;
+                          let i = index
+                        "
+                        [formGroupName]="i"
+                      >
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="Type"
+                            [readOnly]="
+                              criticalForm.get('Iod2TSpecimensNa')?.value
+                            "
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="SpecimenSamples"
+                            [readOnly]="
+                              criticalForm.get('Iod2TSpecimensNa')?.value
+                            "
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <img
+                            class="all-notes cursor-pointer"
+                            [class.disabled]="
+                              criticalForm.get('Iod2TSpecimensNa')?.value
+                            "
+                            src="assets/img/Delete.svg"
+                            (click)="removeSpecimens(i)"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-md-6 mt-2 bordercoloer"
+              style="min-height: 400px; padding: 15px"
+            >
+              <div class="scale-result d-flex justify-content-between p-0">
+                <h6 class="">Instrument Sets</h6>
+                <button class="review-btn mb-2" (click)="addInstrumentRow()">
+                  <i class="fa fa-plus"></i> Add
+                </button>
+              </div>
+
+              <!-- ✅ Make this div scrollable horizontally -->
+              <div class="table-responsive-custom">
+                <table class="table table-bordered mt-2 instrument-table">
+                  <div style="max-height: 362px; overflow-y: auto">
+                    <thead>
+                      <tr>
+                        <th>Instrument Sets</th>
+                        <th>Cycle Number</th>
+                        <th>Packed By</th>
+                        <th>Packed By Name</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="TOINSTRUMENT_SET">
+                      <tr
+                        *ngFor="
+                          let drain of TOINSTRUMENT_SET?.controls;
+                          let i = index
+                        "
+                        [formGroupName]="i"
+                      >
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="InstrumentSets"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="CycleNumber"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="PackedBy"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            formControlName="PackedByName"
+                            class="form-control m-0"
+                          />
+                        </td>
+                        <td>
+                          <img
+                            class="all-notes cursor-pointer"
+                            src="assets/img/Delete.svg"
+                            (click)="removeInstrument(i)"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </div>
+                </table>
+              </div>
+            </div>
+
+            <div class="col-md-6 mt-2">
+              <div class="bordercoloer" style="min-height: 485px">
+                <h6 class="scale-result d-flex">LSCS</h6>
+                <div class="Safety d-flex mt-2">
+                  <input
+                    type="checkbox"
+                    class="mr-2 mt-2"
+                    name="resp"
+                    formControlName="Iod2TLscsNa"
+                  />
+                  <div class="mt-2">NA</div>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-3 mt-2 mr-2">Baby Gender</div>
+                  <ng-select
+                    [items]="babyGenders"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select Baby Gender"
+                    formControlName="Iod2TLscsBabyGender"
+                    [readonly]="criticalForm.get('Iod2TLscsNa')?.value"
+                    class="col-md-3"
+                    style="padding: 0; min-width: 200px"
+                  >
+                  </ng-select>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-3 mt-2 mr-2">Weight(kg)</div>
+                  <input
+                    type="text"
+                    class="mr-1 form-control col-md-1"
+                    name="resp"
+                    formControlName="Iod2TLscsWeight"
+                    [readOnly]="criticalForm.get('Iod2TLscsNa')?.value"
+                  />
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-3 mt-2 mr-2">Birth Time</div>
+                  <input
+                    type="time"
+                    formControlName="Iod2TLscsBirthTime"
+                    [value]="currentTime"
+                    class="mr-1 form-control"
+                    placeholder="00:00:00"
+                    name="resp"
+                    [readOnly]="criticalForm.get('Iod2TLscsNa')?.value"
+                  />
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-3 mt-2 mr-2">Indentification Applied</div>
+                  <ng-select
+                    [items]="yesNoOptions"
+                    formControlName="Iod2TLscsIdentification"
+                    [readonly]="criticalForm.get('Iod2TLscsNa')?.value"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Identification Applied"
+                    class="col-md-3"
+                    style="padding: 0; min-width: 200px"
+                  >
+                  </ng-select>
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-3 mt-2 mr-2">By</div>
+                  <input
+                    type="text"
+                    class="mr-1 form-control col-md-3"
+                    placeholder="00:00:00"
+                    name="resp"
+                    formControlName="Iod2TLscsBy"
+                    [readOnly]="criticalForm.get('Iod2TLscsNa')?.value"
+                  />
+                </div>
+                <div class="Safety d-flex mt-2">
+                  <div class="col-md-3 mt-2 mr-2">Baby Discharges To</div>
+                  <ng-select
+                    [items]="babyDischargeOptions"
+                    bindLabel="label"
+                    bindValue="value"
+                    placeholder="Select Baby Discharge Destination"
+                    class="col-md-3 ml-2"
+                    formControlName="Iod2TLscsBabyDischarge"
+                    [readonly]="criticalForm.get('Iod2TLscsNa')?.value"
+                    style="
+                      padding: 0;
+                      min-width: 200px;
+                      margin-right: 8px;
+                      margin-left: 0 !important;
+                    "
+                  >
+                  </ng-select>
+                  <input
+                    type="text"
+                    class="col-md-1"
+                    name="resp"
+                    formControlName="Iod2TLscsBabyDischargeTxt"
+                    [readOnly]="
+                      criticalForm.get('Iod2TLscsBabyDischarge')?.value != '2'
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="Safety d-flex mt-2">
+            <div class="col-md-1 pl-0 mt-2 mr-2">Circulating Nurse</div>
+            <ng-select class="border-0 selectbordernone" style="min-width: 515px;"
+            formControlName="Iod2TCirculatingNurse"
+            (click)="this.administrationService.employeeresponsible()">
+            <ng-option class="border-0" 
+              *ngFor=" let employeeresponsibal of
+              administrationService.AdminiEmployeeresponsible"
+              [value]="employeeresponsibal.Moresp1">
+              {{ employeeresponsibal.Moresp1name }}
+            </ng-option>
+          </ng-select>
+          </div>
+          <div class="Safety d-flex mt-2">
+            <div class="col-md-1 pl-0 mt-2 mr-2">Scrub Nurse</div>
+            <input
+              type="text"
+              class="mr-1 col-md-4"
+              name="resp"
+              formControlName="Iod2TScrubNurse"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="activeTab === 'postoperativedata'">
+      <div class="scale-container p-2">
+        <div class="mews-container">
+          <div class="mews-table">
+            <div class="row Safety d-flex mt-4">
+              <div class="col-md-2">General Skin appearance</div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodGkIntact"
+                  name="resp"
+                />
+                Intact
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodGkBurns"
+                  name="resp"
+                />
+                Burns
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodGkBlister"
+                  class="mr-1"
+                  name="resp"
+                />Blister
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodGkAbrasions"
+                  class="mr-1"
+                  name="resp"
+                />Abrasions
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodGkEcchymosis"
+                  class="mr-1"
+                  name="resp"
+                />Ecchymosis
+              </div>
+            </div>
+            <div class="Safety d-flex mt-2">
+              <div class="col-md-2 mt-2 mr-2">Location</div>
+              <input
+                type="text"
+                class="mr-1 form-control col-md-4"
+                name="resp"
+                formControlName="PodLocation"
+              />
+            </div>
+            <div class="Safety d-flex mt-2">
+              <div class="col-md-2 mt-2 mr-2">Discharged To</div>
+              <ng-select
+                [items]="dischargeDestinations"
+                bindLabel="label"
+                bindValue="value"
+                class="col-md-3"
+                placeholder="Select Discharge Destination"
+                style="padding-left: 0"
+                fornControlName="PodDischargedTo"
+              >
+              </ng-select>
+              <input
+                type="text"
+                class="mr-1 form-control my-0 col-md-3"
+                name="resp"
+                formControlName="PodDischargedToTxt"
+              />
+            </div>
+            <div class="row Safety d-flex mt-4">
+              <div class="col-md-2">Reported/Handover</div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodRWoundStatus"
+                  name="resp"
+                />
+                Wound Status
+              </div>
+              <div class="col-md-1">
+                <input type="checkbox" formControlName="PodRTed" name="resp" />
+                TED/Stocking
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodRDressing"
+                  class="mr-1"
+                  name="resp"
+                />Dressing
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodRUrinaryCatheter"
+                  class="mr-1"
+                  name="resp"
+                />Urinary Catheter
+              </div>
+              <div class="col-md-2">
+                <input
+                  type="checkbox"
+                  formControlName="PodRPatientMedical"
+                  class="mr-1"
+                  name="resp"
+                />Patient Medical Record
+              </div>
+            </div>
+            <div class="row Safety d-flex mt-2">
+              <div class="col-md-2"></div>
+              <div class="col-md-1">
+                <input type="checkbox" formControlName="PodRXRay" name="resp" />
+                X-ray/MRI films
+              </div>
+              <div class="col-md-1">
+                <input type="checkbox" formControlName="PodRNgt" name="resp" />
+                NGT
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodRIv"
+                  class="mr-1"
+                  name="resp"
+                />IV
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="checkbox"
+                  formControlName="PodROthers"
+                  class="mr-1"
+                  name="resp"
+                  (change)="toggleInputText('PodROthers', 'PodROthersTxt')"
+                />Others
+              </div>
+              <div class="col-md-1">
+                <input
+                  type="text"
+                  class="mr-1 form-control col-md-2"
+                  name="resp"
+                  formControlName="PodROthersTxt"
+                  [readOnly]="!criticalForm.get('PodROthers')?.value"
+                />
+              </div>
+            </div>
+            <div class="Safety d-flex mt-2">
+              <div class="col-md-2 mt-2 mr-2">
+                Handover by (Circulating Nurse)
+              </div>
+              <input
+                type="text"
+                class="mr-1 form-control col-md-3"
+                name="resp"
+                formControlName="PodHandoverBy"
+              />
+              <div class="mr-2 mt-2 ml-2">Time</div>
+              <input
+                type="time"
+                formControlName="PodHandoverByTime"
+                [value]="currentTime"
+                class="mr-1 form-control col-md-2"
+                placeholder="00:00:00"
+                name="resp"
+              />
+            </div>
+            <div class="Safety d-flex mt-2">
+              <div class="col-md-2 mt-2 mr-2">Received by : Nurse</div>
+              <input
+                type="text"
+                class="mr-1 form-control col-md-3"
+                name="resp"
+                formControlName="PodReceivedBy"
+              />
+              <div class="mr-2 mt-2 ml-2">Time</div>
+              <input
+                type="time"
+                formControlName="PodReceivedByTime"
+                [value]="currentTime"
+                class="mr-1 form-control col-md-2"
+                placeholder="00:00:00"
+                name="resp"
+              />
+            </div>
+            <div class="Safety d-flex mt-2">
+              <div class="col-md-2 mt-2 mr-2"></div>
+              <button class="review-btn" (click)="showPopup(additionalInfo)">
+                <i
+                  class="fa fa-check-circle text-success me-2"
+                  style="font-size: 13px !important"
+                ></i>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #additionalInfo>
+  <form [formGroup]="loginForm">
+    <div class="d-flex justify-content-between align-items-center bg-comm p-2">
+      <label
+        for="additionalInfo"
+        class="w-100 mb-0 font-witnss font-weight-bold"
+        >Review</label
+      >
+      <div>
+        <img
+          src="assets/img/CloseTab.svg"
+          alt=""
+          (click)="cancelAdditionalInfo()"
+        />
+      </div>
+    </div>
+    <div class="additional-input additional-input w-100 p-3">
+      <div class="mb-2">
+        <label class="font-use mb-1">User Name</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter User Name"
+          class="form-control"
+          formControlName="userName"
+          autocomplete="username"
+        />
+      </div>
+      <div>
+        <label class="font-use mb-1">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter Password"
+          class="form-control"
+          formControlName="password"
+          autocomplete="password"
+        />
+      </div>
+    </div>
+  </form>
+  <div
+    class="button-group d-flex justify-content-center align-content-center p-3"
+  >
+    <button
+      (click)="userlogin()"
+      class="d-flex align-items-center w-100 mr-2 bg-color justify-content-center"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
+
+<app-import-diagnosis
+  #diagnosisNotesKardexId
+  (importEvent)="importDiagnosisData($event)"
+></app-import-diagnosis>

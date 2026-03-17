@@ -64,7 +64,6 @@ import { RichmondScaleComponent } from './richmond-scale/richmond-scale.componen
 import { RamsaySedationScaleComponent } from 'src/app/shared-module/ramsay-sedation-scale/ramsay-sedation-scale.component';
 import { LaborRoomFlowSheetComponent } from './labor-room-flow-sheet/labor-room-flow-sheet.component';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-
 @UntilDestroy()
 @Component({
   selector: 'app-patient-documentation',
@@ -2439,8 +2438,8 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openSbarNursingEnd) {
       this.SbarNursingEndorsementComp.ngOnDestroy();
     }
-    this.getPatientProfile();
     this.getLatestAssessment();
+    this.refreshPatientDocumentation();
     // this.getPhyAssessment();
     // this.getTriageLatestDocuments();
     this.getMedLatestAssessment();
@@ -5452,7 +5451,7 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
   reloadDoc(event) {
-    this.refresh();
+    this.refresh();   
   }
   saveDoc(btnType?: string) {
     if (this.actionType == 'create') {
@@ -6034,6 +6033,7 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
         });
       }
+     
     }
 
     else if (this.actionType == 'edit') {
@@ -6517,6 +6517,7 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating  Labor Room Flow Sheet PMD Doc:', error);
         });
       }
+
     }
     else if (this.actionType == 'copy') {
       if (this.openGlasgowComaScale) {
@@ -7479,6 +7480,8 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error creating Confusion Assessment Method for ICU PMD Doc:', error);
         });
       }
+ 
+      
   }
 
   newVersionDirectReleased() {
@@ -9681,6 +9684,11 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.selectedDocName != 'Critical Care Pain Observation Tool') {
 
     }
+  }
+
+  refreshPatientDocumentation() { 
+     this.getPatientProfile();
+      this.fetchLatestDetails();
   }
 
 }
