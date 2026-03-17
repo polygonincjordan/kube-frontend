@@ -331,6 +331,23 @@ export class ErVitalsComponentComman implements OnInit {
         "Obsid": "E10989D8963E1EEE81C5B8A334F03E72",
         "ObsidVers": "0000",
         "Addinfo": ""
+      },
+      {
+        "Einri": "",
+        "Valid": "4522139805EB1FD0BC8A25C3E8D7BADE",
+        "ValidVers": "0000",
+        "Bcpid": "C000C29D2E09C1ED9A5D54D616DB4CEDE",
+        "Extid": "MEWS SCORE",
+        "Name": "MEWS Score",
+        "Value": "",
+        "ValueString": "",
+        "UnitTxt": "UnLess",
+        "NormalRange": "0.000 - 0.999",
+        "Origin": "",
+        "Descr": "",
+        "Obsid": "4522139805EB1FD0BC8A25C3E8D79ADE",
+        "ObsidVers": "0000",
+        "Addinfo": ""
       }
     ];
     this.openModalForErVital()
@@ -471,8 +488,14 @@ export class ErVitalsComponentComman implements OnInit {
       this.emergencyService.deleteVitalList(json).subscribe(
         (_success: any) => {
           this.getVitalList();
-          this.modalRef.hide();
-          this.modalRefForDelete.hide();
+          if (this.modalRef) {
+            this.modalRef.hide();
+            this.modalRef = null;
+          }
+          if (this.modalRefForDelete) {
+            this.modalRefForDelete.hide();
+            this.modalRefForDelete = null;
+          }
           this.isFormSubmitted = false;
           this.cancelReasonValue = '';
           Swal.fire({
@@ -732,15 +755,20 @@ export class ErVitalsComponentComman implements OnInit {
   EditVitalList() {
      if (this.isSelected) {
        if (this.selectedColData) {
+         // Validation: Prevent editing if reading is older than 24 hours or in the future
+         const readingDate = this.getDate(this.selectedColData.Odate);
+         if(this.isPasssed24Hours(readingDate)){
+             Swal.fire({
+             text: "You cannot edit a vital reading older than 24 hours.",
+             icon: 'error',
+             confirmButtonText: 'Ok',
+             customClass: { popup: 'myalertpopup' }
+           });
+           return
+         }
          this.showMaintain = true;
          this.edit = true
          this.selectedColData.TOITEM.results.forEach(element => {
-           // if(element.Name.includes('Temperature')){
-           //   element['Value'] = parseFloat(element.Value).toFixed(2);
-           // }
-           // else{
-           //   element['Value'] = parseInt(element.Value);
-           // }
            this.addItemForVital(element);
          });
          this.maintainVitalBarForm.controls.Orgdo.setValue(this.selectedColData.Orgdo);
@@ -748,7 +776,6 @@ export class ErVitalsComponentComman implements OnInit {
          this.maintainVitalBarForm.controls.Odate.setValue(this.getDate(this.selectedColData.Odate));
          this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(this.selectedColData.Otime));
          this.maintainVitalBarForm.controls.Descr.setValue(this.selectedColData.Descr);
- 
        }
      } else {
        Swal.fire({
@@ -813,42 +840,65 @@ export class ErVitalsComponentComman implements OnInit {
   updateVitalSigns() {
      this.isFormSubmitted = true;
     if (this.cancelReasonValue !== '') {
-    let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
-    createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
-    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
-    const json = {
-      "Obsid": this.selectedColData.Obsid,
-      "ObsidVers": this.selectedColData.ObsidVers,
-      "Stoid": this.cancelReasonValue,
-      "Odate": createDate,
-      "Otime": createTime,
-      "TOITEM": this.maintainVitalFormitems.value
-    }
-    this.emergencyService.updateVitalSigns(json).subscribe(
-      (_success: any) => {
-        this.getVitalList();
-        this.resetAllMaintainValues();
-        this.showMaintain = false
-          //this.modalRef.hide();
-          this.modalRefForDelete.hide();
-          this.cancelReasonValue = '';
-          this.isSelected = false;
+      // Validation: Prevent updating to a future date or if reading is older than 24 hours
+      const createDateObj = this.maintainVitalBarForm.controls.Odate.value;
+      if (this.isFutureDate(createDateObj)) {
         Swal.fire({
-          text: "Vital signs updated successfully",
-          icon: 'success',
+          text: "You cannot set a future date for vital readings.",
+          icon: 'error',
           confirmButtonText: 'Ok',
           customClass: { popup: 'myalertpopup' }
-        } as any)
-      },
-      (_error: any) => { }
-    );
-  }
+        });
+        return;
+      }
+      let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
+      createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
+      let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
+      const json = {
+        "Obsid": this.selectedColData.Obsid,
+        "ObsidVers": this.selectedColData.ObsidVers,
+        "Stoid": this.cancelReasonValue,
+        "Odate": createDate,
+        "Otime": createTime,
+        "Descr": this.maintainVitalBarForm.controls.Descr.value,
+        "TOITEM": this.maintainVitalFormitems.value
+      }
+      this.emergencyService.updateVitalSigns(json).subscribe(
+        (_success: any) => {
+          this.getVitalList();
+          this.resetAllMaintainValues();
+          this.showMaintain = false
+            //this.modalRef.hide();
+            this.modalRefForDelete.hide();
+            this.cancelReasonValue = '';
+            this.isSelected = false;
+          Swal.fire({
+            text: "Vital signs updated successfully",
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: { popup: 'myalertpopup' }
+          } as any)
+        },
+        (_error: any) => { }
+      );
+    }
   }
   createVitalSigns() {
     let EnteredvitalArr = [];
     let createTime = this.maintainVitalBarForm.controls.Otime.value.split(':');
     createTime = 'PT' + createTime[0] + 'H' + createTime[1] + 'M' + '00S'
-    let createDate = this.maintainVitalBarForm.controls.Odate.value.getFullYear() + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getMonth() + 1).padStart(2, '0') + '-' + String(this.maintainVitalBarForm.controls.Odate.value.getDate()).padStart(2, '0') + 'T00:00:00';
+    const createDateObj = this.maintainVitalBarForm.controls.Odate.value;
+    // Validation: Prevent creating with a future date
+    if(this.isFutureDate(createDateObj)){
+     Swal.fire({
+        text: "You cannot set a future date for vital readings.",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      });
+      return;
+    }
+    let createDate = createDateObj.getFullYear() + '-' + String(createDateObj.getMonth() + 1).padStart(2, '0') + '-' + String(createDateObj.getDate()).padStart(2, '0') + 'T00:00:00';
     EnteredvitalArr = this.maintainVitalFormitems.value;
     EnteredvitalArr = EnteredvitalArr.filter(element => element.Value !== '')
     const json = {
@@ -863,7 +913,7 @@ export class ErVitalsComponentComman implements OnInit {
       "Origin": "",
       "Odate": createDate,
       "Otime": createTime,
-      "Descr": "TEsting Test",
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "Storn": false,
       "Stoid": this.selectedColData.Stoid,
       "TOITEM": EnteredvitalArr
@@ -901,7 +951,7 @@ export class ErVitalsComponentComman implements OnInit {
     this.edit = false;
   }
 
-  //create
+ 
 
   CreateVitalList() {
     this.showMaintain = true;
@@ -1066,4 +1116,15 @@ export class ErVitalsComponentComman implements OnInit {
       return 'Within Last Hour';
     }
   }
+
+
+  isPasssed24Hours(readingDate:any): boolean {
+         const now = new Date();
+         return (readingDate&& (now.getTime() - readingDate.getTime()) > 24 * 60 * 60 * 1000);
+  }
+
+  isFutureDate(createDateObj:any): boolean {
+    return (createDateObj&&createDateObj > new Date());
+  }
+
 }

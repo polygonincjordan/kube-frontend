@@ -312,7 +312,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getCPRDocDetails();
     this.getPreCardiecCathDocDetails();
     this.getPostCareRecordDetails();
-    // this.fetchLatestDetails();
+    this.fetchLatestDetails();
   }
 
   LatestMFSSet(){
@@ -1168,8 +1168,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openCPRDocument) {
       this.CprDocumentComp.ngOnDestroy();
     }
-    this.getPatientProfile();
+    
     this.getLatestAssessment();
+    this.refreshPatientDocumentation();
     // this.getPhyAssessment();
     // this.getTriageLatestDocuments();
     this.getMedLatestAssessment();
@@ -3642,6 +3643,12 @@ async deletePostCareRecordDoc(docKey: string) {
     // This will automatically update the height of the scrollable div
     this.getContentHeight();
   }
+
+  refreshPatientDocumentation() {
+      this.getPatientProfile();
+      this.fetchLatestDetails();
+  }
+
 
 }
 
