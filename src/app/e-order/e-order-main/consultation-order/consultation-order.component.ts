@@ -358,6 +358,7 @@ export class ConsultationOrderComponent implements OnInit {
         'Please provide all require data.',
         'Error'
       );
+      this.consultationForm.markAllAsTouched();
       return;
     }
 

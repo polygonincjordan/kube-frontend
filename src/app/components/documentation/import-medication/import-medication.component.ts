@@ -195,9 +195,11 @@ export class ImportMedicationComponent implements OnInit {
   }
 
   private getIdentifier(medication: MedicationUnion): string {
-    return this.selectedTab === 'Hospital Medication'
-      ? (medication as IHospitalMedication).EventId
-      : (medication as IDischargeMedication).OrderId;
+    if ('EventId' in medication) {
+      return (medication as IHospitalMedication).EventId;
+    } else if ('OrderId' in medication) {
+      return (medication as IDischargeMedication).OrderId;
+    }
   }
 
   private emitDataChange(): void {
@@ -234,7 +236,8 @@ export class ImportMedicationComponent implements OnInit {
         'Discharge Medication': results
           .filter(isDischarge)
           .map((med: any) => this.mapToDischargeMedication(med))
-          .filter(Boolean),
+          .filter(Boolean)
+          .filter((med: any) => this.getMedicationStatus(med)?.toLowerCase() === 'active'),
         'Hospital Medication': results
           .filter((med: any) => !isDischarge(med))
           .map((med: any) => this.mapToHospitalMedication(med))

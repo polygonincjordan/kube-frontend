@@ -107,7 +107,7 @@
             <div class="mb-1 d-flex justify-content-between w-100">
               <div class="mb-1 d-flex w-33">
                 <label for="adminDose" class=" col-form-label" style="width: 36%;">Administered Dose</label>
-                <input id="adminDose" type="text" class="form-control event-font w-30 mr-3" formControlName="Quan2" />
+                <input id="adminDose" type="text" class="form-control event-font w-30 mr-3" formControlName="Quan2" [readonly]="isEventFinalized" />
                 <input id="adminDose" type="text" class="form-control event-font w-20 mr-3" formControlName="PlanUN" [readonly]="true" />
               </div>
 
@@ -117,9 +117,9 @@
               </div>
 
               <div class="mb-1 d-flex w-33">
-                <label for="inputPassword" class="col-form-label w-45">Change Reason</label>
+                <label for="inputPassword" class="col-form-label w-45">RSN for dose difference</label>
                 <ng-select formControlName="Rdosdif" [readonly]="isEndedDisabled" class=" event-font input-data w-55" id="inputPassword"
-                    (click)="this.AdministerDoseReason()">
+                  >
                     <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
                       {{ administeredReason.Descr }}
                     </ng-option>
@@ -131,14 +131,14 @@
               <div class="d-flex w-50">
                 <label for="inputPassword" class=" col-form-label" style="width: 24%;">Admin Time</label>
                 <input type="text" class="form-control event-font w-70 mr-3" type="text" title="{{administratiForm.value.Rbdad}}" formControlName="Rbdad"
-                  [bsConfig]="{withTimepicker: true,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}" bsDatepicker
-                  [isDisabled]="administratiForm.value.Descr ==='Administered' ? true : false" [readonly]="isEndedDisabled" />
+                  [bsConfig]="{withTimepicker: !isEventFinalized,showWeekNumbers:false, dateInputFormat: 'DD.MM.YYYY HH:mm:ss'}" bsDatepicker
+                  [isDisabled]="isEventFinalized" [readonly]="isEventFinalized" />
               </div> 
               
               <div class="d-flex w-50">
-                <label for="inputPassword" class=" col-form-label w-30">Change Reason</label>
+                <label for="inputPassword" class=" col-form-label w-30">RSN for time difference</label>
                 <ng-select formControlName="Rtimdif" [readonly]="isEndedDisabled" class=" event-font input-data w-70" id="inputPassword"
-                  (click)="this.AdministerTimeReason()">
+                  >
                   <ng-option *ngFor=" let administeredReason  of
                   TimeReason" [value]="administeredReason.Rcodeid">
                     {{ administeredReason.Descr }}
@@ -150,7 +150,7 @@
             <div class="mb-2 d-flex justify-content-between w-100">
               <div class="d-flex w-20">
                 <label class="col-form-label" style="width: 60%;" for="inputPassword">Check Cond.</label>
-                <input type="checkbox" formControlName="Prn" [readOnly]="isEndedDisabled">
+                <input type="checkbox" formControlName="Vfcoind" [readOnly]="isEndedDisabled">
               </div>
 
               <div class="d-flex w-80">
@@ -228,9 +228,8 @@
               </div>
 
               <div class="mb-1 d-flex w-33">
-                <label for="inputPassword" class="col-form-label w-45">Change Reason</label>
-                <ng-select formControlName="Rdosdif" class=" event-font input-data w-55" id="inputPassword"
-                    (click)="this.AdministerDoseReason()">
+                <label for="inputPassword" class="col-form-label w-45">RSN for dose difference</label>
+                <ng-select formControlName="Rdosdif" class=" event-font input-data w-55" id="inputPassword">
                     <ng-option *ngFor=" let administeredReason of DoseReason" [value]="administeredReason.Rcodeid">
                       {{ administeredReason.Descr }}
                     </ng-option>
