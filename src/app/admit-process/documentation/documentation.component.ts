@@ -30,7 +30,6 @@ export class DocumentationComponent implements OnInit {
   @Output() isDocumentTypeFilter = new EventEmitter(false);
   @Output() onDateFilter = new EventEmitter();
   @Output() formEvent = new EventEmitter();
-  @Output() medicalDocTypeChange = new EventEmitter();
 
   @ViewChild('soapDocument', { static: true })
   soapDocument: SopaDocumentComponent;
@@ -39,7 +38,6 @@ export class DocumentationComponent implements OnInit {
   paramsObject: any;
   dateRange: any;
   selectedDocType: any;
-  medicalDocType: any;
   userConfig: UserConfig = {} as UserConfig;
   previousPeriodsList = [
     "Current Day", "Since Yesterday", "In Past 3 Days", "In Past Week", "In Past Month", "In Past Years", "Overall"
@@ -83,7 +81,6 @@ export class DocumentationComponent implements OnInit {
       previousPeriodValue: [null, [Validators.required]],
       selectedCreatedBy: [null, [Validators.required]],
       selectedDocumentOU: [null, [Validators.required]],
-      medicalDocType: ['', [Validators.required]]
     });
   }
 
@@ -116,7 +113,6 @@ export class DocumentationComponent implements OnInit {
 
   resetFilter() {
     this.formDetailGroup.reset();
-    this.medicalDocType = null;
     this.onSearchDocument.next('');
     this.admissionService.documentTypeDrop.next({
       documentType: '',
@@ -125,13 +121,6 @@ export class DocumentationComponent implements OnInit {
       selectedCreatedBy: '',
       selectedDocumentOU: '',
     });
-  }
-
-  onDocTypeChange(event: any) {
-    this.medicalDocType = event.value;
-    this.medicalDocTypeChange.emit(event);
-    console.log(event, "medical doc type change");
-    console.log(this.medicalDocType, "medical doc type change");
   }
 
   addEditForm(type: string) {

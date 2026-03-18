@@ -43,7 +43,6 @@ export class DocumentationListComponent implements OnInit {
   @Input() filterDateValue: string;
   @Input() isDocumentTypeFilter: boolean;
   @Input() isExpanded;
-  @Input() medicalDocType: any;
   currentVisitDocumet: any = [];
   currentVisitDocumetClone: any = [];
   patientProfileDocumet: any = [];

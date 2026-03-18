@@ -67,15 +67,7 @@
 
   <!-- Medication Form Header -->
   <div class="education-assess" *ngIf="admissionService.isAddEditMedicalForm">
-    <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 15px;">
-      <strong>Medical report</strong>
-      <div style="width: 200px;">
-        <ng-select [searchable]="true" placeholder="Select Type" formControlName="medicalDocType" (change)="onDocTypeChange($event)">
-          <ng-option [value]="0">Legal</ng-option>
-          <ng-option [value]="1">Non Legal</ng-option>
-        </ng-select>
-      </div>
-    </div>
+    <strong>Medical report</strong>
     <div>
       <button class="sort-btn" (click)="addEditForm('save')" *ngIf="!this.admissionService.isEditMedicalDoc">Save</button>
       <button class="sort-btn" (click)="addEditForm('edit')" *ngIf="this.admissionService.isEditMedicalDoc">Save</button>

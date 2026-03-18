@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { StorageService } from '@services/storage.service';
-import { DocsService } from '@services/docs.service';
 
 @Component({
   selector: 'app-medical-report',
@@ -13,13 +12,11 @@ import { DocsService } from '@services/docs.service';
 })
 export class MedicalReportComponent implements OnInit,OnChanges {
   @Input() soapFormEvent: string;
-  @Input() docType: any;
   @Output() realodEducationList = new EventEmitter();
-  @Output() doctypeLoaded = new EventEmitter<any>();
   medReportForm: FormGroup;
   paramsObject: any;
   selectedPatientDetails: any;
-  constructor(private formBuilder: FormBuilder,private storageService:StorageService,private emergencyService:EmergencyService,private route: ActivatedRoute,public admissionService: AdmissionService, private docsService: DocsService) {
+  constructor(private formBuilder: FormBuilder,private storageService:StorageService,private emergencyService:EmergencyService,private route: ActivatedRoute,public admissionService: AdmissionService,) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
     });
@@ -89,14 +86,8 @@ export class MedicalReportComponent implements OnInit,OnChanges {
     );
   } 
    async createMedDoc(isrelease:boolean){
-    if (this.docType === undefined || this.docType === null || this.docType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before saving.');
-      return;
-    }
-
     let createJson = this.medReportForm.value;
     createJson['DocStatus'] = '1';
-    createJson['Doctype'] = this.docType.toString();
    await this.emergencyService.createMedDoc(createJson).subscribe(()=>{
     this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';
@@ -106,14 +97,8 @@ export class MedicalReportComponent implements OnInit,OnChanges {
   
   }
   async updateMedDoc(){
-    if (this.docType === undefined || this.docType === null || this.docType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before saving.');
-      return;
-    }
-
     let updateJson = this.medReportForm.value;
     updateJson['DocStatus'] = '1';
-    updateJson['Doctype'] = this.docType.toString();
     await this.emergencyService.updateMedDoc(updateJson).subscribe(()=>{
       this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';
@@ -122,14 +107,9 @@ export class MedicalReportComponent implements OnInit,OnChanges {
     })
   }
   async releaseMedDoc(){
-    if (this.docType === undefined || this.docType === null || this.docType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before releasing.');
-      return;
-    }
-
+   
     let updateJson = this.medReportForm.value;
-    updateJson['DocStatus'] = '2';
-    updateJson['Doctype'] = this.docType.toString();
+    updateJson['DocStatus'] = '2';  
     this.emergencyService.releaseMedDoc(updateJson).subscribe(()=>{
       this.admissionService.cancelAllForm();
     this.admissionService.selectedCurrentDocDetails = '';

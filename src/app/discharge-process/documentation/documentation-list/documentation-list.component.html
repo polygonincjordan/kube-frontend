@@ -95,7 +95,7 @@
 </div>
 
 <div class="medical-AddEdit-Form" *ngIf="admissionService.isAddEditMedicalForm">
-  <app-medical-report  [soapFormEvent]="soapFormEvent" [docType]="medicalDocType" (realodEducationList)="realodEducationList($event)"></app-medical-report>
+  <app-medical-report  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-medical-report>
 </div>
 <div *ngIf="admissionService.isAddEditPhysicianForm">
   <app-physician-form [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)">

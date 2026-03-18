@@ -131,27 +131,9 @@
         </ng-container>
         <ng-container *ngIf="medicalReportFormDiv">
           <div class="main_soap">
-            <div class="d-flex align-items-center justify-content-between head" style="margin-bottom: 15px;">
-              <div style="margin-bottom: 0;">Medical Reports</div>
-              <div style="width: 200px;">
-                <ng-select
-                  [searchable]="true"
-                  placeholder="Select Type"
-                  [(ngModel)]="medicalDocType"
-                  (change)="onDocTypeChange($event)"
-                >
-                  <ng-option [value]="0">Legal</ng-option>
-                  <ng-option [value]="1">Non Legal</ng-option>
-                </ng-select>
-              </div>
-            </div>
+            <div class="head">Medical Reports</div>
             <div class="details">
-                <app-medical-report
-                  [docType]="medicalDocType"
-                  [soapFormEvent]="soapFormEvent"
-                  (realodEducationList)="realodEducationList($event)"
-                  (doctypeLoaded)="onDocTypeLoaded($event)"
-                ></app-medical-report>
+                <app-medical-report  [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-medical-report>
             </div>
               <div class="bottom">
                 <button type="button" (click)="selectedPatient ? updateMedicalReport() : saveMedicalReport()">Save</button>

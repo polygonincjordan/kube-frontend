@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AdmissionService } from '@services/admission/admission.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
@@ -14,9 +14,7 @@ import { DocsService } from '@services/docs.service';
 })
 export class MedicalReportComponent implements OnInit,OnChanges {
   @Input() soapFormEvent: string;
-  @Input() docType: any;
   @Output() realodEducationList = new EventEmitter();
-  @Output() doctypeLoaded = new EventEmitter<any>();
   medReportForm: FormGroup;
   paramsObject: any;
   selectedPatientDetails: any;
@@ -121,24 +119,14 @@ export class MedicalReportComponent implements OnInit,OnChanges {
         this.medReportForm.patchValue({
           Dockey:patientResult?.d?.results[0]?.Dockey
         });
-        // Emit the loaded Doctype to parent
-        if (patientResult?.d?.results[0]?.Doctype) {
-          this.doctypeLoaded.emit(patientResult?.d?.results[0]?.Doctype);
-        }
       },
       (_error: any) => {}
     );
   } 
   private createMedDoc(docStatus: string): void {
-    if (this.docType === undefined || this.docType === null || this.docType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before saving.');
-      return;
-    }
-
     const payload = {
       ...this.medReportForm.value,
-      DocStatus: docStatus,
-      Doctype: this.docType.toString()
+      DocStatus: docStatus
     };
 
     this.emergencyService.createMedDoc(payload).subscribe({
@@ -148,15 +136,9 @@ export class MedicalReportComponent implements OnInit,OnChanges {
   }
 
   private updateMedDoc(): void {
-    if (this.docType === undefined || this.docType === null || this.docType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before saving.');
-      return;
-    }
-
     const payload = {
       ...this.medReportForm.value,
-      DocStatus: '1',
-      Doctype: this.docType.toString()
+      DocStatus: '1'
     };
 
     this.emergencyService.updateMedDoc(payload).subscribe({
@@ -166,15 +148,9 @@ export class MedicalReportComponent implements OnInit,OnChanges {
   }
 
   private releaseMedDoc(): void {
-    if (this.docType === undefined || this.docType === null || this.docType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before releasing.');
-      return;
-    }
-
     const payload = {
       ...this.medReportForm.value,
-      DocStatus: '2',
-      Doctype: this.docType.toString()
+      DocStatus: '2'
     };
 
     this.emergencyService.releaseMedDoc(payload).subscribe({

@@ -51,7 +51,7 @@
                 <app-diagnosis (enCounterPatient)="checkPatientCounter($event)" (onSearchChangEventForDiagnosis)="onSearchChange($event)"></app-diagnosis>
               </ng-container>
               <ng-container *ngIf="this._admissionservice.Documentation">
-                <app-documentation (onSearchDocument)="onSearchChange($event)" (formEvent)="formEvent($event)" (isDocumentTypeFilter)="documentTypeFilter($event)" (onDateFilter)="onDateFilter($event)" (medicalDocTypeChange)="medicalDocTypeEvent($event)"></app-documentation>
+                <app-documentation (onSearchDocument)="onSearchChange($event)" (formEvent)="formEvent($event)" (isDocumentTypeFilter)="documentTypeFilter($event)" (onDateFilter)="onDateFilter($event)"></app-documentation>
               </ng-container>
 
             </div>
@@ -68,7 +68,7 @@
             <app-diagnosis-list [searchString]="searchString" [checkCounterPatient]="checkCounterPatient"></app-diagnosis-list>
           </div>
           <div class="order-templete-main mt-3" *ngIf="this._admissionservice.Documentation" >
-            <app-documentation-list [searchString]="searchString" [isExpanded]="isExpanded" [filterDateValue]="filterDateValue" [isDocumentTypeFilter]="isDocumentTypeFilter" [soapFormEvent]="soapFormEvent" [medicalDocType]="medicalDocType"></app-documentation-list>
+            <app-documentation-list [searchString]="searchString" [isExpanded]="isExpanded" [filterDateValue]="filterDateValue" [isDocumentTypeFilter]="isDocumentTypeFilter" [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded"></app-documentation-list>
           </div>
           <div class="order-templete-main mt-3" *ngIf="this._admissionservice.vitalSign" >
             <app-er-vitals-comman></app-er-vitals-comman>

@@ -35,7 +35,6 @@ import { NewBornPopupComponent } from './diagnoses-in-patient/new-born-popup/new
 import { SharedService } from '@services/shared.service';
 import { MedicalReportComponent } from './diagnoses-in-patient/medical-report/medical-report.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { DocsService } from '@services/docs.service';
 
 @UntilDestroy()
 @Component({
@@ -113,7 +112,6 @@ export class DiagnosesComponent implements OnInit {
   medicalReportFormDiv: boolean = false;
   pdfFormDiv: boolean = false;
   visitFormDiv: boolean = false;
-  medicalDocType: any;
   isCreateRequest: boolean = false;
   isCopyRequest: boolean = false;
   @ViewChild('diagnosisHistory', { static: true }) diagnosisHistory: DiagnosisHistoryPopupComponent;
@@ -156,8 +154,7 @@ export class DiagnosesComponent implements OnInit {
     private dayCaseDashboardService: DayCaseDashboardService,
     private dataShareService: DataShareService,
     private sharedService:SharedService,
-    private emergencyService: EmergencyService,
-    private docsService: DocsService
+    private emergencyService: EmergencyService
   ) {
 
     this.createAttachmentForm= this.formBuilder.group({
@@ -716,7 +713,6 @@ export class DiagnosesComponent implements OnInit {
     this.isCopy = false;
     this.isInPatientSoap = false;
     this.inPatientShow = false;
-    this.medicalDocType = null;
     this.InOutPatientViewValue = {
       showBoth: true,
       showIn: false,
@@ -1529,10 +1525,6 @@ export class DiagnosesComponent implements OnInit {
     });
   }
   saveMedicalReport() {
-    if (this.medicalDocType === undefined || this.medicalDocType === null || this.medicalDocType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before saving.');
-      return;
-    }
     let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '1' : '1';
     this.MedicalReportComp.createMedicalReport(docStatus).then((formValue: any) => {
       if (formValue) {
@@ -1546,10 +1538,6 @@ export class DiagnosesComponent implements OnInit {
   }
 
   releaseMedicalReport() {
-    if (this.medicalDocType === undefined || this.medicalDocType === null || this.medicalDocType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before releasing.');
-      return;
-    }
     let docStatus = this.selectedPatient?.DocKey ? this.selectedPatient?.Released == 'X' ? '5' : '2' : '4';
     this.MedicalReportComp.releaseMedicalReport(docStatus).then((formValue) => {
       if (formValue) {
@@ -1562,10 +1550,6 @@ export class DiagnosesComponent implements OnInit {
     });
   }
   updateMedicalReport() {
-    if (this.medicalDocType === undefined || this.medicalDocType === null || this.medicalDocType === '') {
-      this.docsService.showWarningMsg('Please select Document Type (Legal/Non Legal) before updating.');
-      return;
-    }
     let docStatus = this.selectedPatient?.DokstText == 'Released' || this.selectedPatient?.Released == "X" ? '1' : '1';
     if(this.selectedPatient?.Released == "X") {
       this.MedicalReportComp.createMedicalReport(docStatus).then((formValue: any) => {
@@ -1653,16 +1637,6 @@ export class DiagnosesComponent implements OnInit {
 
   visitFormOpen() {
     this.visitFormDiv = true;
-  }
-
-  onDocTypeChange(event: any) {
-    this.medicalDocType = event;
-  }
-
-  onDocTypeLoaded(doctype: any) {
-    if (doctype !== null && doctype !== undefined && doctype !== '') {
-      this.medicalDocType = Number(doctype);
-    }
   }
 
   updateForm(isUpdate: any) {
