@@ -2,8 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 8px"
-        *ngIf="shouldShowHeader"
-        id="shouldShowHeader">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openCorrespondenceDocument && !openCPRDocument && !openSbarNursingEnd">
         <div class="search-functionality col-md-1 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -61,44 +60,56 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="showActionBtn"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale || openCorrespondenceDocument || openCPRDocument || openSbarNursingEnd"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
         </div>
         <div class="d-flex">
           <div class="header-btn">
-            <button type="button" class="action-doc" (click)="refresh()">Cancel</button>
+            <button type="button" class="action-doc" (click)="refresh()">
+              Cancel
+            </button>
           </div>
-          <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
-            <button type="button" class="action-doc" (click)="saveDoc('close')" style="min-width: auto; width: auto; white-space: nowrap;">Save & Close</button>
+          <div class="header-btn">
+            <button type="button" class="action-doc" (click)="saveDoc()">
+              Save
+            </button>
           </div>
-          <!-- <div class="header-btn"  *ngIf="selectedDocName != 'Critical Care Pain Observation Tool' && selectedDocName != 'Richmond Scale' && selectedDocName !='Maternity Early Warning Sign'">
-            <button type="button" class="action-doc" (click)="saveDoc('save')">Save</button>
-          </div> -->
           <div class="header-btn" *ngIf="actionType == 'create'">
-            <button type="button" class="action-doc" (click)="openDocument('createandrelease')">Release</button>
+            <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
+              Release
+            </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'edit'">
-            <button type="button" class="action-doc" (click)="releaseFromForm()">Release</button>
+            <button type="button" class="action-doc" (click)="releaseFromForm()">
+              Release
+            </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Surgical Passport'">
-            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSurgical()">Release</button>
-          </div>
-          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nursing Intra-Operative Record'">
-            <button type="button" class="action-doc" (click)="newVersionDirectReleasedgetNurseIntraDetail()">Release</button>
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSurgical()">
+              Release
+            </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Pain Assesment'">
-            <button type="button" class="action-doc" (click)="newVersionDirectReleased()">Release</button>
+            <button type="button" class="action-doc" (click)="newVersionDirectReleased()">
+              Release
+            </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Correspondence Document'">
-            <button type="button" class="action-doc" (click)="copyDirectReleaseCorrespondenceDocument()">Release</button>
+            <button type="button" class="action-doc" (click)="copyDirectReleaseCorrespondenceDocument()">
+              Release
+            </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'CPR Document'">
-            <button type="button" class="action-doc" (click)="copyDirectReleaseCPRDocument()">Release</button>
+            <button type="button" class="action-doc" (click)="copyDirectReleaseCPRDocument()">
+              Release
+            </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'SBAR Nursing Endorsement'">
-            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSBAR()">Release</button>
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedSBAR()">
+              Release
+            </button>
           </div>
         </div>
       </div>
@@ -128,7 +139,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="shouldShowHeader">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openCorrespondenceDocument && !openCPRDocument && !openSbarNursingEnd">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -315,8 +326,6 @@
             </div>
           </div>
 
-
-
             <!-- Pain Assessment -->
             <div *ngIf="!selectedDocument || selectedDocument == 'PAA'" [ngClass]="isPainAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
               (click)="selectAssessment('isPainAssessment',painAssessmentLaestDoc[0])">
@@ -398,27 +407,6 @@
               *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'" />
           </div>
       </div>
-
-      <!-- Nursing Intra-Operative Record -->
-      <div [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' " style="font-weight: bold;"
-      *ngIf="!selectedDocument || selectedDocument == 'NIOR'" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
-       <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
-         dockVer(nurseIntraMainList[0]?.Zversion) : ''}}</div>
-       <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
-       <div class="col-md-2" title="{{getTime(nurseIntraMainList[0]?.DocTime)}}">
-         {{getDate(nurseIntraMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}} / {{getTime(nurseIntraMainList[0]?.DocTime)}}
-       </div>
-       <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
-       <div class="col-md-1 d-flex">
-           <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-           (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
-           *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
-           <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
-             <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
-               id=""></select>
-           </div>
-       </div>
-     </div>
 
         <!--  Correspondence Document -->
         <!-- <div
@@ -514,7 +502,6 @@
 
       <app-nurse-endorsement *ngIf="openNurseEndorsement"></app-nurse-endorsement>
       <app-surgical-passport *ngIf="openSurgicsalPassport"></app-surgical-passport>
-      <app-intra-operative-record *ngIf="openNurseIntra" (successEvent)="reloadDoc($event)"></app-intra-operative-record>
       <app-pediatric-early-warning *ngIf="openPediatricEarlyWarningScale"></app-pediatric-early-warning>
 
     <app-glasgow-coma-scale *ngIf="openGlasgowComaScale"></app-glasgow-coma-scale>
@@ -722,8 +709,6 @@
         </div>
       </div>
     </ng-template>
-
-    <app-intra-operative-record *ngIf="openNurseIntra" (successEvent)="reloadDoc($event)"></app-intra-operative-record>
 
     <app-patient-diagnoisi-history #patientDiagnosisHistory
       (onReleseClose)="modelFormOpen($event.value, $event.Oldversion)"

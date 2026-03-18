@@ -129,7 +129,6 @@ import { ConsultationsOrdersModule } from '../shared-module/consultations-orders
 import { ErVitalsForSBARComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/er-vitals/er-vitals.component';
 import { PhysicianPastSurgicalComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/physician-past-surgical/physician-past-surgical.component';
 import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patient-documentation/sbar-nursing-endorsement/sbar-nursing-endorsement.component';
-import { IntraOperativeRecordComponent } from './nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
 import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
 import { SharedModuleModule } from '../shared-module/shared-module.module';
@@ -232,8 +231,7 @@ const route: Routes = [
     ReceiveCartComponent,
     ErVitalsForSBARComponent,
     PhysicianPastSurgicalComponent,
-    SbarNursingEndorsementComponent,
-    IntraOperativeRecordComponent
+    SbarNursingEndorsementComponent
   ],
   providers: [EmergencyService, EPrescriptionService, FeeListService, HelperService, DatePipe, StorageService, ErDischargeordersService, eOrderService, WebService, EventService, CpoeService, AddministrationService, PatientHistoryService, OrdersDashboardService, UserConfigurationService],
   imports: [

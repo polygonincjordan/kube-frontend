@@ -27,7 +27,6 @@ import { BradenScaleComponent } from './braden-scale/braden-scale.component';
 import { EmergencyNursingDocumentComponent } from './emergency-nursing-document/emergency-nursing-document.component';
 import { NurseEndorsementComponent } from './nurse-endorsement/nurse-endorsement.component';
 import { SurgicalPassportComponent } from './surgical-passport/surgical-passport.component';
-import { IntraOperativeRecordComponent } from './intra-operative-record/intra-operative-record.component';
 import { PainAssessmentNurEmrComponent } from './pain-assessment-nur-emr/pain-assessment-nur-emr.component';
 import { PediatricEarlyWarningComponent } from './pediatric-early-warning/pediatric-early-warning.component';
 import { NursingCarePlansComponent } from './nursing-care-plans/nursing-care-plans.component';
@@ -53,7 +52,6 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(EmergencyNursingDocumentComponent) EmergencyNursingDocumentComp: EmergencyNursingDocumentComponent;
   @ViewChild(NurseEndorsementComponent) NurseEndorsmentComp: NurseEndorsementComponent;
   @ViewChild(SurgicalPassportComponent) SurgicalPassComp: SurgicalPassportComponent;
-  @ViewChild(IntraOperativeRecordComponent) NurseIntraComp: IntraOperativeRecordComponent
   @ViewChild(PainAssessmentNurEmrComponent) PainAssessmentComp: PainAssessmentNurEmrComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(PediatricEarlyWarningComponent) PediatricWarningScaleComp: PediatricEarlyWarningComponent;
@@ -72,7 +70,6 @@ export class PatientDocumentationComponent implements OnInit {
   attachments = false;
   nurseEndorsement = false;
   surgicalPassport = false;
-  public isNurseIntra: boolean = false;
   pediatricEarlyWarningScale = false;
   educationAssessment = false;
   patienteducation = false;
@@ -132,8 +129,6 @@ export class PatientDocumentationComponent implements OnInit {
   openNurseEndorsement: boolean = false;
   openPediatricEarlyWarningScale: boolean = false;
   openSurgicsalPassport: boolean = false;
-  openNurseIntra: boolean = false;
-  nurseIntraMainList: any = [];
   public isSbarNursingEnd: boolean = false;
   openSbarNursingEnd: boolean = false;
   sbarNurEndList: any = [];
@@ -232,10 +227,6 @@ export class PatientDocumentationComponent implements OnInit {
       label: 'SBAR Nursing Endorsement',
       value: 'SBARNE'
     },
-    {
-      label: 'Nursing Intra-Operative Record',
-      value: 'NIOR'
-    },
   ]
   createdDocumentUserList: any = [];
   departmentOUList: any = [];
@@ -292,7 +283,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.fetchLatestDetails();
     this.getNurseEndorsement()
     this.getSurgicalPass()
-    this.getIntraOpNurRecSetMainDoc();
     this.getCorrespondenceDocDetails();
     this.getCPRDocDetails();
     this.getSBARNursingDocDetails();
@@ -349,19 +339,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe({
       next: (_success: any) => {        
         this.surgicalPassportList = _success.d.results        
-      },
-      error: (err: any) => {
-        // Handle errors if the request fails
-        console.error('Error  Data:', err);
-        this.sharedService.waringSwallModel(`GET Error : ${err}`);
-      },
-    });
-  }
-
-  getIntraOpNurRecSetMainDoc() {
-    this.emergencyService.getIntraOpNurRecSetMainDoc(this.apiJson).subscribe({
-      next: (_success: any) => {
-        this.nurseIntraMainList = _success.d.results
       },
       error: (err: any) => {
         // Handle errors if the request fails
@@ -696,7 +673,6 @@ export class PatientDocumentationComponent implements OnInit {
       'attachments': { attachments: true, selectedDocName: 'Attachments Document' },
       'nurseEndorsement': { nurseEndorsement: true, selectedDocName: 'Nurse Endorsement' },
       'surgicalPassport': { surgicalPassport: true, selectedDocName: 'Surgical Passport' },
-      'isNurseIntra': { isNurseIntra: true, selectedDocName: 'Nursing Intra-Operative Record' },
       'pediatricEarlyWarningScale': { pediatricEarlyWarningScale: true, selectedDocName: 'Pediatric Early Warning Score' },
       'glasgowcomascale': { glasgowcomascale: true, selectedDocName: 'Glasgow Coma Scale' },
       'facepainscale': { facepainscale: true, selectedDocName: 'Face Pain Scale' },
@@ -717,7 +693,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.attachments = false;
     this.nurseEndorsement = false;
     this.surgicalPassport = false;
-    this.isNurseIntra = false;
     this.pediatricEarlyWarningScale = false;
     this.educationAssessment = false;
     this.glasgowcomascale = false;
@@ -837,30 +812,6 @@ export class PatientDocumentationComponent implements OnInit {
 
   dateFormate(dt) {
     return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
-  }
-
-  refreshDocumentView() {
-    // Refresh the sorted documents view to include newly added documents
-    this.patientProfileDocumet = this.groupBy(this.documentTypeFilterValue, 'Dodat');
-    this.sortedDocuments = Object.keys(this.patientProfileDocumet).map(key => {
-      let documents = this.patientProfileDocumet[key];
-      documents.sort((a, b) => {
-        const timeToSeconds = (timeStr: string) => {
-          if (!timeStr) return 0;
-          const match = timeStr.match(/PT(\d+)H(\d+)M(\d+)S/);
-          if (!match) return 0;
-          const [, h, m, s] = match.map(Number);
-          return h * 3600 + m * 60 + s;
-        };
-        const timeA = timeToSeconds(a.CreatedAt);
-        const timeB = timeToSeconds(b.CreatedAt);
-        return timeB - timeA;
-      });
-      return {
-        date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
-        documents
-      };
-    });
   }
 
   getPhyAssessment() {
@@ -1095,9 +1046,6 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openSurgicsalPassport) {
       this.SurgicalPassComp.ngOnDestroy();
     }
-    if (this.openNurseIntra) {
-      this.NurseIntraComp.ngOnDestroy();
-    }
     if (this.openPediatricEarlyWarningScale) {
       this.PediatricWarningScaleComp.ngOnDestroy();
     }
@@ -1121,7 +1069,6 @@ export class PatientDocumentationComponent implements OnInit {
     // }
 
     this.getCPRDocDetails();
-    this.refreshPatientDocumentation();
     this.getLatestAssessment();
     this.getPhyAssessment();
     this.getTriageLatestDocuments();
@@ -1130,7 +1077,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.getPatientProfile();
     this.getNurseEndorsement()
     this.getSurgicalPass();
-    this.getIntraOpNurRecSetMainDoc();
     this.getLatestAssessmentPA();
     this.getSurgicalPass()
     this.fetchLatestDetails();
@@ -1144,7 +1090,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.educationAssessment = false;
     this.nurseEndorsement = false;
     this.surgicalPassport = false;
-    this.isNurseIntra = false;
     this.pediatricEarlyWarningScale = false;
     this.medReport = false;
     this.emergencynursingdoc = false;
@@ -1164,7 +1109,6 @@ export class PatientDocumentationComponent implements OnInit {
     this.openEmergencyNursingDoc = false;
     this.openNurseEndorsement = false
     this.openSurgicsalPassport = false
-    this.openNurseIntra = false
     this.openPediatricEarlyWarningScale = false
     this.isSbarNursingEnd = false;
     this.openSbarNursingEnd = false;
@@ -1355,55 +1299,6 @@ export class PatientDocumentationComponent implements OnInit {
         });;
       }
     }
-    
-    // Intra Operative Record
-    if (this.isNurseIntra) {
-      if (action == 'create') {
-        this.openNurseIntra = true;
-      } else if (action == 'edit') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.openNurseIntra = true;;
-          let valueObj = {
-            type: WordType.EditNE,
-            docKey: this.selectedDocData.Dockey
-          }
-          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
-        }
-      } else if (action == 'delete') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteIntraOpNurRecSetDoc();
-        } else {
-          this.sharedService.waringSwallModel(`The document is already released`);
-        }
-      } else if (action == 'release') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
-          this.sharedService.waringSwallModel(`The document is already released`)
-        } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNursingIntraOperativeDetail();
-        }
-      } else if (action == 'copy') {
-        // this.openNurseIntra = true;
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
-          this.openNurseIntra = true;;
-          let valueObj = {
-            type: WordType.CopyEA,
-            docKey: this.selectedDocData.Dockey
-          }
-          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
-        }
-      } else if (action == 'createandrelease') {
-        this.openNurseIntra = true;
-        this.NurseIntraComp.createDoc('4').then((formValue)=>{
-          if(formValue){
-            this.refresh()
-          }
-        }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Intra Operative Record:', error);
-        });
-      }
-    }
-    
     // pediatric early warning 
     if (this.pediatricEarlyWarningScale) {
       if (action == 'create') {
@@ -1614,50 +1509,6 @@ export class PatientDocumentationComponent implements OnInit {
         // this.createAndRelease();
       }
     }
-    
-    // intra-operative record
-    if (this.isNurseIntra) {
-      if (action == 'create') {
-        this.openNurseIntra = true;
-        this.selectedDocName = 'Nursing Intra-Operative Record';
-      } else if (action == 'edit') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.openNurseIntra = true;
-          this.selectedDocName = 'Nursing Intra-Operative Record';
-          let valueObj = {
-            type: WordType.EditNE,
-            docKey: this.selectedDocData.Dockey
-          }
-          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
-        }
-      } else if (action == 'delete') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNurseIntraOperative();
-        } else {
-          this.sharedService.waringSwallModel(`The document is already released`);
-        }
-      } else if (action == 'release') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.releaseNurseIntraOperative();
-        } else {
-          this.sharedService.waringSwallModel(`The document is already released`);
-        }
-      } else if (action == 'copy') {
-        if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
-          this.openNurseIntra = true;
-          this.selectedDocName = 'Nursing Intra-Operative Record';
-          let valueObj = {
-            type: WordType.CopyEA,
-            docKey: this.selectedDocData.Dockey
-          }
-          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
-        }
-      } else if (action == 'createandrelease') {
-        this.openNurseIntra = true;
-        this.selectedDocName = 'Nursing Intra-Operative Record';
-      }
-    }
-    
     // Emergency Nursing Document
     else if (this.emergencynursingdoc) {
       if (action == 'create') {
@@ -2225,12 +2076,12 @@ export class PatientDocumentationComponent implements OnInit {
   reloadDoc(event) {
     this.refresh();
   }
-  saveDoc(btnType?: string) {
+  saveDoc() {
     if (this.actionType == 'create') {
       if (this.openGlasgowComaScale) {
         this.GlasgowComaScaleComp.createGlosgowData().then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating Glasgow coma scale:', error);
@@ -2239,7 +2090,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openFacePainScale) {
         this.FacePainScaleComp.createFacePain().then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating Face pain scale:', error);
@@ -2248,7 +2099,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNumericRatingScale) {
         this.NumericRatingScaleComp.saveNumericRight().then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error creating numeric rating Scale:', error);
@@ -2260,7 +2111,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openBradenScale) {
         this.BradenScaleComp.createBradeScale().then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2269,7 +2120,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openEmergencyNursingDoc) {
         this.EmergencyNursingDocumentComp.saveEmergencyNursingDocument().then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2278,7 +2129,7 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openNurseEndorsement) {
         this.NurseEndorsmentComp.saveNurseEnd('1').then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2288,20 +2139,9 @@ export class PatientDocumentationComponent implements OnInit {
         this.SurgicalPassComp.createSurgicalPassDoc('1').then((formValue: any) => {
 
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => { 
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
-        })
-      }
-      if (this.openNurseIntra) {
-        let docStatus = '1';
-        this.NurseIntraComp.createDoc(docStatus).then((formValue: any) => {
-          if (formValue) {
-            if (btnType == 'close') this.refresh();
-          }
-        }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
         })
@@ -2312,7 +2152,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.PainAssessmentComp.savePainAssessmentDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2322,7 +2162,16 @@ export class PatientDocumentationComponent implements OnInit {
       if (this.openPediatricEarlyWarningScale) {
         this.PediatricWarningScaleComp.savePediatricEarlyWarningScale().then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error scale:', error);
+        });
+      }
+      if (this.openPediatricEarlyWarningScale) {
+        this.PediatricWarningScaleComp.savePediatricEarlyWarningScale().then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2334,7 +2183,7 @@ export class PatientDocumentationComponent implements OnInit {
         // if(this.selectedDocData?.Dockey) docStatus = '3';
         this.CorrespondenceComp.createCorrespondenceDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2346,7 +2195,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.CprDocumentComp.createCPRDocument(docStatus).then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -2357,7 +2206,7 @@ export class PatientDocumentationComponent implements OnInit {
         let docStatus = '1';
         this.SbarNursingEndorsementComp.createSbarNursingDoc(docStatus).then((formValue: any) => {
           if (formValue) {
-            if (btnType == 'close') this.refresh();
+            this.refresh();
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
@@ -3340,23 +3189,6 @@ export class PatientDocumentationComponent implements OnInit {
       });
   }
 
-  getNurseIntraPdf(Dockey) {
-    this.pdfUrl = '';
-    this.dayCaseDashboardService
-      .getNurseIntraPdf(Dockey)
-      .subscribe((data: any) => {
-        this.pdfUrlType = 'pdf';
-        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
-        // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-        //   'data:application/pdf;base64,' + data.d.AttachmentData
-        // );
-        const config: ModalOptions = {
-          class: 'modal-dialog-centered modal-xl pdfmodal-size',
-        };
-        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
-      });
-  }
-
   openPDfModal(template, item: any) {
     this.admissionService.selectedCurrentDocDetails = item;
     let config: ModalOptions = {
@@ -3394,206 +3226,5 @@ export class PatientDocumentationComponent implements OnInit {
     this.getContentHeight();
   }
 
-  refreshPatientDocumentation() {
-     this.getPatientProfile();
-     this.fetchLatestDetails();
-  }
-
-  // Intra-Operative Record Methods
-  deleteNurseIntraDoc() {
-    Swal.fire({
-      title: 'Confirm',
-      text: 'Do you want to delete?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      customClass: { popup: 'myalertpopup' }
-    } as any).then((result) => {
-      if (result.value) {
-        // Add delete logic here when the service method becomes available
-        this.sharedService.waringSwallModel('Delete functionality will be implemented when service method is available');
-        this.refresh();
-      }
-    });
-  }
-
-  onNurseIntraModalSaveRelease() {
-    Swal.fire({
-      title: 'Confirm',
-      text: 'Do you want to save and release?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      customClass: { popup: 'myalertpopup' }
-    } as any).then((result) => {
-      if (result.value) {
-        // Add save and release logic here when the service method becomes available
-        this.sharedService.waringSwallModel('Save & Release functionality will be implemented when service method is available');
-        this.refresh();
-      }
-    });
-  }
-
-  onNurseIntraModalLoad() {
-    // Load latest intra operative record data
-    this.getIntraOpNurRecSetMainDoc();
-    this.sharedService.waringSwallModel('Latest data loaded successfully');
-  }
-
-  openIntraOpeAssPdf(docKey: string) {
-    if (docKey) {
-      // Use same PDF opening logic as other documents
-      this.openSurgicalAssPdf(docKey);
-    }
-  }
-
-  deleteNurseIntraOperative() {
-    Swal.fire({
-      title: 'Confirm',
-      text: 'Do you want to delete?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      customClass: { popup: 'myalertpopup' }
-    } as any).then((result) => {
-      if (result.value) {
-        // Add delete logic here when the service method becomes available
-        this.sharedService.waringSwallModel('Delete functionality will be implemented when service method is available');
-        this.refresh();
-      }
-    });
-  }
-
-  releaseNurseIntraOperative() {
-    Swal.fire({
-      title: 'Confirm',
-      text: 'Do you want to release?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      customClass: { popup: 'myalertpopup' }
-    } as any).then((result) => {
-      if (result.value) {
-        // Add release logic here when the service method becomes available
-        this.sharedService.waringSwallModel('Release functionality will be implemented when service method is available');
-        this.refresh();
-      }
-    });
-  }
-
-  loadNurseIntraOperativeRecords() {
-    // Use existing surgical passport service as placeholder until proper service is available
-    this.emergencyService.getSurgicalPasportDoc(this.apiJson).subscribe(
-      (data: any) => {
-        this.nurseIntraMainList = data || [];
-      },
-      (error) => {
-        console.error('Error loading nurse intra-operative records:', error);
-        this.nurseIntraMainList = [];
-      }
-    );
-  }
-
-  get shouldShowHeader(): boolean {
-    return !(
-      this.openPhyAssess ||
-      this.openMedReport ||
-      this.openEducationAssessment ||
-      this.openGlasgowComaScale ||
-      this.openFacePainScale ||
-      this.openNumericRatingScale ||
-      this.openBradenScale ||
-      this.openEmergencyNursingDoc ||
-      this.openNurseEndorsement ||
-      this.openSurgicsalPassport ||
-      this.openNurseIntra ||
-      this.openPainAssement ||
-      this.openPediatricEarlyWarningScale ||
-      this.openCorrespondenceDocument ||
-      this.openCPRDocument ||
-      this.openSbarNursingEnd
-    );
-  }
-
-  get showActionBtn(): boolean {
-    return (
-      this.openPhyAssess ||
-      this.openMedReport ||
-      this.openEducationAssessment ||
-      this.openEmergencyNursingDoc ||
-      this.openNurseEndorsement ||
-      this.openSurgicsalPassport ||
-      this.openNurseIntra ||
-      this.openPainAssement ||
-      this.openPediatricEarlyWarningScale ||
-      this.openCorrespondenceDocument ||
-      this.openCPRDocument ||
-      this.openSbarNursingEnd
-    );
-  }
-
-  async deleteIntraOpNurRecSetDoc() {
-    Swal.fire({
-      title: 'Confirm',
-      text: 'Do you want to delete?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      customClass: { popup: 'myalertpopup' }
-    } as any).then(async (result) => {
-      if (result.value) {
-        (await this.emergencyService.deleteIntraOpNurRecSetDoc(this.nurseIntraMainList[0].Dockey)).subscribe(
-          (_success: any) => {
-            Swal.fire({
-              text: "Document is deleted successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: { popup: 'myalertpopup' }
-            } as any)
-            this.refresh();
-          },
-          (_error: any) => {
-            Swal.fire({
-              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
-              icon: 'warning',
-              confirmButtonText: 'Ok',
-              customClass: { popup: 'myalertpopup' }
-            } as any)
-          }
-        );
-      }
-    });
-  }
-
-  releaseNursingIntraOperativeDetail() {
-    this.admissionService.getIntraOpNurRecSetDetail(this.nurseIntraMainList[0].Dockey).subscribe((res: any) => {
-      delete res?.results[0]?.__metadata;
-      let d: any = {
-        d: res?.results[0],
-      };
-      d.d.DocStatus = '2';
-      this.admissionService.createIntraOpNurRecSetDoc(d).subscribe(
-        (result) => {
-          this.refresh();
-        }
-      );
-    })
-  }
-
-  newVersionDirectReleasedgetNurseIntraDetail() {
-    this.NurseIntraComp.createDoc('5', 'copy').then((formValue: any) => {
-      if (formValue) {
-        this.refresh();
-      }
-    }).catch((error: any) => {
-      console.error('Error scale:', error);
-      console.error('Error creating IC maintenance:', error);
-    });
-  }
 }
 
