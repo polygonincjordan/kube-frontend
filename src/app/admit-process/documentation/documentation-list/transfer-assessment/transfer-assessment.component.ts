@@ -674,7 +674,7 @@ export class TransferAssessmentComponent implements OnInit {
     const selectedValue = (event.target as HTMLSelectElement).value;
     const isoTypeControl = this.transferAssessForm.get('IsolationType');
 
-    if (selectedValue === '2') {
+    if (selectedValue === '1') {
       isoTypeControl?.enable();
     } else {
       isoTypeControl?.disable();

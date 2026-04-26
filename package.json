@@ -8,6 +8,7 @@
     "postinstall": "ngcc",
     "depcheck": "npx depcheck",
     "start": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve -o --port=4200",
+    "start:qa": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve --configuration=production --proxy-config proxy.qa.conf.json -o --port=4200",
     "scsslint": "npx stylelint **/*.scss",
     "prittify": "npx prettier --write ./src/",
     "serve:prod": "ng serve --environment=prod",

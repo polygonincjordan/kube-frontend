@@ -1,0 +1,12 @@
+{
+  "/qa-api": {
+    "target": "http://abdaliwebserver.ach.jo:6051",
+    "secure": false,
+    "changeOrigin": true,
+    "cookieDomainRewrite": "localhost",
+    "pathRewrite": {
+      "^/qa-api": ""
+    },
+    "logLevel": "debug"
+  }
+}
