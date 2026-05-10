@@ -298,7 +298,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   saveForm() {
-    this.formatePayloadDateTime();
+    this.formatePayloadDateTime(false);
     this.saveReleaseGeneratePayload();
     const saveDataList = {
       patientFormData: this.inPatientFormInput === "OPERT" ? this.inPatientDataSet.value : this.inPatientOrrptDataSet.value,
@@ -529,7 +529,7 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
   }
 
   releaseForm() {
-    this.formatePayloadDateTime();
+    this.formatePayloadDateTime(true);
     this.saveReleaseGeneratePayload();
     const saveDataList = {
       patientFormData: this.inPatientFormInput === "OPERT" ? this.inPatientDataSet.value : this.inPatientOrrptDataSet.value,
@@ -547,9 +547,15 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     this.updateEvent.emit(true);
   }
 
-  formatePayloadDateTime() {
-    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfSurgery').value, "DateOfSurgery");
-    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfReportEntry').value, "DateOfReportEntry");
+  formatePayloadDateTime(isRelease = false) {
+    const hasSavedDoc = !!(
+      this.inPatientOrrptDataSet.get('DocKey')?.value ||
+      this.selectedPatient?.Dockey ||
+      this.selectedPatient?.DocKey
+    );
+
+    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfSurgery').value, "DateOfSurgery", isRelease, hasSavedDoc);
+    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfReportEntry').value, "DateOfReportEntry", isRelease, hasSavedDoc);
 
     this.onChangeTime(this.inPatientOrrptDataSet.get('TimeOfSurgery').value, "TimeOfSurgery");
     this.onChangeTime(this.inPatientOrrptDataSet.get('TimeOfReportEntry').value, "TimeOfReportEntry");
@@ -669,9 +675,16 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     })
   }
 
-  onChangeDate(dateValue: any, controlType) {
+  onChangeDate(dateValue: any, controlType, isRelease = false, hasSavedDoc = false) {
     if (dateValue) {
-      this.inPatientOrrptDataSet.get(controlType).patchValue(`\/Date(${new Date(`${this.datePipe.transform(dateValue, "yyyy-MM-dd")} 23:59:59`).getTime()})\/`);
+      const sendDate = new Date(`${this.datePipe.transform(dateValue, "yyyy-MM-dd")} 23:59:59`);
+      const shouldSubtractDate = !isRelease || !hasSavedDoc;
+
+      if (shouldSubtractDate) {
+        sendDate.setDate(sendDate.getDate() - 1);
+      }
+
+      this.inPatientOrrptDataSet.get(controlType).patchValue(`\/Date(${sendDate.getTime()})\/`);
     }
   }
 
@@ -738,5 +751,4 @@ export class DiagnosesInPatientComponent implements OnInit, OnDestroy {
     this.updateEvent.next(true);
   }
 }
-
 

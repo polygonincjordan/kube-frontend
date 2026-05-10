@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   brandName: 'kardex',
   LogoUrl: 'assets/logo.png',
   isMultiColorActive: true,
