@@ -35,9 +35,11 @@ export function isPrnConfirmationRetryError(message: string): boolean {
   const n = normalizePackageErrorText(message);
   const plannedDoseAlreadyGiven =
     n.includes('planned dose') && n.includes('already been administered');
+  const prnEventPlannedDoseExceeded =
+    n.includes('planned dose') && n.includes('prn event') && n.includes('exceeded');
   const administrationsPerDayExceeded =
     n.includes('administrations per day') && n.includes('exceeded');
-  return plannedDoseAlreadyGiven || administrationsPerDayExceeded;
+  return plannedDoseAlreadyGiven || prnEventPlannedDoseExceeded || administrationsPerDayExceeded;
 }
 
 function escapeHtml(text: string): string {
