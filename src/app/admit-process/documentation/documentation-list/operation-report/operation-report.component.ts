@@ -17,10 +17,8 @@ import { InPatientConfigurationService } from '@services/e-kardex/inPatient.serv
 import { SurgeryTeamData } from '@services/e-kardex/interfaces/inpatient-data';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
-import { SharedService } from '@services/shared.service';
 import { Subscription, catchError, of } from 'rxjs';
 import { ConfigPopup } from 'src/app/core/config-popup/config-popup.component';
-import { DocsService } from '@services/docs.service';
 
 @UntilDestroy()
 @Component({
@@ -60,9 +58,7 @@ export class OperationReportComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private userConfigurationService: UserConfigurationService,
-    private sharedService: SharedService,
-    private inPatientConfigurationService: InPatientConfigurationService,
-    private docsService: DocsService
+    private inPatientConfigurationService: InPatientConfigurationService
   ) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
@@ -87,19 +83,16 @@ export class OperationReportComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.soapFormEvent.currentValue == 'add') {
-        this.saveOperation(false);
-      }
+      this.saveOperation(false);
+    }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
-        this.saveOperation(false);
-      }
-    if (changes.soapFormEvent.currentValue == 'saveClose') {
-        this.saveOperation(false);
-      }
+      this.saveOperation(false);
+    }
 
     if (changes.soapFormEvent.currentValue == 'release') {
-        this.saveOperation(true);
-      }
+      this.saveOperation(true);
+    }
 
     if (this.admissionService.isEditOperationReport || this.admissionService.isCloneOperationReport) {
       this.getOperationReport();
@@ -115,11 +108,11 @@ export class OperationReportComponent implements OnInit, OnChanges {
     let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
 
     this.inPatientOrrptDataSet = new FormGroup({
-      DateOfSurgery: new FormControl(),
+      DateOfSurgery: new FormControl(new Date()),
       DocKey: new FormControl(''),
       OperationPerformed: new FormControl(''),
       OperativeComplication: new FormControl(''),
-      TimeOfSurgery: new FormControl(),
+      TimeOfSurgery: new FormControl(currentTime),
       DateOfReportEntry: new FormControl(new Date()),
       SpecimenRemoved: new FormControl(''),
       BloodLoss: new FormControl(''),
@@ -267,7 +260,7 @@ export class OperationReportComponent implements OnInit, OnChanges {
   }
 
   saveOperation(isRelease) {
-    this.formatePayloadDateTime();
+    this.formatePayloadDateTime(isRelease, !!this.inPatientOrrptDataSet.get('DocKey').value);
     this.saveReleaseGeneratePayload();
 
     const saveDataList = {
@@ -286,34 +279,28 @@ export class OperationReportComponent implements OnInit, OnChanges {
         this.admissionService.selectedCurrentDocDetails.Dockey
       )
       .subscribe((res: any) => {
-        //  if(this.soapFormEvent == 'saveClose' || this.soapFormEvent == 'release') { 
-        // }
         this.reloadTableList.next(true);
-        this.admissionService.cancelAllForm();
-        this.admissionService.clearSoapEvent.next(true);
-        this.admissionService.isCloneOperationReport = false;
-        this.admissionService.isEditOperationReport = false;
-        this.docsService.showSuccessMsg(this.soapFormEvent,'Operation Report');
-      }, (error) => {
-        this.admissionService.isCloneOperationReport = false; 
-        this.admissionService.isEditOperationReport = false;
-        this.admissionService.clearSoapEvent.next(true);
-        this.docsService.showErrorMsg(error);
-      }
-    );
+          this.admissionService.cancelAllForm();
+          this.admissionService.clearSoapEvent.next(true);
+      });
   }
 
-  formatePayloadDateTime() {
-    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfSurgery').value, "DateOfSurgery");
-    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfReportEntry').value, "DateOfReportEntry");
+  formatePayloadDateTime(isRelease = false, hasSavedDoc = false) {
+    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfSurgery').value, "DateOfSurgery", isRelease, hasSavedDoc);
+    this.onChangeDate(this.inPatientOrrptDataSet.get('DateOfReportEntry').value, "DateOfReportEntry", isRelease, hasSavedDoc);
 
     this.onChangeTime(this.inPatientOrrptDataSet.get('TimeOfSurgery').value, "TimeOfSurgery");
     this.onChangeTime(this.inPatientOrrptDataSet.get('TimeOfReportEntry').value, "TimeOfReportEntry");
   }
 
-  onChangeDate(dateValue: any, controlType) {
+  onChangeDate(dateValue: any, controlType, isRelease = false, hasSavedDoc = false) {
     if (dateValue) {
-      this.inPatientOrrptDataSet.get(controlType).patchValue(`\/Date(${new Date(`${this.datePipe.transform(dateValue, "yyyy-MM-dd")} 23:59:59`).getTime()})\/`);
+      const sendDate = new Date(`${this.datePipe.transform(dateValue, "yyyy-MM-dd")} 23:59:59`);
+      const shouldSubtractDate = !isRelease || !hasSavedDoc;
+      if (shouldSubtractDate) {
+        sendDate.setDate(sendDate.getDate() - 1);
+      }
+      this.inPatientOrrptDataSet.get(controlType).patchValue(`\/Date(${sendDate.getTime()})\/`);
     }
   }
 

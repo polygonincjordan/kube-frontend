@@ -356,24 +356,24 @@
                 <span class="content-box">Wheelchair </span>
                 <select class="content-select" formControlName="Wheelchair" aria-label="Default select example">
                   <option value="0">N/A</option>
-                  <option value="1">No</option>
-                  <option value="2">Yes</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
                 </select>
               </li>
               <li>
                 <span class="content-box">Strecher </span>
                 <select class="content-select" formControlName="Stretcher" aria-label="Default select example">
                   <option value="0">N/A</option>
-                  <option value="1">No</option>
-                  <option value="2">Yes</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
                 </select>
               </li>
               <li>
                 <span class="content-box">Oxygen</span>
                 <select class="content-select" formControlName="Oxygen" aria-label="Default select example">
                   <option value="0">N/A</option>
-                  <option value="1">No</option>
-                  <option value="2">Yes</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
                 </select>
               </li>
               <li>
@@ -381,23 +381,23 @@
                 <select class="content-select" formControlName="Isolationn" aria-label="Default select example"
                   (change)="onIsolationChange($event)">
                   <option value="0">N/A</option>
-                  <option value="1">No</option>
-                  <option value="2">Yes</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
                 </select>
                 &nbsp; &nbsp;
 
                 <span class="content-box1">Type of Isolation </span>
                 <span>
                   <input type="text" class="content-select" formControlName="IsolationType" placeholder=""
-                    [readOnly]="this.transferAssessForm.get('Isolationn').value != '2'" />
+                    [readOnly]="this.transferAssessForm.get('Isolationn').value != '1'" />
                 </span>
               </li>
               <li>
                 <span class="content-box">Continuous Monitoring</span>
                 <select class="content-select" aria-label="Default select example" formControlName="ContiMonitoring">
                   <option value="0">N/A</option>
-                  <option value="1">No</option>
-                  <option value="2">Yes</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
                 </select>
               </li>
 

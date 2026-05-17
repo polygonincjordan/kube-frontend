@@ -23,8 +23,6 @@ export class WebeOrderService {
     Object.keys(customeHeaders).forEach((key) =>
       headers.set(key.toString(), customeHeaders[key])
     );
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Credentials', 'true');
   }
 
   get(url: string, custHeaders?: any, params?: any, search?: any, ePres?: any);
