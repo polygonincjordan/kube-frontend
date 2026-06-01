@@ -14,6 +14,7 @@ import swal from 'sweetalert2';
 import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { subscribeAdministerEventWithPackageResponse } from '@services/e-Prescription/administer-event-package.helper';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -50,7 +51,10 @@ export class DrugEventsAdminComponent implements OnInit {
   public eventsDetails: boolean = false;
   public eventDetailList: any[] = [];
   public isEventFinalized: boolean = false;
-  private mainEvent: string
+  /** From updateFillSourcepost — always applied to Meevtid on save when set (same as legacy mainEvent). */
+  private meevtidOverrideFromFillSource: string;
+  /** PRN daily master Meevtid from emarevents — only when emardata says PRN (same rules as legacy getMainEvent). */
+  private prnMasterMeevtid: string;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>
   @Input() set medicationData(data: PrescriptionList) {
     console.log(data);
@@ -100,8 +104,10 @@ export class DrugEventsAdminComponent implements OnInit {
   // }
 
 
-  openModalForDrugsEvents(item, data) {
+  openModalForDrugsEvents(item, data, _gridDate?: Date) {
     console.log(item);
+    this.meevtidOverrideFromFillSource = undefined;
+    this.prnMasterMeevtid = undefined;
     this.isEventFinalized = item.Events.Mesid === '600';
     this.administratiForm = this.AdministerEventForm(item, data);
     this.getMainEvent(data.Meordid);
@@ -351,12 +357,12 @@ export class DrugEventsAdminComponent implements OnInit {
     const RdosdifControl = this.administratiForm.get('Administrator.Rdosdif');
     const RdosdifNotControl = this.administratiForm.get('NotAdminister.Rdosdif');
     this.isFormSubmitted = true;
-    if (this.administered) {7
+    if (this.administered) {
       if (RdosdifControl?.invalid) {
       RdosdifControl.markAsTouched();
       return;         
       }
-      if (this.mainEvent) this.administratiForm.get('Administrator.Meevtid').setValue(this.mainEvent);
+      this.applyMeevtidOverrideForSave();
       if (!this.isPrnChecked() && !this.isPrnConditionEmpty()) {
         this.showErrorPopup(null, 'Confirmation that administration conditions were checked, is required!', 'Error')
       } else {
@@ -411,7 +417,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbdad: `${formatDate(this.administratiForm.get('Administrator').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('Administrator').value.Rbdad, "HH:mm:ss")}`,
             Fsource: this.administratiForm.get('Administrator.Fsource')?.value ?? ""
           }
-          const { Quanunit, Prncond, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+          const { Quanunit,DosageStr, Prncond, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
           delete payload.DosageStr
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been Administered!", payload)
@@ -424,7 +430,7 @@ export class DrugEventsAdminComponent implements OnInit {
       RdosdifNotControl.markAsTouched();
       return;         
       }
-        if (this.mainEvent) this.administratiForm.get('NotAdminister.Meevtid').setValue(this.mainEvent);
+        this.applyMeevtidOverrideForSave('NotAdminister');
         if (this.administratiForm.get('Secwitness').value === 'X') {
           this.showErrorPopup(null, 'Witness is required to administer the drug', 'Warn').then(
             (result) => {
@@ -450,7 +456,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbtad: `${this.parseTime(this.administratiForm.get('NotAdminister').value.Rbdad)}`,
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
-                          const { Quanunit,DosageStr, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+                          const { Quanunit,DosageStr, Prncond, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
                           
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
@@ -476,7 +482,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbtad: `${this.parseTime(this.administratiForm.get('NotAdminister').value.Rbdad)}`,
             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
           }
-          const { Quanunit, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
+          const { Quanunit,DosageStr, Prncond, SCRAP,PlanDQ, PlanUN, ...payload } = PayloadData;
           delete payload.DosageStr
           delete payload.AmountPrescribed
           this.AdministerEventaction("The event has been NotAdminustered!", payload)
@@ -550,14 +556,14 @@ export class DrugEventsAdminComponent implements OnInit {
     this.ePrescriptionService.postData(`e-prescription/updateFillSourcepost`, PayloadData).subscribe((resp: any) => {
       const mainevt = resp?.body?.d?.Meevtid;
       if (mainevt) {
-        this.mainEvent = mainevt;
+        this.meevtidOverrideFromFillSource = mainevt;
       }
     });
   }
 
   AdministerEventaction(title, data) {
-    const AdministerFillSource = this.ePrescriptionService.postData('e-prescription/getAdministerEvent', data).subscribe({
-      next: (resp: any) => {
+    subscribeAdministerEventWithPackageResponse(this.ePrescriptionService, data as Record<string, unknown>, {
+      onSuccess: () => {
         swal.fire({
           title: title,
           confirmButtonColor: '#0890c5',
@@ -573,10 +579,9 @@ export class DrugEventsAdminComponent implements OnInit {
           });
         })
       },
-      error: (error: any) => {
-        this.showErrorPopup("", error.error.error.message.value, "Error")
-      }
-    })
+      onError: (message) => this.showErrorPopup("", message, "Error"),
+      onPrnRetryDeclined: () => this.modalRef?.hide(),
+    });
   }
 
 
@@ -759,8 +764,29 @@ export class DrugEventsAdminComponent implements OnInit {
     } as any);
   }
 
+  /**
+   * Same PRN membership as legacy `prnIds` (emardata only — do not use grid row Prn alone).
+   */
+  private isPrnMeordidInEmardata(meordid?: string): boolean {
+    const data = this.ePrescriptionService.emardata;
+    if (!data || !meordid) return false;
+    return data.some((d: { Meordid?: string; Prn?: boolean }) => d.Meordid === meordid && d.Prn === true);
+  }
+
+  /** Fill-source response wins over PRN master, matching single legacy `mainEvent` field. */
+  private applyMeevtidOverrideForSave(which: 'Administrator' | 'NotAdminister' = 'Administrator'): void {
+    const id = this.meevtidOverrideFromFillSource ?? this.prnMasterMeevtid;
+    if (id) {
+      this.administratiForm.get(`${which}.Meevtid`).setValue(id);
+    }
+  }
+
+  /**
+   * Legacy behavior: match master PRN line in emarevents for **calendar today** (not MAR grid date).
+   * Scheduled orders fail `prnIds.has(Meordid)` and never set an override — dose uses clicked event Meevtid.
+   */
   private getMainEvent(selectedId?: any): void {
-    if (!selectedId) return;
+    if (!selectedId || !this.isPrnMeordidInEmardata(selectedId)) return;
 
     const { emarevents: events, emardata: data } = this.ePrescriptionService;
     if (!events || !data) return;
@@ -775,7 +801,7 @@ export class DrugEventsAdminComponent implements OnInit {
       this.getFormattedDateFromPbdad(e.Pbdad) === today
     );
     if (todayEvents?.Meevtid) {
-      this.mainEvent = todayEvents.Meevtid
+      this.prnMasterMeevtid = todayEvents.Meevtid;
     }
   }
 
