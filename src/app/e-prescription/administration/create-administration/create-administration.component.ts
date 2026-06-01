@@ -70,7 +70,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Prn: item.Prn,
             Descr: item.Descr,
             Complex: item.Complex,
-            Dosdef: item.Dosdef,
+            Dosdef: !item.Dosdef && (item.N1znr === '0000000100' || item.N1znr === '0000000003') && item.Quan && item.Quan !== '0.000'
+              ? `${item.Quan}(08:00)`
+              : item.Dosdef,
             N1ztxt:item.N1ztxt,
             TOCOMPLEX: item.TOCOMPLEX.results,
           })
@@ -98,7 +100,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Prn: item.Prn,
             Descr: item.Descr,
             Complex: item.Complex,
-            Dosdef: item.Dosdef,
+            Dosdef: !item.Dosdef && (item.N1znr === '0000000100' || item.N1znr === '0000000003') && item.Quan && item.Quan !== '0.000'
+              ? `${item.Quan}(08:00)`
+              : item.Dosdef,
             N1ztxt:item.N1ztxt,
             TOCOMPLEX: item.TOCOMPLEX.results,
           })
@@ -362,14 +366,17 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        const defineDoses = this.drugArray.value[index].Dosdef ? this.drugArray.value[index].Dosdef.split(" ") : [];
+        const defineDoses = this.drugArray.value[index].Dosdef ? this.drugArray.value[index].Dosdef.split("-") : [];
         if (defineDoses && defineDoses.length) {
           let deftimDcycleData = [];
           defineDoses.forEach((element) => {
             const quanUnitDescription = element.split("(")[0];
-            const defineTime = element.match(/\(([^)]+)\)/)[1];
-            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`), Agentid:this.drugArray.value[index].Agentid });
-            this.drugArray.controls[index].get('deftimcycleData').setValue(deftimDcycleData)
+            const defineTimeMatch = element.match(/\(([^)]+)\)/);
+            if (defineTimeMatch && defineTimeMatch[1]) {
+              const defineTime = defineTimeMatch[1];
+              deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`), Agentid:this.drugArray.value[index].Agentid });
+              this.drugArray.controls[index].get('deftimcycleData').setValue(deftimDcycleData)
+            }
           });
           deftimDcycleData = [];
         } else {

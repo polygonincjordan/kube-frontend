@@ -27,60 +27,31 @@
             <li class="icon-pdf"><img class="img-size" src="assets/img/file1.svg" style="width: 23px;" title="Create" (click)="CreateVitalList()"> </li>
           </ul>
         </div>
-        <div style=" max-height: 37em;
-        overflow-y: auto;    display: flex;
-    position: relative;align-items: flex-start;" (scroll)="scrollHandler($event)" *ngIf="toUniqueItemsArr.length > 0">
-          <table class="table table-bordered" style="width: 30%;
-          float: left;">
-            <thead style="
-              position: sticky;
-              top: 0;
-              z-index: 9;">
+        <div id="columnDates" class="vital-grid-scroll" (scroll)="scrollHandler($event)" *ngIf="toUniqueItemsArr.length > 0">
+          <table class="table table-bordered vital-grid-table">
+            <thead>
               <tr>
-                <th scope="col">Description</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Normal Range </th>
-
+                <th scope="col" class="vital-sticky-col vital-description-col">Description</th>
+                <th scope="col" class="vital-sticky-col vital-unit-col">Unit</th>
+                <th scope="col" class="vital-sticky-col vital-range-col">Normal Range</th>
+                <th scope="col" class="vital-date-col" *ngFor="let item of vitalListResp" (click)="selectDateColumn(item)"
+                  [ngClass]="(selectedColData?.Obsid == item?.Obsid) && isSelected ? 'selectedCol' : ''">
+                  {{getDate(item.Odate) | date : "dd.MM.y" }} {{getTime(item.Otime)}}
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let element of toUniqueItemsArr">
-                <td class="dec">{{element[0].Name}}</td>
-                <td>{{element[0].UnitTxt}}</td>
-                <td>{{element[0].NormalRange}}</td>
-
-
+                <td class="dec vital-sticky-col vital-description-col">{{element[0].Name}}</td>
+                <td class="vital-sticky-col vital-unit-col">{{element[0].UnitTxt}}</td>
+                <td class="vital-sticky-col vital-range-col">{{element[0].NormalRange}}</td>
+                <td class="vital-date-col" *ngFor="let item of vitalListResp"
+                  [ngClass]="(selectedColData?.Obsid == item?.Obsid) && isSelected ? 'selectedCol' : ''">
+                  {{getDateRecord(item.Obsid,element)}}
+                </td>
               </tr>
-
             </tbody>
           </table>
-          <div id="columnDates" class="custom-slider-main" style="
-          display: block;
-          width: 70%;">
-            <table class="table table-bordered">
-              <thead style="
-            position: sticky;
-            top: 0;
-            z-index: 9;">
-                <tr>
-                  <th scope="col" *ngFor="let item of vitalListResp" (click)="selectDateColumn(item)"
-                    [ngClass]="(selectedColData?.Obsid == item?.Obsid) && isSelected ? 'selectedCol' : ''" style="    min-width: 155px;">{{getDate(item.Odate) | date
-                    : "dd.MM.y" }} {{getTime(item.Otime)}}</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let element of toUniqueItemsArr">
-                  <td *ngFor="let item of vitalListResp" [ngClass]="(selectedColData?.Obsid == item?.Obsid) && isSelected ? 'selectedCol' : ''"
-                    style="font-weight: bold;">{{getDateRecord(item.Obsid,element)}}</td>
-
-                </tr>
-
-              </tbody>
-
-            </table>
-
-          </div>
         </div>
       </div>
     </div>

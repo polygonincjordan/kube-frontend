@@ -88,6 +88,7 @@ export class ErVitalsComponentComman implements OnInit {
   nextInputId: string;
   selectedRowsIndex: number;
   selectedColIndex: any;
+  private readonly newsScoreExtid = 'NEWS_SCORE';
   constructor(private chartService: ChartdataService, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, private modalService: BsModalService, private modalNgbService: NgbModal, public vitalsService: VitalsService, private emergencyService: EmergencyService, private formBuilder: FormBuilder, 
     private storageService: StorageService, private route: ActivatedRoute,) {
     this.chartDataConfig = this.chartService;
@@ -424,6 +425,7 @@ export class ErVitalsComponentComman implements OnInit {
     this.emergencyService.getAllVitalList(json).subscribe(
       (_success: any) => {
         this.vitalAllListResp = _success.d.results;
+        this.ensureNewsScoreDefaultVital();
 
       },
       (_error: any) => { }
@@ -903,6 +905,63 @@ export class ErVitalsComponentComman implements OnInit {
 
   //create
 
+  private getNewsScoreDefaultVital() {
+    const newsScoreVital = this.vitalAllListResp?.find(item => item.Extid === this.newsScoreExtid);
+
+    return {
+      "Einri": newsScoreVital?.Einri || "",
+      "Valid": newsScoreVital?.Valid || "",
+      "ValidVers": newsScoreVital?.ValidVers || "",
+      "Bcpid": newsScoreVital?.Bcpid || "",
+      "Extid": this.newsScoreExtid,
+      "Name": newsScoreVital?.Name || "NEWS_Score",
+      "Value": "",
+      "ValueString": "",
+      "UnitTxt": newsScoreVital?.UnitTxt || "UnLess",
+      "NormalRange": newsScoreVital?.NormalRange || "",
+      "Origin": "",
+      "Descr": "",
+      "Obsid": newsScoreVital?.Obsid || "",
+      "ObsidVers": newsScoreVital?.ObsidVers || ""
+    };
+  }
+
+  private ensureNewsScoreDefaultVital() {
+    if (!this.vitalDefaultListResp) {
+      this.vitalDefaultListResp = [];
+    }
+
+    const newsScoreDefaultVital = this.getNewsScoreDefaultVital();
+    const newsScoreDefaultIndex = this.vitalDefaultListResp.findIndex(item => item.Extid === this.newsScoreExtid);
+
+    if (newsScoreDefaultIndex === -1) {
+      this.vitalDefaultListResp.push(newsScoreDefaultVital);
+    } else {
+      this.vitalDefaultListResp[newsScoreDefaultIndex] = {
+        ...this.vitalDefaultListResp[newsScoreDefaultIndex],
+        ...newsScoreDefaultVital
+      };
+    }
+
+    const maintainVitalItems = this.maintainvitalform.get('maintainVitalFormitems') as FormArray;
+    if (!maintainVitalItems || !maintainVitalItems.length) {
+      return;
+    }
+
+    const newsScoreControl = maintainVitalItems.controls.find(control => control.value.Extid === this.newsScoreExtid);
+    if (newsScoreControl) {
+      newsScoreControl.patchValue({
+        Bcpid: newsScoreDefaultVital.Bcpid,
+        Valid: newsScoreDefaultVital.Valid,
+        ValidVers: newsScoreDefaultVital.ValidVers,
+        UnitTxt: newsScoreDefaultVital.UnitTxt,
+        Name: newsScoreDefaultVital.Name
+      });
+    } else {
+      this.addItemForVital(newsScoreDefaultVital);
+    }
+  }
+
   CreateVitalList() {
     this.showMaintain = true;
     let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S';
@@ -920,6 +979,7 @@ export class ErVitalsComponentComman implements OnInit {
     // this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     // this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     // this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));
+    this.ensureNewsScoreDefaultVital();
     this.vitalDefaultListResp.forEach(element => {
       this.addItemForVital(element);
     });

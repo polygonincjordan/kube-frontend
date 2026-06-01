@@ -120,19 +120,28 @@ export class StepperComponent implements OnDestroy {
   }
 
   Refreshdata(listItem) {
+    console.log('stepper Refreshdata listItem', listItem);
     localStorage.setItem('data', JSON.stringify(true));
-    this.patientService.patientapi.next(listItem.Einri+listItem.Case.toString().padStart(10, '0')+this.storageService.lfdnr)
     this.selectedback = 'goback';
     this.selectedData = listItem;
-    this.storageService.falnr = listItem.Case
-    this.storageService.einri = listItem.Einri
-    this.storageService.patnr = listItem.Patient
+
+    const itemLfdnr = (listItem.Lfdnr ?? listItem.Lfdbew ?? listItem.MovmntSeq ?? this.storageService.lfdnr ?? '').toString();
+    const paddedFalnr = listItem.Case.toString().padStart(10, '0');
+    const paddedPatnr = listItem.Patient.toString().padStart(10, '0');
+
+    this.storageService.einri = listItem.Einri;
+    this.storageService.falnr = paddedFalnr;
+    this.storageService.patnr = paddedPatnr;
+    this.storageService.lfdnr = itemLfdnr;
+
+    this.patientService.patientapi.next(listItem.Einri + paddedFalnr + itemLfdnr);
+
     const currentParams = this.route.snapshot.queryParams;
-  this.router.navigate([], {
-    relativeTo: this.route,
-    queryParams: { ...currentParams, einri: listItem['Einri'], falnr: listItem['Case'].toString().padStart(10, '0') , patnr: listItem['Patient'].toString().padStart(10, '0')},
-    queryParamsHandling: 'merge',
-  });
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { ...currentParams, einri: listItem['Einri'], falnr: paddedFalnr, patnr: paddedPatnr, lfdnr: itemLfdnr },
+      queryParamsHandling: 'merge',
+    });
   }
 
   goback(goback) {
