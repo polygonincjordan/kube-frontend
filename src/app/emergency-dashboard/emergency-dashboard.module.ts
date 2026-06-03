@@ -128,6 +128,9 @@ import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { FeeListService } from '@services/fee-service/fee-list.service';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
+import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
+import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.module';
+import { InpatientNursingDocumentsModule } from '../shared-module/inpatient-nursing-documents/inpatient-nursing-documents.module';
 
 
 
@@ -226,7 +229,10 @@ export const emergencyDashboard: Routes = [
     CorrespondenceDocumentModule,
     AdminAttechmentModule,
     VitalSignModule,
-    ConsultationsOrdersModule
+    ConsultationsOrdersModule,
+    CvcInsertionModule,
+    IcBundleAdultVentilatorModule,
+    InpatientNursingDocumentsModule
   ]
 })
 export class EmergencyDashboardModule { }

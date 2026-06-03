@@ -21,6 +21,12 @@ import { SharedService } from '@services/shared.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { DocsService } from '@services/docs.service';
+import { DataShareService } from '@services/data-share.service';
+import { ActionType } from '@services/interfaces/common.enum';
+import { CvcInsertionComponent } from 'src/app/shared-module/cvc-insertion/cvc-insertion.component';
+import { CvcMaintenanceComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
+import { ICBundlesComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
+import { IntraOperativeRecordComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -30,6 +36,10 @@ export class DocumentationComponent implements OnInit {
   @ViewChild(ErPhysicianComponent) phyComp: ErPhysicianComponent;
   @ViewChild(MedicalReportComponent) medComp: MedicalReportComponent;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
+  @ViewChild(ICBundlesComponent) ICBundlesComp: ICBundlesComponent;
+  @ViewChild(CvcMaintenanceComponent) ICCvcMainComp: CvcMaintenanceComponent;
+  @ViewChild(IntraOperativeRecordComponent) NurseIntraComp: IntraOperativeRecordComponent;
+  @ViewChild(CvcInsertionComponent) CVCInsertionComp: CvcInsertionComponent;
   
   @ViewChild(EducationFormComponent) educationAssessmentComp: EducationFormComponent;
   @ViewChild('diagnosisHistory', { static: true })
@@ -108,6 +118,26 @@ export class DocumentationComponent implements OnInit {
       label: 'Medical Report',
       value: 'MER'
     },
+    {
+      label: 'Nursing Intra-Operative Record',
+      value: 'NIOR'
+    },
+    {
+      label: 'IC Bundles for Urinary Catheter',
+      value: 'ICBUC'
+    },
+    {
+      label: 'IC Bundles for Ventilator',
+      value: 'ICBV'
+    },
+    {
+      label: 'IC Bundles for CVC Insertion',
+      value: 'ICBCI'
+    },
+    {
+      label: 'IC Bundles for CVC Maintenance',
+      value: 'ICBCM'
+    },
     // {
     //   label: 'ER Discharge Summary',
     //   value: 'EDS'
@@ -136,10 +166,29 @@ export class DocumentationComponent implements OnInit {
   public isCorrespondenceDocument: boolean = false;
   public openCorrespondenceDocument: boolean = false;
   latestCorrespondenceList: any = []
+  public isBundles: boolean = false;
+  public isCvcMain: boolean = false;
+  public isNurseIntra: boolean = false;
+  public isCVCInsertion: boolean = false;
+  public isICVentilator: boolean = false;
+  public openBundles: boolean = false;
+  public openCvcMain: boolean = false;
+  public openNurseIntra: boolean = false;
+  public openCVCInsertionDocument: boolean = false;
+  public openICVentilatorDocument: boolean = false;
+  bundlesList: any[] = [];
+  cvcMainList: any[] = [];
+  nurseIntraMainList: any[] = [];
+  latestCVCInsertionList: any[] = [];
+  latestICVentilatorList: any[] = [];
   private subscription: Subscription;
 
+  get nursingDocumentOpen(): boolean {
+    return this.openBundles || this.openCvcMain || this.openNurseIntra || this.openCVCInsertionDocument || this.openICVentilatorDocument;
+  }
+
   constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, 
-    private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, private sharedService: SharedService, private dayCaseDashboardService: DayCaseDashboardService, private docsService: DocsService) {
+    private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, private sharedService: SharedService, private dayCaseDashboardService: DayCaseDashboardService, private docsService: DocsService, private dataShareService: DataShareService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -159,6 +208,10 @@ export class DocumentationComponent implements OnInit {
     this.getPhyAssessment();
     this.getMedLatestAssessment();
     this.getEducationAssessment();
+    this.getBundlesLetDoc();
+    this.getCvcMainDoc();
+    this.getIntraOpNurRecSetMainDoc();
+    this.getCVCInsertionDocDetails();
     this.getPatientProfile();
   }
   openPastHistory(template: TemplateRef<any>) {
@@ -167,6 +220,7 @@ export class DocumentationComponent implements OnInit {
   }
   selectAssessment(name, selectedDocData) {
     this.selectedDocData = selectedDocData;
+    this.resetCurrentVisitSelection();
     if (name == 'nursing') {
       this.phyAssess = false;
       this.nursAssess = false;
@@ -207,7 +261,41 @@ export class DocumentationComponent implements OnInit {
       this.educationAssessment = false;
       this.isCorrespondenceDocument = true;
       this.selectedDocName = 'Correspondence Document'
+    } else if (name == 'isBundles') {
+      this.resetCurrentVisitSelection();
+      this.isBundles = true;
+      this.selectedDocName = 'IC Bundles for Urinary Catheter';
+    } else if (name == 'isCvcMain') {
+      this.resetCurrentVisitSelection();
+      this.isCvcMain = true;
+      this.selectedDocName = 'IC Bundles for CVC Maintenance';
+    } else if (name == 'isNurseIntra') {
+      this.resetCurrentVisitSelection();
+      this.isNurseIntra = true;
+      this.selectedDocName = 'Nursing Intra-Operative Record';
+    } else if (name == 'isCVCInsertion') {
+      this.resetCurrentVisitSelection();
+      this.isCVCInsertion = true;
+      this.selectedDocName = 'IC Bundles for CVC Insertion';
+    } else if (name == 'isICVentilator') {
+      this.resetCurrentVisitSelection();
+      this.isICVentilator = true;
+      this.selectedDocName = 'IC Bundles for Ventilator';
     }
+  }
+
+  resetCurrentVisitSelection() {
+    this.phyAssess = false;
+    this.nursAssess = false;
+    this.medReport = false;
+    this.attachments = false;
+    this.educationAssessment = false;
+    this.isCorrespondenceDocument = false;
+    this.isBundles = false;
+    this.isCvcMain = false;
+    this.isNurseIntra = false;
+    this.isCVCInsertion = false;
+    this.isICVentilator = false;
   }
   selectNursAssessment(name) {
     if (name == 'patienteducation') {
@@ -286,6 +374,52 @@ export class DocumentationComponent implements OnInit {
     });
   }
 
+  getNursingDocumentApiJson() {
+    return {
+      Einri: this.storageService.einri,
+      Falnr: this.storageService.falnr,
+      Patnr: this.storageService.patnr,
+      Lfdnr: this.storageService.lfdnr,
+      Lfdbw: this.storageService.lfdnr,
+    };
+  }
+
+  getBundlesLetDoc() {
+    this.emergencyService.getBundlesLetDoc(this.getNursingDocumentApiJson()).subscribe({
+      next: (_success: any) => {
+        this.bundlesList = _success?.d?.results || [];
+      },
+      error: (err: any) => this.sharedService.waringSwallModel(`GET Error : ${err}`),
+    });
+  }
+
+  getCvcMainDoc() {
+    this.emergencyService.getCvcMainDoc(this.getNursingDocumentApiJson()).subscribe({
+      next: (_success: any) => {
+        this.cvcMainList = _success?.d?.results || [];
+      },
+      error: (err: any) => this.sharedService.waringSwallModel(`GET Error : ${err}`),
+    });
+  }
+
+  getIntraOpNurRecSetMainDoc() {
+    this.emergencyService.getIntraOpNurRecSetMainDoc(this.getNursingDocumentApiJson()).subscribe({
+      next: (_success: any) => {
+        this.nurseIntraMainList = _success?.d?.results || [];
+      },
+      error: (err: any) => this.sharedService.waringSwallModel(`GET Error : ${err}`),
+    });
+  }
+
+  getCVCInsertionDocDetails() {
+    this.dayCaseDashboardService.CVCInsertionDocumentLatestDoc(this.getNursingDocumentApiJson()).subscribe({
+      next: (_success: any) => {
+        this.latestCVCInsertionList = _success?.d?.results || [];
+      },
+      error: (err: any) => this.sharedService.waringSwallModel(`GET Error : ${err}`),
+    });
+  }
+
   openCorrespondenceDocumentPdf(Dockey) {
     this.pdfUrl = '';
     this.dayCaseDashboardService
@@ -301,6 +435,34 @@ export class DocumentationComponent implements OnInit {
         };
         this.modalRef = this.modalService.show(this.releasepdfmodal, config);
       });
+  }
+
+  openBundlesPdf(Dockey) {
+    this.openDocumentPdf(this.dayCaseDashboardService.getBundlesPdf(Dockey));
+  }
+
+  openCvcMainsPdf(Dockey) {
+    this.openDocumentPdf(this.dayCaseDashboardService.getCvcMainPdf(Dockey));
+  }
+
+  getNurseIntraPdf(Dockey) {
+    this.openDocumentPdf(this.dayCaseDashboardService.getNurseIntraPdf(Dockey));
+  }
+
+  openCVCInsertionDocumentPdf(Dockey) {
+    this.openDocumentPdf(this.dayCaseDashboardService.CVCInsertionDocPDF(Dockey));
+  }
+
+  openDocumentPdf(request) {
+    this.pdfUrl = '';
+    request.subscribe((data: any) => {
+      this.pdfUrlType = 'pdf';
+      this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+      const config: ModalOptions = {
+        class: 'modal-dialog-centered modal-xl pdfmodal-size',
+      };
+      this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+    });
   }
 
   async createCorrespondenceDocument() {
@@ -641,6 +803,10 @@ export class DocumentationComponent implements OnInit {
     this.getMedLatestAssessment();
     this.getEducationAssessment();
     this.getCorrespondenceDocDetails();
+    this.getBundlesLetDoc();
+    this.getCvcMainDoc();
+    this.getIntraOpNurRecSetMainDoc();
+    this.getCVCInsertionDocDetails();
     this.phyAssess = false;
     this.nursAssess = false;
     this.educationAssessment = false;
@@ -654,6 +820,16 @@ export class DocumentationComponent implements OnInit {
     this.patientProfileDocumet = this.documentTypeFilterValue;
     this.isCorrespondenceDocument = false;
     this.openCorrespondenceDocument = false;
+    this.isBundles = false;
+    this.isCvcMain = false;
+    this.isNurseIntra = false;
+    this.isCVCInsertion = false;
+    this.isICVentilator = false;
+    this.openBundles = false;
+    this.openCvcMain = false;
+    this.openNurseIntra = false;
+    this.openCVCInsertionDocument = false;
+    this.openICVentilatorDocument = false;
     this.medDocList = [];
   }
   openDocument(action) {
@@ -769,6 +945,189 @@ export class DocumentationComponent implements OnInit {
         // this.educationAssessmentComp.ngOnInit();
         // this.createAndReleaseMed();
       }
+    } else if (this.isBundles || this.isCvcMain || this.isNurseIntra || this.isCVCInsertion || this.isICVentilator) {
+      this.openSelectedNursingDocument(action);
+    }
+  }
+
+  openSelectedNursingDocument(action: string) {
+    if (this.isICVentilator) {
+      if (action == 'create' || action == 'edit' || action == 'copy') {
+        this.openICVentilatorDocument = true;
+      }
+      return;
+    }
+
+    if (action == 'create') {
+      this.setSelectedNursingDocumentOpen();
+    } else if (action == 'edit') {
+      if (this.canUseSelectedDraft()) {
+        this.setSelectedNursingDocumentOpen();
+        this.sendSelectedDocAction(ActionType.Update$);
+      }
+    } else if (action == 'copy') {
+      if (this.canCopySelectedReleased()) {
+        this.setSelectedNursingDocumentOpen();
+        this.sendSelectedDocAction(ActionType.Copy$);
+      }
+    } else if (action == 'delete') {
+      if (this.canUseSelectedDraft()) {
+        this.deleteSelectedNursingDocument();
+      }
+    } else if (action == 'release') {
+      if (this.canUseSelectedDraft()) {
+        this.releaseSelectedNursingDocument();
+      }
+    } else if (action == 'createandrelease') {
+      this.setSelectedNursingDocumentOpen();
+      this.saveSelectedNursingDocument('4');
+    }
+  }
+
+  setSelectedNursingDocumentOpen() {
+    this.openBundles = this.isBundles;
+    this.openCvcMain = this.isCvcMain;
+    this.openNurseIntra = this.isNurseIntra;
+    this.openCVCInsertionDocument = this.isCVCInsertion;
+  }
+
+  sendSelectedDocAction(type: ActionType) {
+    this.dataShareService.sendActionType(type, true, {
+      docKey: this.selectedDocData?.Dockey,
+    });
+  }
+
+  canUseSelectedDraft(): boolean {
+    if (!this.selectedDocData?.Dockey) {
+      return false;
+    }
+    if (this.selectedDocData?.StatusTxt == 'Released') {
+      this.sharedService.waringSwallModel('The document is already released');
+      return false;
+    }
+    if (this.selectedDocData?.StatusTxt == 'N/A') {
+      this.sharedService.waringSwallModel("You can't edit the document, due to N/A.");
+      return false;
+    }
+    return this.selectedDocData?.StatusTxt == 'Draft';
+  }
+
+  canCopySelectedReleased(): boolean {
+    return !!this.selectedDocData?.Dockey && this.selectedDocData?.StatusTxt == 'Released';
+  }
+
+  saveSelectedNursingDocument(docStatus?: string) {
+    const status = docStatus || (this.actionType == 'copy' ? '3' : '1');
+    const actionType = this.actionType == 'edit' || this.actionType == 'copy' ? this.actionType : undefined;
+    let savePromise: Promise<any>;
+
+    if (this.openBundles) {
+      savePromise = this.ICBundlesComp.createDoc(status, actionType);
+    } else if (this.openCvcMain) {
+      savePromise = this.ICCvcMainComp.createDoc(status, actionType);
+    } else if (this.openNurseIntra) {
+      savePromise = this.NurseIntraComp.createDoc(status, actionType);
+    } else if (this.openCVCInsertionDocument) {
+      savePromise = this.CVCInsertionComp.createCvcInsertionDocument(status, actionType);
+    }
+
+    if (savePromise) {
+      savePromise.then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      });
+    }
+  }
+
+  deleteSelectedNursingDocument() {
+    const docKey = this.selectedDocData?.Dockey;
+    if (!docKey) {
+      return;
+    }
+
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: { popup: 'myalertpopup' }
+    } as any).then((result) => {
+      if (!result.value) {
+        return;
+      }
+
+      let request;
+      if (this.isBundles) {
+        request = this.emergencyService.deleteBundlesDoc(docKey);
+      } else if (this.isCvcMain) {
+        request = this.emergencyService.deleteCvcMainDoc(docKey);
+      } else if (this.isNurseIntra) {
+        request = this.emergencyService.deleteIntraOpNurRecSetDoc(docKey);
+      } else if (this.isCVCInsertion) {
+        request = this.dayCaseDashboardService.deleteCVCInsertionDocument(docKey);
+      }
+
+      if (request) {
+        request.subscribe(
+          () => {
+            Swal.fire({
+              text: 'Document is deleted successfully',
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: { popup: 'myalertpopup' }
+            } as any);
+            this.refresh();
+          },
+          (_error: any) => this.docsService.showErrorMsg(_error)
+        );
+      }
+    });
+  }
+
+  releaseSelectedNursingDocument() {
+    const docKey = this.selectedDocData?.Dockey;
+    if (!docKey) {
+      return;
+    }
+
+    if (this.isBundles) {
+      this.emergencyService.getUrinaryDetail(docKey).subscribe((res: any) => {
+        const payload = res?.d?.results?.[0];
+        if (payload) {
+          payload.DocStatus = '2';
+          this.admissionService.createUrinary(payload).subscribe(() => this.refresh());
+        }
+      });
+    } else if (this.isCvcMain) {
+      this.admissionService.getCvcMainDetail(docKey).subscribe((res: any) => {
+        const payload = res?.results?.[0];
+        if (payload) {
+          delete payload.__metadata;
+          payload.DocStatus = '2';
+          this.admissionService.createCvcMainDoc({ d: payload }).subscribe(() => this.refresh());
+        }
+      });
+    } else if (this.isNurseIntra) {
+      this.admissionService.getIntraOpNurRecSetDetail(docKey).subscribe((res: any) => {
+        const payload = res?.results?.[0];
+        if (payload) {
+          delete payload.__metadata;
+          payload.DocStatus = '2';
+          this.admissionService.createIntraOpNurRecSetDoc({ d: payload }).subscribe(() => this.refresh());
+        }
+      });
+    } else if (this.isCVCInsertion) {
+      this.dayCaseDashboardService.fetcCVCInsertionDocDetails(docKey).subscribe((res: any) => {
+        const payload = res?.d?.results?.[0];
+        if (payload) {
+          delete payload.__metadata;
+          payload.DocStatus = '2';
+          this.dayCaseDashboardService.saveCVCInsertionDocument({ d: payload }).subscribe(() => this.refresh());
+        }
+      });
     }
   }
 async deleteCorrespondenceDoc(docKey: string) {
@@ -1033,7 +1392,9 @@ async deleteCorrespondenceDoc(docKey: string) {
     this.refresh();
   }
   saveDoc() {
-    if (this.actionType == 'create') {
+    if (this.openBundles || this.openCvcMain || this.openNurseIntra || this.openCVCInsertionDocument) {
+      this.saveSelectedNursingDocument();
+    } else if (this.actionType == 'create') {
       this.create();
     } else if (this.actionType == 'edit') {
       this.update();
@@ -1057,6 +1418,8 @@ async deleteCorrespondenceDoc(docKey: string) {
         console.error('Error scale:', error);
         console.error('Error creating CPR Document:', error);
       });
+    } else if (this.openBundles || this.openCvcMain || this.openNurseIntra || this.openCVCInsertionDocument) {
+      this.saveSelectedNursingDocument('2');
     } 
 
   }
