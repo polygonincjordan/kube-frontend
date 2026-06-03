@@ -94,7 +94,6 @@ export class DocumentationListComponent implements OnInit {
   isHtmlView: boolean = false;
   pdfUrlType = ''
   htmlData: any;
-  documentUnavailableMessage = '';
   isImageFrame: boolean = false;
   previousPeriodValue: any = 'Overall';
   documentTypeFilterValueClone: any[] = [];
@@ -1048,7 +1047,6 @@ export class DocumentationListComponent implements OnInit {
 
 
   pdfUrlConvertToBlob(pdfValue): boolean {
-    this.documentUnavailableMessage = '';
     if (!pdfValue) {
       this.setDocumentUnavailable();
       return false;
@@ -1071,14 +1069,12 @@ export class DocumentationListComponent implements OnInit {
     this.pdfUrlType = '';
     this.htmlData = '';
     this.releaseDocumentImage = '';
-    this.documentUnavailableMessage = '';
     this.isImageFrame = false;
   }
 
   private setDocumentUnavailable() {
     this.pdfUrl = '';
     this.pdfUrlType = 'unavailable';
-    this.documentUnavailableMessage = 'Document content is not available.';
   }
 
   private getAttachmentMimeType(item: any): string {

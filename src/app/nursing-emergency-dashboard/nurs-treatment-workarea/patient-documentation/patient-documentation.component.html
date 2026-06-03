@@ -2,7 +2,7 @@
   <div class="er-physician-assessment">
     <div class="top-header">
       <div class="w-100 d-flex align-items-center" style="gap: 8px"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openCorrespondenceDocument && !openCPRDocument && !openSbarNursingEnd">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && !openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openCorrespondenceDocument && !openCPRDocument && !openSbarNursingEnd && !nursingDocumentOpen">
         <div class="search-functionality col-md-1 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" />
           <input type="text" [(ngModel)]="searchString" placeholder="Search" class="form-control w-100"
@@ -60,7 +60,7 @@
         </ul>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
-        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale || openCorrespondenceDocument || openCPRDocument || openSbarNursingEnd"
+        *ngIf="openPhyAssess || openMedReport || openEducationAssessment || openEmergencyNursingDoc || openNurseEndorsement || openSurgicsalPassport || openPainAssement || openPediatricEarlyWarningScale || openCorrespondenceDocument || openCPRDocument || openSbarNursingEnd || nursingDocumentOpen"
         style="justify-content: space-between;">
         <div>
           <h3>{{selectedDocName}}</h3>
@@ -139,7 +139,7 @@
       </div>
       <!-- Current Visit Document * Patient Profile Document -->
       <div class="doc-box d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openCorrespondenceDocument && !openCPRDocument && !openSbarNursingEnd">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openGlasgowComaScale && !openFacePainScale && !openNumericRatingScale && !openBradenScale && ! openEmergencyNursingDoc && !openNurseEndorsement && !openSurgicsalPassport && !openPainAssement && !openPediatricEarlyWarningScale && !openCorrespondenceDocument && !openCPRDocument && !openSbarNursingEnd && !nursingDocumentOpen">
         <!-- Current Visit Document -->
         <div class="col-md-6">
           <div class="box-col document-overflow">
@@ -174,6 +174,90 @@
                       <select *ngIf="latestEmergencyNursingDocList.length && latestEmergencyNursingDocList[0]?.StatusTxt !='N/A' && latestEmergencyNursingDocList[0]?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
                     </div>
+	                </div>
+	              </div>
+              <!-- Nursing Intra-Operative Record -->
+              <div *ngIf="!selectedDocument || selectedDocument == 'NIOR'"
+                [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])">
+                <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
+                  dockVer(nurseIntraMainList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(nurseIntraMainList[0]?.DocTime)}}">
+                  {{getDate(nurseIntraMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(nurseIntraMainList[0]?.DocTime)}}
+                </div>
+                <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
+                    *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
+                    <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+                </div>
+              </div>
+              <!-- IC Bundles for Urinary Catheter -->
+              <div *ngIf="!selectedDocument || selectedDocument == 'ICBUC'"
+                [ngClass]="isBundles ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isBundles',bundlesList[0])">
+                <div class="col-md-4">IC Bundles for Urinary Catheter {{bundlesList[0]?.Zversion ?
+                  dockVer(bundlesList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{bundlesList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(bundlesList[0]?.DocTime)}}">
+                  {{getDate(bundlesList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(bundlesList[0]?.DocTime)}}
+                </div>
+                <div class="col-md-3">{{bundlesList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openBundlesPdf(bundlesList[0]?.Dockey)"
+                    *ngIf="bundlesList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(bundlesList[0]?.Dockey, bundlesList[0])">
+                    <select *ngIf="bundlesList.length && bundlesList[0]?.StatusTxt !='N/A' && bundlesList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+                </div>
+              </div>
+              <!-- IC Bundles for CVC Insertion -->
+              <div *ngIf="!selectedDocument || selectedDocument == 'ICBCI'"
+                [ngClass]="isCVCInsertion ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isCVCInsertion',latestCVCInsertionList[0])">
+                <div class="col-md-4">IC Bundles for CVC Insertion {{latestCVCInsertionList[0]?.Zversion ?
+                  dockVer(latestCVCInsertionList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{latestCVCInsertionList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestCVCInsertionList[0]?.DocTime)}}">
+                  {{getDate(latestCVCInsertionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestCVCInsertionList[0]?.DocTime)}}
+                </div>
+                <div class="col-md-3">{{latestCVCInsertionList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openCVCInsertionDocumentPdf(latestCVCInsertionList[0]?.Dockey)"
+                    *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCVCInsertionList[0]?.Dockey, latestCVCInsertionList[0])">
+                    <select *ngIf="latestCVCInsertionList.length && latestCVCInsertionList[0]?.StatusTxt !='N/A' && latestCVCInsertionList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+                </div>
+              </div>
+              <!-- IC Bundles for CVC Maintenance -->
+              <div *ngIf="!selectedDocument || selectedDocument == 'ICBCM'"
+                [ngClass]="isCvcMain ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isCvcMain',cvcMainList[0])">
+                <div class="col-md-4">IC Bundles for CVC Maintenance {{cvcMainList[0]?.Zversion ?
+                  dockVer(cvcMainList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{cvcMainList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(cvcMainList[0]?.DocTime)}}">
+                  {{getDate(cvcMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(cvcMainList[0]?.DocTime)}}
+                </div>
+                <div class="col-md-3">{{cvcMainList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openCvcMainsPdf(cvcMainList[0]?.Dockey)"
+                    *ngIf="cvcMainList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(cvcMainList[0]?.Dockey, cvcMainList[0])">
+                    <select *ngIf="cvcMainList.length && cvcMainList[0]?.StatusTxt !='N/A' && cvcMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                      id=""></select>
+                  </div>
                 </div>
               </div>
               <!-- Glasgow Coma Scale -->
@@ -509,11 +593,15 @@
     <app-numeric-rating-scale *ngIf="openNumericRatingScale"></app-numeric-rating-scale>
     <app-braden-scale *ngIf="openBradenScale"></app-braden-scale>
     <app-emergency-nursing-document *ngIf="openEmergencyNursingDoc"></app-emergency-nursing-document>
-    <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
-    <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
-    <app-sbar-nursing-endorsement *ngIf="openSbarNursingEnd"></app-sbar-nursing-endorsement>
+	    <app-pain-assessment-nur-emr *ngIf="openPainAssement" ></app-pain-assessment-nur-emr>
+	    <app-cpr-document *ngIf="openCPRDocument"></app-cpr-document>
+	    <app-sbar-nursing-endorsement *ngIf="openSbarNursingEnd"></app-sbar-nursing-endorsement>
+      <app-intra-operative-record *ngIf="openNurseIntra" (successEvent)="reloadDoc($event)"></app-intra-operative-record>
+      <app-ic-bundles *ngIf="openBundles" (successEvent)="reloadDoc($event)"></app-ic-bundles>
+      <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>
+      <app-cvc-maintenance *ngIf="openCvcMain" (successEvent)="reloadDoc($event)"></app-cvc-maintenance>
 
-    <!-- <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans> -->
+	    <!-- <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans> -->
 
     <ng-template #releasepdfmodal>
       <div class="modal-body">

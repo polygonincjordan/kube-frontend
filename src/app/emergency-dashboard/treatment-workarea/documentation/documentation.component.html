@@ -1,7 +1,7 @@
 <div class="">
   <div class="er-physician-assessment">
     <div class="top-header">
-      <div class="w-100 d-flex align-items-center" *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument && !nursingDocumentOpen">
+      <div class="w-100 d-flex align-items-center" *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument">
         <div class="search-functionality col-md-2 pl-0">
           <img src="assets/img/pres-search-icon.svg" alt="" style="position: absolute;
       top: 50%;
@@ -188,39 +188,9 @@ min-width: 10%;">
           </div>
         </div>
       </div>
-      <div class="w-100 d-flex align-items-center" *ngIf="nursingDocumentOpen"
-        style="    justify-content: space-between;">
-        <div>
-          <span style="font-weight: bold;font-size: 15px;">{{selectedDocName}}</span>
-        </div>
-        <div class="d-flex">
-          <div class="header-btn">
-            <button type="button" class="action-doc" (click)="refresh()">
-              Cancel
-            </button>
-          </div>
-          <ng-container *ngIf="!openICVentilatorDocument">
-            <div class="header-btn">
-              <button type="button" class="action-doc" (click)="saveDoc()">
-                Save
-              </button>
-            </div>
-            <div class="header-btn" *ngIf="actionType == 'create'">
-              <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
-                Release
-              </button>
-            </div>
-            <div class="header-btn" *ngIf="actionType == 'edit'">
-              <button type="button" class="action-doc" (click)="releaseFromForm()">
-                Release
-              </button>
-            </div>
-          </ng-container>
-        </div>
-      </div>
       <!-- <div style="border-bottom: 10px solid #f2f4f6; width: 103%; position: relative; left: -21px; margin-top: 1em;"></div> -->
       <div class="d-flex mt-2" style="height: calc(100vh - 270px);"
-        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument && !nursingDocumentOpen">
+        *ngIf="!openPhyAssess && !openMedReport && !openEducationAssessment && !openCorrespondenceDocument">
         <div class="col-md-6 pl-0">
           <div class="box-col document-overflow">
             <div class="d-flex doc-header" style="justify-content: space-between;">
@@ -270,81 +240,6 @@ min-width: 10%;">
               <div class="col-md-2"></div>
               <div class="col-md-4"></div>
             </div> -->
-            <div
-              [ngClass]="isNurseIntra ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isNurseIntra',nurseIntraMainList[0])"
-              *ngIf="!selectedDocument || selectedDocument == 'NIOR'">
-              <div class="col-md-4">Nursing Intra-Operative Record {{nurseIntraMainList[0]?.Zversion ?
-                dockVer(nurseIntraMainList[0]?.Zversion) : ''}} :</div>
-              <div class="col-md-2 status-color">{{nurseIntraMainList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2">{{getDate(nurseIntraMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                {{getTime(nurseIntraMainList[0]?.DocTime)}}</div>
-              <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-                <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
-                  (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
-                  *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
-              </div>
-            </div>
-            <div
-              [ngClass]="isBundles ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isBundles',bundlesList[0])"
-              *ngIf="!selectedDocument || selectedDocument == 'ICBUC'">
-              <div class="col-md-4">IC Bundles for Urinary Catheter {{bundlesList[0]?.Zversion ?
-                dockVer(bundlesList[0]?.Zversion) : ''}} :</div>
-              <div class="col-md-2 status-color">{{bundlesList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2">{{getDate(bundlesList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                {{getTime(bundlesList[0]?.DocTime)}}</div>
-              <div class="col-md-3">{{bundlesList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-                <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
-                  (click)="openBundlesPdf(bundlesList[0]?.Dockey)"
-                  *ngIf="bundlesList[0]?.StatusTxt == 'Released'"></i>
-              </div>
-            </div>
-            <div
-              [ngClass]="isICVentilator ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isICVentilator',latestICVentilatorList[0])"
-              *ngIf="!selectedDocument || selectedDocument == 'ICBV'">
-              <div class="col-md-4">IC Bundles for Ventilator :</div>
-              <div class="col-md-2 status-color">{{latestICVentilatorList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2">{{getDate(latestICVentilatorList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                {{getTime(latestICVentilatorList[0]?.DocTime)}}</div>
-              <div class="col-md-3">{{latestICVentilatorList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1"></div>
-            </div>
-            <div
-              [ngClass]="isCVCInsertion ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isCVCInsertion',latestCVCInsertionList[0])"
-              *ngIf="!selectedDocument || selectedDocument == 'ICBCI'">
-              <div class="col-md-4">IC Bundles for CVC Insertion {{latestCVCInsertionList[0]?.Zversion ?
-                dockVer(latestCVCInsertionList[0]?.Zversion) : ''}} :</div>
-              <div class="col-md-2 status-color">{{latestCVCInsertionList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2">{{getDate(latestCVCInsertionList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                {{getTime(latestCVCInsertionList[0]?.DocTime)}}</div>
-              <div class="col-md-3">{{latestCVCInsertionList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-                <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
-                  (click)="openCVCInsertionDocumentPdf(latestCVCInsertionList[0]?.Dockey)"
-                  *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
-              </div>
-            </div>
-            <div
-              [ngClass]="isCvcMain ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-              style="font-weight: bold;" (click)="selectAssessment('isCvcMain',cvcMainList[0])"
-              *ngIf="!selectedDocument || selectedDocument == 'ICBCM'">
-              <div class="col-md-4">IC Bundles for CVC Maintenance {{cvcMainList[0]?.Zversion ?
-                dockVer(cvcMainList[0]?.Zversion) : ''}} :</div>
-              <div class="col-md-2 status-color">{{cvcMainList[0]?.StatusTxt || 'N/A'}}</div>
-              <div class="col-md-2">{{getDate(cvcMainList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
-                {{getTime(cvcMainList[0]?.DocTime)}}</div>
-              <div class="col-md-3">{{cvcMainList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-                <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
-                  (click)="openCvcMainsPdf(cvcMainList[0]?.Dockey)"
-                  *ngIf="cvcMainList[0]?.StatusTxt == 'Released'"></i>
-              </div>
-            </div>
             <div
               [ngClass]="educationAssessment ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               style="
@@ -1019,11 +914,6 @@ min-width: 10%;">
       <app-education-form *ngIf="openEducationAssessment" [docDetails]="educationAssList"
         (reloadTableList)="reloadDoc($event)"></app-education-form>
       <app-correspondence-document [hidden]="!openCorrespondenceDocument"></app-correspondence-document>
-      <app-ic-bundles *ngIf="openBundles" (successEvent)="reloadDoc($event)"></app-ic-bundles>
-      <app-cvc-maintenance *ngIf="openCvcMain" (successEvent)="reloadDoc($event)"></app-cvc-maintenance>
-      <app-intra-operative-record *ngIf="openNurseIntra" (successEvent)="reloadDoc($event)"></app-intra-operative-record>
-      <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>
-      <app-ic-bundle-adult-ventilator *ngIf="openICVentilatorDocument"></app-ic-bundle-adult-ventilator>
 
     </div>
     <ng-template #releasepdfmodal>
