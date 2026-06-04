@@ -9384,8 +9384,13 @@ export class PatientDocumentationComponent implements OnInit {
     this.dayCaseDashboardService
       .getNurseIntraPdf(Dockey)
       .subscribe((data: any) => {
+        const attachmentData = data?.d?.AttachmentData || data?.d?.AttachmentDataStr;
+        if (!attachmentData) {
+          this.sharedService.waringSwallModel('PDF is not available for Nursing Intra-Operative Record');
+          return;
+        }
         this.pdfUrlType = 'pdf';
-        this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+        this.pdfUrlConvertToBlob(attachmentData);
         // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         //   'data:application/pdf;base64,' + data.d.AttachmentData
         // );
@@ -9393,6 +9398,8 @@ export class PatientDocumentationComponent implements OnInit {
           class: 'modal-dialog-centered modal-xl pdfmodal-size',
         };
         this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      }, () => {
+        this.sharedService.waringSwallModel('Unable to load Nursing Intra-Operative Record PDF');
       });
   }
 
@@ -9684,4 +9691,3 @@ export class PatientDocumentationComponent implements OnInit {
   }
 
 }
-

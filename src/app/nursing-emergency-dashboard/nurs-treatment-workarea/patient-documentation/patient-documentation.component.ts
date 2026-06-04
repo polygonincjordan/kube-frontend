@@ -3531,12 +3531,19 @@ export class PatientDocumentationComponent implements OnInit {
   openNursingDocumentPdf(request: Observable<any>) {
     this.pdfUrl = '';
     request.subscribe((data: any) => {
+      const attachmentData = data?.d?.AttachmentData || data?.d?.AttachmentDataStr;
+      if (!attachmentData) {
+        this.sharedService.waringSwallModel('PDF is not available for this document');
+        return;
+      }
       this.pdfUrlType = 'pdf';
-      this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
+      this.pdfUrlConvertToBlob(attachmentData);
       const config: ModalOptions = {
         class: 'modal-dialog-centered modal-xl pdfmodal-size',
       };
       this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+    }, () => {
+      this.sharedService.waringSwallModel('Unable to load document PDF');
     });
   }
 
