@@ -2033,7 +2033,10 @@ export class PatientDocumentationComponent implements OnInit {
         const payload = res?.d?.results?.[0];
         if (payload) {
           payload.DocStatus = '2';
-          this.admissionService.createUrinary(payload).subscribe(() => this.refresh());
+          this.admissionService.createUrinary(payload).subscribe(() => {
+            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter released successfully');
+            this.refresh();
+          });
         }
       });
     } else if (this.isCvcMain) {
@@ -2042,7 +2045,10 @@ export class PatientDocumentationComponent implements OnInit {
         if (payload) {
           delete payload.__metadata;
           payload.DocStatus = '2';
-          this.admissionService.createCvcMainDoc({ d: payload }).subscribe(() => this.refresh());
+          this.admissionService.createCvcMainDoc({ d: payload }).subscribe(() => {
+            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance released successfully');
+            this.refresh();
+          });
         }
       });
     } else if (this.isNurseIntra) {
@@ -2051,7 +2057,10 @@ export class PatientDocumentationComponent implements OnInit {
         if (payload) {
           delete payload.__metadata;
           payload.DocStatus = '2';
-          this.admissionService.createIntraOpNurRecSetDoc({ d: payload }).subscribe(() => this.refresh());
+          this.admissionService.createIntraOpNurRecSetDoc({ d: payload }).subscribe(() => {
+            this.sharedService.successSwallModel('Nursing Intra-Operative Record released successfully');
+            this.refresh();
+          });
         }
       });
     } else if (this.isCVCInsertion) {
@@ -2060,7 +2069,10 @@ export class PatientDocumentationComponent implements OnInit {
         if (payload) {
           delete payload.__metadata;
           payload.DocStatus = '2';
-          this.dayCaseDashboardService.saveCVCInsertionDocument({ d: payload }).subscribe(() => this.refresh());
+          this.dayCaseDashboardService.saveCVCInsertionDocument({ d: payload }).subscribe(() => {
+            this.sharedService.successSwallModel('IC Bundles for CVC Insertion released successfully');
+            this.refresh();
+          });
         }
       });
     }

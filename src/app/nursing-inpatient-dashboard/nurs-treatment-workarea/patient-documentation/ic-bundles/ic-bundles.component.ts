@@ -233,16 +233,22 @@ export class ICBundlesComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           resolve(true);
-          if (status === 'edit') {
-            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter updated successfully');
-          } else {
-            this.sharedService.successSwallModel('IC Bundles for Urinary Catheter created successfully');
-          }
+          this.sharedService.successSwallModel(this.getSuccessMessage(status, actionType));
           this.successEvent.next(true)
         }
       });
     })
 
+  }
+
+  getSuccessMessage(status?: any, actionType?: any): string {
+    if (status === '2' || status === '4' || status === '5') {
+      return 'IC Bundles for Urinary Catheter released successfully';
+    }
+    if (actionType === 'edit') {
+      return 'IC Bundles for Urinary Catheter updated successfully';
+    }
+    return 'IC Bundles for Urinary Catheter created successfully';
   }
 
   toggleRadio(controlName: string, value: string, textinput?: string) {
