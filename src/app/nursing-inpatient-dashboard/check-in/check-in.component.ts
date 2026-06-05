@@ -92,6 +92,9 @@ export class CheckInComponent implements OnInit {
   statusValueArr: any = [];
   wardValueArr: any = [];
   specialtyValueArr: any = [];
+  ageValueArr: any = [];
+  bedValueArr: any = [];
+  timeValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
   selectedERList: any;
@@ -1014,7 +1017,10 @@ export class CheckInComponent implements OnInit {
     this.statusValueArr = [];
     this.financialValueArr = [];
     this.roomidTextValueArr = [];
-    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText) {
+    this.ageValueArr = [];
+    this.bedValueArr = [];
+    this.timeValueArr = [];
+    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText || event.PatientAge || event.BedidText || event.AdmissionTime) {
       let filterValue = this.inHospitalistListClone;
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
@@ -1101,6 +1107,42 @@ export class CheckInComponent implements OnInit {
         //     }
         //   });
         // }
+      }
+      if (event.PatientAge && event.PatientAge?.length) {
+        event.PatientAge.forEach((ageValue) => {
+          this.ageValueArr.push(
+            filterValue.filter((element) => {
+              if (element.PatientAge == ageValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.ageValueArr.flat();
+      }
+      if (event.BedidText && event.BedidText?.length) {
+        event.BedidText.forEach((bedValue) => {
+          this.bedValueArr.push(
+            filterValue.filter((element) => {
+              if (element.BedidText === bedValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.bedValueArr.flat();
+      }
+      if (event.AdmissionTime && event.AdmissionTime?.length) {
+        event.AdmissionTime.forEach((timeValue) => {
+          this.timeValueArr.push(
+            filterValue.filter((element) => {
+              if (this.getTime(element.AdmissionTime) === timeValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.timeValueArr.flat();
       }
       this.inHospitalistList = filterValue;
       this.sendErPatientCount.emit(this.inHospitalistList.length);

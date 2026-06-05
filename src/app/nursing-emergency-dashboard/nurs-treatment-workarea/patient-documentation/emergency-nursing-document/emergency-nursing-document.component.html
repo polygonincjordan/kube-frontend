@@ -47,6 +47,15 @@
         </div>
       </div>
       <div class="row create-form-inputs">
+        <div class="col-md-2">
+          <label>Creation Date</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" placeholder="" #dp="bsDatepicker" formControlName="DocDate" bsDatepicker
+            [bsConfig]="bsConfig" class="form-control" style="height: 33px" />
+        </div>
+      </div>
+      <div class="row create-form-inputs">
         <!-- <div class="col-md-12 row m-0"> -->
         <div class="col-md-2">
           <label>Triage Priority</label>

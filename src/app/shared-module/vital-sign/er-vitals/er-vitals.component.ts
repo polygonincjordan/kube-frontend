@@ -88,7 +88,7 @@ export class ErVitalsComponentComman implements OnInit {
   nextInputId: string;
   selectedRowsIndex: number;
   selectedColIndex: any;
-  private readonly newsScoreExtid = 'NEWS_SCORE';
+  private readonly mewsScoreExtid = 'MEWS SCORE';
   constructor(private chartService: ChartdataService, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, private modalService: BsModalService, private modalNgbService: NgbModal, public vitalsService: VitalsService, private emergencyService: EmergencyService, private formBuilder: FormBuilder, 
     private storageService: StorageService, private route: ActivatedRoute,) {
     this.chartDataConfig = this.chartService;
@@ -425,7 +425,7 @@ export class ErVitalsComponentComman implements OnInit {
     this.emergencyService.getAllVitalList(json).subscribe(
       (_success: any) => {
         this.vitalAllListResp = _success.d.results;
-        this.ensureNewsScoreDefaultVital();
+        this.ensureMewsScoreDefaultVital();
 
       },
       (_error: any) => { }
@@ -905,41 +905,41 @@ export class ErVitalsComponentComman implements OnInit {
 
   //create
 
-  private getNewsScoreDefaultVital() {
-    const newsScoreVital = this.vitalAllListResp?.find(item => item.Extid === this.newsScoreExtid);
+  private getMewsScoreDefaultVital() {
+    const mewsScoreVital = this.vitalAllListResp?.find(item => item.Extid === this.mewsScoreExtid);
 
     return {
-      "Einri": newsScoreVital?.Einri || "",
-      "Valid": newsScoreVital?.Valid || "",
-      "ValidVers": newsScoreVital?.ValidVers || "",
-      "Bcpid": newsScoreVital?.Bcpid || "",
-      "Extid": this.newsScoreExtid,
-      "Name": newsScoreVital?.Name || "NEWS_Score",
+      "Einri": mewsScoreVital?.Einri || "",
+      "Valid": mewsScoreVital?.Valid || "",
+      "ValidVers": mewsScoreVital?.ValidVers || "",
+      "Bcpid": mewsScoreVital?.Bcpid || "",
+      "Extid": this.mewsScoreExtid,
+      "Name": mewsScoreVital?.Name || "MEWS Score",
       "Value": "",
       "ValueString": "",
-      "UnitTxt": newsScoreVital?.UnitTxt || "UnLess",
-      "NormalRange": newsScoreVital?.NormalRange || "",
+      "UnitTxt": mewsScoreVital?.UnitTxt || "UnLess",
+      "NormalRange": mewsScoreVital?.NormalRange || "",
       "Origin": "",
       "Descr": "",
-      "Obsid": newsScoreVital?.Obsid || "",
-      "ObsidVers": newsScoreVital?.ObsidVers || ""
+      "Obsid": mewsScoreVital?.Obsid || "",
+      "ObsidVers": mewsScoreVital?.ObsidVers || ""
     };
   }
 
-  private ensureNewsScoreDefaultVital() {
+  private ensureMewsScoreDefaultVital() {
     if (!this.vitalDefaultListResp) {
       this.vitalDefaultListResp = [];
     }
 
-    const newsScoreDefaultVital = this.getNewsScoreDefaultVital();
-    const newsScoreDefaultIndex = this.vitalDefaultListResp.findIndex(item => item.Extid === this.newsScoreExtid);
+    const mewsScoreDefaultVital = this.getMewsScoreDefaultVital();
+    const mewsScoreDefaultIndex = this.vitalDefaultListResp.findIndex(item => item.Extid === this.mewsScoreExtid);
 
-    if (newsScoreDefaultIndex === -1) {
-      this.vitalDefaultListResp.push(newsScoreDefaultVital);
+    if (mewsScoreDefaultIndex === -1) {
+      this.vitalDefaultListResp.push(mewsScoreDefaultVital);
     } else {
-      this.vitalDefaultListResp[newsScoreDefaultIndex] = {
-        ...this.vitalDefaultListResp[newsScoreDefaultIndex],
-        ...newsScoreDefaultVital
+      this.vitalDefaultListResp[mewsScoreDefaultIndex] = {
+        ...this.vitalDefaultListResp[mewsScoreDefaultIndex],
+        ...mewsScoreDefaultVital
       };
     }
 
@@ -948,17 +948,17 @@ export class ErVitalsComponentComman implements OnInit {
       return;
     }
 
-    const newsScoreControl = maintainVitalItems.controls.find(control => control.value.Extid === this.newsScoreExtid);
-    if (newsScoreControl) {
-      newsScoreControl.patchValue({
-        Bcpid: newsScoreDefaultVital.Bcpid,
-        Valid: newsScoreDefaultVital.Valid,
-        ValidVers: newsScoreDefaultVital.ValidVers,
-        UnitTxt: newsScoreDefaultVital.UnitTxt,
-        Name: newsScoreDefaultVital.Name
+    const mewsScoreControl = maintainVitalItems.controls.find(control => control.value.Extid === this.mewsScoreExtid);
+    if (mewsScoreControl) {
+      mewsScoreControl.patchValue({
+        Bcpid: mewsScoreDefaultVital.Bcpid,
+        Valid: mewsScoreDefaultVital.Valid,
+        ValidVers: mewsScoreDefaultVital.ValidVers,
+        UnitTxt: mewsScoreDefaultVital.UnitTxt,
+        Name: mewsScoreDefaultVital.Name
       });
     } else {
-      this.addItemForVital(newsScoreDefaultVital);
+      this.addItemForVital(mewsScoreDefaultVital);
     }
   }
 
@@ -979,7 +979,7 @@ export class ErVitalsComponentComman implements OnInit {
     // this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     // this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     // this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));
-    this.ensureNewsScoreDefaultVital();
+    this.ensureMewsScoreDefaultVital();
     this.vitalDefaultListResp.forEach(element => {
       this.addItemForVital(element);
     });
