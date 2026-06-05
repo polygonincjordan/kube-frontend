@@ -95,7 +95,7 @@ export class HeaderComponent implements OnInit {
     this.showprofilemenu = false;
   }
   public openModalForPatientSearch(template: TemplateRef<any>) {
-    const config: ModalOptions = { class: 'modal-dialog-centered modal-xl' };
+    const config: ModalOptions = { class: 'modal-dialog-centered modal-xl patient-search-modal' };
     this.modalRefForPatientSearch = this.modalService.show(template, config);
     this.searchString = '';
   }
