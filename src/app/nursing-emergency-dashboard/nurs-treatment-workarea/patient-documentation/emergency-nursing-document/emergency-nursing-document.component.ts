@@ -19,7 +19,6 @@ import { GlosGowCommaScalePopupComponent } from './glos-gow-comma-scale/glos-gow
 import { FacePainScalePopupComponent } from './face-pain-scale/face-pain-scale-popup.component';
 import { NumericRatingScalePopupComponent } from './numeric-rating-scale/numeric-rating-scale-popup.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 
 @Component({
@@ -38,11 +37,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('socialAddHabit') socialAddHabit: SocialHabitComponent;
 
   public triageForm: FormGroup;
-  public bsConfig: Partial<BsDatepickerConfig> = {
-    showWeekNumbers: false,
-    dateInputFormat: 'DD.MM.YYYY',
-    containerClass: 'theme-blue',
-  };
   public AssessmentType: any;
 
   public modeArrivalList: commonKeyValuePair[] = [
@@ -795,7 +789,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       Language: new FormControl(),
       TriagePriority: new FormControl(),
       ArrivalTime: new FormControl(),
-      DocDate: new FormControl(new Date()),
       ChiefComplaint: [''],
       PsyNoProblem: [false],
       PsyAnxious: [false],
@@ -1079,7 +1072,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         Language: ['English'],
         TriagePriority: [''],
         ArrivalTime: [this.parseTime(this.selectedTableDetails?.ZeitIntern)],
-        DocDate: [new Date()],
         ChiefComplaint: [''],
         PsyNoProblem: [false],
         PsyAnxious: [false],
@@ -1344,7 +1336,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         TriagePriority: this.selectedTriageDetails?.TriagePriorityCode || (triageValue?.TriagePriority ?? ''),
         // TriagePriority: triageValue?.TriagePriority ? triageValue?.TriagePriority : this.selectedTableDetails.TriagePriorityCode,
         ArrivalTime: triageValue?.ArrivalTime ? this.parseTime(triageValue?.ArrivalTime) : this.parseTime(this.selectedTableDetails.ZeitIntern),
-        DocDate: (this.documentMode == ActionType.Copy$) ? new Date() : (triageValue?.DocDate ? this.getDate(triageValue?.DocDate) : new Date()),
         ChiefComplaint: triageValue?.ChiefComplaint ? triageValue?.ChiefComplaint : '',
         PsyNoProblem: triageValue?.PsyNoProblem ? triageValue?.PsyNoProblem : false,
         PsyAnxious: triageValue?.PsyAnxious ? triageValue?.PsyAnxious : false,
@@ -2502,9 +2493,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         payload.ArrivalTime =
           'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
       }
-      if (payload.DocDate instanceof Date) {
-        payload.DocDate = `/Date(${payload.DocDate.getTime()})/`;
-      }
       console.log(payload);
       // return;
       // Subscribe using an object to define handlers
@@ -2555,9 +2543,6 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         let createtime = payload.ArrivalTime.split(':');
         payload.ArrivalTime =
           'PT' + createtime[0] + 'H' + createtime[1] + 'M' + '00S';
-      }
-      if (payload.DocDate instanceof Date) {
-        payload.DocDate = `/Date(${payload.DocDate.getTime()})/`;
       }
       payload.DocStatus = DocStatus;
       payload.Orgdo = this.storageService.patientData.deptOrgUnit,
