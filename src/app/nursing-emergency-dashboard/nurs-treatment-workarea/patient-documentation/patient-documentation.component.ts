@@ -2970,6 +2970,14 @@ export class PatientDocumentationComponent implements OnInit {
     this.getReleasedPdf(item);
   }
 
+  openNurseIntraHtml(item) {
+    if (!item?.Dockey) {
+      this.sharedService.waringSwallModel('Nursing Intra-Operative Record is not available');
+      return;
+    }
+    this.getReleasedPdf({ ...item, AttMimeType: 'HTML' });
+  }
+
   openSoapDetails(item) {
     this.userConfigurationService
       .getSoapPatientdata(

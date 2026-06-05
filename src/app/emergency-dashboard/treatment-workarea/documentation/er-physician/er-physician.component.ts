@@ -110,7 +110,7 @@ export class ErPhysicianComponent implements OnInit {
         "InstructionDisp": this.docDetails[0].InstructionDisp,
         "DateDisp": this.getDate(this.docDetails[0].DateDisp),
         "Speciality": this.docDetails[0].Speciality,
-        "Allergies": this.docDetails[0].Allergies.toString(),
+        "Allergies": "true",
         "VitalSign": this.docDetails[0].VitalSign.toString(),
         "Diagnosis": this.docDetails[0].Diagnosis.toString(),
         "Hospital": this.docDetails[0].Hospital.toString(),
@@ -248,7 +248,7 @@ export class ErPhysicianComponent implements OnInit {
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
     createJson['DiscDate'] = createDiscDate;
-    createJson['Allergies'] = JSON.parse(createJson.Allergies);
+    createJson['Allergies'] = true;
     createJson['VitalSign'] = JSON.parse(createJson.VitalSign);
     createJson['Diagnosis'] = JSON.parse(createJson.Diagnosis);
     createJson['Hospital'] = JSON.parse(createJson.Hospital);
@@ -322,7 +322,7 @@ export class ErPhysicianComponent implements OnInit {
     updateJson['DiscTime'] = createDiscTime
     updateJson['DateDisp'] = createDateDisp;
     updateJson['DiscDate'] = createDiscDate;
-    updateJson['Allergies'] = JSON.parse(updateJson.Allergies);
+    updateJson['Allergies'] = true;
     updateJson['VitalSign'] = JSON.parse(updateJson.VitalSign);
     updateJson['Diagnosis'] = JSON.parse(updateJson.Diagnosis);
     updateJson['Hospital'] = JSON.parse(updateJson.Hospital);
@@ -478,7 +478,7 @@ export class ErPhysicianComponent implements OnInit {
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
     createJson['DiscDate'] = createDiscDate;
-    createJson['Allergies'] = JSON.parse(createJson.Allergies);
+    createJson['Allergies'] = true;
     createJson['VitalSign'] = JSON.parse(createJson.VitalSign);
     createJson['Diagnosis'] = JSON.parse(createJson.Diagnosis);
     createJson['Hospital'] = JSON.parse(createJson.Hospital);
@@ -553,7 +553,7 @@ export class ErPhysicianComponent implements OnInit {
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
     createJson['DiscDate'] = createDiscDate;
-    createJson['Allergies'] = JSON.parse(createJson.Allergies);
+    createJson['Allergies'] = true;
     createJson['VitalSign'] = JSON.parse(createJson.VitalSign);
     createJson['Diagnosis'] = JSON.parse(createJson.Diagnosis);
     createJson['Hospital'] = JSON.parse(createJson.Hospital);

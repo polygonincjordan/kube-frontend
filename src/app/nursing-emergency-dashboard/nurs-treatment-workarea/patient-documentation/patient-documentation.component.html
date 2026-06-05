@@ -188,9 +188,9 @@
                 </div>
                 <div class="col-md-3">{{nurseIntraMainList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
-                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
-                    (click)="getNurseIntraPdf(nurseIntraMainList[0]?.Dockey)"
-                    *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'"></i>
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="openNurseIntraHtml(nurseIntraMainList[0])"
+                    *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
                     <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
                       id=""></select>
