@@ -31,7 +31,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   public priorityArray: any = [{ Desc: "Regular", Value: "010" }, { Desc: "High", Value: "020" }, { Desc: "STAT", Value: "030" }];
   public defaultAgentId: string;
   subscription: Subscription
-  public frequencyLoadedSubscription: Subscription
 
 
   @ViewChild('additionalPopup', { static: true }) additionalPopup: AdditionInfoPopupComponent;
@@ -48,11 +47,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       AdministrationData: new FormArray([], Validators.required),
     });
     this.generateDefaultForm();
-    // frequencyList loads asynchronously; once it arrives, backfill the STAT
-    // default onto any default rows that are still untouched and empty.
-    this.frequencyLoadedSubscription = this.addministrationService.frequencyListSubject.subscribe(() => {
-      this.applyStatDefaultToRows();
-    });
     this.modetailsFormSubscription = this.administrationForm.valueChanges.subscribe(() => { this.isFormSubmitted = true; })
   }
 
@@ -169,17 +163,16 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   }
   generateDefaultForm() {
     for (let i = 0; i <= 3; i++) { this.drugArray.push(this.generateForm()); }
-    this.applyStatDefaultToRows();
   }
 
-  // Default the Frequency/Cycle of new planned administration rows to STAT,
-  // applying the same derived behavior as if the physician picked STAT.
-  // Only touches blank, untouched, non-complex rows, so templates and any
-  // frequency the physician already chose are left intact.
-  applyStatDefault(control: any, statFrequency?: any) {
-    statFrequency = statFrequency || this.addministrationService.getStatFrequency();
+  // Default the Frequency/Cycle to STAT once a medicine has been selected on a
+  // row, applying the same derived behavior as if the physician picked STAT.
+  // Skips rows where a frequency is already chosen or that are complex, so the
+  // physician's own selection and complex rows are left intact. The physician
+  // can still change the frequency manually afterwards.
+  applyStatDefault(control: any) {
+    const statFrequency = this.addministrationService.getStatFrequency();
     if (!statFrequency || !control) { return; }
-    if (control.touched) { return; }
     if (control.get('N1znr').value) { return; }
     if (control.get('Complex').value) { return; }
     control.patchValue({
@@ -189,12 +182,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Priority: "030",
       IsFrequencyDeftim: false
     });
-  }
-
-  applyStatDefaultToRows() {
-    const statFrequency = this.addministrationService.getStatFrequency();
-    if (!statFrequency) { return; }
-    this.drugArray.controls.forEach(control => this.applyStatDefault(control, statFrequency));
   }
 
   get drugArray() {
@@ -214,7 +201,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       } as any);
     } else {
       this.drugArray.push(this.generateForm());
-      this.applyStatDefault(this.drugArray.controls[this.drugArray.controls.length - 1]);
     }
   }
 
@@ -276,6 +262,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   onSelectMedicine(event: any) {
     if (event.data) {
       this.defaultAgentId = event.data.Agentid;
+      this.applyStatDefault(this.drugArray.controls[event.index]);
       const filter = {
         einri: this.ePrescriptionService.parameters.einri,
         case: this.ePrescriptionService.parameters.falnr,
@@ -1028,6 +1015,5 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.modetailsFormSubscription) { this.modetailsFormSubscription.unsubscribe(); }
     if (this.subscription) { this.subscription.unsubscribe(); }
-    if (this.frequencyLoadedSubscription) { this.frequencyLoadedSubscription.unsubscribe(); }
   }
 }
