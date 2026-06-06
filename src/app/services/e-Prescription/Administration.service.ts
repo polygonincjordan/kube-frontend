@@ -21,6 +21,7 @@ export class AddministrationService {
   isConditionTrue: boolean = false;
   public searchMedicationProfile: string = '';
   public PriorToAdministrSubject = new Subject<any>();
+  public frequencyListSubject = new Subject<any[]>();
   constructor(private ePrescriptionService: EPrescriptionService) { }
   IsEditMode: boolean[] = new Array(this.PriorToAdministration.length).fill(false);
   loadDropdownList() {
@@ -50,9 +51,14 @@ export class AddministrationService {
             element.OptionField = [element.Text, element.N1id].join(" - ");
           });
           this.frequencyList = resp.body.d.results;
+          this.frequencyListSubject.next(this.frequencyList);
         }
       }
     });
+  }
+
+  getStatFrequency() {
+    return this.frequencyList ? this.frequencyList.find(d => d.N1id === "STAT") : null;
   }
 
   loadMedicationDrugList() {
