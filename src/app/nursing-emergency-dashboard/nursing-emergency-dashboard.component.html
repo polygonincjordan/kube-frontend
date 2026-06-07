@@ -213,14 +213,34 @@ float: right;" />
           <ng-option value="Self Payer">Self Payer</ng-option>
           <ng-option value="Insurance">Insurance</ng-option>
         </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Age</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="PatientAge" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInAgeFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Bed</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="BedidText" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInBedFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Time</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="AdmissionTime" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInTimeFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
-    border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;"
+            (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>
@@ -545,6 +565,7 @@ font-size: 12px;
     </div>
   </div>
   <app-check-in (sendErPatientCount)="collectErPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)"
+    (dataToParent)="receiveDatatoCheckIn($event)"
     style="width: calc(100% - 60px)" *ngIf="checkin"></app-check-in>
   <app-reservation style="width: calc(100% - 105px);background:#fbfcff" *ngIf="reservation"></app-reservation>
   <app-lab-results (sendErPatientCount)="collectErPatientCount($event)" (dataToParent)="receiveDataFromChild($event)"

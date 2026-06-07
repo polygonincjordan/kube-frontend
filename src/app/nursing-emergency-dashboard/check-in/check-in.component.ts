@@ -48,6 +48,7 @@ export class CheckInComponent implements OnInit {
   @ViewChild('triageModal') triageModal: ErTriageComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
   isFormValidError: boolean = false;
   searchString: string = '';
   ERlistData: any[];
@@ -57,6 +58,9 @@ export class CheckInComponent implements OnInit {
   triageValueArr: any = [];
   physicianValueArr: any = [];
   statusValueArr: any = [];
+  ageValueArr: any = [];
+  bedValueArr: any = [];
+  timeValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
   selectedERList: any;
@@ -236,6 +240,17 @@ export class CheckInComponent implements OnInit {
       var finalstr = str[0] + ':' + str[1];
       return finalstr;
     }
+  }
+
+  // Extracts the numeric age embedded in the patient name string, e.g. "Er14, Er Patient (F, 31)" -> "31"
+  getAgeFromName(value) {
+    if (value) {
+      const match = value.match(/\(\s*[A-Za-z]?\s*,\s*(\d+)\s*\)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return '';
   }
 
   addItemForRisk(element?): void {
@@ -680,6 +695,7 @@ export class CheckInComponent implements OnInit {
           });
           this.ERlistDataClone = this.ERlistData;
           this.lastIndex = this.ERlistData.length - 1;
+          this.dataToParent.emit(this.ERlistDataClone);
         }
         // this.getPrintUrl()
       },
@@ -695,7 +711,10 @@ export class CheckInComponent implements OnInit {
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
-    if (event.Triage || event.Physician || event.Status || event.FCategory) {
+    this.ageValueArr = [];
+    this.bedValueArr = [];
+    this.timeValueArr = [];
+    if (event.Triage || event.Physician || event.Status || event.FCategory || event.PatientAge || event.BedidText || event.AdmissionTime) {
       let filterValue = this.ERlistDataClone;
       if (event.Triage && event.Triage?.length) {
         event.Triage.forEach((triageValue) => {
@@ -749,6 +768,42 @@ export class CheckInComponent implements OnInit {
             }
           });
         }
+      }
+      if (event.PatientAge && event.PatientAge?.length) {
+        event.PatientAge.forEach((ageValue) => {
+          this.ageValueArr.push(
+            filterValue.filter((element) => {
+              if (this.getAgeFromName(element.Patient) == ageValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.ageValueArr.flat();
+      }
+      if (event.BedidText && event.BedidText?.length) {
+        event.BedidText.forEach((bedValue) => {
+          this.bedValueArr.push(
+            filterValue.filter((element) => {
+              if (element.BehraumKb === bedValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.bedValueArr.flat();
+      }
+      if (event.AdmissionTime && event.AdmissionTime?.length) {
+        event.AdmissionTime.forEach((timeValue) => {
+          this.timeValueArr.push(
+            filterValue.filter((element) => {
+              if (this.getTime(element.ZeitIntern) === timeValue) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.timeValueArr.flat();
       }
       this.ERlistData = filterValue;
       this.sendErPatientCount.emit(this.ERlistData.length);
