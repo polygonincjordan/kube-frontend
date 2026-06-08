@@ -412,8 +412,7 @@ export class LaboratoryTableListComponent implements OnInit ,OnChanges{
       () => {
         // Error
         this.errorSwalModel('Failed to delete services. Please try again.');
-      },
-      uniqueServices
+      }
     );
   }
 

@@ -11,12 +11,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import swal from 'sweetalert2';
-import {
-  buildLabRadCancellationBlockedMessage,
-  findProtectedLabRadItems,
-  LAB_RAD_CANCELLATION_BLOCKED_TITLE,
-  ProtectedClinicalOrderItem,
-} from '../clinical-order-cancellation-guard';
 
 
 @Injectable()
@@ -2230,34 +2224,6 @@ export class CpoeService {
     }
   }
 
-  /** Fires the blocking warning dialog for protected Lab/Rad services. */
-  private showLabRadCancellationBlocked(
-    protectedItems: ProtectedClinicalOrderItem[]
-  ): void {
-    swal.fire({
-      title: LAB_RAD_CANCELLATION_BLOCKED_TITLE,
-      text: buildLabRadCancellationBlockedMessage(protectedItems),
-      confirmButtonColor: '#096798',
-      confirmButtonText: 'OK',
-      customClass: { popup: 'myalertpopup' },
-      backdrop: true,
-      icon: 'warning',
-    });
-  }
-
-  /**
-   * Shows a blocking warning when a Lab/Rad cancellation is not allowed.
-   * Returns true when the delete should be blocked (no backend call made).
-   */
-  private isLabRadCancellationBlocked(items: any): boolean {
-    const protectedItems = findProtectedLabRadItems(items);
-    if (protectedItems.length === 0) {
-      return false;
-    }
-    this.showLabRadCancellationBlocked(protectedItems);
-    return true;
-  }
-
   onDeleteItem(element: any) {
     if (element && element.length > 0) {
       element.forEach((obj) => {
@@ -2268,11 +2234,9 @@ export class CpoeService {
         );
         let userSelect = obj.data.filter((item) => item['isSelected'] === true);
         if (userSelect && userSelect.length > 0) {
-          // Block the whole batch when any selected Lab/Rad service has already
-          // been performed / done / completed.
-          if (this.isLabRadCancellationBlocked(userSelect)) {
-            return;
-          }
+          // if(userSelect.find(d=> d.Eorderid === )){
+
+          // }
           swal.fire({
             title: userSelect.length > 1 ? 'Do you want to delete the e-Order?' : `Do you want to delete Service ${userSelect[0].text} ?`,
             text: '',
@@ -2302,9 +2266,6 @@ export class CpoeService {
 
   onDeleteHistory(element: any) {
     if (element) {
-      if (this.isLabRadCancellationBlocked([element])) {
-        return;
-      }
       element['dataType'] = 'OneItemhistoryDelete';
       element['isSelected'] = true;
       this.onInsertOrder(element);
@@ -2313,25 +2274,6 @@ export class CpoeService {
   }
 
   onDeleteSelect(element: any) {
-    // Block before building / submitting the OrderSet delete payload when any
-    // Lab/Rad service queued for deletion has already been performed / done.
-    const labRadToDelete = (this.deleteOrders || []).reduce(
-      (acc: any[], group: any) => {
-        if (
-          (group.type === 'LAB' || group.type === 'RAD') &&
-          Array.isArray(group.groupItem)
-        ) {
-          return acc.concat(group.groupItem);
-        }
-        return acc;
-      },
-      []
-    );
-    if (this.isLabRadCancellationBlocked(labRadToDelete)) {
-      this.spinner.hide();
-      return;
-    }
-
     let postObject: any = {};
     postObject['einri'] = this.constants.einri;
     postObject['falnr'] = this.constants.falnr;

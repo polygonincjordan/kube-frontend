@@ -481,11 +481,6 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
         break;
     }
 
-    // Only Lab/Rad deletions are guarded against performed/done statuses.
-    // Med, Surgery and Consultation behavior is unchanged.
-    const sourceItems =
-      itemType === 'LAB' || itemType === 'RAD' ? [item] : undefined;
-
     this.eorderService.deleteOrderItemFromProfile(
       postObject,
       () => {
@@ -497,8 +492,7 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
       () => {
         // Error, do nothing
         console.log('Delete failed');
-      },
-      sourceItems
+      }
     );
   }
 

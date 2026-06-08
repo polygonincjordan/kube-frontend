@@ -407,8 +407,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       },
       () => {
         this.errorSwalModel('Failed to delete service. Please try again.');
-      },
-      [item]
+      }
     );
   }
 
@@ -528,8 +527,7 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
       },
       () => {
         this.errorSwalModel('Failed to delete services. Please try again.');
-      },
-      uniqueServices
+      }
     );
   }
 

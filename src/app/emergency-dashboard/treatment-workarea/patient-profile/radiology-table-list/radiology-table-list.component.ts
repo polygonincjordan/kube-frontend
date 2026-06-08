@@ -293,8 +293,7 @@ export class RadiologyTableListComponent implements OnInit, OnChanges {
       () => {
         this.reloadTableData.emit('radTable');
       },
-      () => {},
-      [item]
+      () => {}
     );
   }
 
