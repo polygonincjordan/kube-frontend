@@ -7,6 +7,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { HospitalistService } from '@services/e-hospitalist/hospitalist.service';
+import {
+  BLOCKED_CANCELLATION_TITLE,
+  buildBlockedMessage,
+  findBlockedLabRadItems,
+} from '@services/clinical-order-cancellation.util';
 @Component({
   selector: 'app-radiology-table-list',
   templateUrl: './radiology-table-list.component.html',
@@ -186,8 +191,33 @@ export class RadiologyTableListComponent implements OnInit, OnChanges {
     );
   }
 
+  /**
+   * Blocks cancellation of Rad services whose work has already been performed
+   * (Done / Partially Done / Completed / Performed). Shows a warning and returns
+   * true when blocked; no backend call is made.
+   */
+  private isPerformedAndBlocked(items: any[]): boolean {
+    const blocked = findBlockedLabRadItems(items);
+    if (!blocked.length) {
+      return false;
+    }
+    Swal.fire({
+      title: BLOCKED_CANCELLATION_TITLE,
+      text: buildBlockedMessage(blocked),
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#096798',
+      customClass: { popup: 'myalertpopup' },
+    });
+    return true;
+  }
+
   deleteOrderItem(item: any) {
     if (!item) {
+      return;
+    }
+
+    if (this.isPerformedAndBlocked([item])) {
       return;
     }
 

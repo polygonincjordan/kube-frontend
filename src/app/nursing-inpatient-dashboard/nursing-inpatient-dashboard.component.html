@@ -445,7 +445,7 @@
 </div>
 
 <div class="card" style="
-    width: 15rem;
+    width: 22rem;
     position: absolute;
     z-index: 999;
     right: 25px;
@@ -527,21 +527,21 @@
 
         <p *ngIf="checkin" style="margin: auto; margin-top: 5px">Age</p>
         <div *ngIf="checkin" style="display: flex; gap: 8px;">
-          <input type="number" min="0" class="form-control" placeholder="Min" formControlName="PatientAgeFrom" />
-          <input type="number" min="0" class="form-control" placeholder="Max" formControlName="PatientAgeTo" />
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Min" formControlName="PatientAgeFrom" />
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Max" formControlName="PatientAgeTo" />
         </div>
 
         <p *ngIf="checkin" style="margin: auto; margin-top: 5px">Time</p>
         <div *ngIf="checkin" style="display: flex; gap: 8px;">
-          <input type="time" class="form-control" formControlName="AdmissionTimeFrom" />
-          <input type="time" class="form-control" formControlName="AdmissionTimeTo" />
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeFrom" />
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeTo" />
         </div>
 
         <p *ngIf="checkin" style="margin: auto; margin-top: 5px">Date</p>
         <div *ngIf="checkin" style="display: flex; gap: 8px;">
-          <input type="text" class="form-control" #dpFrom="bsDatepicker" bsDatepicker formControlName="DateFrom"
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" #dpFrom="bsDatepicker" bsDatepicker formControlName="DateFrom"
             placeholder="From" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
-          <input type="text" class="form-control" #dpTo="bsDatepicker" bsDatepicker formControlName="DateTo"
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" #dpTo="bsDatepicker" bsDatepicker formControlName="DateTo"
             placeholder="To" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
         </div>
 
