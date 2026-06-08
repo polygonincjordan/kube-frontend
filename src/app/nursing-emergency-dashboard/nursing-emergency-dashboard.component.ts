@@ -69,9 +69,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   assignUsersList: any;
   allStatus = [];
   getCheckInData: any;
-  getCheckInAgeFilterData: any;
   getCheckInBedFilterData: any;
-  getCheckInTimeFilterData: any;
   allFinancialCategory = [];
   phyOrder = 0;
   Medicationcount = 0;
@@ -206,9 +204,13 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       Status: [''],
       FCategory: [''],
-      PatientAge: [''],
       BedidText: [''],
-      AdmissionTime: [''],
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
+      DateFrom: [''],
+      DateTo: [''],
     });
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
@@ -605,9 +607,13 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       Physician: '',
       Status: '',
       FCategory: '',
-      PatientAge: '',
       BedidText: '',
-      AdmissionTime: '',
+      PatientAgeFrom: '',
+      PatientAgeTo: '',
+      AdmissionTimeFrom: '',
+      AdmissionTimeTo: '',
+      DateFrom: '',
+      DateTo: '',
     });
     this.filterFormLab.patchValue({
       Rooms: '',
@@ -1014,9 +1020,13 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       Status: [''],
       FCategory: [''],
-      PatientAge: [''],
       BedidText: [''],
-      AdmissionTime: [''],
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
+      DateFrom: [''],
+      DateTo: [''],
     });
 
   }
@@ -1033,42 +1043,10 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
         return acc;
       };
 
-      this.getCheckInAgeFilterData = this.getCheckInData.reduce(
-        (acc: string[], cur) => pushIfValid(acc, this.getAgeFromName(cur?.Patient)), []
-      );
-
       this.getCheckInBedFilterData = this.getCheckInData.reduce(
         (acc: string[], cur) => pushIfValid(acc, cur?.BehraumKb), []
       );
-
-      this.getCheckInTimeFilterData = this.getCheckInData.reduce(
-        (acc: string[], cur) => pushIfValid(acc, this.getTime(cur?.ZeitIntern)), []
-      );
     }
-  }
-
-  getTime(value) {
-    if (value) {
-      var str = value;
-      var str = str.replace(/[PT]/g, '');
-      var str = str.replace(/[H]/g, ':');
-      var str = str.replace(/[M]/g, ':');
-      var str = str.replace(/[S]/g, '');
-      var str = str.split(':');
-      var finalstr = str[0] + ':' + str[1];
-      return finalstr;
-    }
-  }
-
-  // Extracts the numeric age embedded in the patient name string, e.g. "Er14, Er Patient (F, 31)" -> "31"
-  getAgeFromName(value) {
-    if (value) {
-      const match = value.match(/\(\s*[A-Za-z]?\s*,\s*(\d+)\s*\)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return '';
   }
 
   clearFilter() {

@@ -214,13 +214,6 @@ float: right;" />
           <ng-option value="Insurance">Insurance</ng-option>
         </ng-select>
 
-        <p style="margin: auto; margin-top: 5px">Age</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="PatientAge" [multiple]="true">
-          <ng-option [value]="item" *ngFor="let item of getCheckInAgeFilterData">
-            {{ item }}
-          </ng-option>
-        </ng-select>
-
         <p style="margin: auto; margin-top: 5px">Room</p>
         <ng-select class="" id="inputGroupSelect01" formControlName="BedidText" [multiple]="true">
           <ng-option [value]="item" *ngFor="let item of getCheckInBedFilterData">
@@ -228,12 +221,25 @@ float: right;" />
           </ng-option>
         </ng-select>
 
+        <p style="margin: auto; margin-top: 5px">Age</p>
+        <div style="display: flex; gap: 8px;">
+          <input type="number" min="0" class="form-control" placeholder="Min" formControlName="PatientAgeFrom" />
+          <input type="number" min="0" class="form-control" placeholder="Max" formControlName="PatientAgeTo" />
+        </div>
+
         <p style="margin: auto; margin-top: 5px">Time</p>
-        <ng-select class="" id="inputGroupSelect01" formControlName="AdmissionTime" [multiple]="true">
-          <ng-option [value]="item" *ngFor="let item of getCheckInTimeFilterData">
-            {{ item }}
-          </ng-option>
-        </ng-select>
+        <div style="display: flex; gap: 8px;">
+          <input type="time" class="form-control" formControlName="AdmissionTimeFrom" />
+          <input type="time" class="form-control" formControlName="AdmissionTimeTo" />
+        </div>
+
+        <p style="margin: auto; margin-top: 5px">Date</p>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="form-control" #dpFrom="bsDatepicker" bsDatepicker formControlName="DateFrom"
+            placeholder="From" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+          <input type="text" class="form-control" #dpTo="bsDatepicker" bsDatepicker formControlName="DateTo"
+            placeholder="To" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+        </div>
 
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">

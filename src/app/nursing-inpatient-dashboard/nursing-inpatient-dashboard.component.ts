@@ -74,9 +74,6 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   getCheckInWardFilterData: any;
   attendingPhysicianList: any;
   getCheckInSpecialtyFilterData: any;
-  getCheckInAgeFilterData: any;
-  getCheckInBedFilterData: any;
-  getCheckInTimeFilterData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
     this.showfilter = false;
   }
@@ -266,9 +263,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FSpecialty: [''],
       RoomidText: [''],
       CaseType: [''],
-      PatientAge: [''],
-      BedidText: [''],
-      AdmissionTime: ['']
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
+      DateFrom: [''],
+      DateTo: ['']
     });
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
@@ -937,32 +937,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
         this.getCheckInSpecialtyFilterData = this.getCheckInData.reduce(
           (acc: string[], cur) => pushIfValid(acc, cur?.DeptouDesc), []
         );
-
-        this.getCheckInAgeFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.PatientAge), []
-        );
-
-        this.getCheckInBedFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, cur?.BedidText), []
-        );
-
-        this.getCheckInTimeFilterData = this.getCheckInData.reduce(
-          (acc: string[], cur) => pushIfValid(acc, this.getTime(cur?.AdmissionTime)), []
-        );
       }
-    }
-  }
-
-  getTime(value) {
-    if (value) {
-      var str = value;
-      var str = str.replace(/[PT]/g, '');
-      var str = str.replace(/[H]/g, ':');
-      var str = str.replace(/[M]/g, ':');
-      var str = str.replace(/[S]/g, '');
-      var str = str.split(':');
-      var finalstr = str[0] + ':' + str[1];
-      return finalstr;
     }
   }
 
@@ -1192,9 +1167,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FSpecialty: '',
       RoomidText: '',
       CaseType: '',
-      PatientAge: '',
-      BedidText: '',
-      AdmissionTime: ''
+      PatientAgeFrom: '',
+      PatientAgeTo: '',
+      AdmissionTimeFrom: '',
+      AdmissionTimeTo: '',
+      DateFrom: '',
+      DateTo: ''
     });
     this.filterFormLab.patchValue({
       Rooms: '',
@@ -1750,9 +1728,12 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       FSpecialty: [''],
       RoomidText: [''],
       CaseType: [''],
-      PatientAge: [''],
-      BedidText: [''],
-      AdmissionTime: ['']
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
+      DateFrom: [''],
+      DateTo: ['']
     });
   }
 

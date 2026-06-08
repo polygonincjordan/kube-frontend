@@ -92,9 +92,6 @@ export class CheckInComponent implements OnInit {
   statusValueArr: any = [];
   wardValueArr: any = [];
   specialtyValueArr: any = [];
-  ageValueArr: any = [];
-  bedValueArr: any = [];
-  timeValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
   selectedERList: any;
@@ -1017,10 +1014,7 @@ export class CheckInComponent implements OnInit {
     this.statusValueArr = [];
     this.financialValueArr = [];
     this.roomidTextValueArr = [];
-    this.ageValueArr = [];
-    this.bedValueArr = [];
-    this.timeValueArr = [];
-    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText || event.PatientAge || event.BedidText || event.AdmissionTime) {
+    if (event.Physician || event.Status || event.FCategory || event.FWard || event.FSpecialty || event.RoomidText || event.PatientAgeFrom || event.PatientAgeTo || event.AdmissionTimeFrom || event.AdmissionTimeTo || event.DateFrom || event.DateTo) {
       let filterValue = this.inHospitalistListClone;
       if (event.Physician && event.Physician?.length) {
         event.Physician.forEach((physicianValue) => {
@@ -1108,41 +1102,56 @@ export class CheckInComponent implements OnInit {
         //   });
         // }
       }
-      if (event.PatientAge && event.PatientAge?.length) {
-        event.PatientAge.forEach((ageValue) => {
-          this.ageValueArr.push(
-            filterValue.filter((element) => {
-              if (element.PatientAge == ageValue) {
-                return element;
-              }
-            })
-          );
+      if (event.PatientAgeFrom || event.PatientAgeTo) {
+        filterValue = filterValue.filter((element) => {
+          const age = parseInt(element.PatientAge, 10);
+          if (isNaN(age)) {
+            return false;
+          }
+          let matches = true;
+          if (event.PatientAgeFrom !== '' && event.PatientAgeFrom != null) {
+            matches = matches && age >= +event.PatientAgeFrom;
+          }
+          if (event.PatientAgeTo !== '' && event.PatientAgeTo != null) {
+            matches = matches && age <= +event.PatientAgeTo;
+          }
+          return matches;
         });
-        filterValue = this.ageValueArr.flat();
       }
-      if (event.BedidText && event.BedidText?.length) {
-        event.BedidText.forEach((bedValue) => {
-          this.bedValueArr.push(
-            filterValue.filter((element) => {
-              if (element.BedidText === bedValue.trimStart()) {
-                return element;
-              }
-            })
-          );
+      if (event.AdmissionTimeFrom || event.AdmissionTimeTo) {
+        filterValue = filterValue.filter((element) => {
+          const time = this.getTime(element.AdmissionTime);
+          if (!time) {
+            return false;
+          }
+          let matches = true;
+          if (event.AdmissionTimeFrom) {
+            matches = matches && time >= event.AdmissionTimeFrom;
+          }
+          if (event.AdmissionTimeTo) {
+            matches = matches && time <= event.AdmissionTimeTo;
+          }
+          return matches;
         });
-        filterValue = this.bedValueArr.flat();
       }
-      if (event.AdmissionTime && event.AdmissionTime?.length) {
-        event.AdmissionTime.forEach((timeValue) => {
-          this.timeValueArr.push(
-            filterValue.filter((element) => {
-              if (this.getTime(element.AdmissionTime) === timeValue) {
-                return element;
-              }
-            })
-          );
+      if (event.DateFrom || event.DateTo) {
+        filterValue = filterValue.filter((element) => {
+          const dateObj = this.getDate(element.AdmissionDate);
+          if (!dateObj) {
+            return false;
+          }
+          const day = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()).getTime();
+          let matches = true;
+          if (event.DateFrom) {
+            const from = new Date(event.DateFrom);
+            matches = matches && day >= new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime();
+          }
+          if (event.DateTo) {
+            const to = new Date(event.DateTo);
+            matches = matches && day <= new Date(to.getFullYear(), to.getMonth(), to.getDate()).getTime();
+          }
+          return matches;
         });
-        filterValue = this.timeValueArr.flat();
       }
       this.inHospitalistList = filterValue;
       this.sendErPatientCount.emit(this.inHospitalistList.length);

@@ -272,16 +272,13 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
                 this.dosageUnitList = resp.body.d.results[0].NAVDRUGFORMATROUTEUNITS.results;
               }
             }
-            const availableRoutes = (resp.body.d.results[0].NAVDRUGFORMATROUTES && resp.body.d.results[0].NAVDRUGFORMATROUTES.results) || [];
-            const defaultRoute = this.getDefaultRoute(availableRoutes);
             this.drugArray.controls[event.index].patchValue({
               Agentid: resp.body.d.results[0].AgentID,
               Drugid: resp.body.d.results[0].DrugID,
-              Phformid: defaultRoute.formId,
-              Aprouteid: defaultRoute.routeId,
+              Phformid: resp.body.d.results[0].NAVDRUGFORMATROUTES.results[0].FormID,
               Result_Drug_Name: selectedData[0].Drugname ,
               Formatdescr: selectedData[0].Formatdescr,
-              Routedescr: defaultRoute.routeOption,
+              Routedescr: this.getOralRouteDefault(selectedData[0]),
             });
             this.dosageUnitList = resp.body.d.results[0].NAVDRUGFORMATROUTEUNITS.results
           }
@@ -306,25 +303,17 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
     }
   }
 
-  // Picks the route to pre-fill when a drug is selected.
-  // Most discharge medications are oral, so default to the PO (Oral) route when the
-  // drug supports it; otherwise fall back to the first available route so the field
-  // is always populated. The clinician can still change it from the dropdown.
-  getDefaultRoute(availableRoutes: any[]) {
-    const result = { formId: '', routeId: '', routeOption: null };
-    if (!availableRoutes || !availableRoutes.length) { return result; }
+  // Default the route to Oral only when the selected drug is an oral medication.
+  // Returns the matching route-dropdown object (so ng-select shows it selected),
+  // or null to leave the field empty. The clinician can always change it.
+  getOralRouteDefault(drug: any) {
+    if (!drug || !drug.Routedescr) { return null; }
+    if (drug.Routedescr.toString().trim().toLowerCase() !== 'oral') { return null; }
     const routeList = this.addministrationService.routeDropdownList || [];
-    const matchOption = (route: any) => routeList.find(option => option.Aprouid === route.RouteID);
-    const isOral = (option: any) => option && (
-      (option.Aprou && option.Aprou.toString().trim().toUpperCase() === 'PO') ||
-      (option.Descr && option.Descr.toString().toLowerCase().includes('oral'))
-    );
-    let selectedRoute = availableRoutes.find(route => isOral(matchOption(route)));
-    if (!selectedRoute) { selectedRoute = availableRoutes[0]; }
-    result.formId = selectedRoute.FormID;
-    result.routeId = selectedRoute.RouteID;
-    result.routeOption = matchOption(selectedRoute) || null;
-    return result;
+    return routeList.find(option =>
+      (drug.Aprou && option.Aprou && option.Aprou.toString().trim().toUpperCase() === drug.Aprou.toString().trim().toUpperCase()) ||
+      (option.Descr && option.Descr.toString().trim().toLowerCase() === 'oral')
+    ) || null;
   }
 
   searchMedicationDrugList() {
