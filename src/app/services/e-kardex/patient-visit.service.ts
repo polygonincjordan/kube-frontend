@@ -487,12 +487,15 @@ export class PatientVisitService {
               customClass: { popup: 'myalertpopup' }
             })
           )}
-          const serverMessage =
+          const bodyMessage =
             error?.error?.error?.innererror?.errordetails?.[0]?.message ||
             error?.error?.error?.message?.value ||
             error?.error?.message ||
             error?.message ||
-            error?.statusText ||
+            '';
+          const statusPart = error?.statusText || (error?.status ? `${error.status}` : '');
+          const serverMessage =
+            [statusPart, bodyMessage].filter(Boolean).join(': ') ||
             'Something went wrong; please try again later.';
           return throwError(() =>
             Swal.fire({
@@ -528,12 +531,15 @@ export class PatientVisitService {
               customClass: { popup: 'myalertpopup' }
             })
           )}
-          const serverMessage =
+          const bodyMessage =
             error?.error?.error?.innererror?.errordetails?.[0]?.message ||
             error?.error?.error?.message?.value ||
             error?.error?.message ||
             error?.message ||
-            error?.statusText ||
+            '';
+          const statusPart = error?.statusText || (error?.status ? `${error.status}` : '');
+          const serverMessage =
+            [statusPart, bodyMessage].filter(Boolean).join(': ') ||
             'Something went wrong; please try again later.';
           return throwError(() =>
             Swal.fire({
