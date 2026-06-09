@@ -55,6 +55,25 @@ function prnShouldCreateEventDialogHtml(sapMessage: string): string {
   return `<p class="text-start" style="margin:0;">${escapeHtml(sapMessage)}</p><br><p style="margin:0;">Should Event be Created?</p>`;
 }
 
+const ADMINISTER_EVENT_DIALOG_BASE = {
+  showCloseButton: true,
+  allowOutsideClick: false,
+  confirmButtonColor: '#0890c5',
+  cancelButtonColor: '#84898c',
+  customClass: { popup: 'myalertpopup' },
+} as const;
+
+/** Close (X) or Esc — dismiss without retrying getAdministerEvent. */
+function isDismissWithoutApiRetry(result: {
+  isDismissed?: boolean;
+  dismiss?: string;
+}): boolean {
+  return (
+    !!result.isDismissed &&
+    (result.dismiss === swal.DismissReason.close || result.dismiss === swal.DismissReason.esc)
+  );
+}
+
 function extractODataErrorMessage(error: any): string {
   try {
     const v =
@@ -73,8 +92,29 @@ function extractODataErrorMessage(error: any): string {
 export interface AdministerEventPackageCallbacks {
   onSuccess: (response?: unknown) => void;
   onError: (message: string) => void;
-  /** User chose No (or dismissed) on PRN confirmation — close modal without a second error popup */
   onPrnRetryDeclined?: () => void;
+  onEmarRefresh?: () => void;
+}
+
+export function isPrnAdministerPayload(
+  data: Record<string, unknown>,
+  ePrescriptionService: EPrescriptionService
+): boolean {
+  const prn = data.Prn;
+  if (prn === true || prn === 'X' || prn === '1') {
+    return true;
+  }
+  if (data.masterPRN) {
+    return true;
+  }
+  const meordid = data.Meordid as string | undefined;
+  const emardata = ePrescriptionService.emardata;
+  if (meordid && emardata) {
+    return emardata.some(
+      (d: { Meordid?: string; Prn?: boolean }) => d.Meordid === meordid && d.Prn === true
+    );
+  }
+  return false;
 }
 
 const MAX_PACKAGE_RETRIES = 4;
@@ -93,6 +133,7 @@ export function subscribeAdministerEventWithPackageResponse(
 ): Subscription {
   return ePrescriptionService.postData('e-prescription/getAdministerEvent', data).subscribe({
     next: (resp: unknown) => {
+      callbacks.onEmarRefresh?.();
       callbacks.onSuccess(resp);
     },
     error: (error: unknown) => {
@@ -101,16 +142,13 @@ export function subscribeAdministerEventWithPackageResponse(
       if (isPrnConfirmationRetryError(message) && !prnRetryUsed) {
         swal
           .fire({
+            ...ADMINISTER_EVENT_DIALOG_BASE,
             title: false as any,
             html: prnShouldCreateEventDialogHtml(message),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
-            confirmButtonColor: '#0890c5',
-            cancelButtonColor: '#84898c',
-            customClass: { popup: 'myalertpopup' },
-            allowOutsideClick: false,
           } as any)
           .then((result) => {
             if (result.isConfirmed) {
@@ -135,18 +173,19 @@ export function subscribeAdministerEventWithPackageResponse(
       if (isLastPackageInsufficientError(message) && attempt < MAX_PACKAGE_RETRIES) {
         swal
           .fire({
+            ...ADMINISTER_EVENT_DIALOG_BASE,
             title: 'Package quantity',
             text: message,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'New package',
             cancelButtonText: 'Same package',
-            confirmButtonColor: '#0890c5',
-            cancelButtonColor: '#84898c',
-            customClass: { popup: 'myalertpopup' },
-            allowOutsideClick: false,
           } as any)
           .then((result) => {
+            if (isDismissWithoutApiRetry(result)) {
+              callbacks.onPrnRetryDeclined?.();
+              return;
+            }
             const userResponse = result.isConfirmed ? 'Y' : 'N';
             const nextPayload = {
               ...data,
@@ -176,6 +215,7 @@ export function subscribeAdministerEventWithPackageResponseFromObservable(
 ): Subscription {
   return call(params).subscribe({
     next: (res: unknown) => {
+      callbacks.onEmarRefresh?.();
       callbacks.onSuccess(res);
     },
     error: (error: unknown) => {
@@ -184,16 +224,13 @@ export function subscribeAdministerEventWithPackageResponseFromObservable(
       if (isPrnConfirmationRetryError(message) && !prnRetryUsed) {
         swal
           .fire({
+            ...ADMINISTER_EVENT_DIALOG_BASE,
             title: false as any,
             html: prnShouldCreateEventDialogHtml(message),
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
-            confirmButtonColor: '#0890c5',
-            cancelButtonColor: '#84898c',
-            customClass: { popup: 'myalertpopup' },
-            allowOutsideClick: false,
           } as any)
           .then((result) => {
             if (result.isConfirmed) {
@@ -218,18 +255,19 @@ export function subscribeAdministerEventWithPackageResponseFromObservable(
       if (isLastPackageInsufficientError(message) && attempt < MAX_PACKAGE_RETRIES) {
         swal
           .fire({
+            ...ADMINISTER_EVENT_DIALOG_BASE,
             title: 'Package quantity',
             text: message,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'New package',
             cancelButtonText: 'Same package',
-            confirmButtonColor: '#0890c5',
-            cancelButtonColor: '#84898c',
-            customClass: { popup: 'myalertpopup' },
-            allowOutsideClick: false,
           } as any)
           .then((result) => {
+            if (isDismissWithoutApiRetry(result)) {
+              callbacks.onPrnRetryDeclined?.();
+              return;
+            }
             const userResponse = result.isConfirmed ? 'Y' : 'N';
             const nextPayload = {
               ...params,

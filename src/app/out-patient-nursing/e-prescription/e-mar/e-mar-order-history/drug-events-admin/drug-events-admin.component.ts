@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
@@ -10,9 +10,11 @@ import { StorageService } from '@services/storage.service';
 import { formatDate } from 'ngx-bootstrap/chronos';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import swal from 'sweetalert2';
 import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
+import { subscribeAdministerEventWithPackageResponse } from '@services/e-Prescription/administer-event-package.helper';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -30,6 +32,7 @@ export class DrugEventsAdminComponent implements OnInit {
   public FillSource: any[] = [];
   @ViewChild('drugEventMain', { static: true }) drugEventMain: TemplateRef<any>;
   @ViewChild('Witnessid') Witnessid: EmarWitnessComponent;
+  @Output() refreshData = new EventEmitter<void>();
   administered: boolean = true;
   qadministered: boolean = false;
   notadministered: boolean = false;
@@ -511,23 +514,26 @@ export class DrugEventsAdminComponent implements OnInit {
   }
 
   AdministerEventaction(title, data) {
-    const AdministerFillSource = this.ePrescriptionService.postData('e-prescription/getAdministerEvent', data).subscribe({
-      next: (resp: any) => {
-        swal.fire({
-          title: title,
-          confirmButtonColor: '#0890c5',
-          cancelButtonColor: '#84898c',
-          confirmButtonText: 'OK',
-          customClass: { popup: 'myalertpopup' },
-          icon: 'success'
-        } as any).then(() => {
-          this.modalRef.hide()
-        })
+    subscribeAdministerEventWithPackageResponse(this.ePrescriptionService, data as Record<string, unknown>, {
+      onSuccess: () => {
+        this.ePrescriptionService.emarPanelRefreshed$.pipe(take(1)).subscribe(() => {
+          swal.fire({
+            title: title,
+            confirmButtonColor: '#0890c5',
+            cancelButtonColor: '#84898c',
+            confirmButtonText: 'OK',
+            customClass: { popup: 'myalertpopup' },
+            icon: 'success'
+          } as any).then(() => {
+            this.modalRef.hide();
+            this.refreshData.emit();
+          });
+        });
+        this.ePrescriptionService.refreshEmarPanelData();
       },
-      error: (error: any) => {
-        this.showErrorPopup("", error.error.error.message.value, "Error")
-      }
-    })
+      onError: (message) => this.showErrorPopup("", message, "Error"),
+      onPrnRetryDeclined: () => this.modalRef?.hide(),
+    });
   }
 
 
