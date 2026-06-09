@@ -563,10 +563,6 @@ export class PatientDocumentationComponent implements OnInit {
       value: 'CAMIC'
     },
     {
-      label: 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)',
-      value: 'IBAVAP'
-    },
-    {
       label: 'ICU 24 hours Flowsheet',
       value: 'ICUHF'
     },
