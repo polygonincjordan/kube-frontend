@@ -75,6 +75,9 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   attendingPhysicianList: any;
   getCheckInSpecialtyFilterData: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
+    if (this.showfilter) {
+      this.revertUnappliedFilters();
+    }
     this.showfilter = false;
   }
 
@@ -98,6 +101,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   isShowRooms: boolean = false;
   isShowWards: boolean = false;
   showfilter = false;
+  appliedFilterValue: any;
   selectedModule: any;
   currentDate: Date;
   defaultSelectedDateRange: any[] = [];
@@ -270,6 +274,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       DateFrom: [''],
       DateTo: ['']
     });
+    this.appliedFilterValue = this.filterForm.value;
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
       Physician: [''],
@@ -570,10 +575,23 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
   showFilterFn($event) {
     $event.stopPropagation();
     if (this.showfilter) {
+      this.revertUnappliedFilters();
       this.showfilter = false;
     } else {
       this.showfilter = true;
     }
+  }
+
+  revertUnappliedFilters() {
+    if (this.appliedFilterValue) {
+      this.filterForm.patchValue(this.appliedFilterValue);
+    }
+  }
+
+  clearFilterControls(controls: string[]) {
+    const patch = {};
+    controls.forEach((control) => (patch[control] = ''));
+    this.filterForm.patchValue(patch);
   }
   inPatientListByFilter(ward?, specialtyData?) {
     if (this.AdministeredDoses) {
@@ -1079,6 +1097,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
     else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
+    this.appliedFilterValue = this.filterForm.value;
     this.showfilter = false;
   }
 
@@ -1735,6 +1754,7 @@ export class NursingInpatientDashboardComponent implements OnInit, OnDestroy {
       DateFrom: [''],
       DateTo: ['']
     });
+    this.appliedFilterValue = this.filterForm.value;
   }
 
   // ER-History

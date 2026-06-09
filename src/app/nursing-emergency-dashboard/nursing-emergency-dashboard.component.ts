@@ -45,6 +45,9 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
+    if (this.showfilter) {
+      this.revertUnappliedFilters();
+    }
     this.showfilter = false;
   }
 
@@ -62,6 +65,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   noReleaseDoc: boolean = false;
   rxEmr: boolean = false;
   showfilter = false;
+  appliedFilterValue: any;
   selectedModule: any;
   currentDate: Date;
   defaultSelectedDateRange: any[] = [];
@@ -212,6 +216,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       DateFrom: [''],
       DateTo: [''],
     });
+    this.appliedFilterValue = this.filterForm.value;
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
       Physician: [''],
@@ -324,10 +329,23 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   showFilterFn($event) {
     $event.stopPropagation();
     if (this.showfilter) {
+      this.revertUnappliedFilters();
       this.showfilter = false;
     } else {
       this.showfilter = true;
     }
+  }
+
+  revertUnappliedFilters() {
+    if (this.appliedFilterValue) {
+      this.filterForm.patchValue(this.appliedFilterValue);
+    }
+  }
+
+  clearFilterControls(controls: string[]) {
+    const patch = {};
+    controls.forEach((control) => (patch[control] = ''));
+    this.filterForm.patchValue(patch);
   }
   inPatientListByFilter(ward?, specialtyData?) {
     if (this.AdministeredDoses) {
@@ -570,6 +588,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     } else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
+    this.appliedFilterValue = this.filterForm.value;
     this.showfilter = false;
   }
 
@@ -1028,7 +1047,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       DateFrom: [''],
       DateTo: [''],
     });
-
+    this.appliedFilterValue = this.filterForm.value;
   }
 
   receiveDatatoCheckIn(data?: any) {
