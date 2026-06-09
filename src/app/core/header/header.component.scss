@@ -641,6 +641,15 @@
       margin-bottom: 0;
     }
   }
+
+  // Inside this modal the nested case list must NOT have its own 180px scroll
+  // box — let it expand so the outer .patient-search-table-wrap is the single
+  // scroller that fills the whole modal body.
+  .complex-table-container {
+    max-height: none;
+    overflow: visible;
+    padding-left: 0;
+  }
 }
 
 .complex-table-container {

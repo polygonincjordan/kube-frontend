@@ -2273,6 +2273,35 @@ export class CpoeService {
     }
   }
 
+  /**
+   * Robustly extracts the SAP OData v2 error message
+   * (`error.message.value`) from a legacy @angular/http error, with safe
+   * fallbacks so a missing/non-JSON body never throws and the real backend
+   * reason (e.g. a performed Lab/Rad order that cannot be cancelled) is shown.
+   */
+  getSapErrorMessage(error: any, fallback: string = 'Error deleting order'): string {
+    if (!error) {
+      return fallback;
+    }
+    try {
+      let body: any = null;
+      if (typeof error._body === 'string' && error._body.trim()) {
+        body = JSON.parse(error._body);
+      } else if (error.error) {
+        body =
+          typeof error.error === 'string' ? JSON.parse(error.error) : error.error;
+      }
+      const value =
+        body && body.error && body.error.message && body.error.message.value;
+      if (value) {
+        return value;
+      }
+    } catch (e) {
+      // fall through to the fallbacks below
+    }
+    return error.statusText || error.message || fallback;
+  }
+
   onDeleteSelect(element: any) {
     let postObject: any = {};
     postObject['einri'] = this.constants.einri;
@@ -2415,8 +2444,8 @@ export class CpoeService {
       (error: any) => {
         swal
           .fire({
-            title: error.statusText,
-            text: JSON.parse(error._body).error?.message.value,
+            title: error.statusText || 'Error',
+            text: this.getSapErrorMessage(error),
             confirmButtonColor: '#096798',
             confirmButtonText: 'close',
             customClass: { popup: 'myalertpopup' },
