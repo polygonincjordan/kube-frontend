@@ -594,21 +594,57 @@
   color: #eb251e;
 }
 
-// Patient Search Result modal table area.
-// max-height (not fixed height) lets the modal shrink to fit the list when
-// there are only a few rows, while still scrolling when there are many.
-.patient-search-table-wrap {
-  // max-height: calc(100vh - 240px);
-  overflow: auto;
-  padding: 0;
+// Patient Search Result modal: keep the dialog within the viewport so the
+// footer/bottom stays visible, and let the table area scroll instead of the
+// whole modal growing past the screen.
+::ng-deep .patient-search-modal {
+  // ngx-bootstrap sets this class on .modal-dialog
+  &.modal-dialog {
+    height: calc(100vh - 3.5rem);   // centered dialog has ~1.75rem margin top/bottom
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
 
-  table {
-    margin-bottom: 0;
+  .modal-content {
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modal-header,
+  .modal-footer {
+    flex: 0 0 auto;      // fixed; never shrink
+  }
+
+  .modal-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;       // critical so the inner scroll area can shrink
+    overflow: hidden;
+  }
+
+  .icon-group {
+    flex: 0 0 auto;      // the quick-search bar stays fixed
+  }
+
+  // the results table fills the remaining space and scrolls internally
+  .patient-search-table-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 0;
+
+    table {
+      margin-bottom: 0;
+    }
   }
 }
 
 .complex-table-container {
-  // max-height: 180px;
+  max-height: 180px;
   overflow: auto;
   padding-left: 20px;
   table th {
