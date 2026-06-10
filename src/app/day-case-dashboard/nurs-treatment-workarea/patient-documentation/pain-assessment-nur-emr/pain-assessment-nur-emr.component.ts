@@ -61,6 +61,8 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   isPainLocation: boolean = false;
   isFlowSheet: boolean = false;
   paniScoreValue = null;
+  // Tracks the latest pain scale the user filled ('Face Scale' | 'Numeric Rating Scale')
+  latestScaleMethod: string = '';
 
   public FacePainResponse: FacePaingScaleType[] = FacePainResponse;
   public faceList = faceList;
@@ -351,12 +353,93 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
     this.isFlowSheet = false;
     this[tab] = true;
 
-    if(this.painAssessmentForm.value.NrsPainScore) {
-      this.painAssessmentForm.patchValue({
-        PlPainIntensity: `${this.painAssessmentForm.value.NrsTotalScore}-${this.painAssessmentForm.value.NrsTotalScoreTxt}`,
-        PlPainScaling: 'Face Scale'
-      })
+    // Re-sync the derived Pain Intensity / Pain Scaling Method from the latest
+    // valid scale right before showing the Assessment / Re-Assessment tab.
+    if (tab === 'isReAssessment') {
+      this.resyncLatestScale();
     }
+  }
+
+  private hasValue(value: any): boolean {
+    return value !== '' && value !== null && value !== undefined;
+  }
+
+  // Derives PlPainIntensity / PlPainScaling from whichever scale currently holds
+  // a value. Face and Numeric are mutually exclusive (selecting one flags the
+  // other as N/A), so at most one of them is filled at a time.
+  private resyncLatestScale() {
+    const v = this.painAssessmentForm.value;
+    if (!v.FpNa && this.hasValue(v.FpTotalScore)) {
+      this.latestScaleMethod = 'Face Scale';
+      this.painAssessmentForm.patchValue({
+        PlPainIntensity: `${v.FpTotalScore}-${v.FpTotalScoreTxt}`,
+        PlPainScaling: 'Face Scale',
+      });
+    } else if (!v.NrsNa && this.hasValue(v.NrsTotalScore)) {
+      this.latestScaleMethod = 'Numeric Rating Scale';
+      this.painAssessmentForm.patchValue({
+        PlPainIntensity: `${v.NrsTotalScore}-${v.NrsTotalScoreTxt}`,
+        PlPainScaling: 'Numeric Rating Scale',
+      });
+    }
+  }
+
+  // Face Pain becomes the active scale: clear the Numeric source values and flag
+  // the Numeric tab as N/A so both scales cannot be filled within the same entry.
+  private selectFaceScale() {
+    this.latestScaleMethod = 'Face Scale';
+    this.painAssessmentForm.patchValue({
+      NrsNa: true,
+      NrsPainScore: '',
+      NrsTotalScore: '',
+      NrsTotalScoreTxt: '',
+      PlPainIntensity: `${this.painAssessmentForm.value.FpTotalScore}-${this.painAssessmentForm.value.FpTotalScoreTxt}`,
+      PlPainScaling: 'Face Scale',
+    });
+  }
+
+  // Numeric Rating Scale becomes the active scale: clear the Face source values
+  // and flag the Face tab as N/A so both scales cannot be filled within the same entry.
+  private selectNumericScale() {
+    this.latestScaleMethod = 'Numeric Rating Scale';
+    this.painAssessmentForm.patchValue({
+      FpNa: true,
+      FpPainScale: '',
+      FpTotalScore: '',
+      FpTotalScoreTxt: '',
+      PlPainIntensity: `${this.painAssessmentForm.value.NrsTotalScore}-${this.painAssessmentForm.value.NrsTotalScoreTxt}`,
+      PlPainScaling: 'Numeric Rating Scale',
+    });
+  }
+
+  // After a Re-Assessment row is captured, reset both scale tabs and the derived
+  // pain fields so the next entry cannot reuse stale data.
+  private resetScaleEntry() {
+    this.latestScaleMethod = '';
+    this.totalScore = '0';
+    this.facePainDescription = 'No hurt';
+    this.painAssessmentForm.patchValue({
+      FpNa: false,
+      FpPainScale: '',
+      FpTotalScore: '',
+      FpTotalScoreTxt: '',
+      NrsNa: false,
+      NrsPainScore: '',
+      NrsTotalScore: '',
+      NrsTotalScoreTxt: '',
+      PlPainIntensity: '',
+      PlPainScaling: '',
+    });
+  }
+
+  private isReAssessmentRowEmpty(row: any): boolean {
+    const fields = [
+      row.PlPainIntensity, row.PlPainScaling, row.PlCharacter, row.PlLocation,
+      row.PlFrequency, row.PlDuration, row.PlInterventions, row.PlRadiation,
+      row.PlRadiationTxt, row.PlPattern, row.PlOnset, row.PlCauses,
+      row.PlRelieves, row.PlMedication, row.PlNonMedication, row.PlComment,
+    ];
+    return fields.every((f) => !this.hasValue(f));
   }
 
   // Face Pain
@@ -377,6 +460,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
     });
     this.totalScore = value;
     this.facePainDescription = description;
+    this.selectFaceScale();
   }
 
   public uncheckFacePain() {
@@ -395,6 +479,7 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
         this.painAssessmentForm.value.NrsPainScore
       ),
     });
+    this.selectNumericScale();
   }
 
   setDescription(value) {
@@ -578,6 +663,9 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
 
   // Assessment ans Re-Assessment
   reAssessmentSetTable() {
+    // Make sure the derived Pain Intensity / Pain Scaling Method reflect the
+    // latest selected scale before the row is captured.
+    this.resyncLatestScale();
     let characterJoin = this.characterConcate.join(',');
     let nonMedicationJoin = this.NoMedicationConcate.join(',');
     let payload = {
@@ -603,7 +691,15 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
       PlAssessedBy: this.userProfile?.GpartName,
     };
 
+    // Skip fully blank placeholder rows so they never reach the log table / payload.
+    if (this.isReAssessmentRowEmpty(payload)) {
+      return;
+    }
+
     this.reAssessmentTableList.push(payload);
+    // Empty the Face Pain / Numeric Rating source values and derived fields so the
+    // next entry is captured fresh in the Pain Scaling Method field.
+    this.resetScaleEntry();
   }
 
   characterCheck(event, value) {
@@ -790,14 +886,18 @@ export class PainAssessmentNurEmrComponent implements OnInit, OnDestroy {
   }
   
   processReAssessment(reAssessmentList: any[], painAssessmentValue: any): any[] {
-    return reAssessmentList.length ? reAssessmentList.map(element => {
-      const { PlAssessedBy, ...rest } = element;
-      return {
-        ...rest,
-        PlDate: this.transformDate(painAssessmentValue.PlDate),
-        PlTime: this.transformTime(painAssessmentValue.PlTime)
-      };
-    }) : [];
+    return reAssessmentList.length ? reAssessmentList
+      .filter(element => !this.isReAssessmentRowEmpty(element))
+      .map(element => {
+        const { PlAssessedBy, ...rest } = element;
+        return {
+          ...rest,
+          // Keep each log row's own date/time instead of overwriting every row
+          // with the top-level form values.
+          PlDate: this.transformDate(element.PlDate),
+          PlTime: this.transformTime(element.PlTime)
+        };
+      }) : [];
   }
   
   createPayload(painAssessmentValue: any, reAssessmentCloneValue: any[], flowSheetAssessmentCloneValue: any[]): any {
