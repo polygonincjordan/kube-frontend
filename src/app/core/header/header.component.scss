@@ -594,23 +594,24 @@
   color: #eb251e;
 }
 
-// Patient Search Result modal: keep the dialog within the viewport so the
-// footer/bottom stays visible, and let the table area scroll instead of the
-// whole modal growing past the screen.
+// Patient Search Result modal.
+// The modal sizes to its content but is capped at the viewport: a short list
+// gives a short modal (no empty space), a long list caps at the screen height
+// and the table area scrolls. There is NO inner scroll box — the table area is
+// the single scroller, so there's never dead space under the rows.
 ::ng-deep .patient-search-modal {
   // ngx-bootstrap sets this class on .modal-dialog
   &.modal-dialog {
-    height: calc(100vh - 3.5rem);   // centered dialog has ~1.75rem margin top/bottom
+    max-height: calc(100vh - 3.5rem);   // centered dialog has ~1.75rem margin top/bottom
     margin-top: 1.75rem;
     margin-bottom: 1.75rem;
   }
 
   .modal-content {
-    height: 100%;
-    max-height: 100%;
+    max-height: calc(100vh - 3.5rem);   // never taller than the viewport
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: hidden;                   // height follows content up to the cap
   }
 
   .modal-header,
@@ -630,9 +631,10 @@
     flex: 0 0 auto;      // the quick-search bar stays fixed
   }
 
-  // the results table fills the remaining space and scrolls internally
+  // The results table is the single scroll area. It only grows as tall as its
+  // rows; when those exceed the capped modal height it scrolls.
   .patient-search-table-wrap {
-    flex: 1 1 auto;
+    flex: 0 1 auto;      // size to content, but allowed to shrink + scroll
     min-height: 0;
     overflow: auto;
     padding: 0;
@@ -642,12 +644,13 @@
     }
   }
 
-  // Inside this modal the nested case list must NOT have its own 180px scroll
-  // box — let it expand so the outer .patient-search-table-wrap is the single
-  // scroller that fills the whole modal body.
+  // Inside this modal the nested case list must NOT have its own scroll box —
+  // it expands so the rows flow into the single outer scroller above. This is
+  // what removes the empty space under the case list.
   .complex-table-container {
-    max-height: none;
-    overflow: visible;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
     padding-left: 0;
   }
 }
