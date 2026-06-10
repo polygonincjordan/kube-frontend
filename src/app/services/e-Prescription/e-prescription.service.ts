@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, interval, Subscription } from 'rxjs';
+import { BehaviorSubject, interval, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import swal from 'sweetalert2';
 
@@ -25,6 +25,7 @@ export class EPrescriptionService implements OnDestroy {
   valueStory: any;
   isAscending = false;
   public prescriptionList: PrescriptionList = { medicationData: [], eventData: [] };
+  readonly emarPanelRefreshed$ = new Subject<PrescriptionList>();
   public patientMadication: PatientMedicationData[];
   public formDetailGroup: any;
   public drugArrayActions$: BehaviorSubject<{ isSubmitted: boolean, value: any[] }> = new BehaviorSubject({ isSubmitted: false, value: null });
@@ -151,17 +152,40 @@ export class EPrescriptionService implements OnDestroy {
     }
   }
   loadEmarPanelData(selectedItems?) {
-    this.selectedItems=selectedItems;
+    this.selectedItems = selectedItems;
     this.prescriptionList = { medicationData: [], eventData: [] };
-    this.loadMARData();
-    if (this.formgroupData.DateRange && this.formgroupData.DateRange[0]) {
-      this.loadMAREventData(this.formgroupData.DateRange);
-    } else {
-      this.loadMAREventData([new Date(), new Date()])
-    }
+    this.reloadEmarPanelData(() => this.emitEmarPanelRefreshed());
   }
 
-  loadMARData() {
+  private getEmarDateRange(): [Date, Date] {
+    if (this.formgroupData?.DateRange?.[0] && this.formgroupData?.DateRange?.[1]) {
+      return this.formgroupData.DateRange;
+    }
+    const today = new Date();
+    return [today, today];
+  }
+
+  private emitEmarPanelRefreshed(): void {
+    this.prescriptionList = {
+      medicationData: [...(this.prescriptionList.medicationData ?? [])],
+      eventData: [...(this.prescriptionList.eventData ?? [])],
+    };
+    this.emarPanelRefreshed$.next(this.prescriptionList);
+  }
+
+  private reloadEmarPanelData(onComplete: () => void): void {
+    let pending = 2;
+    const done = () => {
+      pending--;
+      if (pending === 0) {
+        onComplete();
+      }
+    };
+    this.loadMARData(done);
+    this.loadMAREventData(this.getEmarDateRange(), done);
+  }
+
+  loadMARData(onComplete?: () => void) {
     let filters = this.loadParameters(true, true, false, false);
     this.loadData('EmarSet', filters, false, false, false).subscribe({
       next: (resp: any) => {
@@ -171,6 +195,7 @@ export class EPrescriptionService implements OnDestroy {
           console.log(this.emardata,"emardata");
           
         }
+        onComplete?.();
       },
       error: (error: any) => {
         swal.fire({
@@ -182,11 +207,16 @@ export class EPrescriptionService implements OnDestroy {
           customClass: { popup: 'myalertpopup' },
           icon: 'error',
         });
+        onComplete?.();
       }
     });
   }
 
-  loadMAREventData(data: any) {
+  refreshEmarPanelData(): void {
+    this.reloadEmarPanelData(() => this.emitEmarPanelRefreshed());
+  }
+
+  loadMAREventData(data: any, onComplete?: () => void) {
     const filters = this.loadParameters(true, true, false, false);
     if (data && data[0] && data[1]) {
       const Pbdad = `${this.DatePipe.transform(data[0], 'yyyy-MM-dd')}T${this.DatePipe.transform(data[0], 'HH:mm:ss')}`;
@@ -203,6 +233,7 @@ export class EPrescriptionService implements OnDestroy {
             console.log(' this.prescriptionList', this.prescriptionList);
             
           }
+          onComplete?.();
         },
         error: (error: any) => {
           swal.fire({
@@ -214,8 +245,11 @@ export class EPrescriptionService implements OnDestroy {
             customClass: { popup: 'myalertpopup' },
             icon: 'error',
           });
+          onComplete?.();
         }
       })
+    } else {
+      onComplete?.();
     }
   }
 
