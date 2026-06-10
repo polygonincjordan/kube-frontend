@@ -63,7 +63,7 @@
       </form>
     </div>
     <div class="reload-data d-flex justify-content-end align-items-center">
-      <img src="assets/img/reload-icon.svg" alt="" title="Refresh" (click)="ePrescriptionService.refreshEmarPanelData()">
+      <img src="assets/img/reload-icon.svg" alt="" title="Refresh" (click)="ePrescriptionService.loadEmarPanelData(selectedItems)">
         <img src="assets/img/undo.png" alt="" class="ml-2" width="25px"  title="Reset" (click)="resetFilter()">
     </div>
   </div>

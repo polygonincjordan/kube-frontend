@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { EMarWitnessComponent } from './e-mar-witness/e-mar-witness.component';
 import { AuthService } from '@services/auth.service';
-import { subscribeAdministerEventWithPackageResponse } from '@services/e-Prescription/administer-event-package.helper';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -530,8 +529,8 @@ export class DrugEventsAdminComponent implements OnInit {
   }
 
   AdministerEventaction(title, data) {
-    subscribeAdministerEventWithPackageResponse(this.ePrescriptionService, data as Record<string, unknown>, {
-      onSuccess: () => {
+    const AdministerFillSource = this.ePrescriptionService.postData('e-prescription/getAdministerEvent', data).subscribe({
+      next: (resp: any) => {
         swal.fire({
           title: title,
           confirmButtonColor: '#0890c5',
@@ -540,13 +539,13 @@ export class DrugEventsAdminComponent implements OnInit {
           customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any).then(() => {
-          this.modalRef.hide();
-        });
+          this.modalRef.hide()
+        })
       },
-      onError: (message) => this.showErrorPopup("", message, "Error"),
-      onPrnRetryDeclined: () => this.modalRef?.hide(),
-      onEmarRefresh: () => this.ePrescriptionService.refreshEmarPanelData(),
-    });
+      error: (error: any) => {
+        this.showErrorPopup("", error.error.error.message.value, "Error")
+      }
+    })
   }
 
 

@@ -1,23 +1,14 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { EPrescriptionService, MedicationData, HistoryTime, PrescriptionList, MedicationEventData, MedicationEventFilter } from '@services/e-Prescription/e-prescription.service';
 import { DrugEventsAdminComponent } from './drug-events-admin/drug-events-admin.component';
-import swal from 'sweetalert2';
-import {
-  bindEmarPanelRefresh,
-  isEmptyScheduleCell,
-  resolveScheduleItemForAdministration,
-  showMissingEventDataPopup,
-} from '@services/e-Prescription/emar-schedule-item.helper';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'e-mar-order-history',
   templateUrl: './e-mar-order-history.component.html',
   styleUrls: ['./e-mar-order-history.component.scss'],
 })
-export class EMarOrderHistoryComponent implements OnDestroy {
-  private emarRefreshSub?: Subscription;
+export class EMarOrderHistoryComponent {
   startHour: number;
   endHour: number;
   currentHour: number = new Date().getHours();
@@ -48,17 +39,7 @@ export class EMarOrderHistoryComponent implements OnDestroy {
     this.setCurrentDateData();
   }
 
-  constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) {
-    this.emarRefreshSub = bindEmarPanelRefresh(this.ePrescriptionService, (list) => {
-      this.processData(list.medicationData, list.eventData);
-      this.filterConfig = this.ePrescriptionService.checkedFilterData;
-      this.setCurrentDateData();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.emarRefreshSub?.unsubscribe();
-  }
+  constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) { }
 
   processData(data: MedicationData[], events: MedicationEventData[]) {
     if (data && data.length) {
@@ -255,83 +236,13 @@ export class EMarOrderHistoryComponent implements OnDestroy {
   parseDate(data: string): Date {
     return data ? new Date(this.datePipe.transform(data.replace(/[^0-9]/g, '').replace(/\//g, ""), 'yyyy-MM-dd')) : null;
   }
-  private isPrnEmarOrderRow(row: MedicationData): boolean {
-    if ((row as MedicationData & { Prn?: boolean }).Prn === true) return true;
-    const emar = this.ePrescriptionService.emardata?.find(
-      (d: { Meordid?: string; Prn?: boolean }) => d.Meordid === row?.Meordid
-    );
-    return emar?.Prn === true;
-  }
-
-  /**
-   * PRN orders use a daily master event (Mastev === 0000000000). Prefer it so SAP receives masterPRN in drug-events-admin.
-   */
-  private findPrnMasterScheduleItem(element: MedicationData): { Events: MedicationEventData } & Record<string, unknown> | null {
-    if (!this.isPrnEmarOrderRow(element)) {
-      return null;
-    }
-    const gridDate = this.currentDate ?? new Date();
-    const dayStr = formatDate(gridDate, 'yyyy-MM-dd', 'en_US');
-    const dayEvents = this.allEventData.filter(
-      (e) => e.Meordid == element.Meordid && formatDate(e.ParsedDate, 'yyyy-MM-dd', 'en_US') === dayStr
-    );
-    const isMaster = (e: MedicationEventData & { Mastev?: string }) =>
-      e.Mastev === '0000000000' || e.Mastev === '00000000000000000000';
-    let ev = dayEvents.find((e) => isMaster(e as MedicationEventData & { Mastev?: string }));
-    if (!ev && dayEvents.length) {
-      ev = dayEvents[0];
-    }
-    if (!ev) {
-      return null;
-    }
-    return {
-      Hour: ev.TimeData?.Hour,
-      Color: ev.Schedule?.Color,
-      Label: ev.Schedule?.Label,
-      SubLabel: ev.Schedule?.SubLabel,
-      Userst: ev.Userst,
-      Events: ev,
-    };
-  }
-
-  public handlePrnClick(schedule, element): void {
-    if (!element) {
-      return;
-    }
-    const masterItem = this.findPrnMasterScheduleItem(element);
-    if (masterItem?.Events) {
-      this.openModalForDrugEvent(masterItem, element);
-      return;
-    }
-    const filteredSchedule = schedule.filter((data) => data.Events);
-    if (filteredSchedule.length) {
-      this.openModalForDrugEvent(filteredSchedule[0], element);
-      return;
-    }
-    swal.fire({
-      text: 'No PRN event found for the selected date.',
-      icon: 'warning',
-      confirmButtonText: 'Ok',
-      customClass: { popup: 'myalertpopup' },
-    } as any);
-  }
-
+  // drug events
   openModalForDrugEvent(item: any, data: any) {
-    const resolved = resolveScheduleItemForAdministration({
-      item,
-      orderRow: data,
-      allEventData: this.allEventData,
-      currentDate: this.currentDate,
-      isPrnOrderRow: (row) => this.isPrnEmarOrderRow(row),
-      findPrnMasterScheduleItem: (row) => this.findPrnMasterScheduleItem(row),
-    });
-    if (!resolved?.Events) {
-      if (isEmptyScheduleCell(item)) {
-        return;
-      }
-      showMissingEventDataPopup();
-      return;
-    }
-    this.drugEvents.openModalForDrugsEvents(resolved, data);
+    // if(item.Events.Descr === 'Ended'){
+    //   this.showErrorPopup(null, 'Order has been Ended', 'Error')
+    // }
+    // else{
+    this.drugEvents.openModalForDrugsEvents(item, data)
+    // }
   }
 }

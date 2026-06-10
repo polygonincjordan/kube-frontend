@@ -3,12 +3,6 @@ import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import { EPrescriptionService, MedicationData, HistoryTime, PrescriptionList, MedicationEventData, MedicationEventFilter, MedicationdFilterData } from '@services/e-Prescription/e-prescription.service';
 // import { DrugEventsAdminComponent } from './drug-events-admin/drug-events-admin.component';
 import swal from 'sweetalert2';
-import {
-  bindEmarPanelRefresh,
-  isEmptyScheduleCell,
-  resolveScheduleItemForAdministration,
-  showMissingEventDataPopup,
-} from '@services/e-Prescription/emar-schedule-item.helper';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DrugEventsAdminComponent } from './drug-events-admin/drug-events-admin.component';
@@ -50,7 +44,6 @@ export class EMarOrderNurseComponent implements OnDestroy {
   }
   @ViewChild('drugEvents') drugEvents: DrugEventsAdminComponent;
   private drugEventsCloseSub?: Subscription;
-  private emarRefreshSub?: Subscription;
   @Input() set medicationData(data: PrescriptionList) {
     this.processData(data.medicationData, data.eventData);
   }
@@ -61,13 +54,7 @@ export class EMarOrderNurseComponent implements OnDestroy {
   }
 
 
-  constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) {
-    this.emarRefreshSub = bindEmarPanelRefresh(this.ePrescriptionService, (list) => {
-      this.processData(list.medicationData, list.eventData);
-      this.filterConfig = this.ePrescriptionService.checkedFilterData;
-      this.setCurrentDateData();
-    });
-  }
+  constructor(public datePipe: DatePipe, public ePrescriptionService: EPrescriptionService) { }
 
 
   // filterEventsdata() {
@@ -371,23 +358,17 @@ commanSorting(keyName: string) {
   }
 
   openModalForDrugEvent(item: any, data: any) {
-    const resolved = resolveScheduleItemForAdministration({
-      item,
-      orderRow: data,
-      allEventData: this.allEventData,
-      currentDate: this.currentDate,
-      isPrnOrderRow: (row) => this.isPrnEmarOrderRow(row),
-      findPrnMasterScheduleItem: (row) => this.findPrnMasterScheduleItem(row),
-    });
-    if (!resolved?.Events) {
-      if (isEmptyScheduleCell(item)) {
-        return;
-      }
-      showMissingEventDataPopup();
+    if (!item?.Events) {
+      swal.fire({
+        text: 'Unable to open administration: missing event data.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' },
+      } as any);
       return;
     }
     this.drugEventsCloseSub?.unsubscribe();
-    this.drugEvents.openModalForDrugsEvents(resolved, data, this.currentDate ?? new Date());
+    this.drugEvents.openModalForDrugsEvents(item, data, this.currentDate ?? new Date());
     this.drugEventsCloseSub = this.drugEvents.onClose.pipe(take(1)).subscribe((res) => {
       this.ePrescriptionService.tabPanelNavigation('eEmar');
       this.ePrescriptionService.selectedItems = [{ item_id: 1, item_text: 'Active' }];
@@ -399,7 +380,6 @@ commanSorting(keyName: string) {
 
   ngOnDestroy(): void {
     this.drugEventsCloseSub?.unsubscribe();
-    this.emarRefreshSub?.unsubscribe();
   }
 
   showErrorPopup(title: any, text: any, messageType) {
