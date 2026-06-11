@@ -1,0 +1,20 @@
+.template-action-btn {
+  background: transparent;
+  border: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+  color: #0890c5;
+
+  i {
+    font-size: 18px;
+  }
+
+  &.template-save-btn {
+    padding: 0;
+  }
+}
+
+.unit-text {
+  white-space: nowrap;
+  font-size: 12px;
+}

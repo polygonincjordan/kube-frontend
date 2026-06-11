@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { TemplateDetailPopupComponent } from '../template-detail-popup/template-detail-popup.component';
+import { TemplateEditPopupComponent } from '../template-edit-popup/template-edit-popup.component';
 
 @Component({
   selector: 'template-popup',
@@ -19,6 +20,7 @@ export class TemplatePopupComponent implements OnDestroy {
   sortable = true;
   @ViewChild('templatePopup', { static: true }) templatePopup: TemplateRef<any>;
   @ViewChild('templateDetailPopup', { static: true }) templateDetailPopup: TemplateDetailPopupComponent;
+  @ViewChild('templateEditPopup', { static: true }) templateEditPopup: TemplateEditPopupComponent;
 
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
   public templateSearchQuery: string = '';
@@ -118,29 +120,79 @@ export class TemplatePopupComponent implements OnDestroy {
           if (resp.body && resp.body.d && resp.body.d.results) {
             templateList = resp.body.d.results[0].TOORDERTEMPLATE.results
           }
-          if(templateList.length === 1){
-            this.onClose.emit(this.configurationData.filter(d => d.isSelected));
-            this.modalRef.hide();
-          }else{
-            this.templateDetailPopup.showPopup(templateList);
-          }
+          this.templateDetailPopup.showPopup(templateList);
         });
       } else if (data.Tmptype === "2") {
         this.ePrescriptionService.loadData(`e-prescription/userTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${data.Prscrid}&Ordtype=${'2'}`, false, false, false, false).subscribe((resp: any) => {
           if (resp.body && resp.body.d && resp.body.d.results) {
             templateList = resp.body.d.results[0].PrescriptionItemSet.results
           }
-          if(templateList.length === 1){
-            this.onClose.emit(this.configurationData.filter(d => d.isSelected));
-            this.modalRef.hide();
-          }else{
-            this.templateDetailPopup.showPopup(templateList);
-          }
+          this.templateDetailPopup.showPopup(templateList);
         });
       }
     }
     this.templateDetailSubscription = this.templateDetailPopup.onClose.subscribe(data => {
       this.ePrescriptionService.templatePopupSaveData = data
+    });
+  }
+
+  /** Edit icon (user-level only): load the template rows then open the editable popup. */
+  onEditTemplate(data) {
+    if (!data) { return; }
+    this.modalRef.hide();
+    const meta = { prscrid: data.Prscrid, templateName: data.Descr, templateDesc: data.Descr, ordtype: '2' };
+    if (data.Tmptype === "2") {
+      this.ePrescriptionService.loadData(`e-prescription/userTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${data.Prscrid}&Ordtype=${'2'}`, false, false, false, false).subscribe((resp: any) => {
+        const templateList = (resp.body && resp.body.d && resp.body.d.results) ? resp.body.d.results[0].PrescriptionItemSet.results : [];
+        this.templateEditPopup.showPopup(templateList, meta);
+      });
+    } else {
+      this.ePrescriptionService.loadData(`e-prescription/OrderTemplateget?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Tpgid=${data.Prscrid}&Ordtype=${'2'}`, false, false, false, false).subscribe((resp: any) => {
+        const templateList = (resp.body && resp.body.d && resp.body.d.results) ? resp.body.d.results[0].TOORDERTEMPLATE.results : [];
+        this.templateEditPopup.showPopup(templateList, meta);
+      });
+    }
+  }
+
+  /** Delete icon (user-level only): soft-delete the template after confirmation. */
+  onDeleteTemplate(data) {
+    if (!data) { return; }
+    Swal.fire({
+      text: `Are you sure you want to delete the template "${data.Descr}"?`,
+      showCancelButton: true,
+      confirmButtonColor: '#0890c5',
+      cancelButtonColor: '#84898c',
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: { popup: 'myalertpopup' },
+      icon: 'warning',
+    } as any).then((result: any) => {
+      if (!result.value) { return; }
+      this.ePrescriptionService.deleteData(`OrderTemplateSet(Prscrid='${data.Prscrid}')`).subscribe({
+        next: () => {
+          this.configurationData = this.configurationData.filter(d => d.Prscrid !== data.Prscrid);
+          this.ePrescriptionService.loadTemplateMedicationData();
+          Swal.fire({
+            text: 'Template deleted successfully',
+            confirmButtonColor: '#0890c5',
+            cancelButtonColor: '#84898c',
+            confirmButtonText: 'OK',
+            customClass: { popup: 'myalertpopup' },
+            icon: 'success',
+          } as any);
+        },
+        error: (error: any) => {
+          const message = error && error.error && error.error.error && error.error.error.message ? error.error.error.message.value : 'Unable to delete the template';
+          Swal.fire({
+            text: message,
+            confirmButtonColor: '#0890c5',
+            cancelButtonColor: '#84898c',
+            confirmButtonText: 'OK',
+            customClass: { popup: 'myalertpopup' },
+            icon: 'error',
+          } as any);
+        }
+      });
     });
   }
 

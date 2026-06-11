@@ -399,6 +399,11 @@ export class EPrescriptionService implements OnDestroy {
     return this.httpClient.put(url, data, { withCredentials: true });
   }
 
+  deleteData(entitySetName: any) {
+    let url = this.BaseUrl + entitySetName
+    return this.httpClient.delete(url, { withCredentials: true, observe: 'response' });
+  }
+
   generateURL(entitySetName: any, filters: any, expandEntities: any, isExpand: any) {
     let url = entitySetName;
     if (filters) filters = this.keyValuePairs(filters);
