@@ -71,6 +71,7 @@ export class ErPhysicianComponent implements OnInit {
       "FollowUp": [''],
       "Substances": [''],
       "ObgynComment": [''],
+      "GetLab": ["true"],
       "DocStatus": [""]
     });
   }
@@ -127,6 +128,7 @@ export class ErPhysicianComponent implements OnInit {
         "FollowUp": this.docDetails[0].FollowUp,
         "Substances": this.docDetails[0].Substances,
         "ObgynComment": this.docDetails[0].ObgynComment,
+        "GetLab": (this.docDetails[0].GetLab !== undefined && this.docDetails[0].GetLab !== null) ? this.docDetails[0].GetLab.toString() : "true",
         "DocStatus": this.docDetails[0].DocStatus
       })
       console.log('PhyAssessmentForm', this.PhyAssessmentForm);
@@ -240,6 +242,7 @@ export class ErPhysicianComponent implements OnInit {
       createJson['Family'] = JSON.parse(createJson.Family);
       createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
       createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
+      createJson['GetLab'] = JSON.parse(createJson.GetLab);
       createJson['DocStatus'] = '1';
       if (createJson['DiscDate'] == '') {
         delete createJson['DiscDate'];
@@ -313,7 +316,8 @@ export class ErPhysicianComponent implements OnInit {
       updateJson['Family'] = JSON.parse(updateJson.Family);
       updateJson['MedicalHist'] = JSON.parse(updateJson.MedicalHist);
       updateJson['ObgynHist'] = JSON.parse(updateJson.ObgynHist);
-      updateJson['DocStatus'] = '1';
+      updateJson['GetLab'] = JSON.parse(updateJson.GetLab);
+      updateJson['DocStatus'] = '2';
       if (updateJson['DiscDate'] == '') {
         delete updateJson['DiscDate'];
       }
@@ -382,7 +386,8 @@ export class ErPhysicianComponent implements OnInit {
     updateJson['Family'] = true;
     updateJson['MedicalHist'] = true;
     updateJson['ObgynHist'] = JSON.parse(updateJson.ObgynHist);
-    updateJson['DocStatus'] = '2';
+    updateJson['GetLab'] = JSON.parse(updateJson.GetLab);
+    updateJson['DocStatus'] = '4';
     if (updateJson['DiscDate'] == '') {
       delete updateJson['DiscDate'];
     }
@@ -399,6 +404,7 @@ export class ErPhysicianComponent implements OnInit {
   async deletePhyAssessment() {
     const json = {
       Dockey: this.docDetails[0].Dockey,
+      DocStatus: '3',
     }
     return this.emergencyService.deletePhyAssessment(json);
   }
@@ -467,6 +473,7 @@ export class ErPhysicianComponent implements OnInit {
       createJson['Family'] = JSON.parse(createJson.Family);
       createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
       createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
+      createJson['GetLab'] = JSON.parse(createJson.GetLab);
       createJson['DocStatus'] = '1';
       if (createJson['DiscDate'] == '') {
         delete createJson['DiscDate'];
@@ -541,7 +548,8 @@ export class ErPhysicianComponent implements OnInit {
       createJson['Family'] = JSON.parse(createJson.Family);
       createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
       createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
-      createJson['DocStatus'] = '2';
+      createJson['GetLab'] = JSON.parse(createJson.GetLab);
+      createJson['DocStatus'] = '4';
       if (createJson['DiscDate'] == '') {
         delete createJson['DiscDate'];
       }
@@ -598,6 +606,7 @@ export class ErPhysicianComponent implements OnInit {
       "FollowUp": [''],
       "Substances": [''],
       "ObgynComment": [''],
+      "GetLab": ["true"],
       "DocStatus": [""]
     });
   }
