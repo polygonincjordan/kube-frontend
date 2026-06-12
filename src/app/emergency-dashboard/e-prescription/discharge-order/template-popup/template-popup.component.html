@@ -27,7 +27,7 @@
         <div class="medication-data d-flex align-items-center w-100 pl-3">
           <div class="medication-field w-65 pr-2 d-flex align-items-center">
             <input type="checkbox" width="25" height="25"
-              [(ngModel)]="element.isSelected" class="mr-2 isbigcheckbox" (click)="onOpenTemplateDetail(element)">
+              [(ngModel)]="element.isSelected" class="mr-2 isbigcheckbox">
             <p class="m-0">{{element.Descr}}</p>
           </div>
           <div class="medication-field w-25 d-flex">
@@ -43,9 +43,17 @@
             </div>
           </div>
           <div class="medication-field w-10 d-flex">
-            <div class="medication-inner-field pr-2 w-100 text-center">
-              <button _ngcontent-bvl-c191="" type="button" (click)="onOpenTemplateDetail(element)">
+            <div class="medication-inner-field pr-2 w-100 text-center d-flex align-items-center justify-content-center">
+              <button type="button" title="View" (click)="onOpenTemplateDetail(element)">
                 <img src="assets/img/detail-icon.svg" alt="">
+              </button>
+              <button type="button" class="template-row-icon" title="Edit"
+                *ngIf="element.Tmpaccesslevel === ''" (click)="onEditTemplate(element)">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <button type="button" class="template-row-icon template-row-delete" title="Delete"
+                *ngIf="element.Tmpaccesslevel === ''" (click)="onDeleteTemplate(element)">
+                <i class="fa fa-trash"></i>
               </button>
             </div>
           </div>
@@ -58,3 +66,4 @@
 </ng-template>
 
 <template-detail-popup #templateDetailPopup></template-detail-popup>
+<template-edit-popup #templateEditPopup></template-edit-popup>

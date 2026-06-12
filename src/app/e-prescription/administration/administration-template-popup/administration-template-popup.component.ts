@@ -138,22 +138,15 @@ export class AdministrationTemplatePopupComponent implements OnInit {
     });
   }
 
-  /** Edit icon (user-level only): load the template rows then open the editable popup. */
+  /** Edit icon (user-level only): load the OrderTemplateSet rows (round-trip shape) then open the editable popup. */
   onEditTemplate(data) {
     if (!data) { return; }
     this.modalRef.hide();
     const meta = { prscrid: data.Prscrid, templateName: data.Descr, templateDesc: data.Descr, ordtype: '1' };
-    if (data.Tmptype === "2") {
-      this.ePrescriptionService.loadData(`e-prescription/userTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
-        const templateList = (resp.body && resp.body.d && resp.body.d.results) ? resp.body.d.results[0].PrescriptionItemSet.results : [];
-        this.templateEditPopup.showPopup(templateList, meta);
-      });
-    } else {
-      this.ePrescriptionService.loadData(`e-prescription/OrderTemplateget?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Tpgid=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
-        const templateList = (resp.body && resp.body.d && resp.body.d.results) ? resp.body.d.results[0].TOORDERTEMPLATE.results : [];
-        this.templateEditPopup.showPopup(templateList, meta);
-      });
-    }
+    this.ePrescriptionService.loadData(`e-prescription/OrderTemplateget?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Tpgid=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
+      const templateList = (resp.body && resp.body.d && resp.body.d.results) ? resp.body.d.results[0].TOORDERTEMPLATE.results : [];
+      this.templateEditPopup.showPopup(templateList, meta);
+    });
   }
 
   /** Delete icon (user-level only): soft-delete the template after confirmation. */

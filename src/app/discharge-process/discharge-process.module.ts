@@ -27,6 +27,7 @@ import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.gu
 import { DischargeOrderComponent } from './discharge-order/discharge-order.component';
 import { TemplatePopupComponent } from './discharge-order/template-popup/template-popup.component';
 import { TemplateDetailPopupComponent } from './discharge-order/template-detail-popup/template-detail-popup.component';
+import { TemplateEditPopupComponent } from './discharge-order/template-edit-popup/template-edit-popup.component';
 import { SearchSelectTemplateComponent } from './discharge-order/search-select-template/search-select-template.component';
 import { SearchSelectMedicineComponent } from './discharge-order/search-select-medicine/search-select-medicine.component';
 import { PrnConditionPopupComponent } from './discharge-order/prn-condition-popup/prn-condition-popup.component';
@@ -93,6 +94,7 @@ export const ePrescriptionRoutes: Routes = [
     DischargeOrderComponent,
     TemplatePopupComponent,
     TemplateDetailPopupComponent,
+    TemplateEditPopupComponent,
     SearchSelectTemplateComponent,
     SearchSelectMedicineComponent,
     AdditionInfoPopupComponent,
