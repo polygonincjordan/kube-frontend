@@ -36,6 +36,9 @@ export class EmergencyDashboardComponent implements OnInit {
   ErPatientCount:any;
   ErHistoryPatientCount: any;
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
+    if (this.showfilter) {
+      this.revertUnappliedFilters();
+    }
     this.showfilter = false;
   }
   erhistoryList: Array<HospitalistType> = [];
@@ -61,6 +64,7 @@ export class EmergencyDashboardComponent implements OnInit {
   public formDetailGroup: any;
   public formgroupData: any = {};
   showfilter=false;
+  appliedFilterValue: any;
   filterForm:FormGroup;
   modalRef:BsModalRef;
   
@@ -85,7 +89,14 @@ export class EmergencyDashboardComponent implements OnInit {
         Physician: [''],
         Status: [''],
         FCategory: [''],
+        PatientAgeFrom: [''],
+        PatientAgeTo: [''],
+        DateFrom: [''],
+        DateTo: [''],
+        AdmissionTimeFrom: [''],
+        AdmissionTimeTo: [''],
       });
+      this.appliedFilterValue = this.filterForm.value;
      }
 
   ngOnInit() {
@@ -210,7 +221,14 @@ export class EmergencyDashboardComponent implements OnInit {
       Physician: '',
       Status: '',
       FCategory: '',
+      PatientAgeFrom: '',
+      PatientAgeTo: '',
+      DateFrom: '',
+      DateTo: '',
+      AdmissionTimeFrom: '',
+      AdmissionTimeTo: '',
   })
+    this.appliedFilterValue = this.filterForm.value;
   }
   refreshERhistory(){
     //this.ErHistoryComponent.getErList(new Date());
@@ -225,7 +243,14 @@ export class EmergencyDashboardComponent implements OnInit {
         Physician: '',
         Status: '',
         FCategory: '',
+        PatientAgeFrom: '',
+        PatientAgeTo: '',
+        DateFrom: '',
+        DateTo: '',
+        AdmissionTimeFrom: '',
+        AdmissionTimeTo: '',
     })
+    this.appliedFilterValue = this.filterForm.value;
   }
   collectCheckInData(checkindata){
    this.navigateToTreatmentArea(checkindata);
@@ -381,12 +406,44 @@ export class EmergencyDashboardComponent implements OnInit {
   }
   showFilterFn($event) {
     $event.stopPropagation();
-    console.log(this.filterForm);
-
     if (this.showfilter) {
+      this.revertUnappliedFilters();
       this.showfilter = false;
     } else {
       this.showfilter = true;
+    }
+  }
+
+  revertUnappliedFilters() {
+    if (this.appliedFilterValue) {
+      this.filterForm.patchValue(this.appliedFilterValue);
+    }
+  }
+
+  clearFilterControls(controls: string[]) {
+    const patch = {};
+    controls.forEach((control) => (patch[control] = ''));
+    this.filterForm.patchValue(patch);
+  }
+
+  clearFilter() {
+    this.filterForm.patchValue({
+      Triage: '',
+      Physician: '',
+      Status: '',
+      FCategory: '',
+      PatientAgeFrom: '',
+      PatientAgeTo: '',
+      DateFrom: '',
+      DateTo: '',
+      AdmissionTimeFrom: '',
+      AdmissionTimeTo: '',
+    });
+    this.appliedFilterValue = this.filterForm.value;
+    if (this.selectedModule == 'checkin') {
+      this.CheckinListComponent.filterListData(this.filterForm.value);
+    } else {
+      this.ErHistoryComponent.filterListData(this.filterForm.value);
     }
   }
   dataForTriage(){
@@ -457,7 +514,7 @@ export class EmergencyDashboardComponent implements OnInit {
     }else{
       this.ErHistoryComponent.filterListData(this.filterForm.value);
     }
-
+  this.appliedFilterValue = this.filterForm.value;
   this.showfilter =false;
   }
   collectErPatientCount(event){

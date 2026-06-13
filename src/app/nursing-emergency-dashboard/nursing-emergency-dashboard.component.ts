@@ -1072,6 +1072,8 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     this.refreshFormGroup();
     if (this.selectedModule == 'checkin') {
       this.CheckInComponent.filterListData(this.filterForm.value);
+    } else if (this.selectedModule == 'erhistory') {
+      this.ErHistoryComponent.filterListData(this.filterForm.value);
     }
   }
   openPatientInfo(template: TemplateRef<any>) {
