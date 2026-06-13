@@ -799,6 +799,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       PsyCombative: new FormControl(),
       PsyOther: new FormControl(),
       PsyComments: new FormControl(),
+      Since: new FormControl(),
+      NumberSpouse: new FormControl(),
+      SHComments: new FormControl(),
       AttendPhy: [this.storageService.getGpart()],
 
       FunSelfNoProblem: new FormControl(),
@@ -1082,6 +1085,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsyCombative: [false],
         PsyOther: [false],
         PsyComments: [''],
+        Since: [''],
+        NumberSpouse: [''],
+        SHComments: [''],
         AttendPhy: [this.storageService.getGpart()],
 
         FunSelfNoProblem: [{ value: false, disabled: false }],
@@ -1346,6 +1352,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsyCombative: triageValue?.PsyCombative ? triageValue?.PsyCombative : false,
         PsyOther: triageValue?.PsyOther ? triageValue?.PsyOther : false,
         PsyComments: triageValue?.PsyComments ? triageValue?.PsyComments : '',
+        Since: triageValue?.Since ? triageValue?.Since : '',
+        NumberSpouse: triageValue?.NumberSpouse ? triageValue?.NumberSpouse : '',
+        SHComments: triageValue?.SHComments ? triageValue?.SHComments : '',
         AttendPhy: triageValue?.AttendPhy ? triageValue?.AttendPhy : this.storageService.getGpart(),
 
         FunSelfNoProblem: triageValue?.FunSelfNoProblem ? triageValue?.FunSelfNoProblem : false,

@@ -231,6 +231,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       PsyCombative: triageValue?.PsyCombative ? triageValue?.PsyCombative : false,
       PsyOther: triageValue?.PsyOther ? triageValue?.PsyOther : false,
       PsyComments: triageValue?.PsyComments ? triageValue?.PsyComments : '',
+      Since: triageValue?.Since ? triageValue?.Since : '',
+      NumberSpouse: triageValue?.NumberSpouse ? triageValue?.NumberSpouse : '',
+      SHComments: triageValue?.SHComments ? triageValue?.SHComments : '',
       AttendPhy: triageValue?.AttendPhy ? triageValue?.AttendPhy : this.storageService.getGpart(),
       DocStatus: '1',
     });
