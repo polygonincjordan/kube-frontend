@@ -1,0 +1,96 @@
+<ng-template #templateeditPopup>
+  <div class="medication-popup" *ngIf="editForm" [formGroup]="editForm">
+    <div class="medication-header d-flex w-100 align-items-center pl-2">
+      <div class="medicate-select line-height-0 p-1 bg-white">
+        <input type="checkbox" width="25" height="25"
+          (change)="onCheckallMedicationData($event)"
+          class="isbigcheckbox" [(ngModel)]="isallSelected" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="medicate-data d-flex w-100 pl-3">
+        <div class="medication-title w-40 px-3">
+          <h4 class="m-0">Drugs</h4>
+        </div>
+        <div class="medication-title w-20 px-3">
+          <h4 class="m-0 text-center">Formula</h4>
+        </div>
+        <div class="medication-title w-15 px-3">
+          <h4 class="m-0 text-center">Dosage/Unit</h4>
+        </div>
+        <div class="medication-title w-25 px-3">
+          <h4 class="m-0 text-center">Route of administration</h4>
+        </div>
+        <div class="medication-title w-25 px-3">
+          <h4 class="m-0 text-center">Frequency</h4>
+        </div>
+        <div class="medication-title w-25 px-3">
+          <h4 class="m-0 text-center">Duration</h4>
+        </div>
+        <div class="medication-title w-25 px-3">
+          <h4 class="m-0 text-center">Stock</h4>
+        </div>
+      </div>
+      <div class="medicate-icon d-flex align-items-center">
+        <button type="button" class="template-action-btn" title="Add medication" (click)="addRow()">
+          <i class="fa fa-plus"></i>
+        </button>
+        <button type="button" class="template-action-btn" title="Delete selected" (click)="deleteSelected()">
+          <i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="template-action-btn template-save-btn" title="Save template" (click)="save()">
+          <img src="assets/img/texteditor.png" width="40" class="p-1 bg-white">
+        </button>
+      </div>
+    </div>
+    <div class="medication-body" formArrayName="Meds">
+      <div class="medication-inner-body d-flex w-100 align-items-center pl-2 mt-2"
+        *ngFor="let element of medArray.controls; let i = index" [formGroupName]="i">
+        <div class="medicate-select line-height-0 p-1">
+          <input type="checkbox" width="25" height="25"
+            formControlName="isSelected" class="isbigcheckbox" (change)="onisSelected()">
+        </div>
+        <div class="medication-data d-flex w-100 pl-3">
+          <div class="medication-field w-40 pr-2">
+            <administration-search-select-medicine [group]="element" [index]="i" [isSubmitted]="isSubmitted"
+              [medicineDefaultData]="addministrationService.medicationDrugList" (onSelected)="onSelectMedicine($event)">
+            </administration-search-select-medicine>
+          </div>
+          <div class="medication-field w-20 d-flex pr-2">
+            <input type="text" class="form-control m-0" formControlName="Formatdescr" readonly>
+          </div>
+          <div class="medication-field w-15 pr-2 flex-15 d-flex align-items-center">
+            <input type="text" class="form-control m-0" formControlName="Quan">
+            <span class="ml-1 unit-text">{{element.get('Quantunittxt').value}}</span>
+          </div>
+          <div class="medication-field w-25 pr-2 flex-25">
+            <input type="text" class="form-control m-0" formControlName="Routedescr" readonly>
+          </div>
+          <div class="medication-field w-25 pr-2 flex-25">
+            <ng-select [searchable]="true" [appendTo]="'body'" formControlName="N1znr"
+              (change)="onChangeFrequency(i)"
+              [ngClass]="element.touched && element.get('N1znr').errors && isSubmitted ? 'ep-error-message' : ''">
+              <ng-option *ngFor="let medicationFrequency of addministrationService.frequencyList"
+                [value]="medicationFrequency.CycleKey">
+                {{ medicationFrequency.OptionField }}
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="medication-field w-25 pr-2 flex-25 d-flex align-items-center">
+            <input type="text" min="0" class="form-control m-0" formControlName="Pdur">
+            <ng-select class="ml-1 w-100" [searchable]="true" [appendTo]="'body'" formControlName="Pduru"
+              [readonly]="element.get('Pdur').value === '0' || element.get('Pdur').value === ''">
+              <ng-option *ngFor="let medicationDurationUnit of addministrationService.durationUnitList"
+                [value]="medicationDurationUnit.Unit">
+                {{ medicationDurationUnit.Text }}
+              </ng-option>
+            </ng-select>
+          </div>
+          <div class="medication-field w-25 pr-2 flex-25">
+            <input type="text" class="form-control m-0" formControlName="Stocktext" readonly>
+          </div>
+        </div>
+        <div class="medicate-icon" style="width: 40px;">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

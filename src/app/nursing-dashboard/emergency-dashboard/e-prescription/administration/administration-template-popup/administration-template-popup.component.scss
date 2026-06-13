@@ -1,0 +1,15 @@
+.template-row-icon {
+  background: transparent;
+  border: 0;
+  padding: 0 4px;
+  cursor: pointer;
+  color: #0890c5;
+
+  i {
+    font-size: 15px;
+  }
+
+  &.template-row-delete {
+    color: #d9534f;
+  }
+}

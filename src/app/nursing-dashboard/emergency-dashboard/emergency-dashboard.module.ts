@@ -39,6 +39,7 @@ import { AdministrationSearchSelectMedicineComponent } from './e-prescription/ad
 import { AdministrationSearchSelectTemplateComponent } from './e-prescription/administration/administration-search-select-template/administration-search-select-template.component';
 import { AdministrationTemplateDetailPopupComponent } from './e-prescription/administration/administration-template-detail-popup/administration-template-detail-popup.component';
 import { AdministrationTemplatePopupComponent } from './e-prescription/administration/administration-template-popup/administration-template-popup.component';
+import { AdministrationTemplateEditPopupComponent } from './e-prescription/administration/administration-template-edit-popup/administration-template-edit-popup.component';
 import { AdministrationComponent } from './e-prescription/administration/administration.component';
 import { ComplexOrderComponent } from './e-prescription/administration/complex-order/complex-order.component';
 import { CreateAdministrationComponent } from './e-prescription/administration/create-administration/create-administration.component';
@@ -54,6 +55,7 @@ import { SearchSelectMedicineComponent } from './e-prescription/discharge-order/
 import { SearchSelectTemplateComponent } from './e-prescription/discharge-order/search-select-template/search-select-template.component';
 import { TemplateDetailPopupComponent } from './e-prescription/discharge-order/template-detail-popup/template-detail-popup.component';
 import { TemplatePopupComponent } from './e-prescription/discharge-order/template-popup/template-popup.component';
+import { TemplateEditPopupComponent } from './e-prescription/discharge-order/template-edit-popup/template-edit-popup.component';
 import { DrugEventsAdminComponent } from './e-prescription/e-mar/e-mar-order-history/drug-events-admin/drug-events-admin.component';
 import { EMarOrderHistoryComponent } from './e-prescription/e-mar/e-mar-order-history/e-mar-order-history.component';
 import { EmarComponent } from './e-prescription/e-mar/e-mar.component';
@@ -123,6 +125,8 @@ export const emergencyDashboard: Routes = [
     AdministrationSearchSelectMedicineComponent,
     AdministrationSearchSelectTemplateComponent,
     AdministrationTemplatePopupComponent,
+    AdministrationTemplateEditPopupComponent,
+    TemplateEditPopupComponent,
     AdministrationTemplateDetailPopupComponent,
     MedicationsProfileComponent,
     FrequencyDeftimComponent,

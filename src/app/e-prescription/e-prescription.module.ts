@@ -26,6 +26,7 @@ import { AdministrationSearchSelectMedicineComponent } from './administration/ad
 import { AdministrationSearchSelectTemplateComponent } from './administration/administration-search-select-template/administration-search-select-template.component';
 import { AdministrationTemplateDetailPopupComponent } from './administration/administration-template-detail-popup/administration-template-detail-popup.component';
 import { AdministrationTemplatePopupComponent } from './administration/administration-template-popup/administration-template-popup.component';
+import { AdministrationTemplateEditPopupComponent } from './administration/administration-template-edit-popup/administration-template-edit-popup.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { ComplexOrderComponent } from './administration/complex-order/complex-order.component';
 import { CreateAdministrationComponent } from './administration/create-administration/create-administration.component';
@@ -41,6 +42,7 @@ import { SearchSelectMedicineComponent } from './discharge-order/search-select-m
 import { SearchSelectTemplateComponent } from './discharge-order/search-select-template/search-select-template.component';
 import { TemplateDetailPopupComponent } from './discharge-order/template-detail-popup/template-detail-popup.component';
 import { TemplatePopupComponent } from './discharge-order/template-popup/template-popup.component';
+import { TemplateEditPopupComponent } from './discharge-order/template-edit-popup/template-edit-popup.component';
 import { DrugEventsAdminComponent } from './e-mar/e-mar-order-history/drug-events-admin/drug-events-admin.component';
 import { EMarOrderHistoryComponent } from './e-mar/e-mar-order-history/e-mar-order-history.component';
 import { EmarComponent } from './e-mar/e-mar.component';
@@ -120,6 +122,8 @@ export const ePrescriptionRoutes: Routes = [
     AdministrationSearchSelectTemplateComponent,
     AdministrationTemplatePopupComponent,
     AdministrationTemplateDetailPopupComponent,
+    AdministrationTemplateEditPopupComponent,
+    TemplateEditPopupComponent,
     MedicationsProfileComponent,
     FrequencyDeftimComponent,
     AdditionInfoprnPopupComponent,
