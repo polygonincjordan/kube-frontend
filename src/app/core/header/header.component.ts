@@ -454,25 +454,19 @@ export class HeaderComponent implements OnInit {
       skipLocationChange: false,
       // do not trigger navigation
     });
-    window.open(
-      redirectPoint +
-        'patnr=' +
-        data.Patnr +
-        '&falnr=' +
-        data.Falnr +
-        '&einri=' +
-        data.Einri +
-        '&lfdnr=' +
-        data.Lfdnr + 
-        '&redirectFor=' +
-        data.redirectFor +
-        '&action=' +
-        data.action +
-        '&doctype=' +
-        data.doctype +
-        '&nav=Treatmentarea',
-      '_blank'
-    );
+    // Build the query string from defined values only, so optional params that
+    // were never set (redirectFor/action/doctype) don't leak the literal
+    // "undefined" into the URL.
+    const queryParams = new URLSearchParams();
+    queryParams.set('patnr', data.Patnr ?? '');
+    queryParams.set('falnr', data.Falnr ?? '');
+    queryParams.set('einri', data.Einri ?? '');
+    queryParams.set('lfdnr', data.Lfdnr ?? '');
+    if (data.redirectFor != null) queryParams.set('redirectFor', data.redirectFor);
+    if (data.action != null) queryParams.set('action', data.action);
+    if (data.doctype != null) queryParams.set('doctype', data.doctype);
+    queryParams.set('nav', 'Treatmentarea');
+    window.open(redirectPoint + queryParams.toString(), '_blank');
   }
   closeModal(){
     this.modalRef.hide();

@@ -73,8 +73,7 @@ min-width: 10%;">
               [ngStyle]="{'pointer-events': selectedDocData?.StatusTxt == 'Draft' ? '' : 'none' }"> </li>
           <li class="right-icons" title="Edit"><img src="assets/img/DocEdit.svg" (click)="openDocument('edit')"
               [ngStyle]="{'pointer-events': selectedDocData?.StatusTxt == 'Draft' ? '' : 'none' }"> </li>
-          <li class="right-icons" title="Create"><img src="assets/img/DocAdd.svg" (click)="openDocument('create')"
-              [ngStyle]="{'pointer-events': (phyAssess && selectedDocData?.StatusTxt == 'Released') ? 'none' : selectedDocData?.StatusTxt == 'Draft' ? 'none' : '' }">
+          <li class="right-icons" title="Create"><img src="assets/img/DocAdd.svg" (click)="openDocument('create')">
           </li>
         </ul>
       </div>

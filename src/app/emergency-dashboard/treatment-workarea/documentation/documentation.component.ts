@@ -661,6 +661,9 @@ export class DocumentationComponent implements OnInit {
     if (this.phyAssess) {
       if (action == 'create') {
         this.openPhyAssess = true;
+        // Start a blank draft: clear any selected/existing doc so ngOnInit takes
+        // the new-document branch instead of patching an existing record.
+        this.phyComp.docDetails = [];
         this.phyComp.resetAll();
         this.phyComp.ngOnInit();
 
