@@ -132,19 +132,7 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
       
     }else{
-    const now = new Date();
-    const createTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    this.createDate = now;
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
-    //room/bed 
-    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
-    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
-    // 
-    this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
-    this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
-    this.PhyAssessmentForm.controls.Lfdnr.setValue(this.storageService.lfdnr);
-    this.PhyAssessmentForm.controls.Falnr.setValue(this.storageService.falnr);
+    this.setNewDocDefaults();
     }
     this.getChiefTemplate();
     this.getDispositionData();
@@ -153,6 +141,31 @@ export class ErPhysicianComponent implements OnInit {
     // }else{
     // this.PhyAssessmentForm.controls.ConditionDisp.disable();
     // }
+  }
+  // Defaults for a brand-new document (current date/time, room/bed, identity).
+  private setNewDocDefaults() {
+    const now = new Date();
+    const createTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    this.createDate = now;
+    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    //room/bed
+    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
+    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
+    //
+    this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
+    this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
+    this.PhyAssessmentForm.controls.Lfdnr.setValue(this.storageService.lfdnr);
+    this.PhyAssessmentForm.controls.Falnr.setValue(this.storageService.falnr);
+  }
+  // Blank a fresh draft without touching docDetails, so a later Edit/Release/Copy/Delete
+  // still operates on the real selected document.
+  initForCreate() {
+    this.resetAll();
+    this.createDate = '';
+    this.setNewDocDefaults();
+    this.getChiefTemplate();
+    this.getDispositionData();
   }
   openPastHistory(template: TemplateRef<any>){
     const config: ModalOptions = { class: 'modal-dialog-centered modal-lg pastdochistory' };
