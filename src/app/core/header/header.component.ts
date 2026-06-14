@@ -373,7 +373,12 @@ export class HeaderComponent implements OnInit {
             Patnr: patnr,
             Einri: einri,
             Falnr: type == 'caseList' ?  formattedCaseNumber : data?.falnr,
-            Lfdnr: lfdnr,
+            // For a case-list click the widget URL's lfdnr belongs to SAP's
+            // default/last case (a *different* case than the one clicked), so
+            // gluing it onto the clicked falnr yields an invalid encounter key.
+            // Leave it blank for that path; topnav reconciles the correct
+            // movement from CASESET for the selected case.
+            Lfdnr: type == 'caseList' ? '' : lfdnr,
           };
           this.storageService.setCheckinData(json);
           localStorage.setItem('checkindata', JSON.stringify(json));

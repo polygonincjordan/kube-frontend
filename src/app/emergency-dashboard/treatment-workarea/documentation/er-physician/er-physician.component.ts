@@ -132,11 +132,9 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
       
     }else{
-    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
-    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
-    createTime = createTime[0] + ':' + createTime[1];
-    this.createDate = this.getDate(checkindata.Erdat);
-    //this.createDate = String(this.createDate.getDate()).padStart(2, '0') + '.' + String(this.createDate.getMonth() + 1).padStart(2, '0') + '.' + String(this.createDate.getFullYear()); 
+    const now = new Date();
+    const createTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    this.createDate = now;
     this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
     this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
     //room/bed 
@@ -242,6 +240,10 @@ export class ErPhysicianComponent implements OnInit {
     }
    
     let createJson = this.PhyAssessmentForm.value;
+    createJson['Einri'] = this.storageService.einri;
+    createJson['Patnr'] = this.storageService.patnr;
+    createJson['Falnr'] = this.storageService.falnr;
+    createJson['Lfdnr'] = this.storageService.lfdnr;
     createJson['AdmDate'] = createAdmDate;
     createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['AdmTime'] = createAdmTime;
@@ -258,6 +260,7 @@ export class ErPhysicianComponent implements OnInit {
     createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
     createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
     createJson['DocStatus'] = '1';
+    delete createJson['Dockey'];
     if (createJson['DiscDate'] == '') {
       delete createJson['DiscDate'];
     }
@@ -547,6 +550,10 @@ export class ErPhysicianComponent implements OnInit {
     }
    
     let createJson = this.PhyAssessmentForm.value;
+    createJson['Einri'] = this.storageService.einri;
+    createJson['Patnr'] = this.storageService.patnr;
+    createJson['Falnr'] = this.storageService.falnr;
+    createJson['Lfdnr'] = this.storageService.lfdnr;
     createJson['AdmDate'] = createAdmDate;
     createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['AdmTime'] = createAdmTime;
@@ -563,6 +570,7 @@ export class ErPhysicianComponent implements OnInit {
     createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
     createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
     createJson['DocStatus'] = '2';
+    delete createJson['Dockey'];
     if (createJson['DiscDate'] == '') {
       delete createJson['DiscDate'];
     }
