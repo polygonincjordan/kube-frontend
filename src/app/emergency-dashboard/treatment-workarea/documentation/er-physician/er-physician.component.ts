@@ -158,15 +158,6 @@ export class ErPhysicianComponent implements OnInit {
     this.PhyAssessmentForm.controls.Lfdnr.setValue(this.storageService.lfdnr);
     this.PhyAssessmentForm.controls.Falnr.setValue(this.storageService.falnr);
   }
-  // Blank a fresh draft without touching docDetails, so a later Edit/Release/Copy/Delete
-  // still operates on the real selected document.
-  initForCreate() {
-    this.resetAll();
-    this.createDate = '';
-    this.setNewDocDefaults();
-    this.getChiefTemplate();
-    this.getDispositionData();
-  }
   openPastHistory(template: TemplateRef<any>){
     const config: ModalOptions = { class: 'modal-dialog-centered modal-lg pastdochistory' };
     this.modalRef = this.modalService.show(template,config);

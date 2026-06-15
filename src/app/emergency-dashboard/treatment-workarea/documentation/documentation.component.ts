@@ -656,14 +656,52 @@ export class DocumentationComponent implements OnInit {
     this.openCorrespondenceDocument = false;
     this.medDocList = [];
   }
+  // Validates a toolbar action against the selected document's status and, when
+  // blocked, shows an explanatory popup. Mirrors the lifecycle: edit/release/delete
+  // need a Draft, copy needs a Released doc, and create is blocked while a Draft
+  // exists (or a Released ER Physician doc, which must be Copied to a new version).
+  documentActionAllowed(action): boolean {
+    const status = this.selectedDocData?.StatusTxt;
+    const info = (text: string) => {
+      Swal.fire({
+        text,
+        icon: 'info',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      } as any);
+      return false;
+    };
+    if (action == 'create') {
+      if (status == 'Draft') {
+        return info('A draft already exists. Please release or delete it before creating a new document.');
+      }
+      if (status == 'Released' && this.phyAssess) {
+        return info('This document is released. Use Copy to create a new version.');
+      }
+    } else if (action == 'edit') {
+      if (status != 'Draft') { return info('Only draft documents can be edited.'); }
+    } else if (action == 'release') {
+      if (status != 'Draft') { return info('Only draft documents can be released.'); }
+    } else if (action == 'delete') {
+      if (status != 'Draft') { return info('Only draft documents can be deleted.'); }
+    } else if (action == 'copy') {
+      if (status != 'Released') { return info('Only released documents can be copied.'); }
+    }
+    return true;
+  }
   openDocument(action) {
+    // Lifecycle guard: the document is a single versioned record per case
+    // (Draft -> Released -> Copy -> next version). Explain, via a popup, why a
+    // button click is blocked instead of silently doing nothing.
+    if (!this.documentActionAllowed(action)) {
+      return;
+    }
     this.actionType = action;
     if (this.phyAssess) {
       if (action == 'create') {
         this.openPhyAssess = true;
-        // Blank a fresh draft without clobbering docDetails, so a later
-        // Edit/Release/Copy/Delete still targets the real selected document.
-        this.phyComp.initForCreate();
+        this.phyComp.resetAll();
+        this.phyComp.ngOnInit();
 
       } else if (action == 'edit') {
         this.openPhyAssess = true;

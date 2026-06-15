@@ -64,15 +64,11 @@ min-width: 10%;">
         </div>
         <ul class="list-simple" style="flex:1">
           <li class="right-icons" title="Refresh"><img src="assets/img/DocRefresh.svg" (click)="refresh()"> </li>
-          <li class="right-icons" title="Delete"><img src="assets/img/DocDelete.svg" (click)="openDocument('delete')"
-              [ngStyle]="{'pointer-events': selectedDocData?.StatusTxt == 'Draft' ? '' : 'none' }"> </li>
+          <li class="right-icons" title="Delete"><img src="assets/img/DocDelete.svg" (click)="openDocument('delete')"> </li>
           <li class="right-icons" title="Copy"><img src="assets/img/DocCopy.svg"
-              [ngStyle]="{'pointer-events': selectedDocData?.StatusTxt == 'Released' ? '' : 'none' }"
               (click)="openDocument('copy')"> </li>
-          <li class="right-icons" title="Release"><img src="assets/img/DocRelease.svg" (click)="openDocument('release')"
-              [ngStyle]="{'pointer-events': selectedDocData?.StatusTxt == 'Draft' ? '' : 'none' }"> </li>
-          <li class="right-icons" title="Edit"><img src="assets/img/DocEdit.svg" (click)="openDocument('edit')"
-              [ngStyle]="{'pointer-events': selectedDocData?.StatusTxt == 'Draft' ? '' : 'none' }"> </li>
+          <li class="right-icons" title="Release"><img src="assets/img/DocRelease.svg" (click)="openDocument('release')"> </li>
+          <li class="right-icons" title="Edit"><img src="assets/img/DocEdit.svg" (click)="openDocument('edit')"> </li>
           <li class="right-icons" title="Create"><img src="assets/img/DocAdd.svg" (click)="openDocument('create')">
           </li>
         </ul>
