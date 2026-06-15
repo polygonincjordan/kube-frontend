@@ -260,7 +260,10 @@ export class DocumentationComponent implements OnInit {
     this.emergencyService.getLatestAssessment(json).subscribe(
       (_success: any) => {
         this.latestDocList = _success.d.results;
-        if (this.actionType == 'createandrelease') {
+        // Only drive the phy create-and-release follow-up when the phy assessment
+        // is the active form; otherwise a med/education flow would wrongly trigger
+        // a phy release (and loop via refresh -> getLatestAssessment).
+        if (this.actionType == 'createandrelease' && this.phyAssess) {
           this.phyComp.ngOnInit();
           this.release();
         }
@@ -1354,9 +1357,12 @@ async deleteCorrespondenceDoc(docKey: string) {
     (await this.medComp.createMedDoc()).subscribe((res: any) => {
       this.medComp.resetAll();
       this.refresh();
-    }, (_error: any) => { 
+    }, (_error: any) => {
         this.docsService.showErrorMsg(_error);
     });
+    // Clear the create-and-release flag synchronously (mirrors phy createAndRelease)
+    // so the async refresh -> getLatestAssessment does not re-trigger a release loop.
+    this.actionType = this.actionType == 'createandrelease' ? 'create' : '';
   }
   openMedReleasePdf(id) {
     this.pdfUrl = '';
@@ -1374,7 +1380,10 @@ async deleteCorrespondenceDoc(docKey: string) {
     this.emergencyService.getEduAssesLatestDocSet(json).subscribe(
       (_success: any) => {
         this.educationAssList = _success.d.results;
-        if (this.actionType == 'createandrelease') {
+        // Guard by the active form: app-education-form is *ngIf, so this runs only
+        // when the education flow is active (otherwise educationAssessmentComp is
+        // undefined -> "reading 'ngOnInit'" crash, and this.release() loops).
+        if (this.actionType == 'createandrelease' && this.educationAssessment) {
           this.educationAssessmentComp.ngOnInit();
           this.release();
         }

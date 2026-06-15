@@ -34,8 +34,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
     this.configurationData = [];
     this.templateSearchQuery = '';
     if (data && data.length) {
-      this.configurationData = JSON.parse(JSON.stringify(data));
-      this.SortData('Tmpaccesslevel')
+      this.configurationData = this.sortTemplatesByLevel(JSON.parse(JSON.stringify(data)));
       this.modalRef = this.modalService.show(this.templatePopup, { backdrop: true, ignoreBackdropClick: false, class: 'template-med template-med-data template' });
     } else {
       Swal.fire({
@@ -94,6 +93,17 @@ export class AdministrationTemplatePopupComponent implements OnInit {
     this.SortData(col);
   }
 
+  private sortTemplatesByLevel(data: AdministrationTemplateData[]): AdministrationTemplateData[] {
+    return data.sort((a, b) => {
+      const levelA = a.Tmpaccesslevel === 'G' ? 1 : 0;
+      const levelB = b.Tmpaccesslevel === 'G' ? 1 : 0;
+      if (levelA !== levelB) {
+        return levelA - levelB;
+      }
+      return (a.Descr || '').localeCompare(b.Descr || '');
+    });
+  }
+
   setSelectedTemplate() {
     this.onClose.emit(this.configurationData.filter(d => d.isSelected));
     this.modalRef.hide();
@@ -120,27 +130,18 @@ export class AdministrationTemplatePopupComponent implements OnInit {
           if (resp.body && resp.body.d && resp.body.d.results) {
             templateList = resp.body.d.results[0].TOORDERTEMPLATE.results
           }
-          if (templateList.length === 1) {
-            this.onClose.emit(this.configurationData.filter(d => d.isSelected));
-            this.modalRef.hide();
-          } else {
-            this.templateDetailPopup.showPopup(templateList);
-          }
+          this.templateDetailPopup.showPopup(templateList);
         });
       } else if (data.Tmptype === "2") {
         this.ePrescriptionService.loadData(`e-prescription/userTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
           if (resp.body && resp.body.d && resp.body.d.results) {
             templateList = resp.body.d.results[0].PrescriptionItemSet.results
           }
-          if (templateList.length === 1) {
-            this.onClose.emit(this.configurationData.filter(d => d.isSelected));
-            this.modalRef.hide();
-          } else {
-            this.templateDetailPopup.showPopup(templateList);
-          }
+          this.templateDetailPopup.showPopup(templateList);
         });
       }
     }
+    if (this.templateDetailSubscription) { this.templateDetailSubscription.unsubscribe(); }
     this.templateDetailSubscription = this.templateDetailPopup.onClose.subscribe(data => {
       this.ePrescriptionService.templatePopupSaveData = data
     });
