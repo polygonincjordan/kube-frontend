@@ -62,7 +62,12 @@
             <span class="ml-1 unit-text">{{element.get('Quantunittxt').value}}</span>
           </div>
           <div class="medication-field w-25 pr-2 flex-25">
-            <input type="text" class="form-control m-0" formControlName="Routedescr" readonly>
+            <ng-select [searchable]="true" [appendTo]="'body'" formControlName="Routedescr" [compareWith]="compareRoute"
+              [ngClass]="element.touched && element.get('Routedescr').errors && isSubmitted ? 'ep-error-message' : ''">
+              <ng-option *ngFor="let routeItem of addministrationService.routeDropdownList" [value]="routeItem">
+                {{ routeItem.Descr }}
+              </ng-option>
+            </ng-select>
           </div>
           <div class="medication-field w-25 pr-2 flex-25">
             <ng-select [searchable]="true" [appendTo]="'body'" formControlName="N1znr"

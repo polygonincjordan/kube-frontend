@@ -53,7 +53,8 @@ export class TemplateEditPopupComponent {
     return new FormGroup({
       Result_Drug_Name: new FormControl(item ? (item.Result_Drug_Name || '') : '', Validators.required),
       Formatdescr: new FormControl(item ? (item.Formatdescr || '') : ''),
-      Routedescr: new FormControl(item ? (item.Routedescr || '') : ''),
+      // Route is held as the dropdown object {Descr, Aprouid}; existing rows are pre-seeded from the loaded values.
+      Routedescr: new FormControl(item ? { Descr: item.Routedescr || '', Aprouid: item.Aprouteid || '' } : null, Validators.required),
       Quan: new FormControl(item && item.Quan === '0.000' ? '0' : (item ? item.Quan : '0'), Validators.required),
       Quantunittxt: new FormControl(item ? (item.Quantunittxt || '') : ''),
       Quanunit: new FormControl(item ? item.Quanunit : null),
@@ -164,38 +165,81 @@ export class TemplateEditPopupComponent {
     this.medArray.at(index).patchValue({ N1ztxt: found ? found.Text : '' });
   }
 
-  /** Save icon: PUT the full updated payload back to the same template (same Tpgid). */
+  /** Pre-select the loaded route in the dropdown by its id. */
+  compareRoute = (a: any, b: any): boolean => !!a && !!b && a.Aprouid === b.Aprouid;
+
+  /** Build one TOORDERTEMPLATE item in the exact Create-Template (POST) shape. */
+  private buildTemplateItem(c: any): any {
+    const v = c.value;
+    const orig = v.__orig || {};
+    const route = v.Routedescr;
+    const routedescr = route && route.Descr !== undefined ? route.Descr : (orig.Routedescr || '');
+    const aprouteid = route && route.Aprouid !== undefined ? route.Aprouid : (orig.Aprouteid || '');
+    const quanunit = v.Quanunit && v.Quanunit.Meinh ? v.Quanunit.Meinh : (v.Quanunit || orig.Quanunit || '');
+    const schedule = this.scheduleFields(orig);
+    const toComplex = (orig.TOCOMPLEX && orig.TOCOMPLEX.results ? orig.TOCOMPLEX.results : (Array.isArray(orig.TOCOMPLEX) ? orig.TOCOMPLEX : []))
+      .map((cx: any) => {
+        const { __metadata, ...rest } = cx || {};
+        return {
+          ...rest,
+          Quan: cx.Quan !== undefined ? `${cx.Quan}` : '0',
+          Pdur: (cx.Pdur === null || cx.Pdur === undefined || cx.Pdur === '') ? '0' : `${cx.Pdur}`,
+          Seqno: cx.Seqno !== undefined ? `${cx.Seqno}` : ''
+        };
+      });
+    return {
+      Agentid: v.Agentid || '',
+      Drugid: v.Drugid || '',
+      Phformid: v.Phformid != null ? v.Phformid : (orig.Phformid || ''),
+      Aprouteid: aprouteid,
+      Routedescr: routedescr,
+      Result_Drug_Name: v.Result_Drug_Name || '',
+      Quan: `${v.Quan}`,
+      Quanunit: quanunit,
+      N1znr: v.N1znr,
+      N1ztxt: v.N1ztxt || '',
+      Pdur: (v.Pdur === null || v.Pdur === '') ? '0' : `${v.Pdur}`,
+      Pduru: v.Pduru != null ? v.Pduru : '',
+      Dosdef: v.Dosdef || orig.Dosdef || '',
+      Prn: orig.Prn != null ? orig.Prn : false,
+      Prncond: orig.Prncond || '',
+      Moresp1: orig.Moresp1 || '',
+      Lfdnr: orig.Lfdnr || this.ePrescriptionService.parameters.lfdnr,
+      StartD: schedule.StartD,
+      StartT: schedule.StartT,
+      EndD: orig.EndD != null ? orig.EndD : null,
+      EndT: orig.EndT != null ? orig.EndT : null,
+      Orgfa: orig.Orgfa || '',
+      Orgpf: orig.Orgpf || '',
+      Updmode: orig.Updmode != null ? orig.Updmode : false,
+      Descr: orig.Descr || '',
+      AddDose: orig.AddDose ? 'X' : '',
+      Complex: orig.Complex ? 'X' : '',
+      Pom: orig.Pom || '',
+      Priority: orig.Priority || '010',
+      TOCOMPLEX: toComplex
+    };
+  }
+
+  /** Preserve the loaded schedule for existing rows; default added rows to "now" (as create does). */
+  private scheduleFields(orig: any): { StartD: string, StartT: string } {
+    if (orig && orig.StartD) { return { StartD: orig.StartD, StartT: orig.StartT || null }; }
+    const d = new Date();
+    const p = (n: number) => `${n}`.padStart(2, '0');
+    const ymd = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+    const hms = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    return { StartD: `${ymd}T${hms}`, StartT: `PT${p(d.getHours())}H${p(d.getMinutes())}M${p(d.getSeconds())}S` };
+  }
+
+  /** Save icon: PUT the full create-shaped payload (backend re-creates the template, same Tpgid via the URL key). */
   save(): void {
     this.isSubmitted = true;
     if (!this.medArray.length) { this.showInfo('A template must contain at least one medication'); return; }
     if (this.editForm.invalid) { this.showInfo('Please complete the required fields before saving'); return; }
 
-    const toOrderTemplate = this.medArray.controls.map((c) => {
-      const v = c.value;
-      const orig = v.__orig || {};
-      const quanunit = v.Quanunit && v.Quanunit.Meinh ? v.Quanunit.Meinh : (v.Quanunit || orig.Quanunit || '');
-      // Start from the original item so existing rows round-trip unchanged, then overlay edits.
-      return {
-        ...orig,
-        Agentid: v.Agentid || '',
-        Drugid: v.Drugid || '',
-        Phformid: v.Phformid,
-        Aprouteid: v.Aprouteid,
-        Result_Drug_Name: v.Result_Drug_Name,
-        Routedescr: v.Routedescr,
-        Quan: `${v.Quan}`,
-        Quanunit: quanunit,
-        N1znr: v.N1znr,
-        N1ztxt: v.N1ztxt || '',
-        Pdur: (v.Pdur === null || v.Pdur === '') ? '0' : `${v.Pdur}`,
-        Pduru: v.Pduru !== null ? v.Pduru : '',
-        Dosdef: v.Dosdef || ''
-      };
-    });
+    const toOrderTemplate = this.medArray.controls.map((c) => this.buildTemplateItem(c));
 
     const payload: any = this.ePrescriptionService.loadParameters(true, true, true, true);
-    payload['Prscrid'] = this.meta.prscrid;
-    payload['Tpgid'] = this.meta.prscrid;
     payload['TemplateName'] = this.meta.templateName;
     payload['TemplateDesc'] = this.meta.templateDesc || this.meta.templateName;
     payload['Storn'] = '';
