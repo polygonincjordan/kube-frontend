@@ -380,17 +380,14 @@ export class DocumentationListComponent implements OnInit {
 
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
-    const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-xl pdfmodal-size',
-    };
-    this.selectedIconPdf = this.modalService.show(this.currentDocPdfVer, config);
-    this.userConfigurationService
-      .getAttachmentVisitData(attachmentId.DocKey)
-      .subscribe((data) => {
-        if (data) {
+    this.resetDocumentViewer();
+    this.admissionService
+      .getPatientProfilePDF(attachmentId.DocKey)
+      .subscribe((_success: any) => {
+        if (_success) {
           this.patientVisitRecord = {
-            ...data,
-            DOCCATTOATTACHMENTS: { results: [data] },
+            ..._success,
+            DOCCATTOATTACHMENTS: { results: [_success] },
           };
 
           this.InOutPatientViewValue = {
@@ -398,7 +395,12 @@ export class DocumentationListComponent implements OnInit {
             showIn: false,
             showOut: true,
           };
-          this.sanitizeBase64();
+
+          const mimeType =
+            this.getAttachmentMimeType(attachmentId) || this.getAttachmentMimeType(_success.d);
+          if (this.renderDocumentContent(mimeType, _success.d)) {
+            this.pdfFormOpen();
+          }
           this.currentDocVersionRef.hide();
         }
       });
