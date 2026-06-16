@@ -89,7 +89,12 @@ min-width: 10%;">
             </button>
           </div>
           <div class="header-btn" *ngIf="actionType == 'create'">
-            <button type="button" class="action-doc" (click)="openDocument('createandrelease')">
+            <button type="button" class="action-doc" (click)="createAndRelease()">
+              Release
+            </button>
+          </div>
+          <div class="header-btn" *ngIf="actionType == 'copy'">
+            <button type="button" class="action-doc" (click)="copyAndRelease()">
               Release
             </button>
           </div>

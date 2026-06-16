@@ -260,13 +260,9 @@ export class DocumentationComponent implements OnInit {
     this.emergencyService.getLatestAssessment(json).subscribe(
       (_success: any) => {
         this.latestDocList = _success.d.results;
-        // Only drive the phy create-and-release follow-up when the phy assessment
-        // is the active form; otherwise a med/education flow would wrongly trigger
-        // a phy release (and loop via refresh -> getLatestAssessment).
-        if (this.actionType == 'createandrelease' && this.phyAssess) {
-          this.phyComp.ngOnInit();
-          this.release();
-        }
+        // Note: phy create-and-release / copy-and-release no longer rely on this
+        // refresh-driven trigger. They chain the release explicitly on the new
+        // Dockey returned by the create/copy response (see createOrCopyThenRelease).
       },
       (_error: any) => { }
     );
@@ -521,25 +517,53 @@ export class DocumentationComponent implements OnInit {
             } as any)
     });
   }
-  async createAndRelease() {
-    (await this.phyComp.createPhyDoc()).subscribe((res: any) => {
+  // Create (or copy) a draft, then release the newly-created document. The release
+  // targets the Dockey returned by SAP in the create/copy response, so it works
+  // even though the form still holds the previous (or empty) Dockey. This replaces
+  // the old refresh+actionType chaining, which reset actionType synchronously before
+  // the async release could fire (so direct release never actually released).
+  private async createOrCopyThenRelease(build: () => Promise<any>) {
+    this.actionType = '';
+    const createObs = await build();
+    // createPhyDoc/copyPhyDoc return undefined when mandatory-field validation
+    // fails (they show their own alert), so guard before subscribing.
+    if (!createObs) { return; }
+    createObs.subscribe(async (res: any) => {
+      const newDockey = res?.d?.Dockey;
+      if (newDockey) {
+        this.phyComp.PhyAssessmentForm.controls.Dockey.setValue(newDockey);
+      }
+      (await this.phyComp.releasePhyDoc()).subscribe((_res: any) => {
+        Swal.fire({
+          text: "Document is created and released successfully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        } as any)
+        this.phyComp.resetAll();
+        this.refresh();
+      }, (_error: any) => {
+        Swal.fire({
+          text: _error.error.error?.message?.value,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        } as any)
+      });
+    }, (_error: any) => {
       Swal.fire({
-        text: "Document is created and released successfully",
-        icon: 'success',
+        text: _error.error.error?.message?.value,
+        icon: 'error',
         confirmButtonText: 'Ok',
         customClass: { popup: 'myalertpopup' }
       } as any)
-      this.phyComp.resetAll();
-      this.refresh();
-    }, (_error: any) => {
-       Swal.fire({
-              text: _error.error.error?.message?.value,
-              icon: 'error',
-              confirmButtonText: 'Ok',
-              customClass: { popup: 'myalertpopup' }
-            } as any)
-     });
-     this.actionType =  this.actionType == 'createandrelease' ? 'create' : ''
+    });
+  }
+  async createAndRelease() {
+    await this.createOrCopyThenRelease(() => this.phyComp.createPhyDoc());
+  }
+  async copyAndRelease() {
+    await this.createOrCopyThenRelease(() => this.phyComp.copyPhyDoc());
   }
   openReleasePdf(id) {
     this.pdfUrl = '';
