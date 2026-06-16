@@ -74,8 +74,22 @@ min-width: 10%;">
         </ul>
       </div>
       <div class="w-100 d-flex align-items-center" *ngIf="openPhyAssess" style="    justify-content: space-between;">
-        <div>
+        <div class="d-flex align-items-center">
           <span style="font-weight: bold;font-size: 15px;">{{selectedDocName}}</span>
+          <ng-container *ngIf="phyComp?.PhyAssessmentForm">
+            <div class="d-flex align-items-center box-border-top" style="margin-left: 20px;"
+              [formGroup]="phyComp.PhyAssessmentForm">
+              <span style="font-weight: bold;">Document Date/time:</span>
+              <input formControlName="DocDate" type="text" placeholder="" [minDate]="" [maxDate]=""
+                #docDp="bsDatepicker" bsDatepicker
+                [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
+                style="width: 110px; margin-left: 6px;" />
+              <input placeholder="" style="width: 80px; margin-left: 6px;" [ngxTimepicker]="docFullTime"
+                [format]="24" formControlName="DocTime">
+              <ngx-material-timepicker #docFullTime
+                style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
+            </div>
+          </ng-container>
         </div>
         <div class="d-flex">
           <div class="header-btn">
