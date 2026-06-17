@@ -280,6 +280,34 @@ export class EEmrService {
     );
   }
 
+  // Checked Lab results (documents that already have a PR/checked status).
+  // dateFrom / dateTo are 'YYYY-MM-DDT00:00:00' strings, patnr a 10-digit MRN.
+  getCheckedLabResults(patnr, dateFrom, dateTo) {
+    let headers = {
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': 'application/json',
+      'sap-client': environment.client,
+    };
+    const filter = `Patnr eq '${patnr}' and Datefrom eq datetime'${dateFrom}' and Dateto eq datetime'${dateTo}'`;
+    return this._http.get(
+      'LabPrSetSet?$filter=' + filter + '&$format=json',
+      headers
+    );
+  }
+  // Checked Radiology reports (documents that already have a PR/checked status).
+  getCheckedRadResults(patnr, dateFrom, dateTo) {
+    let headers = {
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': 'application/json',
+      'sap-client': environment.client,
+    };
+    const filter = `Patnr eq '${patnr}' and Datefrom eq datetime'${dateFrom}' and Dateto eq datetime'${dateTo}'`;
+    return this._http.get(
+      'RadPrSet?$filter=' + filter + '&$format=json',
+      headers
+    );
+  }
+
   //In patient
   getInPatientList(obj) {
     let headers = {
