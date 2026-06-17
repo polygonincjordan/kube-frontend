@@ -448,13 +448,19 @@ export class PatientLabComponent implements OnInit {
         });
         return;
       }
+      const from = this.formatDate(this.dateFrom);
+      const to = this.formatDate(this.dateTo);
+      if (from > to) {
+        Swal.fire({
+          title: 'Invalid date range',
+          text: 'Date From cannot be after Date To.',
+          icon: 'warning',
+        });
+        return;
+      }
       this.resetPiechartData();
       this._dataServices
-        .getCheckedLabResults(
-          patnr,
-          this.formatDate(this.dateFrom),
-          this.formatDate(this.dateTo)
-        )
+        .getCheckedLabResults(patnr, from, to)
         .subscribe(
           (_success: any) => {
             this.showfilter = false;
@@ -469,8 +475,24 @@ export class PatientLabComponent implements OnInit {
           (_error: any) => {
             this.dataOnTable = [];
             this.dataCount.emit(0);
+            Swal.fire({
+              title: 'Could not load checked results',
+              text: this.extractSapError(_error),
+              icon: 'error',
+            });
           }
         );
+    }
+
+    // Pulls SAP's human-readable error message out of an OData error response.
+    extractSapError(_error: any): string {
+      try {
+        const body = _error && _error._body ? JSON.parse(_error._body) : _error;
+        if (body && body.error && body.error.message && body.error.message.value) {
+          return body.error.message.value;
+        }
+      } catch (e) {}
+      return 'Unable to load checked results.';
     }
 
     buildLabPieChart() {
