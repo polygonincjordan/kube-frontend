@@ -31,7 +31,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
   showPopup(data: AdministrationTemplateData[]): void {
     this.configurationData = [];
     if (data && data.length) {
-      this.configurationData = JSON.parse(JSON.stringify(data));
+      this.configurationData = this.sortTemplatesByLevel(JSON.parse(JSON.stringify(data)));
       this.modalRef = this.modalService.show(this.templatePopup, { backdrop: true, ignoreBackdropClick: false, class: 'template-med' });
     } else {
       Swal.fire({
@@ -62,6 +62,18 @@ export class AdministrationTemplatePopupComponent implements OnInit {
       );
     }
   }
+
+  private sortTemplatesByLevel(data: AdministrationTemplateData[]): AdministrationTemplateData[] {
+    return data.sort((a, b) => {
+      const levelA = a.Tmpaccesslevel === 'G' ? 1 : 0;
+      const levelB = b.Tmpaccesslevel === 'G' ? 1 : 0;
+      if (levelA !== levelB) {
+        return levelA - levelB;
+      }
+      return (a.Descr || '').localeCompare(b.Descr || '');
+    });
+  }
+
   onOpenTemplateDetail(data) {
     this.modalRef.hide();
     if (data) {
@@ -82,6 +94,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
         });
       }
     }
+    if (this.templateDetailSubscription) { this.templateDetailSubscription.unsubscribe(); }
     this.templateDetailSubscription = this.templateDetailPopup.onClose.subscribe(data => {
       this.ePrescriptionService.templatePopupSaveData = data
     });

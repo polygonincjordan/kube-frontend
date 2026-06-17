@@ -260,10 +260,9 @@ export class DocumentationComponent implements OnInit {
     this.emergencyService.getLatestAssessment(json).subscribe(
       (_success: any) => {
         this.latestDocList = _success.d.results;
-        if (this.actionType == 'createandrelease') {
-          this.phyComp.ngOnInit();
-          this.release();
-        }
+        // Note: phy create-and-release / copy-and-release no longer rely on this
+        // refresh-driven trigger. They chain the release explicitly on the new
+        // Dockey returned by the create/copy response (see createOrCopyThenRelease).
       },
       (_error: any) => { }
     );
@@ -518,25 +517,53 @@ export class DocumentationComponent implements OnInit {
             } as any)
     });
   }
-  async createAndRelease() {
-    (await this.phyComp.createPhyDoc()).subscribe((res: any) => {
+  // Create (or copy) a draft, then release the newly-created document. The release
+  // targets the Dockey returned by SAP in the create/copy response, so it works
+  // even though the form still holds the previous (or empty) Dockey. This replaces
+  // the old refresh+actionType chaining, which reset actionType synchronously before
+  // the async release could fire (so direct release never actually released).
+  private async createOrCopyThenRelease(build: () => Promise<any>) {
+    this.actionType = '';
+    const createObs = await build();
+    // createPhyDoc/copyPhyDoc return undefined when mandatory-field validation
+    // fails (they show their own alert), so guard before subscribing.
+    if (!createObs) { return; }
+    createObs.subscribe(async (res: any) => {
+      const newDockey = res?.d?.Dockey;
+      if (newDockey) {
+        this.phyComp.PhyAssessmentForm.controls.Dockey.setValue(newDockey);
+      }
+      (await this.phyComp.releasePhyDoc()).subscribe((_res: any) => {
+        Swal.fire({
+          text: "Document is created and released successfully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        } as any)
+        this.phyComp.resetAll();
+        this.refresh();
+      }, (_error: any) => {
+        Swal.fire({
+          text: _error.error.error?.message?.value,
+          icon: 'error',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        } as any)
+      });
+    }, (_error: any) => {
       Swal.fire({
-        text: "Document is created and released successfully",
-        icon: 'success',
+        text: _error.error.error?.message?.value,
+        icon: 'error',
         confirmButtonText: 'Ok',
         customClass: { popup: 'myalertpopup' }
       } as any)
-      this.phyComp.resetAll();
-      this.refresh();
-    }, (_error: any) => {
-       Swal.fire({
-              text: _error.error.error?.message?.value,
-              icon: 'error',
-              confirmButtonText: 'Ok',
-              customClass: { popup: 'myalertpopup' }
-            } as any)
-     });
-     this.actionType =  this.actionType == 'createandrelease' ? 'create' : ''
+    });
+  }
+  async createAndRelease() {
+    await this.createOrCopyThenRelease(() => this.phyComp.createPhyDoc());
+  }
+  async copyAndRelease() {
+    await this.createOrCopyThenRelease(() => this.phyComp.copyPhyDoc());
   }
   openReleasePdf(id) {
     this.pdfUrl = '';
@@ -656,7 +683,46 @@ export class DocumentationComponent implements OnInit {
     this.openCorrespondenceDocument = false;
     this.medDocList = [];
   }
+  // Validates a toolbar action against the selected document's status and, when
+  // blocked, shows an explanatory popup. Mirrors the lifecycle: edit/release/delete
+  // need a Draft, copy needs a Released doc, and create is blocked while a Draft
+  // exists (or a Released ER Physician doc, which must be Copied to a new version).
+  documentActionAllowed(action): boolean {
+    const status = this.selectedDocData?.StatusTxt;
+    const info = (text: string) => {
+      Swal.fire({
+        text,
+        icon: 'info',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      } as any);
+      return false;
+    };
+    if (action == 'create') {
+      if (status == 'Draft') {
+        return info('A draft already exists. Please release or delete it before creating a new document.');
+      }
+      if (status == 'Released' && this.phyAssess) {
+        return info('This document is released. Use Copy to create a new version.');
+      }
+    } else if (action == 'edit') {
+      if (status != 'Draft') { return info('Only draft documents can be edited.'); }
+    } else if (action == 'release') {
+      if (status != 'Draft') { return info('Only draft documents can be released.'); }
+    } else if (action == 'delete') {
+      if (status != 'Draft') { return info('Only draft documents can be deleted.'); }
+    } else if (action == 'copy') {
+      if (status != 'Released') { return info('Only released documents can be copied.'); }
+    }
+    return true;
+  }
   openDocument(action) {
+    // Lifecycle guard: the document is a single versioned record per case
+    // (Draft -> Released -> Copy -> next version). Explain, via a popup, why a
+    // button click is blocked instead of silently doing nothing.
+    if (!this.documentActionAllowed(action)) {
+      return;
+    }
     this.actionType = action;
     if (this.phyAssess) {
       if (action == 'create') {
@@ -1315,9 +1381,12 @@ async deleteCorrespondenceDoc(docKey: string) {
     (await this.medComp.createMedDoc()).subscribe((res: any) => {
       this.medComp.resetAll();
       this.refresh();
-    }, (_error: any) => { 
+    }, (_error: any) => {
         this.docsService.showErrorMsg(_error);
     });
+    // Clear the create-and-release flag synchronously (mirrors phy createAndRelease)
+    // so the async refresh -> getLatestAssessment does not re-trigger a release loop.
+    this.actionType = this.actionType == 'createandrelease' ? 'create' : '';
   }
   openMedReleasePdf(id) {
     this.pdfUrl = '';
@@ -1335,7 +1404,10 @@ async deleteCorrespondenceDoc(docKey: string) {
     this.emergencyService.getEduAssesLatestDocSet(json).subscribe(
       (_success: any) => {
         this.educationAssList = _success.d.results;
-        if (this.actionType == 'createandrelease') {
+        // Guard by the active form: app-education-form is *ngIf, so this runs only
+        // when the education flow is active (otherwise educationAssessmentComp is
+        // undefined -> "reading 'ngOnInit'" crash, and this.release() loops).
+        if (this.actionType == 'createandrelease' && this.educationAssessment) {
           this.educationAssessmentComp.ngOnInit();
           this.release();
         }

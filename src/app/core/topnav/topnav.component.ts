@@ -310,6 +310,33 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userData.allergies =
           allergies.length > 0 ? allergies.toString() : 'N/A';
         this.userData.payerType = success.d.results[0].FinCat;
+
+        // Reconcile lfdnr to the selected case's actual movement.
+        // Entry points (header-search widget URL, stepper switch) can carry an
+        // lfdnr that belongs to a *different* case, producing an invalid
+        // EINRI+FALNR+LFDNR key (blank banner / Case# NaN) and misfiled writes.
+        // CASESET is keyed by falnr only, so it is authoritative for this case.
+        const movementResults =
+          success.d.results[0].CASTOMOVEMENTSET?.results ?? [];
+        const urlLfdnr = this.storageService.lfdnr;
+        const lfdnrIsValidForCase = movementResults.some(
+          (m: any) => m.movmntSeq === urlLfdnr
+        );
+        const latestMovement = movementResults
+          .map((m: any) => m.movmntSeq)
+          .sort()
+          .slice(-1)[0];
+        const correctLfdnr = success.d.results[0].lfdnr || latestMovement;
+        if (!lfdnrIsValidForCase && correctLfdnr && correctLfdnr !== urlLfdnr) {
+          this.storageService.setLfdnr(correctLfdnr);
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { lfdnr: correctLfdnr },
+            queryParamsHandling: 'merge',
+          });
+          this.getDataPatient(this.storageService.getEncounterId());
+        }
+
         const movmntSeqData =
           success.d.results[0].CASTOMOVEMENTSET?.results.filter(
             (obj: any) =>
