@@ -375,17 +375,13 @@ export class DocumentationListComponent implements OnInit {
 
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
-    const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-xl pdfmodal-size',
-    };
-    this.selectedIconPdf = this.modalService.show(this.currentDocPdfVer, config);
-    this.userConfigurationService
-      .getAttachmentVisitData(attachmentId.DocKey)
-      .subscribe((data) => {
-        if (data) {
+    this.admissionService
+      .getPatientProfilePDF(attachmentId.DocKey)
+      .subscribe((_success: any) => {
+        if (_success) {
           this.patientVisitRecord = {
-            ...data,
-            DOCCATTOATTACHMENTS: { results: [data] },
+            ..._success,
+            DOCCATTOATTACHMENTS: { results: [_success] },
           };
 
           this.InOutPatientViewValue = {
@@ -393,7 +389,27 @@ export class DocumentationListComponent implements OnInit {
             showIn: false,
             showOut: true,
           };
-          this.sanitizeBase64();
+
+          this.pdfUrl = '';
+          this.htmlData = '';
+          this.releaseDocumentImage = '';
+          this.pdfUrlType = '';
+          const mimeType = attachmentId.Mimetype || _success.d?.AttMimeType;
+          if (mimeType == 'url') {
+            window.open(_success.d.Url);
+          } else if (mimeType == 'image/bmp') {
+            this.pdfUrlType = 'image';
+            this.pdfFormOpen();
+            this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
+          } else if (mimeType == 'HTML') {
+            this.pdfUrlType = 'html';
+            this.pdfFormOpen();
+            this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
+          } else {
+            this.pdfUrlConvertToBlob(_success.d.AttachmentData);
+            this.pdfUrlType = 'pdf';
+            this.pdfFormOpen();
+          }
           this.currentDocVersionRef.hide();
         }
       });

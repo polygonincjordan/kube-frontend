@@ -125,7 +125,11 @@ export class StepperComponent implements OnDestroy {
     this.selectedback = 'goback';
     this.selectedData = listItem;
 
-    const itemLfdnr = (listItem.Lfdnr ?? listItem.Lfdbew ?? listItem.MovmntSeq ?? this.storageService.lfdnr ?? '').toString();
+    // Do NOT fall back to the previously-stored lfdnr: PatientCaseSet rows
+    // carry no movement number, so the old fallback silently reused the prior
+    // case's lfdnr against the newly-selected case (blank banner / Case# NaN).
+    // Leaving it empty lets topnav reconcile the correct movement from CASESET.
+    const itemLfdnr = (listItem.Lfdnr ?? listItem.Lfdbew ?? listItem.MovmntSeq ?? '').toString();
     const paddedFalnr = listItem.Case.toString().padStart(10, '0');
     const paddedPatnr = listItem.Patient.toString().padStart(10, '0');
 

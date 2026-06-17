@@ -1,4 +1,5 @@
 import { StorageService } from '@services/storage.service';
+import { DataService } from '@services/data.service';
 import { ErHistoryComponent } from './er-history/er-history.component';
 import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -69,7 +70,7 @@ export class EmergencyDashboardComponent implements OnInit {
   modalRef:BsModalRef;
   
   constructor(private _route: ActivatedRoute, private datePipe: DatePipe, private modalService: BsModalService,
-    private _router: Router,private emergencyService:EmergencyService,private patientService: PatientService,public ePrescriptionService:ErDischargeordersService,private elementRef: ElementRef,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private formBuilder: FormBuilder,private titleService: Title,) {
+    private _router: Router,private emergencyService:EmergencyService,private patientService: PatientService,public ePrescriptionService:ErDischargeordersService,private elementRef: ElementRef,private storageService:StorageService,private orderDashboardService: OrdersDashboardService,private formBuilder: FormBuilder,private titleService: Title,private dataService: DataService,) {
       this.formDetailGroup = new FormGroup({
         'SearchData': new FormControl(''),
         'DateRange': new FormControl([new Date(), new Date()]),
@@ -108,8 +109,15 @@ export class EmergencyDashboardComponent implements OnInit {
     });
     if (this.queryNav == 'Treatmentarea') {
       this.selectModule('treatmentarea');
-      this.encounterId = this.einri+ this.falnr + this.lfdnr;
-      this.getDataPatient();
+      if (this.lfdnr) {
+        this.encounterId = this.einri + this.falnr + this.lfdnr;
+        this.getDataPatient();
+      } else {
+        // The header case-search path leaves lfdnr blank on purpose; resolve the
+        // correct movement from CASESET (keyed by falnr) before loading data,
+        // otherwise the encounter key is invalid (blank banner / Case# NaN).
+        this.resolveLfdnrThenLoad();
+      }
     }else{
     this.selectModule('checkin');
     }
@@ -328,6 +336,44 @@ export class EmergencyDashboardComponent implements OnInit {
    }
 
    //this.getDataPatient();
+  }
+  // CASESET is keyed by falnr only and is authoritative for the case's movements,
+  // so it can supply the lfdnr (movement) the header search left blank.
+  resolveLfdnrThenLoad() {
+    this.dataService
+      .loadData('CASESET', [this.falnr], 'falnr', false, ['CASTOMOVEMENTSET'], true, true, true, false, true)
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        (resp: any) => {
+          let success = resp;
+          if (resp?._body) {
+            success = JSON.parse(resp._body);
+          }
+          const caseData = success?.d?.results?.[0];
+          const movementResults = caseData?.CASTOMOVEMENTSET?.results ?? [];
+          const latestMovement = movementResults
+            .map((m: any) => m.movmntSeq)
+            .sort()
+            .slice(-1)[0];
+          const correctLfdnr = caseData?.lfdnr || latestMovement;
+          if (correctLfdnr) {
+            this.lfdnr = correctLfdnr;
+            this.storageService.setLfdnr(correctLfdnr);
+            this._router.navigate([], {
+              relativeTo: this._route,
+              queryParams: { lfdnr: correctLfdnr },
+              queryParamsHandling: 'merge',
+            });
+          }
+          this.encounterId = this.einri + this.falnr + (this.lfdnr ?? '');
+          this.getDataPatient();
+        },
+        (_error: any) => {
+          // Fall back to whatever key we have so the call still resolves/errors visibly.
+          this.encounterId = this.einri + this.falnr + (this.lfdnr ?? '');
+          this.getDataPatient();
+        }
+      );
   }
   getDataPatient() {
     this.patientService
@@ -555,6 +601,7 @@ export class EmergencyDashboardComponent implements OnInit {
     }
 
     caseNumberReturn(caseNumber: any) {
-      return parseInt(caseNumber, 10).toString()
+      const n = parseInt(caseNumber, 10);
+      return isNaN(n) ? '-' : n.toString();
     }
 }
