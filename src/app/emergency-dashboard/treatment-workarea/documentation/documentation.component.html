@@ -83,8 +83,8 @@ min-width: 10%;">
               <input formControlName="DocDate" type="text" placeholder="" [minDate]="" [maxDate]=""
                 #docDp="bsDatepicker" bsDatepicker
                 [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }"
-                style="width: 110px; margin-left: 6px;" />
-              <input placeholder="" style="width: 80px; margin-left: 6px;" [ngxTimepicker]="docFullTime"
+                style="width: 110px; margin-left: 6px; background-color: #fff; color: #000000; outline: 0; font-size: 14px; padding: 5px 10px; border-radius: 8px; border: 1px solid #0056b0;" />
+              <input placeholder="" style="width: 80px; margin-left: 6px; background-color: #fff; color: #000000; outline: 0; font-size: 14px; padding: 5px 10px; border-radius: 8px; border: 1px solid #0056b0;" [ngxTimepicker]="docFullTime"
                 [format]="24" formControlName="DocTime">
               <ngx-material-timepicker #docFullTime
                 style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
