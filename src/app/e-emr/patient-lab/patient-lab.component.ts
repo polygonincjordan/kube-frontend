@@ -438,10 +438,20 @@ export class PatientLabComponent implements OnInit {
     // Loads already-checked lab documents from the PR-status OData endpoint
     // and renders them in the same table as the pending list.
     loadCheckedLabResults() {
+      // The PR-status endpoint requires a patient number.
+      const patnr = this.formatMrn(this.patientMrn);
+      if (!patnr) {
+        Swal.fire({
+          title: "Patient's MRN required",
+          text: "Please enter the Patient's MRN to view checked results.",
+          icon: 'warning',
+        });
+        return;
+      }
       this.resetPiechartData();
       this._dataServices
         .getCheckedLabResults(
-          this.formatMrn(this.patientMrn),
+          patnr,
           this.formatDate(this.dateFrom),
           this.formatDate(this.dateTo)
         )
