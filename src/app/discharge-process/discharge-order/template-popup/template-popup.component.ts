@@ -175,7 +175,7 @@ export class TemplatePopupComponent implements OnDestroy {
       icon: 'warning',
     } as any).then((result: any) => {
       if (!result.value) { return; }
-      this.ePrescriptionService.deleteData(`OrderTemplateSet(Prscrid='${data.Prscrid}')`).subscribe({
+      this.ePrescriptionService.deleteData(`OrderTemplateSet(Eorderid='${data.Prscrid}')`).subscribe({
         next: () => {
           this.configurationData = this.configurationData.filter(d => d.Prscrid !== data.Prscrid);
           this.ePrescriptionService.loadTemplateMedicationData();

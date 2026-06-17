@@ -163,7 +163,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
       icon: 'warning',
     } as any).then((result: any) => {
       if (!result.value) { return; }
-      this.ePrescriptionService.deleteData(`OrderTemplateSet(Prscrid='${data.Prscrid}')`).subscribe({
+      this.ePrescriptionService.deleteData(`OrderTemplateSet(Eorderid='${data.Prscrid}')`).subscribe({
         next: () => {
           this.configurationData = this.configurationData.filter(d => d.Prscrid !== data.Prscrid);
           this.ePrescriptionService.loadAdministrationTemplateData();

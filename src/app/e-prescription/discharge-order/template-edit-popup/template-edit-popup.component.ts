@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
  * Editable view of a User-Level medication template (Discharge tab, Ordtype = '2').
  * Loaded with the rows returned by `OrderTemplateget` (GET OrderTemplateSet by Tpgid).
  * Supports adding a medication (search), deleting selected rows and saving via
- * PUT OrderTemplateSet(Prscrid='<Tpgid>').
+ * PUT OrderTemplateSet(Eorderid='<Tpgid>').
  */
 @Component({
   selector: 'template-edit-popup',
@@ -246,7 +246,7 @@ export class TemplateEditPopupComponent {
     payload['Ordtype'] = this.ordtype;
     payload['TOORDERTEMPLATE'] = toOrderTemplate;
 
-    this.ePrescriptionService.updateData(`OrderTemplateSet(Prscrid='${this.meta.prscrid}')`, payload).subscribe({
+    this.ePrescriptionService.updateData(`OrderTemplateSet(Eorderid='${this.meta.prscrid}')`, payload).subscribe({
       next: () => {
         Swal.fire({
           title: 'Your Template has been Updated!',
