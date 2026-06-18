@@ -2510,8 +2510,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       this.subscription = this.emergencyService.saveNurEmrTriage(payload).subscribe({
         next: (data: any) => {
           // Handle successful data retrieval
-          this.updateTriageStatus();
           this.sharedService.successSwallModel('Triage history saved successfully');
+          this.updateTriageStatus();
           // this.modalRefForAllergy?.hide();
         },
         error: (error: any) => {
@@ -2563,8 +2563,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       this.subscription = this.emergencyService.saveNurEmrTriage(payload).subscribe({
         next: (data: any) => {
           // Handle successful data retrieval
-          this.updateTriageStatus();
           this.sharedService.successSwallModel('Triage form done successfully');
+          this.updateTriageStatus();
           // this.modalRefForAllergy?.hide();
         },
         error: (error: any) => {
@@ -2580,6 +2580,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   }
 
   public updateTriageStatus() {
+    const selectedPriority = this.triageList.find((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority);
+    if (!selectedPriority) return;
     let payload = {
       Dockey: this.triageForm.value.Dockey,
       Dokst: "FR",
@@ -2598,9 +2600,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       Patnr: this.paramsObject.patnr,
       Referredby: "",
       Released: false,
-      TriageColor: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriageColor,
-      TriagePriorityCode: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriagePriorityCode,
-      TriagePriorityText: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].label,
+      TriageColor: selectedPriority.TriageColor,
+      TriagePriorityCode: selectedPriority.TriagePriorityCode,
+      TriagePriorityText: selectedPriority.label,
       Zimmr: "",
       Mode: true,
     }
