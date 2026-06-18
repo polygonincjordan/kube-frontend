@@ -243,25 +243,36 @@ export class AdministrationTemplateEditPopupComponent {
     payload['Ordtype'] = this.ordtype;
     payload['TOORDERTEMPLATE'] = toOrderTemplate;
 
-    this.ePrescriptionService.updateData(`OrderTemplateSet(Eorderid='${this.meta.prscrid}')`, payload).subscribe({
+    // SAP does not support a deep PUT on OrderTemplateSet, and "update" is defined as
+    // create-a-replacement-then-deactivate-the-previous. So perform it as POST (deep create)
+    // followed by DELETE (soft-delete the old record). The replacement gets a new Tpgid.
+    this.ePrescriptionService.postData('e-prescription/OrderTemplate', payload).subscribe({
       next: () => {
-        Swal.fire({
-          title: 'Your Template has been Updated!',
-          confirmButtonColor: '#0890c5',
-          cancelButtonColor: '#84898c',
-          confirmButtonText: 'OK',
-          customClass: { popup: 'myalertpopup' },
-          icon: 'success'
-        } as any).then(() => {
-          this.modaleditRef.hide();
-          this.ePrescriptionService.loadAdministrationTemplateData();
-          this.onSaved.emit(true);
+        this.ePrescriptionService.deleteData(`OrderTemplateSet(Eorderid='${this.meta.prscrid}')`).subscribe({
+          next: () => this.afterUpdateSuccess(),
+          error: () => this.afterUpdateSuccess('The updated template was saved, but the previous version could not be deactivated. Please delete it manually.')
         });
       },
       error: (error: any) => {
         const message = error && error.error && error.error.error && error.error.error.message ? error.error.error.message.value : 'Unable to update the template';
         this.showInfo(message, 'error');
       }
+    });
+  }
+
+  private afterUpdateSuccess(warn?: string): void {
+    Swal.fire({
+      title: warn ? 'Template Updated' : 'Your Template has been Updated!',
+      text: warn || '',
+      confirmButtonColor: '#0890c5',
+      cancelButtonColor: '#84898c',
+      confirmButtonText: 'OK',
+      customClass: { popup: 'myalertpopup' },
+      icon: warn ? 'warning' : 'success'
+    } as any).then(() => {
+      this.modaleditRef.hide();
+      this.ePrescriptionService.loadAdministrationTemplateData();
+      this.onSaved.emit(true);
     });
   }
 
