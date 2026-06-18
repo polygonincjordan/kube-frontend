@@ -48,9 +48,9 @@ export class ErTriageComponent implements OnInit {
   noHabitApplicable: boolean = false;
   isTriagePrioritySelected:boolean = false;
   modeArrivalList = [
-    { value: '0', label: 'Stretcher' },
-    { value: '1', label: 'Ambulatory' },
-    { value: '2', label: 'Wheel Chair' },
+    { value: '0', label: 'Ambulatory' },
+    { value: '1', label: 'Wheel Chair' },
+    { value: '2', label: 'Stretcher' },
     { value: '3', label: 'Carried' },
     { value: '4', label: 'Cuddled' },
     { value: '5', label: 'Other' },
@@ -201,8 +201,8 @@ export class ErTriageComponent implements OnInit {
   // triahe main form group
   initForm(triageValue?: any) {
     this.selectedTriagePriorityData = triageValue?.TriagePriority
-    console.log(this.selectedTriagePriorityData);
-    
+    this.noHabitApplicable = triageValue?.NoHabit ? true : false;
+
     this.triageForm = this.formBuilder.group({
       Dockey: triageValue?.Dockey ? triageValue?.Dockey : '',
       Dtid: triageValue?.Dtid ? triageValue?.Dtid : 'ZMED_TRASM',
@@ -229,8 +229,8 @@ export class ErTriageComponent implements OnInit {
       PsyOther: triageValue?.PsyOther ? triageValue?.PsyOther : false,
       PsyComments: triageValue?.PsyComments ? triageValue?.PsyComments : '',
       Since: triageValue?.Since ? triageValue?.Since : '',
-      NumberSpouse: triageValue?.NumberSpouse ? triageValue?.NumberSpouse : '',
-      SHComments: triageValue?.SHComments ? triageValue?.SHComments : '',
+      NumberOfSpouses: triageValue?.NumberOfSpouses ? triageValue?.NumberOfSpouses : '',
+      Comments: triageValue?.Comments ? triageValue?.Comments : '',
       AttendPhy: triageValue?.AttendPhy ? triageValue?.AttendPhy : this.storageService.getGpart(),
       DocStatus: '1',
     });
@@ -739,6 +739,7 @@ export class ErTriageComponent implements OnInit {
 
     let payload = {
       ...this.triageForm.value,
+      NoHabit: this.noHabitApplicable,
       TOALLERGIES: this.toAllergyArr,
       TOVITALSIGNS: this.toVitalsArr,
       TOSCALE: checkScalesList,
