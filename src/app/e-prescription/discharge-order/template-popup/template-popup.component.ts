@@ -23,6 +23,9 @@ export class TemplatePopupComponent implements OnDestroy {
   @ViewChild('templateEditPopup', { static: true }) templateEditPopup: TemplateEditPopupComponent;
 
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
+
+  // Edit/Delete hidden until backend OrderTemplateSet update/delete is ready. Set true to re-enable.
+  public templateEditDeleteEnabled = false;
   public templateSearchQuery: string = '';
   public configurationData: TemplateMedicationData[];
 

@@ -48,11 +48,11 @@
                 <img src="assets/img/detail-icon.svg" alt="">
               </button>
               <button type="button" class="template-row-icon" title="Edit"
-                *ngIf="element.Tmpaccesslevel === ''" (click)="onEditTemplate(element)">
+                *ngIf="templateEditDeleteEnabled && element.Tmpaccesslevel === ''" (click)="onEditTemplate(element)">
                 <i class="fa fa-pencil"></i>
               </button>
               <button type="button" class="template-row-icon template-row-delete" title="Delete"
-                *ngIf="element.Tmpaccesslevel === ''" (click)="onDeleteTemplate(element)">
+                *ngIf="templateEditDeleteEnabled && element.Tmpaccesslevel === ''" (click)="onDeleteTemplate(element)">
                 <i class="fa fa-trash"></i>
               </button>
             </div>
