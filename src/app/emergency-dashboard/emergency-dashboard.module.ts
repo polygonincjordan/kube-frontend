@@ -126,6 +126,7 @@ import { PastMedicalComponent } from './treatment-workarea/history-assessment/pa
 import { PastSurgicalComponent } from './treatment-workarea/history-assessment/past-surgical/past-surgical.component';
 import { HistoryAssessmentComponent } from './treatment-workarea/history-assessment/history-assessment.component';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
+import { CycleDefinitionModule } from '../shared-module/cycle-definition/cycle-definition.module';
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { FeeListService } from '@services/fee-service/fee-list.service';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
@@ -230,7 +231,8 @@ export const emergencyDashboard: Routes = [
     CorrespondenceDocumentModule,
     AdminAttechmentModule,
     VitalSignModule,
-    ConsultationsOrdersModule
+    ConsultationsOrdersModule,
+    CycleDefinitionModule
   ]
 })
 export class EmergencyDashboardModule { }

@@ -8,6 +8,7 @@ import { formatDate } from 'ngx-bootstrap/chronos';
 import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
+import { CycleDefinitionPopupComponent } from '../../../../shared-module/cycle-definition/cycle-definition-popup.component';
 import { TemplateDescriptionComponent } from './template-description/template-description.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -36,6 +37,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   @ViewChild('additionalPopup', { static: true }) additionalPopup: AdditionInfoPopupComponent;
   @ViewChild('prnPopup', { static: true }) prnPopup: AdditionInfoPopupComponent;
   @ViewChild('templateDescription', { static: true }) templateDescription: TemplateDescriptionComponent;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
 
   @Input() set templateData(data: TemplateMedDataList[]) { if (data && data.length) { this.processTemplateData(data) } else { return; } }
 
@@ -74,6 +76,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Descr: item.Descr,
             Complex: item.Complex,
             TOCOMPLEX: item.TOCOMPLEX.results,
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
           })
           notTouchedForms[notTouchedFormIndex].markAsTouched();
           this.onChangeFrequencySet(item.N1znr, notTouchedFormIndex)
@@ -99,6 +102,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Descr: item.Descr,
             Complex: item.Complex,
             TOCOMPLEX: item.TOCOMPLEX.results,
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
           })
           this.drugArray.push(arrayOfFormControl);
           this.onChangeFrequencySet(item.N1znr, this.drugArray.controls.length - 1)
@@ -138,6 +142,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Priority: new FormControl('010', Validators.required),
       Routedescr: new FormControl(null),
       TOCOMPLEX: new FormControl([]),
+      TOCYCDEF: new FormControl([]),
       TOEVENTDATA: new FormControl([]),
       Formatdescr: new FormControl(null),
       Result_Drug_Name: new FormControl(null, Validators.required),
@@ -572,6 +577,56 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     this.additionalPopup.showPopup(data.get('Descr').value, index);
   }
 
+  onOpenCycleDefinition(index: number) {
+    const item = this.drugArray.controls[index];
+    const existing = item.get('TOCYCDEF').value || [];
+    const orderId = item.get('Eorderid') ? item.get('Eorderid').value : null;
+    if ((!existing || !existing.length) && orderId) {
+      this.ePrescriptionService.getData(`CycleDefSet?$filter=OrderId eq '${orderId}'`).subscribe((res: any) => {
+        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+        item.get('TOCYCDEF').setValue(records);
+        this.cyclePopup.showPopup({
+          index, n1znr: item.get('N1znr').value, title: item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : ''),
+          startDate: item.get('StartD').value, records
+        });
+      }, () => {
+        this.cyclePopup.showPopup({
+          index, n1znr: item.get('N1znr').value, title: item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : ''),
+          startDate: item.get('StartD').value, records: existing
+        });
+      });
+      return;
+    }
+    this.cyclePopup.showPopup({
+      index, n1znr: item.get('N1znr').value, title: item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : ''),
+      startDate: item.get('StartD').value, records: existing
+    });
+  }
+
+  onCycleSaved(event: { index: number; data: any[] }) {
+    this.drugArray.controls[event.index].get('TOCYCDEF').setValue(event.data || []);
+    this.drugArray.controls[event.index].markAsTouched();
+  }
+
+  /**
+   * Normalise the cycle-definition records for the EstdordSet payload: keep only
+   * the documented TOCYCDEF fields and re-stamp the order frequency key (N1znr)
+   * so it stays in sync if the Frequency was changed after the cycles were set.
+   */
+  normalizeCycleDef(element: any): any[] {
+    const records = element.TOCYCDEF && element.TOCYCDEF.length ? element.TOCYCDEF : [];
+    return records.map((r: any, i: number) => ({
+      N1znr: element.N1znr,
+      N1lfnr: r.N1lfnr || `${i + 1}`.padStart(4, '0'),
+      Menge: `${r.Menge}`,
+      Begdt: r.Begdt,
+      Enddt: r.Enddt,
+      Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
+      IntervalDay: +r.IntervalDay || 1,
+      IntervalHour: `${r.IntervalHour || '0'}`
+    }));
+  }
+
   onUpdatedAdditionalInfo(event: any) {
     this.drugArray.controls[event.index].patchValue({ Descr: event.data })
   }
@@ -638,6 +693,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           delete element.IsFrequencyDeftim;
           delete element.deftimcycleData;
           delete element.AgentidResult;
+          element.TOCYCDEF = this.normalizeCycleDef(element);
           element.TOCOMPLEX.forEach(element => {
             delete element.N1zxtr;
             element.Quan = `${element.Quan}`;
@@ -717,6 +773,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             delete element.IsFrequencyDeftim;
             delete element.deftimcycleData;
             delete element.AgentidResult;
+            element.TOCYCDEF = this.normalizeCycleDef(element);
             element.TOCOMPLEX.forEach(element => {
               delete element.N1zxtr;
               element.Quan = `${element.Quan}`;

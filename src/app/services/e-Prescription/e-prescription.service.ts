@@ -701,6 +701,7 @@ export class TemplateMedDataListget {
   Dosdef: string;
   Stocktext: string;
   TOCOMPLEX: TOCOMPLEX[]
+  TOCYCDEF?: { results: any[] }
 
   isSelected: boolean = false;
 }

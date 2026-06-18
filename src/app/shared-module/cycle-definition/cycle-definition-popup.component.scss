@@ -1,0 +1,97 @@
+.cycle-def {
+  font-size: 13px;
+
+  &__header {
+    background: #1b3a8c;
+    color: #fff;
+    padding: 14px 18px;
+
+    small {
+      opacity: 0.85;
+      font-size: 12px;
+    }
+  }
+
+  &__close {
+    filter: brightness(0) invert(1);
+  }
+
+  &__tabs {
+    border-bottom: 1px solid #e3e6ef;
+  }
+
+  &__tab {
+    padding-bottom: 6px;
+    font-weight: 600;
+    color: #6c757d;
+    border-bottom: 2px solid transparent;
+
+    &.active {
+      color: #1b3a8c;
+      border-bottom-color: #1b3a8c;
+    }
+  }
+
+  &__add {
+    color: #1b3a8c;
+    font-weight: 600;
+  }
+
+  &__label {
+    min-width: 70px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  &__section {
+    border: 1px solid #e3e6ef;
+    border-radius: 6px;
+  }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 12px;
+  }
+
+  &__day {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+  }
+
+  &__num {
+    width: 90px;
+  }
+
+  &__footer {
+    border-top: 1px solid #e3e6ef;
+  }
+
+  &__save {
+    background: #1b3a8c;
+    color: #fff;
+
+    &:hover {
+      background: #152f73;
+      color: #fff;
+    }
+  }
+
+  &__cancel {
+    background: #e9ecef;
+    color: #333;
+  }
+}
+
+::ng-deep .cycle-definition-modal .modal-dialog {
+  max-width: 760px;
+}
+
+::ng-deep .cycle-definition-modal .modal-content {
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+}

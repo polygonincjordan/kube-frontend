@@ -34,6 +34,7 @@ import { EventsOrderComponent } from './administration/events-order/events-order
 import { FrequencyDeftimComponent } from './administration/frequency-deftim/frequency-deftim.component';
 import { MedicationDetailsComponent } from './administration/medication-details-popup/medication-details.component';
 import { AdditionInfoPopupComponent } from './discharge-order/addition-info-popup/addition-info-popup.component';
+import { CycleDefinitionModule } from '../shared-module/cycle-definition/cycle-definition.module';
 import { CreateDischargeOrderComponent } from './discharge-order/create-discharge-order/create-discharge-order.component';
 import { DischargeOrderComponent } from './discharge-order/discharge-order.component';
 import { MedicationPopupComponent } from './discharge-order/medication-popup/medication-popup.component';
@@ -185,7 +186,8 @@ export const ePrescriptionRoutes: Routes = [
     WebcamModule,
     ImageCropperModule,
     NgMultiSelectDropDownModule,
-    NgbCollapseModule
+    NgbCollapseModule,
+    CycleDefinitionModule
   ],
 
 
