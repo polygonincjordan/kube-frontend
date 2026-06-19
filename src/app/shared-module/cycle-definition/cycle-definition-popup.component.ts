@@ -72,11 +72,14 @@ export class CycleDefinitionPopupComponent {
 
   /** Build a single cycle form group, optionally hydrated from a saved record. */
   private buildCycle(record: any = {}): FormGroup {
-    return this.fb.group({
+    const begin = this.toDate(record.Begdt) || new Date();
+    const group = this.fb.group({
       N1lfnr: [record.N1lfnr || ''],
       Menge: [record.Menge !== undefined && record.Menge !== null && record.Menge !== '' ? `${record.Menge}` : '1'],
-      Begdt: [this.toDate(record.Begdt) || new Date()],
-      Enddt: [this.toDate(record.Enddt) || this.maxDate()],
+      Begdt: [begin],
+      // Default the end of the cycle to one month after the start, rather than the
+      // open-ended 31.12.9999, so a new order has a sensible bounded span.
+      Enddt: [this.toDate(record.Enddt) || this.addMonths(begin, 1)],
       everyDay: [record.IntervalDay !== undefined && +record.IntervalDay > 1 ? false : true],
       IntervalDay: [record.IntervalDay !== undefined && record.IntervalDay !== null ? +record.IntervalDay : 1],
       Mo: [this.toBool(record.Mo, true)],
@@ -94,6 +97,22 @@ export class CycleDefinitionPopupComponent {
       IntervalHour: [record.IntervalHour !== undefined && record.IntervalHour !== null && record.IntervalHour !== '' ? `${record.IntervalHour}` : '24'],
       IntervalMinute: [record.IntervalMinute !== undefined && record.IntervalMinute !== null ? `${record.IntervalMinute}` : '0000'],
       Comment: [record.Comment || record.N1ztxt || '']
+    });
+    this.keepEndDateValid(group);
+    return group;
+  }
+
+  /**
+   * Keep the To date sensible: whenever the From date moves to or past the To
+   * date, push the To date to one month after the new From date.
+   */
+  private keepEndDateValid(group: FormGroup): void {
+    group.get('Begdt').valueChanges.subscribe((value) => {
+      const begin = this.toDate(value);
+      const end = this.toDate(group.get('Enddt').value);
+      if (begin && (!end || end <= begin)) {
+        group.get('Enddt').setValue(this.addMonths(begin, 1), { emitEvent: false });
+      }
     });
   }
 
@@ -171,7 +190,10 @@ export class CycleDefinitionPopupComponent {
     return isNaN(parsed.getTime()) ? null : parsed;
   }
 
-  private maxDate(): Date {
-    return new Date('9999-12-31T00:00:00');
+  /** Return a new Date `months` after the given date (overflow rolls forward). */
+  private addMonths(date: Date, months: number): Date {
+    const result = new Date(date.getTime());
+    result.setMonth(result.getMonth() + months);
+    return result;
   }
 }
