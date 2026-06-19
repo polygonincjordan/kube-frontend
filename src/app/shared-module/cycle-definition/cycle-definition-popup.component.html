@@ -33,14 +33,15 @@
 
           <!-- From / To date -->
           <div class="row mb-3">
-            <div class="col-6 d-flex align-items-center">
+            <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
               <label class="cycle-def__label mb-0 mr-2">From Date</label>
               <input type="text" class="form-control" formControlName="Begdt" bsDatepicker
                 [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false, containerClass: 'theme-default' }">
             </div>
-            <div class="col-6 d-flex align-items-center">
+            <div class="col-12 col-md-6 d-flex align-items-center">
               <label class="cycle-def__label mb-0 mr-2">To Date</label>
               <input type="text" class="form-control" formControlName="Enddt" bsDatepicker
+                [minDate]="cycle.get('Begdt').value"
                 [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false, containerClass: 'theme-default' }">
             </div>
           </div>
@@ -53,11 +54,11 @@
 
             <!-- Qty + multiple day fixed interval -->
             <div class="row mb-3 align-items-center">
-              <div class="col-6 d-flex align-items-center">
+              <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0">
                 <label class="cycle-def__label mb-0 mr-2">Qty</label>
                 <input type="number" min="1" class="form-control" formControlName="Menge">
               </div>
-              <div class="col-6 d-flex align-items-center">
+              <div class="col-12 col-md-6 d-flex align-items-center">
                 <input type="checkbox" id="mdfi{{i}}" formControlName="multipleDayFixedInterval" class="mr-2">
                 <label for="mdfi{{i}}" class="mb-0">Multiple Day Fixed Interval</label>
               </div>
@@ -65,7 +66,7 @@
 
             <!-- Week days + Every Day / Every N day -->
             <div class="row mb-3">
-              <div class="col-7">
+              <div class="col-12 col-md-7 mb-3 mb-md-0">
                 <div class="cycle-def__weekdays">
                   <label class="cycle-def__day"><input type="checkbox" formControlName="Mo"> Mo</label>
                   <label class="cycle-def__day"><input type="checkbox" formControlName="Tu"> Tu</label>
@@ -77,7 +78,7 @@
                   <label class="cycle-def__day"><input type="checkbox" formControlName="PublHol"> Publ.Hol.</label>
                 </div>
               </div>
-              <div class="col-5">
+              <div class="col-12 col-md-5">
                 <div class="d-flex align-items-center mb-2">
                   <input type="radio" id="everyDay{{i}}" formControlName="everyDay" [value]="true" class="mr-2">
                   <label for="everyDay{{i}}" class="mb-0">Every Day</label>
@@ -94,7 +95,7 @@
 
             <!-- From / To time + interval -->
             <div class="row">
-              <div class="col-7">
+              <div class="col-12 col-md-7 mb-3 mb-md-0">
                 <div class="d-flex align-items-center mb-2">
                   <label class="cycle-def__label mb-0 mr-2">From Time</label>
                   <input type="time" class="form-control" formControlName="fromTime">
@@ -104,7 +105,7 @@
                   <input type="time" class="form-control" formControlName="toTime">
                 </div>
               </div>
-              <div class="col-5">
+              <div class="col-12 col-md-5">
                 <div class="d-flex align-items-center mb-2">
                   <input type="radio" id="hours{{i}}" formControlName="intervalMode" value="hours" class="mr-2">
                   <label for="hours{{i}}" class="mb-0 mr-2">Every</label>

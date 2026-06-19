@@ -1,6 +1,16 @@
 .cycle-def {
   font-size: 13px;
 
+  // Let inputs inside flex rows shrink instead of forcing horizontal overflow.
+  .form-control {
+    min-width: 0;
+  }
+
+  &__body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
   &__header {
     background: #1b3a8c;
     color: #fff;
@@ -52,6 +62,10 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px 12px;
+
+    @media (max-width: 575.98px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   &__day {
@@ -64,6 +78,7 @@
 
   &__num {
     width: 90px;
+    flex: 0 0 auto;
   }
 
   &__footer {
@@ -88,6 +103,13 @@
 
 ::ng-deep .cycle-definition-modal .modal-dialog {
   max-width: 760px;
+  width: auto;
+
+  // On small screens use (almost) the full viewport width with a small margin.
+  @media (max-width: 767.98px) {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
 }
 
 ::ng-deep .cycle-definition-modal .modal-content {
