@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { EmergencyDashboardComponent } from './emergency-dashboard.component';
+import { CycleDefinitionModule } from '../../shared-module/cycle-definition/cycle-definition.module';
 import { OrdersTemplatesComponent } from './treatment-workarea/orders-templates/orders-templates.component';
 import { PhysicianOrdersComponent } from './treatment-workarea/physician-orders/physician-orders.component';
 import { TreatmentWorkareaComponent } from './treatment-workarea/treatment-workarea.component';
@@ -169,6 +170,7 @@ export const emergencyDashboard: Routes = [
     TabsModule.forRoot(),
     NgbCollapseModule,
     TimepickerModule,
+    CycleDefinitionModule,
   ]
 })
 export class EmergencyDashboardModule { }
