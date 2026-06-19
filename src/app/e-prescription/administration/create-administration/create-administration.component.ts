@@ -70,9 +70,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Prn: item.Prn,
             Descr: item.Descr,
             Complex: item.Complex,
-            Dosdef: !item.Dosdef && (item.N1znr === '0000000100' || item.N1znr === '0000000003') && item.Quan && item.Quan !== '0.000'
-              ? `${item.Quan}(08:00)`
-              : item.Dosdef,
+            Dosdef: item.Dosdef,
             N1ztxt:item.N1ztxt,
             TOCOMPLEX: item.TOCOMPLEX.results,
           })
@@ -100,9 +98,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Prn: item.Prn,
             Descr: item.Descr,
             Complex: item.Complex,
-            Dosdef: !item.Dosdef && (item.N1znr === '0000000100' || item.N1znr === '0000000003') && item.Quan && item.Quan !== '0.000'
-              ? `${item.Quan}(08:00)`
-              : item.Dosdef,
+            Dosdef: item.Dosdef,
             N1ztxt:item.N1ztxt,
             TOCOMPLEX: item.TOCOMPLEX.results,
           })

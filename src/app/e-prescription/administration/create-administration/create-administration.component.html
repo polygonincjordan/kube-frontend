@@ -91,11 +91,11 @@
                           <span class="input-title z-indexlabel">Dosage</span>
                           <span class="input-text-field d-inline-block align-top
                             w-100">
-                            <input type="text" class="form-control" formControlName="Dosdef" [ngClass]="item.touched
+                            <input type="text" class="form-control" formControlName="Quan" [ngClass]="item.touched
                               &&
-                              item.get('Dosdef').errors &&
+                              item.get('Quan').errors &&
                               isFormSubmitted ?
-                              'ep-error-message': ''" [readonly]="item.value.Complex" />
+                              'ep-error-message': ''" [readonly]="item.value.Complex" appDigitDecimaNumber />
                           </span>
                         </span>
                       </td>
