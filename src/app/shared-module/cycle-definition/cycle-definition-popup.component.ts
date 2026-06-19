@@ -95,8 +95,7 @@ export class CycleDefinitionPopupComponent {
       toTime: [record.ToTime || '09:00'],
       intervalMode: [record.IntervalMinute && +record.IntervalMinute > 0 ? 'minutes' : 'hours'],
       IntervalHour: [record.IntervalHour !== undefined && record.IntervalHour !== null && record.IntervalHour !== '' ? `${record.IntervalHour}` : '24'],
-      IntervalMinute: [record.IntervalMinute !== undefined && record.IntervalMinute !== null ? `${record.IntervalMinute}` : '0000'],
-      Comment: [record.Comment || record.N1ztxt || '']
+      IntervalMinute: [record.IntervalMinute !== undefined && record.IntervalMinute !== null ? `${record.IntervalMinute}` : '0000']
     });
     this.keepEndDateValid(group);
     return group;

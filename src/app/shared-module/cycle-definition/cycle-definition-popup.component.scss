@@ -1,14 +1,23 @@
 .cycle-def {
   font-size: 13px;
+  // Never let the Bootstrap grid gutters spill outside the modal.
+  overflow-x: hidden;
+
+  // The popup cannot rely on global Bootstrap spacing utilities being present,
+  // so neutralise the .row negative gutters and apply our own column padding.
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  [class*="col-"] {
+    padding-left: 0;
+    padding-right: 16px;
+  }
 
   // Let inputs inside flex rows shrink instead of forcing horizontal overflow.
   .form-control {
     min-width: 0;
-  }
-
-  &__body {
-    max-height: 70vh;
-    overflow-y: auto;
   }
 
   &__header {
@@ -23,11 +32,15 @@
   }
 
   &__close {
-    filter: brightness(0) invert(1);
+    font-size: 26px;
+    line-height: 1;
+    color: #fff;
+    font-weight: 400;
   }
 
   &__tabs {
     border-bottom: 1px solid #e3e6ef;
+    padding: 12px 18px 0;
   }
 
   &__tab {
@@ -47,6 +60,13 @@
     font-weight: 600;
   }
 
+  &__body {
+    padding: 18px;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   &__label {
     min-width: 70px;
     font-weight: 600;
@@ -56,6 +76,7 @@
   &__section {
     border: 1px solid #e3e6ef;
     border-radius: 6px;
+    padding: 16px;
   }
 
   &__weekdays {
@@ -83,6 +104,15 @@
 
   &__footer {
     border-top: 1px solid #e3e6ef;
+    padding: 14px 18px;
+  }
+
+  &__save,
+  &__cancel {
+    min-width: 96px;
+    border-radius: 20px;
+    padding: 8px 22px;
+    font-weight: 600;
   }
 
   &__save {
