@@ -132,8 +132,8 @@
 }
 
 ::ng-deep .cycle-definition-modal .modal-dialog {
-  max-width: 760px;
-  width: auto;
+  max-width: 960px;
+  width: 92vw;
 
   // On small screens use (almost) the full viewport width with a small margin.
   @media (max-width: 767.98px) {

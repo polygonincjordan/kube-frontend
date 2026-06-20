@@ -482,6 +482,51 @@
                         </div>
                       </div>
                     </form>
+                    <form [formGroup]="filterForm"
+                      *ngIf="navTabBoxActiveValue == '02' || navTabBoxActiveValue == '03' || navTabBoxActiveValue == '04' || navTabBoxActiveValue == '05'">
+                      <div>
+                        <p style="margin: auto; margin-top: 5px">Age</p>
+                        <div style="display: flex; gap: 6px">
+                          <input formControlName="PatientAgeFrom" class="form-control" type="number" min="0"
+                            placeholder="Min" />
+                          <input formControlName="PatientAgeTo" class="form-control" type="number" min="0"
+                            placeholder="Max" />
+                        </div>
+                        <p *ngIf="ageRangeError" style="margin: auto; margin-top: 4px; color: #d9534f">
+                          {{ ageRangeError }}
+                        </p>
+
+                        <p style="margin: auto; margin-top: 5px">Gender</p>
+                        <ng-select class="" formControlName="PatientGender" [multiple]="true">
+                          <ng-option [value]="item" *ngFor="let item of genderFilterOptions">
+                            {{ item }}
+                          </ng-option>
+                        </ng-select>
+
+                        <p style="margin: auto; margin-top: 5px">Room/Bed</p>
+                        <ng-select class="" formControlName="RoomidText" [multiple]="true">
+                          <ng-option [value]="item" *ngFor="let item of roomFilterOptions">
+                            {{ item }}
+                          </ng-option>
+                        </ng-select>
+
+                        <p style="margin: auto; margin-top: 5px">Admission Time</p>
+                        <div style="display: flex; gap: 6px">
+                          <input formControlName="AdmissionTimeFrom" class="form-control" type="time" />
+                          <input formControlName="AdmissionTimeTo" class="form-control" type="time" />
+                        </div>
+
+                        <div style="display: flex; justify-content: space-around; margin-top: 10px">
+                          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8"
+                            (click)="applyInPatientFilters()">
+                            Apply
+                          </button>
+                          <button class="btn btn-secondary" (click)="resetInPatientFilters()">
+                            Reset
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
                 <div class="card-body" *ngIf="navTabBoxActiveValue == '08'" (click)="$event.stopPropagation()" style="padding: 4px 21px 21px 21px">
