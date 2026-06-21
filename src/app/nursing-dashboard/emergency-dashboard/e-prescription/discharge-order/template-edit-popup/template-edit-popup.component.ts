@@ -231,7 +231,11 @@ export class TemplateEditPopupComponent {
     return { StartD: `${ymd}T${hms}`, StartT: `PT${p(d.getHours())}H${p(d.getMinutes())}M${p(d.getSeconds())}S` };
   }
 
-  /** Save icon: PUT the full create-shaped payload (backend re-creates the template, same Tpgid via the URL key). */
+  /**
+   * Save: POST to OrderTemplateSet with the old template id in the body as `Eorderid`.
+   * The backend treats this as update/replace — it deactivates the old template (DEL_FLAG='X')
+   * and creates the replacement in one call. Do NOT use PUT and do NOT call DELETE afterwards.
+   */
   save(): void {
     this.isSubmitted = true;
     if (!this.medArray.length) { this.showInfo('A template must contain at least one medication'); return; }
@@ -240,22 +244,15 @@ export class TemplateEditPopupComponent {
     const toOrderTemplate = this.medArray.controls.map((c) => this.buildTemplateItem(c));
 
     const payload: any = this.ePrescriptionService.loadParameters(true, true, true, true);
+    payload['Eorderid'] = this.meta.prscrid; // old template id → backend handles deactivate-old + create-new
     payload['TemplateName'] = this.meta.templateName;
     payload['TemplateDesc'] = this.meta.templateDesc || this.meta.templateName;
     payload['Storn'] = '';
     payload['Ordtype'] = this.ordtype;
     payload['TOORDERTEMPLATE'] = toOrderTemplate;
 
-    // SAP does not support a deep PUT on OrderTemplateSet, and "update" is defined as
-    // create-a-replacement-then-deactivate-the-previous. So perform it as POST (deep create)
-    // followed by DELETE (soft-delete the old record). The replacement gets a new Tpgid.
     this.ePrescriptionService.postData('e-prescription/OrderTemplate', payload).subscribe({
-      next: () => {
-        this.ePrescriptionService.deleteData(`OrderTemplateSet(Eorderid='${this.meta.prscrid}')`).subscribe({
-          next: () => this.afterUpdateSuccess(),
-          error: () => this.afterUpdateSuccess('The updated template was saved, but the previous version could not be deactivated. Please delete it manually.')
-        });
-      },
+      next: () => this.afterUpdateSuccess(),
       error: (error: any) => {
         const message = error && error.error && error.error.error && error.error.error.message ? error.error.error.message.value : 'Unable to update the template';
         this.showInfo(message, 'error');
@@ -263,15 +260,14 @@ export class TemplateEditPopupComponent {
     });
   }
 
-  private afterUpdateSuccess(warn?: string): void {
+  private afterUpdateSuccess(): void {
     Swal.fire({
-      title: warn ? 'Template Updated' : 'Your Template has been Updated!',
-      text: warn || '',
+      title: 'Your Template has been Updated!',
       confirmButtonColor: '#0890c5',
       cancelButtonColor: '#84898c',
       confirmButtonText: 'OK',
       customClass: { popup: 'myalertpopup' },
-      icon: warn ? 'warning' : 'success'
+      icon: 'success'
     } as any).then(() => {
       this.modaleditRef.hide();
       this.ePrescriptionService.loadTemplateMedicationData();
