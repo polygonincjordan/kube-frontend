@@ -21,6 +21,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
   }
   private modalRef: BsModalRef;
   public templateDetailSubscription: Subscription;
+  private templateEditSavedSubscription: Subscription;
 
   @ViewChild('templatePopup', { static: true }) templatePopup: TemplateRef<any>;
   @ViewChild('templateDetailPopup', { static: true }) templateDetailPopup: TemplateDetailPopupComponent;
@@ -159,6 +160,10 @@ export class AdministrationTemplatePopupComponent implements OnInit {
     const meta = { prscrid: data.Prscrid, templateName: data.Descr, templateDesc: data.Descr, ordtype: '1' };
     this.ePrescriptionService.loadData(`e-prescription/OrderTemplateget?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Tpgid=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
       const templateList = (resp.body && resp.body.d && resp.body.d.results) ? resp.body.d.results[0].TOORDERTEMPLATE.results : [];
+      if (this.templateEditSavedSubscription) { this.templateEditSavedSubscription.unsubscribe(); }
+      this.templateEditSavedSubscription = this.templateEditPopup.onSaved.subscribe((templates: AdministrationTemplateData[]) => {
+        this.showPopup(templates || []);
+      });
       this.templateEditPopup.showPopup(templateList, meta);
     });
   }

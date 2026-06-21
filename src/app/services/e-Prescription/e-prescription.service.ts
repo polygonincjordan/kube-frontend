@@ -321,14 +321,25 @@ export class EPrescriptionService implements OnDestroy {
     this.loadAdministrationTemplateData();
   }
 
-  loadAdministrationTemplateData() {
+  loadAdministrationTemplateData(
+    onLoaded?: (templates: AdministrationTemplateData[]) => void,
+    onError?: (error: any) => void
+  ) {
     this.loadData(`e-prescription/templatesearchtype?Einri=${this.parameters.einri}&Falnr=${this.parameters.falnr}&Searchtype=${'B'}&SearchString=&Ordtype=${'1'}`, false, false, false, false).subscribe({
       next: (resp: any) => {
         if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results[0].TOTEMPLATE.results) {
           this.administrationTemplateData = resp.body.d.results[0].TOTEMPLATE.results;
+          if (onLoaded) { onLoaded(this.administrationTemplateData); }
+        } else {
+          this.administrationTemplateData = [];
+          if (onLoaded) { onLoaded(this.administrationTemplateData); }
         }
       },
       error: (error: any) => {
+        if (onError) {
+          onError(error);
+          return;
+        }
         swal.fire({
           title: error.statusText,
           text: 'No data found',

@@ -258,18 +258,25 @@ export class AdministrationTemplateEditPopupComponent {
   }
 
   private afterUpdateSuccess(): void {
-    Swal.fire({
-      title: 'Your Template has been Updated!',
-      confirmButtonColor: '#0890c5',
-      cancelButtonColor: '#84898c',
-      confirmButtonText: 'OK',
-      customClass: { popup: 'myalertpopup' },
-      icon: 'success'
-    } as any).then(() => {
-      this.modaleditRef.hide();
-      this.ePrescriptionService.loadAdministrationTemplateData();
-      this.onSaved.emit(true);
-    });
+    this.ePrescriptionService.loadAdministrationTemplateData(
+      (templates) => {
+        Swal.fire({
+          title: 'Your Template has been Updated!',
+          confirmButtonColor: '#0890c5',
+          cancelButtonColor: '#84898c',
+          confirmButtonText: 'OK',
+          customClass: { popup: 'myalertpopup' },
+          icon: 'success'
+        } as any).then(() => {
+          this.modaleditRef.hide();
+          this.onSaved.emit(templates);
+        });
+      },
+      () => {
+        this.modaleditRef.hide();
+        this.showInfo('The template was updated, but the template list could not be refreshed. Please reopen the list.', 'warning');
+      }
+    );
   }
 
   close(): void {
