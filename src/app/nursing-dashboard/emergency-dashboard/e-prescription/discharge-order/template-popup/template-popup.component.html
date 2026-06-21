@@ -3,15 +3,15 @@
     configurationData.length">
     <div class="medication-header d-flex w-100 align-items-center pl-2">
       <div class="medicate-data d-flex w-100 pl-3">
-        <div class="medication-title w-65 px-3">
+        <div class="medication-title w-45 px-3">
           <h4 class="m-0">Template Name</h4>
         </div>
         <div class="medication-title w-25 px-3">
           <h4 class="m-0">Level</h4>
         </div>
-        <div class="medication-title w-10 px-3">
-          <h4 class="m-0">Detail</h4>
-        </div>
+        <div class="medication-title w-10 px-3"><h4 class="m-0 text-center">Details</h4></div>
+        <div class="medication-title w-10 px-3"><h4 class="m-0 text-center">Edit</h4></div>
+        <div class="medication-title w-10 px-3"><h4 class="m-0 text-center">Delete</h4></div>
       </div>
       <div class="medicate-icon" (click)="setSelectedTemplate();">
         <img src="assets/img/texteditor.png" width="40" class="p-1
@@ -22,7 +22,7 @@
       <div class="medication-inner-body d-flex w-100 align-items-center mt-3"
         *ngFor="let element of configurationData">
         <div class="medication-data d-flex align-items-center w-100 pl-3">
-          <div class="medication-field w-65 pr-2 d-flex align-items-center">
+          <div class="medication-field w-45 pr-2 d-flex align-items-center">
             <input type="checkbox" width="25" height="25"
               [(ngModel)]="element.isSelected" class="mr-2 isbigcheckbox">
             <p class="m-0">{{element.Descr}}</p>
@@ -40,14 +40,22 @@
             </div>
           </div>
           <div class="medication-field w-10 d-flex">
-            <div class="medication-inner-field pr-2 w-100 text-center d-flex align-items-center justify-content-center">
+            <div class="medication-inner-field pr-2 w-100 text-center">
               <button type="button" title="View" (click)="onOpenTemplateDetail(element)">
                 <img src="assets/img/detail-icon.svg" alt="">
               </button>
+            </div>
+          </div>
+          <div class="medication-field w-10 d-flex">
+            <div class="medication-inner-field pr-2 w-100 text-center">
               <button type="button" class="template-row-icon" title="Edit"
                 *ngIf="templateEditDeleteEnabled && element.Tmpaccesslevel === ''" (click)="onEditTemplate(element)">
                 <i class="fa fa-pencil"></i>
               </button>
+            </div>
+          </div>
+          <div class="medication-field w-10 d-flex">
+            <div class="medication-inner-field pr-2 w-100 text-center">
               <button type="button" class="template-row-icon template-row-delete" title="Delete"
                 *ngIf="templateEditDeleteEnabled && element.Tmpaccesslevel === ''" (click)="onDeleteTemplate(element)">
                 <i class="fa fa-trash"></i>

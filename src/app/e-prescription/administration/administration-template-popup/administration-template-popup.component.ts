@@ -29,7 +29,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
   // Edit/Delete hidden until backend OrderTemplateSet update/delete is ready. Set true to re-enable.
-  public templateEditDeleteEnabled = false;
+  public templateEditDeleteEnabled = true;
 
   public configurationData: AdministrationTemplateData[];
 
