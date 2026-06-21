@@ -1,145 +1,221 @@
+$brand: #1b3a8c;
+$border: #e3e6ef;
+
 .cycle-def {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
   font-size: 13px;
-  // Never let the Bootstrap grid gutters spill outside the modal.
+  color: #333;
   overflow-x: hidden;
 
-  // The popup cannot rely on global Bootstrap spacing utilities being present,
-  // so neutralise the .row negative gutters and apply our own column padding.
-  .row {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  [class*="col-"] {
-    padding-left: 0;
-    padding-right: 16px;
-  }
-
-  // Let inputs inside flex rows shrink instead of forcing horizontal overflow.
+  // Inputs / checkboxes / radios — consistent sizing, brand accent, touch targets.
   .form-control {
     min-width: 0;
+    height: 38px;
   }
 
-  // Keep date / time / qty inputs at a tidy size instead of stretching across
-  // the now-wide modal.
-  &__field {
-    max-width: 170px;
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 17px;
+    height: 17px;
+    accent-color: $brand;
+    flex: 0 0 auto;
+    cursor: pointer;
   }
 
-  // "Regularly" is a static section heading, not an interactive choice.
-  &__regularly {
-    pointer-events: none;
-    accent-color: #1b3a8c;
+  // Visible focus for keyboard users.
+  .form-control:focus,
+  input:focus-visible,
+  button:focus-visible {
+    outline: 2px solid rgba(27, 58, 140, 0.55);
+    outline-offset: 1px;
+    box-shadow: none;
   }
 
+  // Disabled / read-only fields stay distinct but readable.
+  .form-control:disabled,
+  .form-control[readonly] {
+    background: #eef0f4;
+    color: #5b6470;
+    cursor: not-allowed;
+  }
+
+  // ---- header ----
   &__header {
-    background: #1b3a8c;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    background: $brand;
     color: #fff;
     padding: 14px 18px;
 
-    small {
-      opacity: 0.85;
-      font-size: 12px;
-    }
+    h5 { font-size: 18px; font-weight: 500; }
+    small { display: block; opacity: 0.85; font-size: 12px; }
   }
 
   &__close {
+    background: transparent;
+    border: 0;
+    color: #fff;
     font-size: 26px;
     line-height: 1;
-    color: #fff;
-    font-weight: 400;
+    padding: 0 4px;
+    cursor: pointer;
+    border-radius: 4px;
   }
 
+  // ---- single cycle indicator ----
   &__tabs {
-    border-bottom: 1px solid #e3e6ef;
+    border-bottom: 1px solid $border;
     padding: 12px 18px 0;
   }
 
   &__tab {
+    display: inline-block;
     padding-bottom: 6px;
-    font-weight: 600;
+    font-weight: 500;
     color: #6c757d;
     border-bottom: 2px solid transparent;
 
-    &.active {
-      color: #1b3a8c;
-      border-bottom-color: #1b3a8c;
-    }
+    &.active { color: $brand; border-bottom-color: $brand; }
   }
 
-  &__add {
-    color: #1b3a8c;
-    font-weight: 600;
-  }
-
+  // ---- scrollable body ----
   &__body {
     padding: 18px;
-    max-height: 70vh;
     overflow-y: auto;
     overflow-x: hidden;
+    flex: 1 1 auto;
+  }
+
+  // ---- responsive two-column grid ----
+  &__grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
+    margin-bottom: 16px;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // ---- label + field row (inline on desktop, stacked on mobile) ----
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   &__label {
-    min-width: 70px;
-    font-weight: 600;
+    min-width: 72px;
+    margin: 0;
+    font-weight: 500;
     color: #333;
   }
 
+  &__field { max-width: 200px; }
+
+  &__check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    label { font-weight: 400; }
+  }
+
+  // ---- scheduling panel ----
   &__section {
-    border: 1px solid #e3e6ef;
-    border-radius: 6px;
+    border: 1px solid $border;
+    border-radius: 8px;
     padding: 16px;
   }
+
+  &__regularly-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  &__section-title { font-weight: 500; }
+
+  &__regularly { pointer-events: none; }
 
   &__weekdays {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px 12px;
-
-    @media (max-width: 575.98px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    gap: 8px 12px;
   }
 
   &__day {
-    margin: 0;
     display: flex;
     align-items: center;
     gap: 6px;
-    font-weight: 500;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  &__interval {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   &__num {
-    width: 90px;
+    width: 84px;
     flex: 0 0 auto;
   }
 
+  // ---- sticky footer ----
   &__footer {
-    border-top: 1px solid #e3e6ef;
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
     padding: 14px 18px;
+    background: #fff;
+    border-top: 1px solid $border;
   }
 
-  &__save,
-  &__cancel {
-    min-width: 96px;
+  &__btn {
+    min-width: 100px;
+    border: 0;
     border-radius: 20px;
     padding: 8px 22px;
-    font-weight: 600;
+    font-weight: 500;
+    cursor: pointer;
   }
 
-  &__save {
-    background: #1b3a8c;
-    color: #fff;
+  &__save { background: $brand; color: #fff; &:hover { background: #152f73; } }
+  &__cancel { background: #e9ecef; color: #333; &:hover { background: #dde1e6; } }
 
-    &:hover {
-      background: #152f73;
-      color: #fff;
+  // ---- tablet ----
+  @media (max-width: 991.98px) {
+    &__grid2 { gap: 12px 18px; }
+    &__field { max-width: 100%; }
+  }
+
+  // ---- mobile: stack rows, labels above inputs, full-width actions ----
+  @media (max-width: 767.98px) {
+    max-height: 95vh;
+
+    &__grid2 { grid-template-columns: 1fr; gap: 14px; }
+
+    &__row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
     }
-  }
 
-  &__cancel {
-    background: #e9ecef;
-    color: #333;
+    &__label { min-width: 0; }
+    &__field { max-width: 100%; }
+
+    &__weekdays { grid-template-columns: repeat(2, 1fr); }
+
+    &__footer { gap: 12px; }
+    &__btn { flex: 1 1 0; min-width: 0; }
   }
 }
 
@@ -147,15 +223,15 @@
   max-width: 1040px;
   width: 96vw;
 
-  // On small screens use (almost) the full viewport width with a small margin.
   @media (max-width: 767.98px) {
     max-width: 100%;
+    width: auto;
     margin: 0.5rem;
   }
 }
 
 ::ng-deep .cycle-definition-modal .modal-content {
   padding: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }

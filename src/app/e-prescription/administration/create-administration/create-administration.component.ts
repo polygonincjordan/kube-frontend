@@ -584,28 +584,24 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   onOpenCycleDefinition(index: number) {
     const item = this.drugArray.controls[index];
     const existing = item.get('TOCYCDEF').value || [];
-    const orderId = item.get('Eorderid') ? item.get('Eorderid').value : null;
-    if ((!existing || !existing.length) && orderId) {
-      // Read back persisted cycles for an existing order before opening the popup.
-      this.ePrescriptionService.getData(`CycleDefSet?$filter=OrderId eq '${orderId}'`).subscribe((res: any) => {
+    const n1znr = item.get('N1znr').value;
+    const title = item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : '');
+    const startDate = item.get('StartD').value;
+    if ((!existing || !existing.length) && n1znr) {
+      // Cycle definition lives in N1ZYINF and is read back by frequency key (N1znr).
+      this.ePrescriptionService.getData(`CycleDefSet?$filter=${this.cycleDefFilter(n1znr)}`).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         item.get('TOCYCDEF').setValue(records);
-        this.cyclePopup.showPopup({
-          index, n1znr: item.get('N1znr').value, title: item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : ''),
-          startDate: item.get('StartD').value, records
-        });
-      }, () => {
-        this.cyclePopup.showPopup({
-          index, n1znr: item.get('N1znr').value, title: item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : ''),
-          startDate: item.get('StartD').value, records: existing
-        });
-      });
+        this.cyclePopup.showPopup({ index, n1znr, title, startDate, records });
+      }, () => this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing }));
       return;
     }
-    this.cyclePopup.showPopup({
-      index, n1znr: item.get('N1znr').value, title: item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : ''),
-      startDate: item.get('StartD').value, records: existing
-    });
+    this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing });
+  }
+
+  private cycleDefFilter(n1znr: string): string {
+    const einri = this.ePrescriptionService.parameters && this.ePrescriptionService.parameters.einri;
+    return einri ? `Einri eq '${einri}' and N1znr eq '${n1znr}'` : `N1znr eq '${n1znr}'`;
   }
 
   onCycleSaved(event: { index: number; data: any[] }) {

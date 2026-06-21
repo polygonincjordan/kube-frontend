@@ -109,10 +109,12 @@ export class EditMedicationComponent implements OnInit {
 
   onOpenCycleDefinition() {
     const existing = this.editprofileForm.get('TOCYCDEF').value || [];
-    const orderId = this.editdata.Eorderid || this.editdata.Meordid || null;
-    if ((!existing || !existing.length) && orderId) {
-      // No cycles loaded yet but we have an order id: read them back from SAP.
-      this.ePrescriptionService.getData(`CycleDefSet?$filter=OrderId eq '${orderId}'`).subscribe((res: any) => {
+    const n1znr = this.editprofileForm.get('N1znr').value;
+    if ((!existing || !existing.length) && n1znr) {
+      // Cycle definition lives in N1ZYINF and is read back by frequency key (N1znr).
+      const einri = this.ePrescriptionService.parameters && this.ePrescriptionService.parameters.einri;
+      const filter = einri ? `Einri eq '${einri}' and N1znr eq '${n1znr}'` : `N1znr eq '${n1znr}'`;
+      this.ePrescriptionService.getData(`CycleDefSet?$filter=${filter}`).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         this.editprofileForm.get('TOCYCDEF').setValue(records);
         this.openCyclePopup(records);
