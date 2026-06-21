@@ -678,8 +678,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
           // element.StartD = this.sanitizeSAPDateFormat(this.parseDate(element.StartD),element.StartT);
           element.EndT = this.parseTime(element.EndD);
-          element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
-          element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
+          element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid : element.Aprouteid;
+          element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr : element.Routedescr;
           element.EndD = element.EndD !== null ? `${this.parseDatedata(element.EndD)}${this.parseTimedata(element.EndD)}` : null;
           element.Complex = element.Complex ? "X" : "";
           element.AddDose = element.AddDose ? "X" : "";
@@ -744,6 +744,12 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       this.showErrorPopup('', 'Please add at least one complete medication before creating a template.', 'Error');
       return;
     }
+    const IncompleteForms = this.drugArray.controls.filter(d => d.touched && !d.valid);
+    if (IncompleteForms && IncompleteForms.length) {
+      this.isFormSubmitted = true;
+      this.showErrorPopup('', 'Please complete all required fields (including Route) for each medication, or remove the incomplete row.', 'Error');
+      return;
+    }
     if ((this.drugArray.controls && this.drugArray.controls.length) && (TouchedForms && TouchedForms.length)) {
       this.templateDescription.showPopup();
       if (this.subscription) { this.subscription.unsubscribe(); }
@@ -760,8 +766,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             element.Prncond = element.Prncond ? element.Prncond : "";
             element.StartT = this.parseTime(element.StartD);
             element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
-            element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
-            element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
+            element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid : element.Aprouteid;
+            element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr : element.Routedescr;
             // element.StartD = this.sanitizeSAPDateFormat(this.parseDate(element.StartD),element.StartT);
             element.EndT = this.parseTime(element.EndD);
             element.EndD = element.EndD !== null ? `${this.parseDatedata(element.EndD)}${this.parseTimedata(element.EndD)}` : null;
@@ -1031,7 +1037,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         validData.Complex = validData.Complex ? "X" : "";
         validData.AddDose = validData.AddDose ? "X" : "";
         validData.Pduru = validData.Pduru !== null ? validData.Pduru : "";
-        validData.Aprouteid = validData.Routedescr.Aprouid !== undefined ? validData.Routedescr.Aprouid :validData.Aprouteid;
+        validData.Aprouteid = validData.Routedescr && validData.Routedescr.Aprouid !== undefined ? validData.Routedescr.Aprouid : validData.Aprouteid;
         delete validData.Routedescr;
         delete validData.Formatdescr;
         delete validData.Result_Drug_Name;
