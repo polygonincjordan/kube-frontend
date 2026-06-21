@@ -231,7 +231,11 @@ export class TemplateEditPopupComponent {
     return { StartD: `${ymd}T${hms}`, StartT: `PT${p(d.getHours())}H${p(d.getMinutes())}M${p(d.getSeconds())}S` };
   }
 
-  /** Save icon: PUT the full create-shaped payload (backend re-creates the template, same Tpgid via the URL key). */
+  /**
+   * Save: POST to OrderTemplateSet with the old template id in the body as `Eorderid`.
+   * The backend treats this as update/replace — it deactivates the old template (DEL_FLAG='X')
+   * and creates the replacement in one call. Do NOT use PUT and do NOT call DELETE afterwards.
+   */
   save(): void {
     this.isSubmitted = true;
     if (!this.medArray.length) { this.showInfo('A template must contain at least one medication'); return; }
@@ -240,13 +244,14 @@ export class TemplateEditPopupComponent {
     const toOrderTemplate = this.medArray.controls.map((c) => this.buildTemplateItem(c));
 
     const payload: any = this.ePrescriptionService.loadParameters(true, true, true, true);
+    payload['Eorderid'] = this.meta.prscrid; // old template id → backend handles deactivate-old + create-new
     payload['TemplateName'] = this.meta.templateName;
     payload['TemplateDesc'] = this.meta.templateDesc || this.meta.templateName;
     payload['Storn'] = '';
     payload['Ordtype'] = this.ordtype;
     payload['TOORDERTEMPLATE'] = toOrderTemplate;
 
-    this.ePrescriptionService.updateData(`OrderTemplateSet(Eorderid='${this.meta.prscrid}')`, payload).subscribe({
+    this.ePrescriptionService.postData('e-prescription/OrderTemplate', payload).subscribe({
       next: () => {
         Swal.fire({
           title: 'Your Template has been Updated!',
