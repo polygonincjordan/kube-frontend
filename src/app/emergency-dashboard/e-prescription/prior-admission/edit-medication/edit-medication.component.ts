@@ -103,10 +103,9 @@ export class EditMedicationComponent implements OnInit {
     const existing = this.editprofileForm.get('TOCYCDEF').value || [];
     const n1znr = this.editprofileForm.get('N1znr').value;
     if ((!existing || !existing.length) && n1znr) {
-      // Cycle definition lives in N1ZYINF and is read back by frequency key (N1znr).
-      const einri = this.ePrescriptionService.parameters && this.ePrescriptionService.parameters.einri;
-      const filter = einri ? `Einri eq '${einri}' and N1znr eq '${n1znr}'` : `N1znr eq '${n1znr}'`;
-      this.ePrescriptionService.getData(`CycleDefSet?$filter=${filter}`).subscribe((res: any) => {
+      // Cycle definition lives in N1ZYINF, read back by frequency key (N1znr) via the
+      // backend route that maps to CycleDefSet?$filter=N1znr eq '<N1znr>'.
+      this.ePrescriptionService.loadData(`e-prescription/frequencyQ24Cycle?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         this.editprofileForm.get('TOCYCDEF').setValue(records);
         this.openCyclePopup(records);

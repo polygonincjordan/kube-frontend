@@ -584,8 +584,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     const title = item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : '');
     const startDate = item.get('StartD').value;
     if ((!existing || !existing.length) && n1znr) {
-      // Cycle definition lives in N1ZYINF and is read back by frequency key (N1znr).
-      this.ePrescriptionService.getData(`CycleDefSet?$filter=${this.cycleDefFilter(n1znr)}`).subscribe((res: any) => {
+      // Cycle definition lives in N1ZYINF, read back by frequency key (N1znr) via the
+      // backend route that maps to CycleDefSet?$filter=N1znr eq '<N1znr>'.
+      this.ePrescriptionService.loadData(`e-prescription/frequencyQ24Cycle?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         item.get('TOCYCDEF').setValue(records);
         this.cyclePopup.showPopup({ index, n1znr, title, startDate, records });
@@ -593,11 +594,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       return;
     }
     this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing });
-  }
-
-  private cycleDefFilter(n1znr: string): string {
-    const einri = this.ePrescriptionService.parameters && this.ePrescriptionService.parameters.einri;
-    return einri ? `Einri eq '${einri}' and N1znr eq '${n1znr}'` : `N1znr eq '${n1znr}'`;
   }
 
   onCycleSaved(event: { index: number; data: any[] }) {
