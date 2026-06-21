@@ -53,8 +53,8 @@ export class AdministrationTemplateEditPopupComponent {
     return new FormGroup({
       Result_Drug_Name: new FormControl(item ? (item.Result_Drug_Name || '') : '', Validators.required),
       Formatdescr: new FormControl(item ? (item.Formatdescr || '') : ''),
-      // Route is held as the dropdown object {Descr, Aprouid}; existing rows are pre-seeded from the loaded values.
-      Routedescr: new FormControl(item ? { Descr: item.Routedescr || '', Aprouid: item.Aprouteid || '' } : null, Validators.required),
+      // Bind the dropdown by the stable SAP route id so async option loading can restore the selection.
+      Routedescr: new FormControl(item ? (item.Aprouteid || null) : null, Validators.required),
       Quan: new FormControl(item && item.Quan === '0.000' ? '0' : (item ? item.Quan : '0'), Validators.required),
       Quantunittxt: new FormControl(item ? (item.Quantunittxt || '') : ''),
       Quanunit: new FormControl(item ? item.Quanunit : null),
@@ -162,16 +162,16 @@ export class AdministrationTemplateEditPopupComponent {
     this.medArray.at(index).patchValue({ N1ztxt: found ? found.Text : '' });
   }
 
-  /** Pre-select the loaded route in the dropdown by its id. */
-  compareRoute = (a: any, b: any): boolean => !!a && !!b && a.Aprouid === b.Aprouid;
-
   /** Build one TOORDERTEMPLATE item in the exact Create-Template (POST) shape. */
   private buildTemplateItem(c: any): any {
     const v = c.value;
     const orig = v.__orig || {};
     const route = v.Routedescr;
-    const routedescr = route && route.Descr !== undefined ? route.Descr : (orig.Routedescr || '');
-    const aprouteid = route && route.Aprouid !== undefined ? route.Aprouid : (orig.Aprouteid || '');
+    const routeId = route && route.Aprouid !== undefined ? route.Aprouid : (route || orig.Aprouteid || '');
+    const selectedRoute = (this.addministrationService.routeDropdownList || [])
+      .find((item: any) => `${item.Aprouid || ''}`.trim() === `${routeId}`.trim());
+    const routedescr = selectedRoute ? selectedRoute.Descr : (route && route.Descr !== undefined ? route.Descr : (orig.Routedescr || ''));
+    const aprouteid = selectedRoute ? selectedRoute.Aprouid : routeId;
     const quanunit = v.Quanunit && v.Quanunit.Meinh ? v.Quanunit.Meinh : (v.Quanunit || orig.Quanunit || '');
     const schedule = this.scheduleFields(orig);
     const toComplex = (orig.TOCOMPLEX && orig.TOCOMPLEX.results ? orig.TOCOMPLEX.results : (Array.isArray(orig.TOCOMPLEX) ? orig.TOCOMPLEX : []))
