@@ -760,6 +760,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           const validData = validForms.map(d => d.value);
           validData.forEach((element: any) => {
             element.Quan = `${element.Quan}`;
+            element.Quanunit = element?.Quanunit?.Meinh ? element?.Quanunit?.Meinh : element?.Quanunit;
             element.Pdur = element.Pdur === null || element.Pdur === '' ? "0" : `${element.Pdur}`;
             element.Pduru = element.Pduru !== null ? element.Pduru : "";
             element.Prncond = element.Prn ? element.Prncond : "";
@@ -788,6 +789,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             element.TOCOMPLEX.forEach(element => {
               delete element.N1zxtr;
               element.Quan = `${element.Quan}`;
+              element.Quanunit = element?.Quanunit?.Meinh ? element?.Quanunit?.Meinh : element?.Quanunit;
               element.Pdur = element.Pdur === null || element.Pdur === '' ? "0" : `${element.Pdur}`;
               element.Seqno = `${element.Seqno}`;
               element.StartD = element.StartD !== null ? `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}` : null;
