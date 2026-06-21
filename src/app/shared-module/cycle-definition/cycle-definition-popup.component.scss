@@ -20,6 +20,18 @@
     min-width: 0;
   }
 
+  // Keep date / time / qty inputs at a tidy size instead of stretching across
+  // the now-wide modal.
+  &__field {
+    max-width: 170px;
+  }
+
+  // "Regularly" is a static section heading, not an interactive choice.
+  &__regularly {
+    pointer-events: none;
+    accent-color: #1b3a8c;
+  }
+
   &__header {
     background: #1b3a8c;
     color: #fff;
@@ -132,8 +144,8 @@
 }
 
 ::ng-deep .cycle-definition-modal .modal-dialog {
-  max-width: 960px;
-  width: 92vw;
+  max-width: 1040px;
+  width: 96vw;
 
   // On small screens use (almost) the full viewport width with a small margin.
   @media (max-width: 767.98px) {

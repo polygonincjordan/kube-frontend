@@ -91,10 +91,11 @@ export class CycleDefinitionPopupComponent {
       Su: [this.toBool(record.Su, true)],
       PublHol: [this.toBool(record.PublHol, true)],
       multipleDayFixedInterval: [false],
-      fromTime: [record.FromTime || '09:00'],
-      toTime: [record.ToTime || '09:00'],
+      // From/To time come back from SAP as ISO durations (e.g. PT05H00M00S).
+      fromTime: [this.parseDuration(record.TiStart) || '09:00'],
+      toTime: [this.parseDuration(record.TiEnd) || '09:00'],
       intervalMode: [record.IntervalMinute && +record.IntervalMinute > 0 ? 'minutes' : 'hours'],
-      IntervalHour: [record.IntervalHour !== undefined && record.IntervalHour !== null && record.IntervalHour !== '' ? `${record.IntervalHour}` : '24'],
+      IntervalHour: [this.cleanNumber(record.IntervalHour, '24')],
       IntervalMinute: [record.IntervalMinute !== undefined && record.IntervalMinute !== null ? `${record.IntervalMinute}` : '0000']
     });
     this.keepEndDateValid(group);
@@ -116,7 +117,8 @@ export class CycleDefinitionPopupComponent {
   }
 
   addCycle(): void {
-    this.cycles.push(this.buildCycle({ Begdt: new Date() }));
+    const nextLine = `${this.cycles.length + 1}`.padStart(4, '0');
+    this.cycles.push(this.buildCycle({ Begdt: new Date(), N1lfnr: nextLine }));
     this.activeTab = this.cycles.length - 1;
   }
 
@@ -130,9 +132,15 @@ export class CycleDefinitionPopupComponent {
     this.activeTab = i;
   }
 
-  /** Label shown on each cycle tab (0001, 0002 …). */
+  /**
+   * Label shown on each cycle tab. Driven by the record's own N1lfnr (so tabs
+   * reflect exactly what was received / saved), falling back to the 1-based
+   * position for freshly added cycles that have no line number yet.
+   */
   tabLabel(i: number): string {
-    return `${i + 1}`.padStart(4, '0');
+    const group = this.cycles.at(i);
+    const lfnr = group ? group.get('N1lfnr').value : null;
+    return lfnr ? lfnr : `${i + 1}`.padStart(4, '0');
   }
 
   save(): void {
@@ -140,7 +148,8 @@ export class CycleDefinitionPopupComponent {
       const v = group.value;
       return {
         N1znr: this.n1znr,
-        N1lfnr: this.tabLabel(i),
+        // Preserve the existing line number when editing; only generate one for new cycles.
+        N1lfnr: v.N1lfnr || `${i + 1}`.padStart(4, '0'),
         Menge: `${v.Menge}`,
         Begdt: this.toSapDate(v.Begdt),
         Enddt: this.toSapDate(v.Enddt),
@@ -152,7 +161,9 @@ export class CycleDefinitionPopupComponent {
         Sa: !!v.Sa,
         Su: !!v.Su,
         IntervalDay: v.everyDay ? 1 : (+v.IntervalDay || 1),
-        IntervalHour: `${v.IntervalHour || '0'}`
+        IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`,
+        TiStart: this.toDuration(v.fromTime),
+        TiEnd: this.toDuration(v.toTime)
       };
     });
     this.onSave.emit({ index: this.rowIndex, data });
@@ -187,6 +198,30 @@ export class CycleDefinitionPopupComponent {
     }
     const parsed = new Date(value);
     return isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  /** Parse an ISO-8601 duration (e.g. "PT05H00M00S") into a "HH:mm" string. */
+  private parseDuration(value: any): string {
+    if (!value || typeof value !== 'string') { return ''; }
+    const match = value.match(/PT(\d+)H(\d+)M/);
+    if (!match) { return ''; }
+    const hh = `${match[1]}`.padStart(2, '0');
+    const mm = `${match[2]}`.padStart(2, '0');
+    return `${hh}:${mm}`;
+  }
+
+  /** Convert a "HH:mm" string into an ISO-8601 duration ("PTxxHxxM00S"). */
+  private toDuration(value: any): string {
+    if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return 'PT00H00M00S'; }
+    const [hh, mm] = value.split(':');
+    return `PT${`${hh}`.padStart(2, '0')}H${`${mm}`.padStart(2, '0')}M00S`;
+  }
+
+  /** Normalise a numeric value that may arrive as "24.00" → "24"; falls back to the default. */
+  private cleanNumber(value: any, fallback: string): string {
+    if (value === undefined || value === null || value === '') { return fallback; }
+    const n = parseFloat(value);
+    return isNaN(n) ? fallback : `${n}`;
   }
 
   /** Return a new Date `months` after the given date (overflow rolls forward). */

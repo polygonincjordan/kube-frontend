@@ -8,6 +8,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
 import { PrnConditionPopupComponent } from '../../discharge-order/prn-condition-popup/prn-condition-popup.component';
+import { CycleDefinitionPopupComponent } from '../../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
 @Component({
   selector: 'edit-medication',
@@ -28,6 +29,7 @@ export class EditMedicationComponent implements OnInit {
   // @Output() Editdvalue: any = new EventEmitter();
   private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
   @ViewChild('prnCondition', { static: true }) prnCondition: PrnConditionPopupComponent;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
 
   EditActionPayloadConfig = {
     Einri: "",
@@ -51,6 +53,7 @@ export class EditMedicationComponent implements OnInit {
     StartT: "",
     EndD: "",
     EndT: "",
+    TOCYCDEF: "",
   }
 
   ngOnInit(): void {
@@ -83,7 +86,8 @@ export class EditMedicationComponent implements OnInit {
       Result_Drug_Name: new FormControl(this.editdata.Result_Drug_Name, Validators.required),
       AgentidResult: new FormControl([]),
       Indisdos: new FormControl(this.editdata.Indisdos),
-      Descrlt: new FormControl(this.editdata.Descrlt)
+      Descrlt: new FormControl(this.editdata.Descrlt),
+      TOCYCDEF: new FormControl(this.editdata.TOCYCDEF && this.editdata.TOCYCDEF.results ? this.editdata.TOCYCDEF.results : [])
     })
     if (new Date() > this.editdata.StartD) {
       this.editprofileForm.patchValue({ StartD: new Date() });
@@ -93,6 +97,35 @@ export class EditMedicationComponent implements OnInit {
 
   updateAdditionalInfo(event) {
     this.onUpdateprnData.emit(this.editprofileForm)
+  }
+
+  onOpenCycleDefinition() {
+    const existing = this.editprofileForm.get('TOCYCDEF').value || [];
+    const orderId = this.editdata.Eorderid || this.editdata.Meordid || null;
+    if ((!existing || !existing.length) && orderId) {
+      this.ePrescriptionService.getData(`CycleDefSet?$filter=OrderId eq '${orderId}'`).subscribe((res: any) => {
+        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+        this.editprofileForm.get('TOCYCDEF').setValue(records);
+        this.openCyclePopup(records);
+      }, () => this.openCyclePopup(existing));
+      return;
+    }
+    this.openCyclePopup(existing);
+  }
+
+  private openCyclePopup(records: any[]) {
+    this.cyclePopup.showPopup({
+      index: 0,
+      n1znr: this.editprofileForm.get('N1znr').value,
+      title: this.editdata.Result_Drug_Name || this.editdata.Descr || '',
+      startDate: this.editprofileForm.get('StartD').value,
+      records
+    });
+  }
+
+  onCycleSaved(event: { index: number; data: any[] }) {
+    this.editprofileForm.get('TOCYCDEF').setValue(event.data || []);
+    this.editprofileForm.markAsDirty();
   }
 
   onEditAction() {

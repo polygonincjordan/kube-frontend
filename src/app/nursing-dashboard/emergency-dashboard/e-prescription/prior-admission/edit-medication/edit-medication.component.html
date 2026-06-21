@@ -101,6 +101,9 @@
                 {{ medicationFrequency.OptionField}}
               </ng-option>
             </ng-select>
+            <img src="assets/img/Calender.svg" height="20"
+              class="c-pointer ml-2 cycle-def-icon" tooltip="Cycle Definition" placement="top"
+              (click)="onOpenCycleDefinition()" alt="Cycle Definition">
           </span>
         </span>
       </td>
@@ -268,3 +271,5 @@
 
   <prn-condition-popup #prnCondition
   (onUpdateData)="onUpdatedAdditionalInfoprn($event)"></prn-condition-popup>
+
+<cycle-definition-popup #cyclePopup (onSave)="onCycleSaved($event)"></cycle-definition-popup>
