@@ -219,18 +219,23 @@ $border: #e3e6ef;
   }
 }
 
+// ngx-bootstrap applies the `class` option to the .modal-dialog element itself,
+// so target it as a compound selector (not a descendant). Cover the container
+// case too for safety across versions.
+::ng-deep .cycle-definition-modal.modal-dialog,
 ::ng-deep .cycle-definition-modal .modal-dialog {
-  max-width: 1040px;
+  max-width: 1040px !important;
   width: 96vw;
 
   @media (max-width: 767.98px) {
-    max-width: 100%;
+    max-width: 100% !important;
     width: auto;
     margin: 0.5rem;
   }
 }
 
-::ng-deep .cycle-definition-modal .modal-content {
+::ng-deep .cycle-definition-modal .modal-content,
+::ng-deep .cycle-definition-modal.modal-dialog .modal-content {
   padding: 0;
   border-radius: 8px;
   overflow: hidden;
