@@ -738,6 +738,11 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
 
   onTemplateData() {
     const TouchedForms = this.drugArray.controls.filter(d => d.touched && d.valid);
+    if (!TouchedForms || !TouchedForms.length) {
+      this.isFormSubmitted = true;
+      this.showErrorPopup('', 'Please add at least one complete medication before creating a template.', 'Error');
+      return;
+    }
     if ((this.drugArray.controls && this.drugArray.controls.length) && (TouchedForms && TouchedForms.length)) {
       this.templateDescription.showPopup();
       if (this.subscription) { this.subscription.unsubscribe(); }
