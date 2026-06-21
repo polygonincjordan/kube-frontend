@@ -126,9 +126,7 @@ export class CycleDefinitionPopupComponent {
       Sa: !!v.Sa,
       Su: !!v.Su,
       IntervalDay: v.everyDay ? 1 : (+v.IntervalDay || 1),
-      IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`,
-      TiStart: this.toDuration(v.fromTime),
-      TiEnd: this.toDuration(v.toTime)
+      IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`
     }];
     this.onSave.emit({ index: this.rowIndex, data });
     this.modalRef.hide();
@@ -172,13 +170,6 @@ export class CycleDefinitionPopupComponent {
     const hh = `${match[1]}`.padStart(2, '0');
     const mm = `${match[2]}`.padStart(2, '0');
     return `${hh}:${mm}`;
-  }
-
-  /** Convert a "HH:mm" string into an ISO-8601 duration ("PTxxHxxM00S"). */
-  private toDuration(value: any): string {
-    if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return 'PT00H00M00S'; }
-    const [hh, mm] = value.split(':');
-    return `PT${`${hh}`.padStart(2, '0')}H${`${mm}`.padStart(2, '0')}M00S`;
   }
 
   /** Normalise a numeric value that may arrive as "24.00" → "24"; falls back to the default. */

@@ -130,9 +130,26 @@ export class EditMedicationComponent implements OnInit {
     this.editprofileForm.markAsDirty();
   }
 
+  /** Keep only the writable TOCYCDEF fields (drops read-back-only props like TiStart/TiEnd, __metadata). */
+  normalizeCycleDef(records: any[], n1znr: string): any[] {
+    const list = records && records.length ? records : [];
+    return list.map((r: any, i: number) => ({
+      N1znr: r.N1znr || n1znr,
+      N1lfnr: r.N1lfnr || `${i + 1}`.padStart(4, '0'),
+      Menge: `${r.Menge}`,
+      Begdt: r.Begdt,
+      Enddt: r.Enddt,
+      Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
+      IntervalDay: +r.IntervalDay || 1,
+      IntervalHour: `${r.IntervalHour || '0'}`
+    }));
+  }
+
   onEditAction() {
     const genratePayload = {
       ...this.editprofileForm.value,
+      // Strip read-back-only props (TiStart/TiEnd, __metadata …) the write entity rejects.
+      TOCYCDEF: this.normalizeCycleDef(this.editprofileForm.value.TOCYCDEF, this.editprofileForm.value.N1znr),
       StartT: this.parsePayloadTime(this.editprofileForm.value.StartD),
       StartD: this.editprofileForm.value.StartD !== null ? `${formatDate(this.editprofileForm.value.StartD, "YYYY-MM-DD")}T${formatDate(this.editprofileForm.value.StartD, "HH:mm:ss")}` : null,
       EndT: this.parsePayloadTime(this.editprofileForm.value.EndD),
