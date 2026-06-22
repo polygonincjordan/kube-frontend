@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
-  cycleDefinition: false, // TODO: enable once SAP adds writable TiStart/TiEnd to TOCYCDEF and cycle save works
   brandName: 'kardex',
   LogoUrl: 'assets/logo.png',
   isMultiColorActive: true,

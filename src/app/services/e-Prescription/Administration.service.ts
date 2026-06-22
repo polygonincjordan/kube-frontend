@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { EPrescriptionService } from './e-prescription.service';
 import { Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddministrationService {
-  // Feature flag: Cycle Definition is hidden until SAP supports writable TiStart/TiEnd
-  // and the cycle save (ZMAIN/000) is fixed. Toggle via environment.cycleDefinition.
-  public cycleDefinitionEnabled = environment.cycleDefinition;
   public frequencyList: any[];
   public Administrative: any[];
   public durationUnitList: any[];
