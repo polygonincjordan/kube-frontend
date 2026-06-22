@@ -7,25 +7,25 @@
           class="isbigcheckbox" [(ngModel)]="isallSelected" [ngModelOptions]="{standalone: true}">
       </div>
       <div class="medicate-data d-flex w-100 pl-3">
-        <div class="medication-title w-40 px-3">
+        <div class="medication-title w-30 px-3">
           <h4 class="m-0">Drugs</h4>
         </div>
-        <div class="medication-title w-20 px-3">
+        <div class="medication-title w-12 px-3">
           <h4 class="m-0 text-center">Formula</h4>
         </div>
-        <div class="medication-title w-15 px-3">
+        <div class="medication-title w-8 px-3">
           <h4 class="m-0 text-center">Dosage/Unit</h4>
         </div>
-        <div class="medication-title w-25 px-3">
+        <div class="medication-title w-13 px-3">
           <h4 class="m-0 text-center">Route of administration</h4>
         </div>
-        <div class="medication-title w-25 px-3">
+        <div class="medication-title w-13 px-3">
           <h4 class="m-0 text-center">Frequency</h4>
         </div>
-        <div class="medication-title w-25 px-3">
+        <div class="medication-title w-12 px-3">
           <h4 class="m-0 text-center">Duration</h4>
         </div>
-        <div class="medication-title w-25 px-3">
+        <div class="medication-title w-12 px-3">
           <h4 class="m-0 text-center">Stock</h4>
         </div>
       </div>
@@ -49,19 +49,19 @@
             formControlName="isSelected" class="isbigcheckbox" (change)="onisSelected()">
         </div>
         <div class="medication-data d-flex w-100 pl-3">
-          <div class="medication-field w-40 pr-2">
+          <div class="medication-field w-30 pr-2">
             <ctrl-search-select-medicine [group]="element" [index]="i" [isSubmitted]="isSubmitted"
               [medicineDefaultData]="addministrationService.medicationDrugList" (onSelected)="onSelectMedicine($event)">
             </ctrl-search-select-medicine>
           </div>
-          <div class="medication-field w-20 d-flex pr-2">
+          <div class="medication-field w-12 d-flex pr-2">
             <input type="text" class="form-control m-0" formControlName="Formatdescr" readonly>
           </div>
-          <div class="medication-field w-15 pr-2 flex-15 d-flex align-items-center">
+          <div class="medication-field w-8 pr-2 flex-15 d-flex align-items-center">
             <input type="text" class="form-control m-0" formControlName="Quan">
             <span class="ml-1 unit-text">{{element.get('Quantunittxt').value}}</span>
           </div>
-          <div class="medication-field w-25 pr-2 flex-25">
+          <div class="medication-field w-13 pr-2 flex-25">
             <ng-select [searchable]="true" [appendTo]="'body'" formControlName="Routedescr"
               [ngClass]="element.touched && element.get('Routedescr').errors && isSubmitted ? 'ep-error-message' : ''">
               <ng-option *ngFor="let routeItem of addministrationService.routeDropdownList" [value]="routeItem.Aprouid">
@@ -69,7 +69,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="medication-field w-25 pr-2 flex-25">
+          <div class="medication-field w-13 pr-2 flex-25">
             <ng-select [searchable]="true" [appendTo]="'body'" formControlName="N1znr"
               (change)="onChangeFrequency(i)"
               [ngClass]="element.touched && element.get('N1znr').errors && isSubmitted ? 'ep-error-message' : ''">
@@ -79,7 +79,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="medication-field w-25 pr-2 flex-25 d-flex align-items-center">
+          <div class="medication-field w-12 pr-2 flex-25 d-flex align-items-center">
             <input type="text" min="0" class="form-control m-0" formControlName="Pdur">
             <ng-select class="ml-1 w-100" [searchable]="true" [appendTo]="'body'" formControlName="Pduru"
               [readonly]="element.get('Pdur').value === '0' || element.get('Pdur').value === ''">
@@ -89,7 +89,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="medication-field w-25 pr-2 flex-25">
+          <div class="medication-field w-12 pr-2 flex-25">
             <input type="text" class="form-control m-0" formControlName="Stocktext" readonly>
           </div>
         </div>

@@ -534,11 +534,14 @@ export class PatientRadComponent implements OnInit {
       const v = map[key.toUpperCase().replace(/_/g, '')];
       return v === undefined || v === null ? '' : v;
     };
+    // Time may come as STUNDE/MINUTEN or as an Ebzt duration ("PT16H40M02S").
+    const timeStr = this.formatTimeValue(pick('EBZT'));
+    const parts = timeStr ? timeStr.split(':') : [];
     return {
       ...rec,
-      DATUM: pick('DATUM') || pick('EBGDT'),
-      STUNDE: pick('STUNDE'),
-      MINUTEN: pick('MINUTEN'),
+      DATUM: this.parseODataDate(pick('DATUM') || pick('EBGDT')),
+      STUNDE: pick('STUNDE') || (parts[0] || ''),
+      MINUTEN: pick('MINUTEN') || (parts[1] || ''),
       PATNR: pick('PATNR'),
       PATIENT: pick('PATIENT') || pick('PNAMEC') || pick('PNAME'),
       FATYPTXT: pick('FATYPTXT') || pick('FALAR_TXT'),
@@ -552,6 +555,30 @@ export class PatientRadComponent implements OnInit {
       LFDBW: pick('LFDBW'),
       BESSTATTEXT: pick('BESSTATTEXT'),
     };
+  }
+
+  // OData V2 dates arrive as "/Date(1649721600000)/" -> real Date for the date pipe.
+  parseODataDate(v: any): any {
+    if (typeof v === 'string') {
+      const m = v.match(/\/Date\((-?\d+)/);
+      if (m) { return new Date(parseInt(m[1], 10)); }
+    }
+    return v || '';
+  }
+
+  // Time can arrive as an ISO-8601 duration ("PT16H40M02S") -> "HH:MM:SS".
+  formatTimeValue(v: any): string {
+    if (typeof v === 'string') {
+      const m = v.match(/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/);
+      if (m) {
+        const h = (m[1] || '0').padStart(2, '0');
+        const min = (m[2] || '0').padStart(2, '0');
+        const s = (m[3] || '0').padStart(2, '0');
+        return h + ':' + min + ':' + s;
+      }
+      return v;
+    }
+    return '';
   }
 
   openImageActionSet(data){

@@ -539,8 +539,8 @@ export class PatientLabComponent implements OnInit {
       };
       return {
         ...rec,
-        EBGDT: pick('EBGDT') || pick('DATUM'),
-        EBZT: pick('EBZT'),
+        EBGDT: this.parseODataDate(pick('EBGDT') || pick('DATUM')),
+        EBZT: this.formatTimeValue(pick('EBZT')),
         PATNR: pick('PATNR'),
         PNAMEC: pick('PNAMEC') || pick('PATIENT') || pick('PNAME'),
         FALAR_TXT: pick('FALAR_TXT'),
@@ -553,5 +553,29 @@ export class PatientLabComponent implements OnInit {
         LFDBW: pick('LFDBW'),
         BESSTATTEXT: pick('BESSTATTEXT'),
       };
+    }
+
+    // OData V2 dates arrive as "/Date(1649721600000)/" -> real Date for the date pipe.
+    parseODataDate(v: any): any {
+      if (typeof v === 'string') {
+        const m = v.match(/\/Date\((-?\d+)/);
+        if (m) { return new Date(parseInt(m[1], 10)); }
+      }
+      return v || '';
+    }
+
+    // Time can arrive as an ISO-8601 duration ("PT10H49M59S") -> "HH:MM:SS".
+    formatTimeValue(v: any): string {
+      if (typeof v === 'string') {
+        const m = v.match(/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/);
+        if (m) {
+          const h = (m[1] || '0').padStart(2, '0');
+          const min = (m[2] || '0').padStart(2, '0');
+          const s = (m[3] || '0').padStart(2, '0');
+          return h + ':' + min + ':' + s;
+        }
+        return v;
+      }
+      return '';
     }
 }
