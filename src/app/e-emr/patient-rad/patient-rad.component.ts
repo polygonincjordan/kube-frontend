@@ -435,16 +435,7 @@ export class PatientRadComponent implements OnInit {
   // Loads already-checked radiology reports from the PR-status OData endpoint
   // and renders them in the same table as the pending list.
   loadCheckedRadResults() {
-    // The PR-status endpoint requires a patient number.
     const patnr = this.formatMrn(this.patientMrn);
-    if (!patnr) {
-      Swal.fire({
-        title: "Patient's MRN required",
-        text: "Please enter the Patient's MRN to view checked results.",
-        icon: 'warning',
-      });
-      return;
-    }
     const from = this.formatDate(this.dateFrom);
     const to = this.formatDate(this.dateTo);
     if (from > to) {
