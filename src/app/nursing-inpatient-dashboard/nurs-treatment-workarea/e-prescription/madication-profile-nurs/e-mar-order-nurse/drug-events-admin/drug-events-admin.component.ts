@@ -14,7 +14,10 @@ import swal from 'sweetalert2';
 import { AuthService } from '@services/auth.service';
 import { EmarWitnessComponent } from './emar-witness/emar-witness.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { subscribeAdministerEventWithPackageResponse } from '@services/e-Prescription/administer-event-package.helper';
+import {
+  isPrnAdministerPayload,
+  subscribeAdministerEventWithPackageResponse,
+} from '@services/e-Prescription/administer-event-package.helper';
 
 @Component({
   selector: 'app-drug-events-admin',
@@ -562,6 +565,10 @@ export class DrugEventsAdminComponent implements OnInit {
   }
 
   AdministerEventaction(title, data) {
+    const refreshEmarOnly = isPrnAdministerPayload(
+      data as Record<string, unknown>,
+      this.ePrescriptionService
+    );
     subscribeAdministerEventWithPackageResponse(this.ePrescriptionService, data as Record<string, unknown>, {
       onSuccess: () => {
         swal.fire({
@@ -572,15 +579,20 @@ export class DrugEventsAdminComponent implements OnInit {
           customClass: { popup: 'myalertpopup' },
           icon: 'success'
         } as any).then(() => {
-          this.modalRef.hide()
-          this.onClose.emit({
-            filterData: this.ePrescriptionService.checkedFilterData,
-            medicationData: this.ePrescriptionService.prescriptionList
-          });
-        })
+          this.modalRef.hide();
+          if (!refreshEmarOnly) {
+            this.onClose.emit({
+              filterData: this.ePrescriptionService.checkedFilterData,
+              medicationData: this.ePrescriptionService.prescriptionList,
+            });
+          }
+        });
       },
       onError: (message) => this.showErrorPopup("", message, "Error"),
       onPrnRetryDeclined: () => this.modalRef?.hide(),
+      onEmarRefresh: refreshEmarOnly
+        ? () => this.ePrescriptionService.refreshEmarPanelData()
+        : undefined,
     });
   }
 
