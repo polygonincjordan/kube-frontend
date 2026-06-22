@@ -164,21 +164,30 @@ export class CycleDefinitionPopupComponent {
     return isNaN(parsed.getTime()) ? null : parsed;
   }
 
-  /** Parse an ISO-8601 duration (e.g. "PT05H00M00S") into a "HH:mm" string. */
+  /**
+   * Parse a SAP time value into "HH:mm" for the time input. Tolerant of every
+   * shape we might receive: ISO duration ("PT05H00M00S"), TIMS "HHMMSS"
+   * ("050000"), or "HH:MM[:SS]" ("05:00:00").
+   */
   private parseDuration(value: any): string {
     if (!value || typeof value !== 'string') { return ''; }
-    const match = value.match(/PT(\d+)H(\d+)M/);
-    if (!match) { return ''; }
-    const hh = `${match[1]}`.padStart(2, '0');
-    const mm = `${match[2]}`.padStart(2, '0');
-    return `${hh}:${mm}`;
+    let m = value.match(/PT(\d+)H(\d+)M/);
+    if (m) { return `${`${m[1]}`.padStart(2, '0')}:${`${m[2]}`.padStart(2, '0')}`; }
+    m = value.match(/^(\d{2}):(\d{2})/);
+    if (m) { return `${m[1]}:${m[2]}`; }
+    m = value.match(/^(\d{2})(\d{2})\d{0,2}$/);
+    if (m) { return `${m[1]}:${m[2]}`; }
+    return '';
   }
 
-  /** Convert a "HH:mm" string into an ISO-8601 duration ("PTxxHxxM00S"). */
+  /**
+   * Convert a "HH:mm" string into the SAP TIMS format "HHMMSS" (6 chars), which
+   * the TOCYCDEF TiStart/TiEnd properties expect (Edm.String, MaxLength 8).
+   */
   private toDuration(value: any): string {
-    if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return 'PT00H00M00S'; }
+    if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return '000000'; }
     const [hh, mm] = value.split(':');
-    return `PT${`${hh}`.padStart(2, '0')}H${`${mm}`.padStart(2, '0')}M00S`;
+    return `${`${hh}`.padStart(2, '0')}${`${mm}`.padStart(2, '0')}00`;
   }
 
   /** Normalise a numeric value that may arrive as "24.00" → "24"; falls back to the default. */
