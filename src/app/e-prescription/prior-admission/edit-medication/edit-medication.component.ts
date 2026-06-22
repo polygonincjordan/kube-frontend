@@ -138,7 +138,7 @@ export class EditMedicationComponent implements OnInit {
     this.editprofileForm.markAsDirty();
   }
 
-  /** Keep only the writable TOCYCDEF fields (drops read-back-only props like TiStart/TiEnd, __metadata). */
+  /** Map TOCYCDEF to the writable fields, dropping read-back-only props such as __metadata. */
   normalizeCycleDef(records: any[], n1znr: string): any[] {
     const list = records && records.length ? records : [];
     return list.map((r: any, i: number) => ({
@@ -149,7 +149,9 @@ export class EditMedicationComponent implements OnInit {
       Enddt: r.Enddt,
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
-      IntervalHour: `${r.IntervalHour || '0'}`
+      IntervalHour: `${r.IntervalHour || '0'}`,
+      TiStart: r.TiStart,
+      TiEnd: r.TiEnd
     }));
   }
 
@@ -157,7 +159,7 @@ export class EditMedicationComponent implements OnInit {
 
     const genratePayload = {
       ...this.editprofileForm.value,
-      // Strip read-back-only props (TiStart/TiEnd, __metadata …) the write entity rejects.
+      // Map TOCYCDEF to writable fields (drops __metadata etc. from read-back records).
       TOCYCDEF: this.normalizeCycleDef(this.editprofileForm.value.TOCYCDEF, this.editprofileForm.value.N1znr),
       Dosdef: this.editprofileForm.value.deftimcycleData && this.editprofileForm.value.deftimcycleData.length ? this.editprofileForm.value.Dosdef : "",
       StartT: this.parsePayloadTime(this.editprofileForm.value.StartD),
