@@ -141,9 +141,9 @@ export class EditMedicationComponent implements OnInit {
       Enddt: r.Enddt,
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
-      IntervalHour: `${r.IntervalHour || '0'}`,
-      TiStart: r.TiStart,
-      TiEnd: r.TiEnd
+      IntervalHour: `${r.IntervalHour || '0'}`
+      // TODO(cycle-def): re-add when SAP write entity supports TiStart/TiEnd:
+      // , TiStart: r.TiStart, TiEnd: r.TiEnd
     }));
   }
 

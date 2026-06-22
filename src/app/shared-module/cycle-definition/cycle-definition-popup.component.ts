@@ -126,9 +126,9 @@ export class CycleDefinitionPopupComponent {
       Sa: !!v.Sa,
       Su: !!v.Su,
       IntervalDay: v.everyDay ? 1 : (+v.IntervalDay || 1),
-      IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`,
-      TiStart: this.toDuration(v.fromTime),
-      TiEnd: this.toDuration(v.toTime)
+      IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`
+      // TODO(cycle-def): re-add when SAP write entity supports TiStart/TiEnd:
+      // , TiStart: this.toDuration(v.fromTime), TiEnd: this.toDuration(v.toTime)
     }];
     this.onSave.emit({ index: this.rowIndex, data });
     this.modalRef.hide();
