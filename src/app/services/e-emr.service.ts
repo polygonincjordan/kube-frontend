@@ -288,7 +288,10 @@ export class EEmrService {
       'Content-Type': 'application/json',
       'sap-client': environment.client,
     };
-    const filter = `Patnr eq '${patnr}' and Datefrom eq datetime'${dateFrom}' and Dateto eq datetime'${dateTo}'`;
+    // Patnr is optional: when empty, omit it so SAP returns all of the logged-in
+    // user's checked results for the date range.
+    const dateFilter = `Datefrom eq datetime'${dateFrom}' and Dateto eq datetime'${dateTo}'`;
+    const filter = patnr ? `Patnr eq '${patnr}' and ${dateFilter}` : dateFilter;
     return this._http.get(
       'LabPrSetSet?$filter=' + filter + '&$format=json',
       headers
@@ -301,7 +304,10 @@ export class EEmrService {
       'Content-Type': 'application/json',
       'sap-client': environment.client,
     };
-    const filter = `Patnr eq '${patnr}' and Datefrom eq datetime'${dateFrom}' and Dateto eq datetime'${dateTo}'`;
+    // Patnr is optional: when empty, omit it so SAP returns all of the logged-in
+    // user's checked results for the date range.
+    const dateFilter = `Datefrom eq datetime'${dateFrom}' and Dateto eq datetime'${dateTo}'`;
+    const filter = patnr ? `Patnr eq '${patnr}' and ${dateFilter}` : dateFilter;
     return this._http.get(
       'RadPrSet?$filter=' + filter + '&$format=json',
       headers
