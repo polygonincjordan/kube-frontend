@@ -1,9 +1,10 @@
 <ng-container *ngIf="group" [formGroup]="group">
-  <ng-select class="d-grid" formControlName="Result_Drug_Name"
+  <ng-select class="d-grid-am" formControlName="Result_Drug_Name"
     [title]="group.get('Result_Drug_Name').value !== null ?
     group.get('Result_Drug_Name').value : ''" [typeahead]="searchTerm"
     (change)="broadcastEvent($event)"
     (keyup)="someMethod($event, searchTypeOnKeyEnter)"[markFirst]="false"
+    [appendTo]="'body'"
     [ngClass]="group.touched &&
     group.get('Result_Drug_Name').errors && isSubmitted ?
     'ep-error-message': ''">
