@@ -158,6 +158,25 @@ export class TemplateEditPopupComponent {
     }
   }
 
+  /**
+   * Route dropdown search — mirrors create-discharge-order.serachInput: match by
+   * description OR code (e.g. typing "PO"), not by the displayed description only.
+   * The dropdown is bound by `Aprouid`, so ng-select hands us that id as `item`;
+   * resolve it back to the route object before testing. Also handles `item` already
+   * being the route object, so it works regardless of how the value is bound.
+   */
+  searchRoute = (term: string, item: any): boolean => {
+    term = `${term || ''}`.toLowerCase();
+    let route = item;
+    if (!route || route.Descr === undefined) {
+      route = (this.addministrationService.routeDropdownList || [])
+        .find((r: any) => `${r.Aprouid}`.trim() === `${item}`.trim());
+    }
+    if (!route) { return false; }
+    return `${route.Descr || ''}`.toLowerCase().includes(term)
+      || `${route.Aprou || ''}`.toLowerCase().includes(term);
+  };
+
   /** Keep the displayed frequency text in sync with the selected code. */
   onChangeFrequency(index: number): void {
     const code = this.medArray.at(index).get('N1znr').value;

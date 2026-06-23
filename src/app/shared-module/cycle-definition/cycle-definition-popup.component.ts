@@ -145,11 +145,16 @@ export class CycleDefinitionPopupComponent {
     return value === true || value === 'true' || value === 'X' || value === 'x';
   }
 
-  /** Format a Date as YYYY-MM-DDTHH:MM:SS (HH:MM:SS fixed to 00:00:00). */
+  /**
+   * Serialize a date as OData V2 Edm.DateTime: "/Date(milliseconds)/" at UTC
+   * midnight of the calendar day (Begdt/Enddt are Precision-0 dates). This is the
+   * canonical wire format SAP Gateway expects on write and returns on read.
+   */
   private toSapDate(value: any): string {
     const date = this.toDate(value);
     if (!date) { return null; }
-    return `${this.datePipe.transform(date, 'yyyy-MM-dd')}T00:00:00`;
+    const ms = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+    return `/Date(${ms})/`;
   }
 
   /** Parse a Date, an ISO string, or an OData /Date(ms)/ string into a Date. */
