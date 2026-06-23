@@ -436,12 +436,46 @@ export class EPrescriptionService implements OnDestroy {
   }
   postData(entitySetName: any, data: any) {
     let url = this.BaseUrl + entitySetName
-    return this.httpClient.post(url, data, { withCredentials: true, observe: 'response' });
+    return this.httpClient.post(url, this.sanitizeOrderPayload(data), { withCredentials: true, observe: 'response' });
   }
 
   updateData(entitySetName: any, data: any) {
     let url = this.BaseUrl + entitySetName
-    return this.httpClient.put(url, data, { withCredentials: true });
+    return this.httpClient.put(url, this.sanitizeOrderPayload(data), { withCredentials: true });
+  }
+
+  /**
+   * SAP deep-insert deserialization rejects optional Date/Time fields sent as null,
+   * so for medication order / template payloads (those carrying TOSTD, TOORDERTEMPLATE
+   * or TOCYCDEF) we recursively drop any null/undefined keys before sending. Other
+   * payloads are left untouched.
+   */
+  private sanitizeOrderPayload(data: any): any {
+    if (!data || typeof data !== 'object') { return data; }
+    const isOrderPayload = !!(data.TOSTD || data.TOORDERTEMPLATE || data.TOCYCDEF);
+    if (!isOrderPayload) { return data; }
+    // Work on a clone so we never mutate the caller's form objects (safe: by send
+    // time all values are already JSON-serializable strings/numbers/booleans).
+    let clone: any;
+    try { clone = JSON.parse(JSON.stringify(data)); } catch { return this.deepDropNulls(data); }
+    return this.deepDropNulls(clone);
+  }
+
+  private deepDropNulls(value: any): any {
+    if (Array.isArray(value)) { return value.map((item) => this.deepDropNulls(item)); }
+    if (value && typeof value === 'object') {
+      Object.keys(value).forEach((key) => {
+        const v = value[key];
+        // Drop nulls/undefined and the stringified-null artifacts ("null"/"nullnull")
+        // that empty date fields can produce — SAP can't convert them.
+        if (v === null || v === undefined || v === 'null' || v === 'nullnull') {
+          delete value[key];
+        } else if (typeof v === 'object') {
+          value[key] = this.deepDropNulls(v);
+        }
+      });
+    }
+    return value;
   }
 
   deleteData(entitySetName: any) {

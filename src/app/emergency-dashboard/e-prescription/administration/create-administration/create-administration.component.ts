@@ -671,8 +671,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
           element.EndT = this.parseTime(element.EndD);
           element.EndD = element.EndD !== null ? `${this.parseDatedata(element.EndD)}${this.parseTimedata(element.EndD)}` : null;
-          // Omit optional End Date/Time instead of sending null (SAP deep-insert rejects nested nulls).
-          if (element.EndD === null || element.EndD === undefined) { delete element.EndD; delete element.EndT; }
           element.Complex = element.Complex ? "X" : "";
           element.AddDose = element.AddDose ? "X" : "";
           element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid : element.Aprouteid;
@@ -768,8 +766,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr : element.Routedescr;
             element.EndT = this.parseTime(element.EndD);
             element.EndD = element.EndD !== null ? `${this.parseDatedata(element.EndD)}${this.parseTimedata(element.EndD)}` : null;
-            // Omit optional End Date/Time instead of sending null (SAP deep-insert rejects nested nulls).
-            if (element.EndD === null || element.EndD === undefined) { delete element.EndD; delete element.EndT; }
             element.Complex = element.Complex ? "X" : "";
             element.AddDose = element.AddDose ? "X" : "";
             element.Prn && element.Prncond === "" ? this.showErrorPopup("", "PRN There should be an error that says", "Error") : null;

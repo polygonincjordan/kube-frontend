@@ -586,8 +586,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.StartD = this.parseDate(element.StartD);
           element.EndT = this.parseTime(element.EndD);
           element.EndD = this.parseDate(element.EndD);
-          // Omit optional End Date/Time instead of sending null (SAP deep-insert rejects nested nulls).
-          if (element.EndD === null || element.EndD === undefined) { delete element.EndD; delete element.EndT; }
           element.Complex = element.Complex ? "X" : "";
           element.AddDose = element.AddDose ? "X" : "";
           element.Prn && element.Prncond === "" ? this.showErrorPopup("", "PRN There should be an error that says", "Error") : null;
