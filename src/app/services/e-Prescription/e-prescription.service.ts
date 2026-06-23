@@ -470,12 +470,24 @@ export class EPrescriptionService implements OnDestroy {
         // that empty date fields can produce — SAP can't convert them.
         if (v === null || v === undefined || v === 'null' || v === 'nullnull') {
           delete value[key];
+        } else if (typeof v === 'string') {
+          // Normalise ISO datetimes (StartD/EndD…) to the OData V2 Edm.DateTime
+          // wire format /Date(ms)/, which the deep-insert deserializer requires.
+          value[key] = this.isoToSapDateTime(v);
         } else if (typeof v === 'object') {
           value[key] = this.deepDropNulls(v);
         }
       });
     }
     return value;
+  }
+
+  /** Convert "YYYY-MM-DDTHH:MM:SS" to OData V2 "/Date(ms)/"; other strings pass through. */
+  private isoToSapDateTime(v: string): string {
+    const m = v.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})$/);
+    if (!m) { return v; }
+    const ms = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]);
+    return `/Date(${ms})/`;
   }
 
   deleteData(entitySetName: any) {
