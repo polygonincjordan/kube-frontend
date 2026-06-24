@@ -588,8 +588,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       return;
     }
     if (n1znr) {
-      // Load the cycle definition for this frequency key (N1znr) and populate the popup.
-      this.ePrescriptionService.loadData(`e-prescription/frequencyQ24Cycle?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      // Load the master cycle definition for this frequency key (N1znr) and populate the popup.
+      this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         this.cyclePopup.showPopup({ index, n1znr, title, startDate, records });
       }, () => this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: [] }));
