@@ -104,8 +104,8 @@ export class EditMedicationComponent implements OnInit {
     const n1znr = this.editprofileForm.get('N1znr').value;
     if (existing && existing.length) { this.openCyclePopup(existing); return; }
     if (n1znr) {
-      // Load the master cycle definition for this frequency key (N1znr) and populate the popup.
-      this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      // Load the cycle definition for this frequency key (N1znr) and populate the popup.
+      this.ePrescriptionService.loadData(`e-prescription/frequencyQ24Cycle?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         this.openCyclePopup(records);
       }, () => this.openCyclePopup([]));

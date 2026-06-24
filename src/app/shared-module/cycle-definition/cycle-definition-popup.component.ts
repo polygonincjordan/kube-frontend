@@ -67,35 +67,68 @@ export class CycleDefinitionPopupComponent {
 
   /** Build the cycle form group, optionally hydrated from a saved record. */
   private buildCycle(record: any = {}): FormGroup {
-    const begin = this.toDate(record.Begdt) || new Date();
+    const r = this.normalizeIncoming(record);
+    const begin = this.toDate(r.Begdt) || new Date();
     const group = this.fb.group({
-      Menge: [record.Menge !== undefined && record.Menge !== null && record.Menge !== '' ? `${this.cleanNumber(record.Menge, '1')}` : '1'],
+      Menge: [r.Menge !== undefined && r.Menge !== null && r.Menge !== '' ? `${this.cleanNumber(r.Menge, '1')}` : '1'],
       Begdt: [begin],
       // Default the end of the cycle to one month after the start, rather than the
       // open-ended 31.12.9999, so a new order has a sensible bounded span.
-      Enddt: [this.toDate(record.Enddt) || this.addMonths(begin, 1)],
-      everyDay: [record.IntervalDay !== undefined && +record.IntervalDay > 1 ? false : true],
-      IntervalDay: [record.IntervalDay !== undefined && record.IntervalDay !== null ? +record.IntervalDay : 1],
-      Mo: [this.toBool(record.Mo, true)],
-      Tu: [this.toBool(record.Tu, true)],
-      We: [this.toBool(record.We, true)],
-      Th: [this.toBool(record.Th, true)],
-      Fr: [this.toBool(record.Fr, true)],
-      Sa: [this.toBool(record.Sa, true)],
-      Su: [this.toBool(record.Su, true)],
-      // CycleDefMaster returns the public-holiday flag as "Holiday"; TOCYCDEF read-back has none.
-      PublHol: [this.toBool(record.Holiday !== undefined ? record.Holiday : record.PublHol, true)],
+      Enddt: [this.toDate(r.Enddt) || this.addMonths(begin, 1)],
+      everyDay: [r.IntervalDay !== undefined && +r.IntervalDay > 1 ? false : true],
+      IntervalDay: [r.IntervalDay !== undefined && r.IntervalDay !== null ? +r.IntervalDay : 1],
+      Mo: [this.toBool(r.Mo, true)],
+      Tu: [this.toBool(r.Tu, true)],
+      We: [this.toBool(r.We, true)],
+      Th: [this.toBool(r.Th, true)],
+      Fr: [this.toBool(r.Fr, true)],
+      Sa: [this.toBool(r.Sa, true)],
+      Su: [this.toBool(r.Su, true)],
+      PublHol: [this.toBool(r.PublHol, true)],
       multipleDayFixedInterval: [false],
       // From/To time come back from SAP as ISO durations (e.g. PT05H00M00S).
-      fromTime: [this.parseDuration(record.TiStart) || '09:00'],
-      toTime: [this.parseDuration(record.TiEnd) || '09:00'],
-      // CycleDefMaster returns the minute interval as "IntervalMin".
-      intervalMode: [this.cycleHasMinutes(record) ? 'minutes' : 'hours'],
-      IntervalHour: [this.cleanNumber(record.IntervalHour, '24')],
-      IntervalMinute: [this.cycleMinuteValue(record)]
+      fromTime: [this.parseDuration(r.TiStart) || '09:00'],
+      toTime: [this.parseDuration(r.TiEnd) || '09:00'],
+      intervalMode: [r.IntervalMinute && +r.IntervalMinute > 0 ? 'minutes' : 'hours'],
+      IntervalHour: [this.cleanNumber(r.IntervalHour, '24')],
+      IntervalMinute: [r.IntervalMinute !== undefined && r.IntervalMinute !== null ? `${r.IntervalMinute}` : '0000']
     });
     this.keepEndDateValid(group);
     return group;
+  }
+
+  /**
+   * Map an incoming cycle record from any of the SAP shapes into one canonical
+   * shape, so the popup works regardless of source:
+   *  - CycleDef (CycleDefSet)        → N1mo/N1di/…, N1begzt/N1endzt, N1interH/N1interT, N1feiertag
+   *  - CycleDefMaster                → Mo/Tu/…, TiStart/TiEnd, IntervalHour, IntervalMin, Holiday
+   *  - TOCYCDEF (order/template)     → Mo/Tu/…, TiStart/TiEnd, IntervalHour, Begdt/Enddt, Menge
+   */
+  private normalizeIncoming(record: any): any {
+    const rec = record || {};
+    const pick = (...keys: string[]) => {
+      for (const k of keys) { if (rec[k] !== undefined && rec[k] !== null) { return rec[k]; } }
+      return undefined;
+    };
+    return {
+      N1lfnr: rec.N1lfnr,
+      Menge: pick('Menge'),
+      Begdt: pick('Begdt'),
+      Enddt: pick('Enddt'),
+      IntervalDay: pick('IntervalDay', 'N1interT'),
+      IntervalHour: pick('IntervalHour', 'N1interH'),
+      IntervalMinute: pick('IntervalMinute', 'IntervalMin'),
+      Mo: pick('Mo', 'N1mo'),
+      Tu: pick('Tu', 'N1di'),
+      We: pick('We', 'N1mi'),
+      Th: pick('Th', 'N1do'),
+      Fr: pick('Fr', 'N1fr'),
+      Sa: pick('Sa', 'N1sa'),
+      Su: pick('Su', 'N1so'),
+      PublHol: pick('Holiday', 'PublHol', 'N1feiertag'),
+      TiStart: pick('TiStart', 'N1begzt'),
+      TiEnd: pick('TiEnd', 'N1endzt')
+    };
   }
 
   /**
@@ -195,18 +228,6 @@ export class CycleDefinitionPopupComponent {
     if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return '000000'; }
     const [hh, mm] = value.split(':');
     return `${`${hh}`.padStart(2, '0')}${`${mm}`.padStart(2, '0')}00`;
-  }
-
-  /** The minute interval comes back as "IntervalMin" (CycleDefMaster) or "IntervalMinute". */
-  private cycleMinuteValue(record: any): string {
-    const v = record.IntervalMin !== undefined && record.IntervalMin !== null ? record.IntervalMin
-      : (record.IntervalMinute !== undefined && record.IntervalMinute !== null ? record.IntervalMinute : '0000');
-    return `${v}`;
-  }
-
-  private cycleHasMinutes(record: any): boolean {
-    const v = record.IntervalMin !== undefined && record.IntervalMin !== null ? record.IntervalMin : record.IntervalMinute;
-    return !!v && +v > 0;
   }
 
   /** Normalise a numeric value that may arrive as "24.00" → "24"; falls back to the default. */
