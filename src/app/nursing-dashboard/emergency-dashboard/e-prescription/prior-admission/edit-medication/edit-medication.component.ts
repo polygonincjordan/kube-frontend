@@ -101,17 +101,16 @@ export class EditMedicationComponent implements OnInit {
   onOpenCycleDefinition() {
     const existing = this.editprofileForm.get('TOCYCDEF').value || [];
     const n1znr = this.editprofileForm.get('N1znr').value;
-    if ((!existing || !existing.length) && n1znr) {
-      // Cycle definition lives in N1ZYINF, read back by frequency key (N1znr) via the
-      // backend route that maps to CycleDefSet?$filter=N1znr eq '<N1znr>'.
-      this.ePrescriptionService.loadData(`e-prescription/frequencyQ24Cycle?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+    if (existing && existing.length) { this.openCyclePopup(existing); return; }
+    if (n1znr) {
+      // Load the master cycle definition for this frequency key (N1znr) and populate the popup.
+      this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
-        this.editprofileForm.get('TOCYCDEF').setValue(records);
         this.openCyclePopup(records);
-      }, () => this.openCyclePopup(existing));
+      }, () => this.openCyclePopup([]));
       return;
     }
-    this.openCyclePopup(existing);
+    this.openCyclePopup([]);
   }
 
   private openCyclePopup(records: any[]) {

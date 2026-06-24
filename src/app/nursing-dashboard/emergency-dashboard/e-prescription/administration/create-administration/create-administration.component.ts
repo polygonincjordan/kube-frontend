@@ -501,17 +501,19 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     const n1znr = item.get('N1znr').value;
     const title = item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : '');
     const startDate = item.get('StartD').value;
-    if ((!existing || !existing.length) && n1znr) {
-      // Cycle definition lives in N1ZYINF, read back by frequency key (N1znr) via the
-      // backend route that maps to CycleDefSet?$filter=N1znr eq '<N1znr>'.
-      this.ePrescriptionService.loadData(`e-prescription/frequencyQ24Cycle?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
-        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
-        item.get('TOCYCDEF').setValue(records);
-        this.cyclePopup.showPopup({ index, n1znr, title, startDate, records });
-      }, () => this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing }));
+    if (existing && existing.length) {
+      this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing });
       return;
     }
-    this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing });
+    if (n1znr) {
+      // Load the master cycle definition for this frequency key (N1znr) and populate the popup.
+      this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+        this.cyclePopup.showPopup({ index, n1znr, title, startDate, records });
+      }, () => this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: [] }));
+      return;
+    }
+    this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: [] });
   }
 
   onCycleSaved(event: { index: number; data: any[] }) {

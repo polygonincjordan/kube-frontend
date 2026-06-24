@@ -69,7 +69,7 @@ export class CycleDefinitionPopupComponent {
   private buildCycle(record: any = {}): FormGroup {
     const begin = this.toDate(record.Begdt) || new Date();
     const group = this.fb.group({
-      Menge: [record.Menge !== undefined && record.Menge !== null && record.Menge !== '' ? `${record.Menge}` : '1'],
+      Menge: [record.Menge !== undefined && record.Menge !== null && record.Menge !== '' ? `${this.cleanNumber(record.Menge, '1')}` : '1'],
       Begdt: [begin],
       // Default the end of the cycle to one month after the start, rather than the
       // open-ended 31.12.9999, so a new order has a sensible bounded span.
@@ -83,14 +83,16 @@ export class CycleDefinitionPopupComponent {
       Fr: [this.toBool(record.Fr, true)],
       Sa: [this.toBool(record.Sa, true)],
       Su: [this.toBool(record.Su, true)],
-      PublHol: [this.toBool(record.PublHol, true)],
+      // CycleDefMaster returns the public-holiday flag as "Holiday"; TOCYCDEF read-back has none.
+      PublHol: [this.toBool(record.Holiday !== undefined ? record.Holiday : record.PublHol, true)],
       multipleDayFixedInterval: [false],
       // From/To time come back from SAP as ISO durations (e.g. PT05H00M00S).
       fromTime: [this.parseDuration(record.TiStart) || '09:00'],
       toTime: [this.parseDuration(record.TiEnd) || '09:00'],
-      intervalMode: [record.IntervalMinute && +record.IntervalMinute > 0 ? 'minutes' : 'hours'],
+      // CycleDefMaster returns the minute interval as "IntervalMin".
+      intervalMode: [this.cycleHasMinutes(record) ? 'minutes' : 'hours'],
       IntervalHour: [this.cleanNumber(record.IntervalHour, '24')],
-      IntervalMinute: [record.IntervalMinute !== undefined && record.IntervalMinute !== null ? `${record.IntervalMinute}` : '0000']
+      IntervalMinute: [this.cycleMinuteValue(record)]
     });
     this.keepEndDateValid(group);
     return group;
@@ -193,6 +195,18 @@ export class CycleDefinitionPopupComponent {
     if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return '000000'; }
     const [hh, mm] = value.split(':');
     return `${`${hh}`.padStart(2, '0')}${`${mm}`.padStart(2, '0')}00`;
+  }
+
+  /** The minute interval comes back as "IntervalMin" (CycleDefMaster) or "IntervalMinute". */
+  private cycleMinuteValue(record: any): string {
+    const v = record.IntervalMin !== undefined && record.IntervalMin !== null ? record.IntervalMin
+      : (record.IntervalMinute !== undefined && record.IntervalMinute !== null ? record.IntervalMinute : '0000');
+    return `${v}`;
+  }
+
+  private cycleHasMinutes(record: any): boolean {
+    const v = record.IntervalMin !== undefined && record.IntervalMin !== null ? record.IntervalMin : record.IntervalMinute;
+    return !!v && +v > 0;
   }
 
   /** Normalise a numeric value that may arrive as "24.00" → "24"; falls back to the default. */
