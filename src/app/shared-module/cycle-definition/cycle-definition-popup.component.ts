@@ -1,15 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Cycle Definition popup.
  *
- * Lets a physician define a single administration cycle (week-days, dates,
- * quantity and repeat interval) for a medication order. The cycle is emitted as
- * a single TOCYCDEF record ("0001") that is sent inside the matching TOSTD item
- * of the EstdordSet payload.
+ * Lets a physician view/edit the administration cycle(s) of a medication order.
+ * A frequency (N1znr) can have several cycle lines (N1lfnr 0001, 0002 …) — each
+ * is shown as its own tab, driven by the data received (no manual "Add"). Each
+ * cycle is emitted as a TOCYCDEF record inside the matching TOSTD item.
  */
 @Component({
   selector: 'cycle-definition-popup',
@@ -26,8 +26,8 @@ export class CycleDefinitionPopupComponent {
   public n1znr: string;
   /** Title shown in the popup header, e.g. the drug description. */
   public title: string;
-  /** The single supported cycle line number. */
-  public n1lfnr = '0001';
+  /** Index of the currently visible cycle tab. */
+  public activeTab = 0;
 
   public cycleForm: FormGroup;
 
@@ -36,7 +36,11 @@ export class CycleDefinitionPopupComponent {
   @Output() onSave: EventEmitter<{ index: number; data: any[] }> = new EventEmitter();
 
   constructor(private modalService: BsModalService, private fb: FormBuilder, private datePipe: DatePipe) {
-    this.cycleForm = this.buildCycle();
+    this.cycleForm = this.fb.group({ cycles: this.fb.array([]) });
+  }
+
+  get cycles(): FormArray {
+    return this.cycleForm.get('cycles') as FormArray;
   }
 
   /**
@@ -51,12 +55,16 @@ export class CycleDefinitionPopupComponent {
     this.rowIndex = payload.index;
     this.n1znr = payload.n1znr;
     this.title = payload.title || '';
+    this.cycles.clear();
 
-    const record = payload.records && payload.records.length
-      ? payload.records[0]
-      : { Begdt: payload.startDate ? new Date(payload.startDate) : new Date() };
-    this.n1lfnr = record.N1lfnr || '0001';
-    this.cycleForm = this.buildCycle(record);
+    // One tab per received cycle line (N1lfnr); if none, start with a single blank cycle.
+    const records = payload.records && payload.records.length ? payload.records : null;
+    if (records) {
+      records.forEach(r => this.cycles.push(this.buildCycle(r)));
+    } else {
+      this.cycles.push(this.buildCycle({ Begdt: payload.startDate ? new Date(payload.startDate) : new Date(), N1lfnr: '0001' }));
+    }
+    this.activeTab = 0;
 
     this.modalRef = this.modalService.show(this.cycleDefinition, {
       backdrop: true,
@@ -65,11 +73,23 @@ export class CycleDefinitionPopupComponent {
     });
   }
 
+  selectTab(i: number): void {
+    this.activeTab = i;
+  }
+
+  /** Tab label = the record's own N1lfnr, falling back to the 1-based position. */
+  tabLabel(i: number): string {
+    const group = this.cycles.at(i);
+    const lfnr = group ? group.get('N1lfnr').value : null;
+    return lfnr ? lfnr : `${i + 1}`.padStart(4, '0');
+  }
+
   /** Build the cycle form group, optionally hydrated from a saved record. */
   private buildCycle(record: any = {}): FormGroup {
     const r = this.normalizeIncoming(record);
     const begin = this.toDate(r.Begdt) || new Date();
     const group = this.fb.group({
+      N1lfnr: [r.N1lfnr || ''],
       Menge: [r.Menge !== undefined && r.Menge !== null && r.Menge !== '' ? `${this.cleanNumber(r.Menge, '1')}` : '1'],
       Begdt: [begin],
       // Default the end of the cycle to one month after the start, rather than the
@@ -146,25 +166,27 @@ export class CycleDefinitionPopupComponent {
   }
 
   save(): void {
-    const v = this.cycleForm.value;
-    const data = [{
-      N1znr: this.n1znr,
-      N1lfnr: this.n1lfnr || '0001',
-      Menge: `${v.Menge}`,
-      Begdt: this.toSapDate(v.Begdt),
-      Enddt: this.toSapDate(v.Enddt),
-      Mo: !!v.Mo,
-      Tu: !!v.Tu,
-      We: !!v.We,
-      Th: !!v.Th,
-      Fr: !!v.Fr,
-      Sa: !!v.Sa,
-      Su: !!v.Su,
-      IntervalDay: v.everyDay ? 1 : (+v.IntervalDay || 1),
-      IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`,
-      TiStart: this.toDuration(v.fromTime),
-      TiEnd: this.toDuration(v.toTime)
-    }];
+    const data = this.cycles.controls.map((group, i) => {
+      const v = group.value;
+      return {
+        N1znr: this.n1znr,
+        N1lfnr: v.N1lfnr || `${i + 1}`.padStart(4, '0'),
+        Menge: `${v.Menge}`,
+        Begdt: this.toSapDate(v.Begdt),
+        Enddt: this.toSapDate(v.Enddt),
+        Mo: !!v.Mo,
+        Tu: !!v.Tu,
+        We: !!v.We,
+        Th: !!v.Th,
+        Fr: !!v.Fr,
+        Sa: !!v.Sa,
+        Su: !!v.Su,
+        IntervalDay: v.everyDay ? 1 : (+v.IntervalDay || 1),
+        IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`,
+        TiStart: this.toDuration(v.fromTime),
+        TiEnd: this.toDuration(v.toTime)
+      };
+    });
     this.onSave.emit({ index: this.rowIndex, data });
     this.modalRef.hide();
   }
