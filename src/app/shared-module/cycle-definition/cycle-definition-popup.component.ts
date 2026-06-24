@@ -221,13 +221,13 @@ export class CycleDefinitionPopupComponent {
   }
 
   /**
-   * Convert a "HH:mm" string into the SAP TIMS format "HHMMSS" (6 chars), which
-   * the TOCYCDEF TiStart/TiEnd properties expect (Edm.String, MaxLength 8).
+   * Convert a "HH:mm" string into the SAP time format "HH:MM:SS" (8 chars, with
+   * colons) that the TOCYCDEF TiStart/TiEnd properties expect on write.
    */
   private toDuration(value: any): string {
-    if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return '000000'; }
+    if (!value || typeof value !== 'string' || value.indexOf(':') < 0) { return '00:00:00'; }
     const [hh, mm] = value.split(':');
-    return `${`${hh}`.padStart(2, '0')}${`${mm}`.padStart(2, '0')}00`;
+    return `${`${hh}`.padStart(2, '0')}:${`${mm}`.padStart(2, '0')}:00`;
   }
 
   /** Normalise a numeric value that may arrive as "24.00" → "24"; falls back to the default. */
