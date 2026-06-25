@@ -4,6 +4,7 @@ import { AddministrationService } from '@services/e-Prescription/Administration.
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
+import { CycleDefinitionPopupComponent } from '../../../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
 /**
  * Editable view of a User-Level medication template (Administration tab, Ordtype = '1').
@@ -25,6 +26,7 @@ export class AdministrationTemplateEditPopupComponent {
   public editForm: FormGroup;
 
   @ViewChild('templateeditPopup', { static: true }) templateeditPopup: TemplateRef<any>;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
   @Output() onSaved: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
@@ -70,9 +72,54 @@ export class AdministrationTemplateEditPopupComponent {
       Aprouteid: new FormControl(item ? item.Aprouteid : null),
       Dosdef: new FormControl(item ? (item.Dosdef || '') : ''),
       AgentidResult: new FormControl([]),
+      TOCYCDEF: new FormControl(item && item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : []),
       isSelected: new FormControl(false),
       __orig: new FormControl(item || null)
     });
+  }
+
+  /** Open the Cycle Definition popup for a row; requires a frequency to be selected. */
+  onOpenCycleDefinition(index: number): void {
+    const row = this.medArray.at(index);
+    const n1znr = row.get('N1znr') ? row.get('N1znr').value : null;
+    if (!n1znr) {
+      Swal.fire({
+        text: 'Please select a frequency first', icon: 'error',
+        confirmButtonColor: '#0890c5', confirmButtonText: 'OK', customClass: { popup: 'myalertpopup' }
+      } as any);
+      return;
+    }
+    const existing = row.get('TOCYCDEF').value || [];
+    const title = row.get('Result_Drug_Name').value || row.get('N1ztxt').value || '';
+    if (existing && existing.length) {
+      this.cyclePopup.showPopup({ index, n1znr, title, startDate: null, records: existing });
+      return;
+    }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      this.cyclePopup.showPopup({ index, n1znr, title, startDate: null, records });
+    }, () => this.cyclePopup.showPopup({ index, n1znr, title, startDate: null, records: [] }));
+  }
+
+  onCycleSaved(event: { index: number; data: any[] }): void {
+    this.medArray.at(event.index).get('TOCYCDEF').setValue(event.data || []);
+  }
+
+  /** Keep only the writable TOCYCDEF fields and re-stamp the frequency key. */
+  private normalizeCycleDef(records: any[], n1znr: string): any[] {
+    const list = records && records.length ? records : [];
+    return list.map((r: any, i: number) => ({
+      N1znr: r.N1znr || n1znr,
+      N1lfnr: r.N1lfnr || `${i + 1}`.padStart(4, '0'),
+      Menge: `${r.Menge}`,
+      Begdt: r.Begdt,
+      Enddt: r.Enddt,
+      Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
+      IntervalDay: +r.IntervalDay || 1,
+      IntervalHour: `${r.IntervalHour || '0'}`,
+      TiStart: r.TiStart,
+      TiEnd: r.TiEnd
+    }));
   }
 
   onCheckallMedicationData(event: any): void {
@@ -227,7 +274,8 @@ export class AdministrationTemplateEditPopupComponent {
       Complex: orig.Complex ? 'X' : '',
       Pom: orig.Pom || '',
       Priority: orig.Priority || '010',
-      TOCOMPLEX: toComplex
+      TOCOMPLEX: toComplex,
+      TOCYCDEF: this.normalizeCycleDef(v.TOCYCDEF, v.N1znr)
     };
   }
 
