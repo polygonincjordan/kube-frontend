@@ -498,7 +498,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   onOpenCycleDefinition(index: number) {
     const item = this.drugArray.controls[index];
     if (!item.get('N1znr') || !item.get('N1znr').value) {
-      this.showErrorPopup('', 'Please select a frequency first', 'Error');
+      this.showErrorPopup('', 'Please select a medication and frequency ', 'Error');
       return;
     }
     const existing = item.get('TOCYCDEF').value || [];

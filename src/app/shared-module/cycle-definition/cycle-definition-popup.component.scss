@@ -78,7 +78,7 @@ $border: #e3e6ef;
     font-weight: 500;
     color: #6c757d;
     border-bottom: 2px solid transparent;
-
+    margin:0 10px;
     &.active { color: $brand; border-bottom-color: $brand; }
   }
 

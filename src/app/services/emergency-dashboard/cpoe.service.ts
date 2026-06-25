@@ -1451,7 +1451,7 @@ export class CpoeService {
           message.push('Please Select Dosage Unit');
         }
         if (item.frequencyId === '' || item.frequencyId === undefined || item.durationDesc === null) {
-          message.push('Please Select frequency');
+         message.push('Please Select frequency');
         }
         if (item.durationCount === 0) {
           message.push('Please Enter Duration');
