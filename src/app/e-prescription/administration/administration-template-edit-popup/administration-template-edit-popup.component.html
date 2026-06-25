@@ -70,8 +70,8 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="medication-field w-25 pr-2 flex-25">
-            <ng-select [searchable]="true" [appendTo]="'body'" formControlName="N1znr"
+          <div class="medication-field w-25 pr-2 flex-25 d-flex align-items-center">
+            <ng-select class="flex-grow-1" [searchable]="true" [appendTo]="'body'" formControlName="N1znr"
               (change)="onChangeFrequency(i)"
               [ngClass]="element.touched && element.get('N1znr').errors && isSubmitted ? 'ep-error-message' : ''">
               <ng-option *ngFor="let medicationFrequency of addministrationService.frequencyList"
@@ -79,6 +79,8 @@
                 {{ medicationFrequency.OptionField }}
               </ng-option>
             </ng-select>
+            <img src="assets/img/Calender.svg" height="20" class="c-pointer ml-2 cycle-def-icon"
+              tooltip="Cycle Definition" placement="top" (click)="onOpenCycleDefinition(i)" alt="Cycle Definition">
           </div>
           <div class="medication-field w-25 pr-2 flex-25 d-flex align-items-center">
             <input type="text" min="0" class="form-control m-0" formControlName="Pdur">
@@ -100,3 +102,5 @@
     </div>
   </div>
 </ng-template>
+
+<cycle-definition-popup #cyclePopup (onSave)="onCycleSaved($event)"></cycle-definition-popup>
