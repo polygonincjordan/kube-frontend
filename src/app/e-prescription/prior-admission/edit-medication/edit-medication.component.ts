@@ -113,12 +113,20 @@ export class EditMedicationComponent implements OnInit {
     const n1znr = this.editprofileForm.get('N1znr').value;
     const meordid = this.editdata && this.editdata.Meordid;
     if (!meordid && !n1znr) { this.openCyclePopup([]); return; }
-    // For an existing order, read the cycle by order id (Meordid) via OrdCycleDefSet —
-    // it returns the order's own cycle, or the master cycle if none is defined.
+    // For an existing order, read the cycle by order id (Meordid) via OrdCycleDefSet.
     const url = meordid
       ? `e-prescription/OrdCycleDefSet?Meordid=${meordid}`
       : `e-prescription/CycleDefMasterSet?N1znr=${n1znr}`;
     this.ePrescriptionService.loadData(url, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      if (records.length || !meordid) { this.openCyclePopup(records); return; }
+      this.loadMasterCycleDefinition(n1znr);
+    }, () => meordid ? this.loadMasterCycleDefinition(n1znr) : this.openCyclePopup([]));
+  }
+
+  private loadMasterCycleDefinition(n1znr: string) {
+    if (!n1znr) { this.openCyclePopup([]); return; }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
       const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
       this.openCyclePopup(records);
     }, () => this.openCyclePopup([]));

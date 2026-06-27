@@ -111,6 +111,15 @@ export class EditMedicationComponent implements OnInit {
       : `e-prescription/CycleDefMasterSet?N1znr=${n1znr}`;
     this.ePrescriptionService.loadData(url, false, false, false, false).subscribe((res: any) => {
       const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      if (records.length || !meordid) { this.openCyclePopup(records); return; }
+      this.loadMasterCycleDefinition(n1znr);
+    }, () => meordid ? this.loadMasterCycleDefinition(n1znr) : this.openCyclePopup([]));
+  }
+
+  private loadMasterCycleDefinition(n1znr: string) {
+    if (!n1znr) { this.openCyclePopup([]); return; }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
       this.openCyclePopup(records);
     }, () => this.openCyclePopup([]));
   }

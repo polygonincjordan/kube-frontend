@@ -95,7 +95,32 @@ export class AdministrationTemplateEditPopupComponent {
       this.cyclePopup.showPopup({ index, n1znr, title, startDate: null, records: existing });
       return;
     }
-    // Read the cycle for this frequency key (N1znr) from the master and populate the popup.
+    const orderId = this.getTemplateOrderId(row);
+    if (orderId) {
+      this.loadTemplateCycleDefinition(orderId, n1znr, index, title);
+      return;
+    }
+    this.loadMasterCycleDefinition(n1znr, index, title);
+  }
+
+  private getTemplateOrderId(row: any): string {
+    const orig = row && row.get('__orig') ? row.get('__orig').value : null;
+    return (orig && orig.Eorderid) || (this.meta && this.meta.prscrid) || '';
+  }
+
+  private loadTemplateCycleDefinition(orderId: string, n1znr: string, index: number, title: string): void {
+    this.ePrescriptionService.loadData(`e-prescription/TOCYCDEFSet?OrderId=${encodeURIComponent(orderId)}`, false, false, false, false).subscribe((res: any) => {
+      const allRecords = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      const records = allRecords.filter((r: any) => !r.N1znr || r.N1znr === n1znr);
+      if (records.length) {
+        this.cyclePopup.showPopup({ index, n1znr, title, startDate: null, records });
+        return;
+      }
+      this.loadMasterCycleDefinition(n1znr, index, title);
+    }, () => this.loadMasterCycleDefinition(n1znr, index, title));
+  }
+
+  private loadMasterCycleDefinition(n1znr: string, index: number, title: string): void {
     this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
       const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
       this.cyclePopup.showPopup({ index, n1znr, title, startDate: null, records });
@@ -118,8 +143,8 @@ export class AdministrationTemplateEditPopupComponent {
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
       IntervalHour: `${r.IntervalHour || '0'}`,
-      TiStart: r.TiStart,
-      TiEnd: r.TiEnd
+      TiStart: r.TiStart || r.TIStart,
+      TiEnd: r.TiEnd || r.TIEnd
     }));
   }
 

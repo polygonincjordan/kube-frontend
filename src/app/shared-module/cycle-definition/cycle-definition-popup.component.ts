@@ -146,8 +146,8 @@ export class CycleDefinitionPopupComponent {
       Sa: pick('Sa', 'N1sa'),
       Su: pick('Su', 'N1so'),
       PublHol: pick('Holiday', 'PublHol', 'N1feiertag'),
-      TiStart: pick('TiStart', 'N1begzt'),
-      TiEnd: pick('TiEnd', 'N1endzt')
+      TiStart: pick('TiStart', 'TIStart', 'N1begzt'),
+      TiEnd: pick('TiEnd', 'TIEnd', 'N1endzt')
     };
   }
 
