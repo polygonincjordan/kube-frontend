@@ -160,9 +160,17 @@ export class EditMedicationComponent implements OnInit {
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
       IntervalHour: `${r.IntervalHour || '0'}`,
-      TiStart: r.TiStart || r.TIStart,
-      TiEnd: r.TiEnd || r.TIEnd
+      TiStart: this.toSapDuration(r.TiStart || r.TIStart),
+      TiEnd: this.toSapDuration(r.TiEnd || r.TIEnd)
     }));
+  }
+
+  private toSapDuration(value: any): string {
+    if (!value || typeof value !== 'string') { return 'PT00H00M00S'; }
+    if (/^PT\d+H\d+M\d+S$/.test(value)) { return value; }
+    const match = value.match(/^(\d{2}):(\d{2})(?::(\d{2}))?$/);
+    if (!match) { return 'PT00H00M00S'; }
+    return `PT${match[1]}H${match[2]}M${match[3] || '00'}S`;
   }
 
   onEditAction() {
