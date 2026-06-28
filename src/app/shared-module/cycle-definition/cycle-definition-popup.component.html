@@ -69,7 +69,6 @@
                 <label class="cycle-def__day"><input type="checkbox" formControlName="Fr"> Fr</label>
                 <label class="cycle-def__day"><input type="checkbox" formControlName="Sa"> Sat</label>
                 <label class="cycle-def__day"><input type="checkbox" formControlName="Su"> Sun</label>
-                <label class="cycle-def__day"><input type="checkbox" formControlName="PublHol"> Publ.Hol.</label>
               </div>
               <div class="cycle-def__interval" role="radiogroup" aria-label="Day interval">
                 <div class="cycle-def__check">
@@ -122,8 +121,8 @@
 
     <!-- Footer -->
     <div class="cycle-def__footer">
-      <button type="button" class="cycle-def__btn cycle-def__save" (click)="save()">Save</button>
-      <button type="button" class="cycle-def__btn cycle-def__cancel" (click)="cancel()">Cancel</button>
+      <button *ngIf="!readOnly" type="button" class="cycle-def__btn cycle-def__save" (click)="save()">Save</button>
+      <button type="button" class="cycle-def__btn cycle-def__cancel" (click)="cancel()">{{ readOnly ? 'Close' : 'Cancel' }}</button>
     </div>
   </div>
 </ng-template>

@@ -28,6 +28,8 @@ export class CycleDefinitionPopupComponent {
   public title: string;
   /** Index of the currently visible cycle tab. */
   public activeTab = 0;
+  /** When true the popup is display-only (no editing, no Save). */
+  public readOnly = false;
 
   public cycleForm: FormGroup;
 
@@ -51,10 +53,11 @@ export class CycleDefinitionPopupComponent {
    * @param payload.startDate  order valid-from date used as the default From date
    * @param payload.records    previously saved TOCYCDEF records (read-back) — only the first is used
    */
-  showPopup(payload: { index: number; n1znr: string; title?: string; startDate?: any; records?: any[] }): void {
+  showPopup(payload: { index: number; n1znr: string; title?: string; startDate?: any; records?: any[]; readOnly?: boolean }): void {
     this.rowIndex = payload.index;
     this.n1znr = payload.n1znr;
     this.title = payload.title || '';
+    this.readOnly = !!payload.readOnly;
     this.cycles.clear();
 
     // One tab per received cycle line (N1lfnr); if none, start with a single blank cycle.
@@ -65,6 +68,8 @@ export class CycleDefinitionPopupComponent {
       this.cycles.push(this.buildCycle({ Begdt: payload.startDate ? new Date(payload.startDate) : new Date(), N1lfnr: '0001' }));
     }
     this.activeTab = 0;
+    // Read-only (e.g. template view): disable all inputs and hide Save.
+    if (this.readOnly) { this.cycleForm.disable(); } else { this.cycleForm.enable(); }
 
     this.modalRef = this.modalService.show(this.cycleDefinition, {
       backdrop: true,

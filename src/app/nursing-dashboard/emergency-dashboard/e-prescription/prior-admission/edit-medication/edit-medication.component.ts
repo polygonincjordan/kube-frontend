@@ -142,6 +142,7 @@ export class EditMedicationComponent implements OnInit {
   normalizeCycleDef(records: any[], n1znr: string): any[] {
     const list = records && records.length ? records : [];
     return list.map((r: any, i: number) => ({
+      Meordid: r.Meordid || this.editprofileForm.get('Meordid').value || this.editdata.Meordid,
       N1znr: r.N1znr || n1znr,
       N1lfnr: r.N1lfnr || `${i + 1}`.padStart(4, '0'),
       Menge: `${r.Menge}`,
@@ -150,8 +151,8 @@ export class EditMedicationComponent implements OnInit {
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
       IntervalHour: `${r.IntervalHour || '0'}`,
-      TiStart: r.TiStart,
-      TiEnd: r.TiEnd
+      TIStart: r.TIStart || r.TiStart,
+      TIEnd: r.TIEnd || r.TiEnd
     }));
   }
 
@@ -179,7 +180,7 @@ export class EditMedicationComponent implements OnInit {
               payloadData[key.toString()] = genratePayload[key];
             }
           });
-          this.ePrescriptionService.updateData(`e-prescription/EditMedicationStatus?Meordid=${this.editdata.Meordid}`, payloadData).subscribe((resp: any) => {
+          this.ePrescriptionService.postData('e-prescription/EditMedicationStatus', payloadData).subscribe((resp: any) => {
             this.editdata;
             swal.fire({
               title: 'Order has been edited',

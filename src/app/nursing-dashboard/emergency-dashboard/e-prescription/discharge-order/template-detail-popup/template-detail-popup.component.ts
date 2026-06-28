@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EPrescriptionService, TemplateMedDataList } from '@services/e-Prescription/e-prescription.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
+import { CycleDefinitionPopupComponent } from '../../../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
 @Component({
   selector: 'template-detail-popup',
@@ -11,6 +13,7 @@ export class TemplateDetailPopupComponent {
   modaldetailRef: BsModalRef;
   isallSelected: boolean = false;
   @ViewChild('templatedetailPopup', { static: true }) templatedetailPopup: TemplateRef<any>;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
   public configurationData: TemplateMedDataList[];
@@ -26,6 +29,31 @@ export class TemplateDetailPopupComponent {
         this.configurationData[i].isSelected = true;
       }
     }
+  }
+
+  /** View the cycle definition for a template row (read-only). Cycle comes from the
+   *  master by frequency key (N1znr); shows a notice if none is defined. */
+  onOpenCycleDefinition(element: any): void {
+    const n1znr = element.N1znr || element.N1ZNR;
+    if (!n1znr) { return; }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      if (!records.length) {
+        Swal.fire({
+          text: 'No cycle definition available for this frequency', icon: 'info',
+          confirmButtonColor: '#0890c5', confirmButtonText: 'OK', customClass: { popup: 'myalertpopup' }
+        } as any);
+        return;
+      }
+      this.cyclePopup.showPopup({
+        index: 0,
+        n1znr,
+        title: element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '',
+        startDate: null,
+        records,
+        readOnly: true
+      });
+    });
   }
 
   onCheckallMedicationData(event) {
