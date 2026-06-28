@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EPrescriptionService, TemplateMedDataList, TemplateMedDataListget } from '@services/e-Prescription/e-prescription.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
+import { CycleDefinitionPopupComponent } from '../../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
 @Component({
   selector: 'administration-template-detail-popup',
@@ -14,6 +16,7 @@ export class AdministrationTemplateDetailPopupComponent implements OnInit {
   modaldetailRef: BsModalRef;
   isallSelected: boolean = false;
   @ViewChild('templatedetailPopup', { static: true }) templatedetailPopup: TemplateRef<any>;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
   public configurationData: TemplateMedDataListget[];
@@ -29,6 +32,39 @@ export class AdministrationTemplateDetailPopupComponent implements OnInit {
         this.configurationData[i].isSelected = false;
       }
     }
+  }
+
+  /** View the cycle definition for a template row (read-only). */
+  onOpenCycleDefinition(element: any): void {
+    const n1znr = element && (element.N1znr || element.N1ZNR);
+    if (!n1znr) { return; }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      if (!records.length) {
+        this.showNoCycleDefinitionToast();
+        return;
+      }
+      this.cyclePopup.showPopup({
+        index: 0,
+        n1znr,
+        title: element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '',
+        startDate: null,
+        records,
+        readOnly: true
+      });
+    }, () => this.showNoCycleDefinitionToast());
+  }
+
+  private showNoCycleDefinitionToast(): void {
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      timer: 3000,
+      showConfirmButton: false,
+      text: 'No cycle definition available for this frequency',
+      icon: 'info',
+      customClass: { popup: 'myalertpopup' }
+    } as any);
   }
 
   onCheckallMedicationData(event) {

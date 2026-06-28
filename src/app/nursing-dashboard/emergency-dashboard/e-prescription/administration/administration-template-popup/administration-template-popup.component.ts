@@ -3,7 +3,7 @@ import { AdministrationTemplateData, EPrescriptionService, TemplateMedicationDat
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { TemplateDetailPopupComponent } from '../../discharge-order/template-detail-popup/template-detail-popup.component';
+import { AdministrationTemplateDetailPopupComponent } from '../administration-template-detail-popup/administration-template-detail-popup.component';
 import { AdministrationTemplateEditPopupComponent } from '../administration-template-edit-popup/administration-template-edit-popup.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class AdministrationTemplatePopupComponent implements OnInit {
   private templateEditSavedSubscription: Subscription;
 
   @ViewChild('templatePopup', { static: true }) templatePopup: TemplateRef<any>;
-  @ViewChild('templateDetailPopup', { static: true }) templateDetailPopup: TemplateDetailPopupComponent;
+  @ViewChild('templateDetailPopup', { static: true }) templateDetailPopup: AdministrationTemplateDetailPopupComponent;
   @ViewChild('templateEditPopup', { static: true }) templateEditPopup: AdministrationTemplateEditPopupComponent;
 
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
