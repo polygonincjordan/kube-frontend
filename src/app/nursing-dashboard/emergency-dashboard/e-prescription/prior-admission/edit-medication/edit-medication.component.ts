@@ -151,8 +151,8 @@ export class EditMedicationComponent implements OnInit {
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
       IntervalHour: `${r.IntervalHour || '0'}`,
-      TIStart: r.TIStart || r.TiStart,
-      TIEnd: r.TIEnd || r.TiEnd
+      TiStart: r.TiStart || r.TIStart,
+      TiEnd: r.TiEnd || r.TIEnd
     }));
   }
 
