@@ -389,7 +389,13 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   caseNumberReturn(caseNumber: any) {
-    return parseInt(caseNumber, 10).toString()
+    const normalized = (caseNumber ?? '').toString().trim();
+    if (!normalized) {
+      return '';
+    }
+
+    const parsedCaseNumber = parseInt(normalized, 10);
+    return Number.isNaN(parsedCaseNumber) ? '' : parsedCaseNumber.toString();
   }
 
   openModalForAttechment(data) {

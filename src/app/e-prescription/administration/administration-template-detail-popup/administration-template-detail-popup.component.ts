@@ -35,25 +35,37 @@ export class AdministrationTemplateDetailPopupComponent implements OnInit {
     }
   }
 
-  /** View the cycle definition for a template row (read-only). */
+  /** View the cycle definition for a template row (read-only). Reads the order
+   *  cycle first (OrdCycleDefSet by Meordid); falls back to the master cycle by
+   *  frequency key (N1znr) when the order has none. */
   onOpenCycleDefinition(element: any): void {
     const n1znr = element && (element.N1znr || element.N1ZNR);
-    if (!n1znr) { return; }
+    const meordid = element && (element.Meordid || element.MEORDID);
+    if (!n1znr && !meordid) { return; }
+    const title = element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '';
+    if (meordid) {
+      this.ePrescriptionService.loadData(`e-prescription/OrdCycleDefSet?Meordid=${meordid}`, false, false, false, false).subscribe((res: any) => {
+        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+        if (records.length) { this.showCycleDefinition(records, n1znr, title); return; }
+        this.loadMasterCycleDefinition(n1znr, title);
+      }, () => this.loadMasterCycleDefinition(n1znr, title));
+      return;
+    }
+    this.loadMasterCycleDefinition(n1znr, title);
+  }
+
+  /** Read the master cycle definition by frequency key (N1znr). */
+  private loadMasterCycleDefinition(n1znr: string, title: string): void {
+    if (!n1znr) { this.showNoCycleDefinitionToast(); return; }
     this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
       const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
-      if (!records.length) {
-        this.showNoCycleDefinitionToast();
-        return;
-      }
-      this.cyclePopup.showPopup({
-        index: 0,
-        n1znr,
-        title: element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '',
-        startDate: null,
-        records,
-        readOnly: true
-      });
+      if (!records.length) { this.showNoCycleDefinitionToast(); return; }
+      this.showCycleDefinition(records, n1znr, title);
     }, () => this.showNoCycleDefinitionToast());
+  }
+
+  private showCycleDefinition(records: any[], n1znr: string, title: string): void {
+    this.cyclePopup.showPopup({ index: 0, n1znr, title, startDate: null, records, readOnly: true });
   }
 
   private showNoCycleDefinitionToast(): void {

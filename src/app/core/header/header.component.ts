@@ -368,17 +368,17 @@ export class HeaderComponent implements OnInit {
           const falnr = params.get('falnr');
           const einri = params.get('einri');
           const lfdnr = params.get('lfdnr');
-          let formattedCaseNumber = data?.Case.padStart(10, '0');
+          let formattedCaseNumber = this.normalizeId(data?.Case, 10);
           const json = {
-            Patnr: patnr,
-            Einri: einri,
-            Falnr: type == 'caseList' ?  formattedCaseNumber : data?.falnr,
+            Patnr: this.normalizeId(patnr, 10),
+            Einri: this.normalizeId(einri),
+            Falnr: type == 'caseList' ?  formattedCaseNumber : this.normalizeId(data?.falnr, 10),
             // For a case-list click the widget URL's lfdnr belongs to SAP's
             // default/last case (a *different* case than the one clicked), so
             // gluing it onto the clicked falnr yields an invalid encounter key.
             // Leave it blank for that path; topnav reconciles the correct
             // movement from CASESET for the selected case.
-            Lfdnr: type == 'caseList' ? '' : lfdnr,
+            Lfdnr: type == 'caseList' ? '' : this.normalizeId(lfdnr),
           };
           this.storageService.setCheckinData(json);
           localStorage.setItem('checkindata', JSON.stringify(json));
@@ -458,10 +458,10 @@ export class HeaderComponent implements OnInit {
     // were never set (redirectFor/action/doctype) don't leak the literal
     // "undefined" into the URL.
     const queryParams = new URLSearchParams();
-    queryParams.set('patnr', data.Patnr ?? '');
-    queryParams.set('falnr', data.Falnr ?? '');
-    queryParams.set('einri', data.Einri ?? '');
-    queryParams.set('lfdnr', data.Lfdnr ?? '');
+    queryParams.set('patnr', this.normalizeId(data.Patnr, 10));
+    queryParams.set('falnr', this.normalizeId(data.Falnr, 10));
+    queryParams.set('einri', this.normalizeId(data.Einri));
+    queryParams.set('lfdnr', this.normalizeId(data.Lfdnr));
     if (data.redirectFor != null) queryParams.set('redirectFor', data.redirectFor);
     if (data.action != null) queryParams.set('action', data.action);
     if (data.doctype != null) queryParams.set('doctype', data.doctype);
@@ -571,12 +571,12 @@ export class HeaderComponent implements OnInit {
           const falnr = params.get('falnr');
           const einri = params.get('einri');
           const lfdnr = params.get('lfdnr');
-          let formattedCaseNumber = this.form?.value.idNumber?.padStart(10, '0');
+          let formattedCaseNumber = this.normalizeId(this.form?.value.idNumber, 10);
           const json = {
-            Patnr: patnr,
-            Einri: einri,
-            Falnr: this.form?.value?.idNumber ? formattedCaseNumber : falnr,
-            Lfdnr: lfdnr,
+            Patnr: this.normalizeId(patnr, 10),
+            Einri: this.normalizeId(einri),
+            Falnr: this.form?.value?.idNumber ? formattedCaseNumber : this.normalizeId(falnr, 10),
+            Lfdnr: this.normalizeId(lfdnr),
           };
           this.storageService.setCheckinData(json);
           localStorage.setItem('checkindata', JSON.stringify(json));
@@ -589,5 +589,10 @@ export class HeaderComponent implements OnInit {
       },
       (_error: any) => {}
     );
+  }
+
+  private normalizeId(value: any, length?: number): string {
+    const normalized = (value ?? '').toString().trim();
+    return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 }
