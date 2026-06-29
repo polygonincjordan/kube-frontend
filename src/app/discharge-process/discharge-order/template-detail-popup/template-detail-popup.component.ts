@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EPrescriptionService, TemplateMedDataList } from '@services/e-Prescription/e-prescription.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
+import { CycleDefinitionPopupComponent } from '../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
 @Component({
   selector: 'template-detail-popup',
@@ -11,6 +13,7 @@ export class TemplateDetailPopupComponent {
   modaldetailRef: BsModalRef;
   isallSelected: boolean = false;
   @ViewChild('templatedetailPopup', { static: true }) templatedetailPopup: TemplateRef<any>;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
   public configurationData : any;
@@ -47,5 +50,50 @@ export class TemplateDetailPopupComponent {
   }
   medicationMath(data: any) {
     return Math.floor(data)
+  }
+
+  onOpenCycleDefinition(element: any): void {
+    const n1znr = element && (element.N1znr || element.N1ZNR);
+    const meordid = this.getOrderCycleId(element);
+    if (!n1znr && !meordid) { return; }
+    const title = element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '';
+    if (meordid) {
+      this.ePrescriptionService.loadData(`e-prescription/OrdCycleDefSet?Meordid=${encodeURIComponent(meordid)}`, false, false, false, false).subscribe((res: any) => {
+        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+        if (records.length) { this.showCycleDefinition(records, n1znr, title); return; }
+        this.loadMasterCycleDefinition(n1znr, title);
+      }, () => this.loadMasterCycleDefinition(n1znr, title));
+      return;
+    }
+    this.loadMasterCycleDefinition(n1znr, title);
+  }
+
+  private getOrderCycleId(element: any): string {
+    return element && (
+      element.Meordid || element.MEORDID ||
+      element.Eorderid || element.EORDERID ||
+      element.OrderId || element.ORDERID ||
+      element.Prscrid || element.PRSCRID
+    ) || '';
+  }
+
+  private loadMasterCycleDefinition(n1znr: string, title: string): void {
+    if (!n1znr) { this.showNoCycleDefinition(); return; }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      if (!records.length) { this.showNoCycleDefinition(); return; }
+      this.showCycleDefinition(records, n1znr, title);
+    }, () => this.showNoCycleDefinition());
+  }
+
+  private showCycleDefinition(records: any[], n1znr: string, title: string): void {
+    this.cyclePopup.showPopup({ index: 0, n1znr, title, startDate: null, records, readOnly: true });
+  }
+
+  private showNoCycleDefinition(): void {
+    Swal.fire({
+      text: 'No cycle definition available for this frequency', icon: 'info',
+      confirmButtonColor: '#0890c5', confirmButtonText: 'OK', customClass: { popup: 'myalertpopup' }
+    } as any);
   }
 }

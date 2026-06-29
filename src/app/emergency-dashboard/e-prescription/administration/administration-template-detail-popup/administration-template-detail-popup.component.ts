@@ -39,11 +39,11 @@ export class AdministrationTemplateDetailPopupComponent implements OnInit {
    *  frequency key (N1znr) when the order has none. */
   onOpenCycleDefinition(element: any): void {
     const n1znr = element && (element.N1znr || element.N1ZNR);
-    const meordid = element && (element.Meordid || element.MEORDID);
+    const meordid = this.getOrderCycleId(element);
     if (!n1znr && !meordid) { return; }
     const title = element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '';
     if (meordid) {
-      this.ePrescriptionService.loadData(`e-prescription/OrdCycleDefSet?Meordid=${meordid}`, false, false, false, false).subscribe((res: any) => {
+      this.ePrescriptionService.loadData(`e-prescription/OrdCycleDefSet?Meordid=${encodeURIComponent(meordid)}`, false, false, false, false).subscribe((res: any) => {
         const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
         if (records.length) { this.showCycleDefinition(records, n1znr, title); return; }
         this.loadMasterCycleDefinition(n1znr, title);
@@ -51,6 +51,15 @@ export class AdministrationTemplateDetailPopupComponent implements OnInit {
       return;
     }
     this.loadMasterCycleDefinition(n1znr, title);
+  }
+
+  private getOrderCycleId(element: any): string {
+    return element && (
+      element.Meordid || element.MEORDID ||
+      element.Eorderid || element.EORDERID ||
+      element.OrderId || element.ORDERID ||
+      element.Prscrid || element.PRSCRID
+    ) || '';
   }
 
   /** Read the master cycle definition by frequency key (N1znr). */
