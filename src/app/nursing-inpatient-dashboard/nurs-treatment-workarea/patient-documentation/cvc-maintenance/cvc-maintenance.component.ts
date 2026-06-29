@@ -175,16 +175,22 @@ export class CvcMaintenanceComponent implements OnInit {
         },
         complete: () => {
           resolve(true);
-          if(status === 'edit'){
-            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance updated successfully');
-          }else{
-            this.sharedService.successSwallModel('IC Bundles for CVC Maintenance created successfully');
-          }
+          this.sharedService.successSwallModel(this.getSuccessMessage(status, actionType));
           this.successEvent.next(true)
         }
       });
     })   
     
+  }
+
+  getSuccessMessage(status?: any, actionType?: any): string {
+    if (status === '2' || status === '4' || status === '5') {
+      return 'IC Bundles for CVC Maintenance released successfully';
+    }
+    if (actionType === 'edit') {
+      return 'IC Bundles for CVC Maintenance updated successfully';
+    }
+    return 'IC Bundles for CVC Maintenance created successfully';
   }
 
   dateFormateString(dateString: any) {

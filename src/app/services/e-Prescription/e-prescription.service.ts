@@ -355,14 +355,25 @@ export class EPrescriptionService implements OnDestroy {
     this.loadAdministrationTemplateData();
   }
 
-  loadAdministrationTemplateData() {
+  loadAdministrationTemplateData(
+    onLoaded?: (templates: AdministrationTemplateData[]) => void,
+    onError?: (error: any) => void
+  ) {
     this.loadData(`e-prescription/templatesearchtype?Einri=${this.parameters.einri}&Falnr=${this.parameters.falnr}&Searchtype=${'B'}&SearchString=&Ordtype=${'1'}`, false, false, false, false).subscribe({
       next: (resp: any) => {
         if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results[0].TOTEMPLATE.results) {
           this.administrationTemplateData = resp.body.d.results[0].TOTEMPLATE.results;
+          if (onLoaded) { onLoaded(this.administrationTemplateData); }
+        } else {
+          this.administrationTemplateData = [];
+          if (onLoaded) { onLoaded(this.administrationTemplateData); }
         }
       },
       error: (error: any) => {
+        if (onError) {
+          onError(error);
+          return;
+        }
         swal.fire({
           title: error.statusText,
           text: 'No data found',
@@ -425,12 +436,63 @@ export class EPrescriptionService implements OnDestroy {
   }
   postData(entitySetName: any, data: any) {
     let url = this.BaseUrl + entitySetName
-    return this.httpClient.post(url, data, { withCredentials: true, observe: 'response' });
+    return this.httpClient.post(url, this.sanitizeOrderPayload(data), { withCredentials: true, observe: 'response' });
   }
 
   updateData(entitySetName: any, data: any) {
     let url = this.BaseUrl + entitySetName
-    return this.httpClient.put(url, data, { withCredentials: true });
+    return this.httpClient.put(url, this.sanitizeOrderPayload(data), { withCredentials: true });
+  }
+
+  /**
+   * SAP deep-insert deserialization rejects optional Date/Time fields sent as null,
+   * so for medication order / template payloads (those carrying TOSTD, TOORDERTEMPLATE
+   * or TOCYCDEF) we recursively drop any null/undefined keys before sending. Other
+   * payloads are left untouched.
+   */
+  private sanitizeOrderPayload(data: any): any {
+    if (!data || typeof data !== 'object') { return data; }
+    const isOrderPayload = !!(data.TOSTD || data.TOORDERTEMPLATE || data.TOCYCDEF);
+    if (!isOrderPayload) { return data; }
+    // Work on a clone so we never mutate the caller's form objects (safe: by send
+    // time all values are already JSON-serializable strings/numbers/booleans).
+    let clone: any;
+    try { clone = JSON.parse(JSON.stringify(data)); } catch { return this.deepDropNulls(data); }
+    return this.deepDropNulls(clone);
+  }
+
+  private deepDropNulls(value: any): any {
+    if (Array.isArray(value)) { return value.map((item) => this.deepDropNulls(item)); }
+    if (value && typeof value === 'object') {
+      Object.keys(value).forEach((key) => {
+        const v = value[key];
+        // Drop nulls/undefined and the stringified-null artifacts ("null"/"nullnull")
+        // that empty date fields can produce — SAP can't convert them.
+        if (v === null || v === undefined || v === 'null' || v === 'nullnull') {
+          delete value[key];
+        } else if (typeof v === 'string') {
+          // Normalise ISO datetimes (StartD/EndD…) to the OData V2 Edm.DateTime
+          // wire format /Date(ms)/, which the deep-insert deserializer requires.
+          value[key] = this.isoToSapDateTime(v);
+        } else if (typeof v === 'object') {
+          value[key] = this.deepDropNulls(v);
+        }
+      });
+    }
+    return value;
+  }
+
+  /** Convert "YYYY-MM-DDTHH:MM:SS" to OData V2 "/Date(ms)/"; other strings pass through. */
+  private isoToSapDateTime(v: string): string {
+    const m = v.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})$/);
+    if (!m) { return v; }
+    const ms = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]);
+    return `/Date(${ms})/`;
+  }
+
+  deleteData(entitySetName: any) {
+    let url = this.BaseUrl + entitySetName
+    return this.httpClient.delete(url, { withCredentials: true, observe: 'response' });
   }
 
   generateURL(entitySetName: any, filters: any, expandEntities: any, isExpand: any) {
@@ -730,6 +792,7 @@ export class TemplateMedDataListget {
   Dosdef: string;
   Stocktext: string;
   TOCOMPLEX: TOCOMPLEX[]
+  TOCYCDEF?: { results: any[] }
 
   isSelected: boolean = false;
 }

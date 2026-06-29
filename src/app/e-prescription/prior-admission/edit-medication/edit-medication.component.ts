@@ -7,6 +7,7 @@ import { AddministrationService } from '@services/e-Prescription/Administration.
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import swal from 'sweetalert2';
 import { PrnConditionPopupComponent } from '../../discharge-order/prn-condition-popup/prn-condition-popup.component';
+import { CycleDefinitionPopupComponent } from '../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
 @Component({
   selector: 'edit-medication',
@@ -28,6 +29,7 @@ export class EditMedicationComponent implements OnInit {
   // @Output() Editdvalue: any = new EventEmitter();
   private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g);
   @ViewChild('prnCondition', { static: true }) prnCondition: PrnConditionPopupComponent;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
 
   EditActionPayloadConfig = {
     Einri: "",
@@ -53,6 +55,7 @@ export class EditMedicationComponent implements OnInit {
     EndD: "",
     EndT: "",
     Dosdef: "",
+    TOCYCDEF: "",
   }
 
   ngOnInit(): void {
@@ -89,6 +92,7 @@ export class EditMedicationComponent implements OnInit {
       deftimcycleData: new FormControl([]),
       Dosdef: new FormControl(this.editdata.Dosdef),
       IsFrequencyDeftim: new FormControl((this.editdata?.N1znr === "0000000100" && this.editdata?.N1id == "DEFTIM") || (this.editdata?.N1znr === "0000000003" && this.editdata?.N1id == "DAILY" )),
+      TOCYCDEF: new FormControl(this.editdata.TOCYCDEF && this.editdata.TOCYCDEF.results ? this.editdata.TOCYCDEF.results : []),
     })
     if (new Date() > this.editdata.StartD) {
       this.editprofileForm.patchValue({ StartD: new Date() });
@@ -103,10 +107,78 @@ export class EditMedicationComponent implements OnInit {
     this.onUpdateprnData.emit(this.editprofileForm)
   }
 
+  onOpenCycleDefinition() {
+    const existing = this.editprofileForm.get('TOCYCDEF').value || [];
+    if (existing && existing.length) { this.openCyclePopup(existing); return; }
+    const n1znr = this.editprofileForm.get('N1znr').value;
+    const meordid = this.editdata && this.editdata.Meordid;
+    if (!meordid && !n1znr) { this.openCyclePopup([]); return; }
+    // For an existing order, read the cycle by order id (Meordid) via OrdCycleDefSet.
+    const url = meordid
+      ? `e-prescription/OrdCycleDefSet?Meordid=${meordid}`
+      : `e-prescription/CycleDefMasterSet?N1znr=${n1znr}`;
+    this.ePrescriptionService.loadData(url, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      if (records.length || !meordid) { this.openCyclePopup(records); return; }
+      this.loadMasterCycleDefinition(n1znr);
+    }, () => meordid ? this.loadMasterCycleDefinition(n1znr) : this.openCyclePopup([]));
+  }
+
+  private loadMasterCycleDefinition(n1znr: string) {
+    if (!n1znr) { this.openCyclePopup([]); return; }
+    this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+      const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      this.openCyclePopup(records);
+    }, () => this.openCyclePopup([]));
+  }
+
+  private openCyclePopup(records: any[]) {
+    this.cyclePopup.showPopup({
+      index: 0,
+      n1znr: this.editprofileForm.get('N1znr').value,
+      title: this.editdata.Result_Drug_Name || this.editdata.Descr || '',
+      startDate: this.editprofileForm.get('StartD').value,
+      records
+    });
+  }
+
+  onCycleSaved(event: { index: number; data: any[] }) {
+    this.editprofileForm.get('TOCYCDEF').setValue(event.data || []);
+    this.editprofileForm.markAsDirty();
+  }
+
+  /** Map TOCYCDEF to the writable fields, dropping read-back-only props such as __metadata. */
+  normalizeCycleDef(records: any[], n1znr: string): any[] {
+    const list = records && records.length ? records : [];
+    return list.map((r: any, i: number) => ({
+      Meordid: r.Meordid || this.editprofileForm.get('Meordid').value || this.editdata.Meordid,
+      N1znr: r.N1znr || n1znr,
+      N1lfnr: r.N1lfnr || `${i + 1}`.padStart(4, '0'),
+      Menge: `${r.Menge}`,
+      Begdt: r.Begdt,
+      Enddt: r.Enddt,
+      Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
+      IntervalDay: +r.IntervalDay || 1,
+      IntervalHour: `${r.IntervalHour || '0'}`,
+      TiStart: this.toSapDuration(r.TiStart || r.TIStart),
+      TiEnd: this.toSapDuration(r.TiEnd || r.TIEnd)
+    }));
+  }
+
+  private toSapDuration(value: any): string {
+    if (!value || typeof value !== 'string') { return 'PT00H00M00S'; }
+    if (/^PT\d+H\d+M\d+S$/.test(value)) { return value; }
+    const match = value.match(/^(\d{2}):(\d{2})(?::(\d{2}))?$/);
+    if (!match) { return 'PT00H00M00S'; }
+    return `PT${match[1]}H${match[2]}M${match[3] || '00'}S`;
+  }
+
   onEditAction() {
 
     const genratePayload = {
       ...this.editprofileForm.value,
+      // Map TOCYCDEF to writable fields (drops __metadata etc. from read-back records).
+      TOCYCDEF: this.normalizeCycleDef(this.editprofileForm.value.TOCYCDEF, this.editprofileForm.value.N1znr),
       Dosdef: this.editprofileForm.value.deftimcycleData && this.editprofileForm.value.deftimcycleData.length ? this.editprofileForm.value.Dosdef : "",
       StartT: this.parsePayloadTime(this.editprofileForm.value.StartD),
       StartD: this.editprofileForm.value.StartD !== null ? `${formatDate(this.editprofileForm.value.StartD, "YYYY-MM-DD")}T${formatDate(this.editprofileForm.value.StartD, "HH:mm:ss")}` : null,
@@ -129,7 +201,7 @@ export class EditMedicationComponent implements OnInit {
               payloadData[key.toString()] = genratePayload[key];
             }
           });
-          this.ePrescriptionService.updateData(`e-prescription/EditMedicationStatus?Meordid=${this.editdata.Meordid}`, payloadData).subscribe((resp: any) => {
+          this.ePrescriptionService.postData('e-prescription/EditMedicationStatus', payloadData).subscribe((resp: any) => {
             this.editdata;
             swal.fire({
               title: 'Order has been edited',

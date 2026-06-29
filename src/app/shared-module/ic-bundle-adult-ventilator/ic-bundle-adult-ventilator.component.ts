@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-ic-bundle-adult-ventilator',
@@ -6,17 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ic-bundle-adult-ventilator.component.scss']
 })
 export class IcBundleAdultVentilatorComponent implements OnInit {
-  public CurrentDateAndTime: Date = new Date();
-  selectedRadio: any = {
-    elevated: '0',
-    interruption: '0',
-    peptic: '0',
-    thrombosis: '0',
-    chlorhexidine: '0',
-  }
+  @Output() cancelEvent: EventEmitter<void> = new EventEmitter<void>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onCancel(): void {
+    this.cancelEvent.emit();
+  }
 }

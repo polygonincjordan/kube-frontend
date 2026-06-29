@@ -317,7 +317,7 @@
           </div>
         </div>
         <div class="tab-content" style="border-radius: 7px;">
-          <div *ngIf="socialHistory">
+          <div *ngIf="socialHistory" [formGroup]="triageForm">
             <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <input type="checkbox" style="width: 15px; height: 22px;" [(ngModel)]="noHabitApplicable"
@@ -372,19 +372,19 @@
                   <div class="col-md-3 row m-0 align-items-center">
                     <div class="col-md-6">Marital Status</div>
                     <div class="col-md-6">
-                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [disabled]="true" />
+                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [ngModelOptions]="{standalone: true}" [disabled]="true" />
                     </div>
                   </div>
                   <div class="col-md-2 row m-0 align-items-center">
                     <div class="col-md-3">Since</div>
                     <div class="col-md-8">
-                      <input class="form-control" />
+                      <input class="form-control" formControlName="Since" />
                     </div>
                   </div>
                   <div class="col-md-3 row m-0 align-items-center">
                     <div class="col-md-6">Number of spouse</div>
                     <div class="col-md-6">
-                      <input class="form-control" />
+                      <input class="form-control" formControlName="NumberOfSpouses" />
                     </div>
                   </div>
                 </div>
@@ -394,7 +394,7 @@
                       <label>Comments</label>
                     </div>
                     <div class="col-md-10">
-                      <textarea class="form-control"></textarea>
+                      <textarea class="form-control" formControlName="Comments"></textarea>
                     </div>
                   </div>
                 </div>

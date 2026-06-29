@@ -690,24 +690,26 @@ addSpecimensRow(): void {
           error: (err: any) => {
             this.sharedService.waringSwallModel(`Error ${err}`);
             this.sharedService.waringSwallModel(
-              `PUT Error at Intra Operative Nursing Record : ${err}`
+              `PUT Error at Nursing Intra-Operative Record : ${err}`
             );
           },
           complete: () => {
             resolve(true);
-            if (status === 'edit') {
-              this.sharedService.successSwallModel(
-                'Intra Operative Nursing Record updated successfully'
-              );
-            } else {
-              this.sharedService.successSwallModel(
-                'Intra Operative Nursing Record created successfully'
-              );
-            }
+            this.sharedService.successSwallModel(this.getSuccessMessage(status, actionType));
             this.successEvent.next(true);
           },
         });
     });
+  }
+
+  getSuccessMessage(status?: any, actionType?: any): string {
+    if (status === '2' || status === '4' || status === '5') {
+      return 'Nursing Intra-Operative Record released successfully';
+    }
+    if (actionType === 'edit') {
+      return 'Nursing Intra-Operative Record updated successfully';
+    }
+    return 'Nursing Intra-Operative Record created successfully';
   }
 
   private cleanArray(arr: any): any {

@@ -365,6 +365,17 @@ export class ErHistoryComponent implements OnInit, OnChanges {
       return finalstr;
     }
   }
+
+  // Extracts the numeric age embedded in the patient name string, e.g. "Er14, Er Patient (F, 31)" -> "31"
+  getAgeFromName(value) {
+    if (value) {
+      const match = value.match(/\(\s*[A-Za-z]?\s*,\s*(\d+)\s*\)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return '';
+  }
   getAssignedTime(checkintime,checkindate,triagetime,triagedate,index){
     let {charArr,hr,min,dateObj,checkoutdateObj,totalMinutes,assignedHr,assignedMin,assignedTime,checkoutcharArr,checkouthr,checkoutmin}:any = {};
      charArr = checkintime.split('')
@@ -1643,7 +1654,7 @@ export class ErHistoryComponent implements OnInit, OnChanges {
       this.triageValueArr = [];
       this.physicianValueArr = [];
       this.statusValueArr = [];
-      if (event.Triage || event.Physician || event.Status || event.FCategory) {
+      if (event.Triage || event.Physician || event.Status || event.FCategory || event.PatientAgeFrom || event.PatientAgeTo || event.DateFrom || event.DateTo || event.AdmissionTimeFrom || event.AdmissionTimeTo) {
         // if(event.Physician) event.Physician = event.Physician.trimStart();
         let filterValue = this.ERlistDataClone;
          if(event.Triage) {
@@ -1683,6 +1694,37 @@ export class ErHistoryComponent implements OnInit, OnChanges {
           })
         }
 
+      }
+      if (event.PatientAgeFrom || event.PatientAgeTo) {
+        filterValue = filterValue.filter((element: any) => {
+          const age = parseInt(this.getAgeFromName(element.Patient), 10);
+          if (isNaN(age)) { return false; }
+          let matches = true;
+          if (event.PatientAgeFrom !== '' && event.PatientAgeFrom != null) { matches = matches && age >= +event.PatientAgeFrom; }
+          if (event.PatientAgeTo !== '' && event.PatientAgeTo != null) { matches = matches && age <= +event.PatientAgeTo; }
+          return matches;
+        });
+      }
+      if (event.DateFrom || event.DateTo) {
+        filterValue = filterValue.filter((element: any) => {
+          const dateObj = this.getDate(element.Datum);
+          if (!dateObj) { return false; }
+          const day = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()).getTime();
+          let matches = true;
+          if (event.DateFrom) { const from = new Date(event.DateFrom); matches = matches && day >= new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime(); }
+          if (event.DateTo) { const to = new Date(event.DateTo); matches = matches && day <= new Date(to.getFullYear(), to.getMonth(), to.getDate()).getTime(); }
+          return matches;
+        });
+      }
+      if (event.AdmissionTimeFrom || event.AdmissionTimeTo) {
+        filterValue = filterValue.filter((element: any) => {
+          const time = this.getTime(element.ZeitIntern);
+          if (!time) { return false; }
+          let matches = true;
+          if (event.AdmissionTimeFrom) { matches = matches && time >= event.AdmissionTimeFrom; }
+          if (event.AdmissionTimeTo) { matches = matches && time <= event.AdmissionTimeTo; }
+          return matches;
+        });
       }
         this.ERlistData = filterValue;
         this.sendErPatientCount.emit( this.ERlistData.length);

@@ -783,7 +783,7 @@ export class ErVitalComponent implements OnInit {
       "Origin": "",
       "Odate": createDate,
       "Otime": createTime,
-      "Descr": "TEsting Test",
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "Storn": false,
       "Stoid": this.selectedColData.Stoid,
       "TOITEM": EnteredvitalArr

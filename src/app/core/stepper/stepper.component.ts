@@ -120,19 +120,32 @@ export class StepperComponent implements OnDestroy {
   }
 
   Refreshdata(listItem) {
+    console.log('stepper Refreshdata listItem', listItem);
     localStorage.setItem('data', JSON.stringify(true));
-    this.patientService.patientapi.next(listItem.Einri+listItem.Case.toString().padStart(10, '0')+this.storageService.lfdnr)
     this.selectedback = 'goback';
     this.selectedData = listItem;
-    this.storageService.falnr = listItem.Case
-    this.storageService.einri = listItem.Einri
-    this.storageService.patnr = listItem.Patient
+
+    // Do NOT fall back to the previously-stored lfdnr: PatientCaseSet rows
+    // carry no movement number, so the old fallback silently reused the prior
+    // case's lfdnr against the newly-selected case (blank banner / Case# NaN).
+    // Leaving it empty lets topnav reconcile the correct movement from CASESET.
+    const itemLfdnr = (listItem.Lfdnr ?? listItem.Lfdbew ?? listItem.MovmntSeq ?? '').toString();
+    const paddedFalnr = listItem.Case.toString().padStart(10, '0');
+    const paddedPatnr = listItem.Patient.toString().padStart(10, '0');
+
+    this.storageService.einri = listItem.Einri;
+    this.storageService.falnr = paddedFalnr;
+    this.storageService.patnr = paddedPatnr;
+    this.storageService.lfdnr = itemLfdnr;
+
+    this.patientService.patientapi.next(listItem.Einri + paddedFalnr + itemLfdnr);
+
     const currentParams = this.route.snapshot.queryParams;
-  this.router.navigate([], {
-    relativeTo: this.route,
-    queryParams: { ...currentParams, einri: listItem['Einri'], falnr: listItem['Case'].toString().padStart(10, '0') , patnr: listItem['Patient'].toString().padStart(10, '0')},
-    queryParamsHandling: 'merge',
-  });
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { ...currentParams, einri: listItem['Einri'], falnr: paddedFalnr, patnr: paddedPatnr, lfdnr: itemLfdnr },
+      queryParamsHandling: 'merge',
+    });
   }
 
   goback(goback) {

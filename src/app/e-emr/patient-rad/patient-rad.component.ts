@@ -36,6 +36,7 @@ export class PatientRadComponent implements OnInit {
   dropdownListForStatus=[];
   searchString!: string;
   checkedFlag=false;
+  isCheckedView=false;
   pieChartData = {};
   showPie=true;
   modalForselectedItemsForStatus: any[];
@@ -100,6 +101,9 @@ export class PatientRadComponent implements OnInit {
         _success = JSON.parse(_success._body);
         if (_success) {
           this.dropdownListForStatus = _success.d.FLDPROPTOVHELP.results;
+          // Extra status option that switches the list to previously-checked
+          // reports (served by the RadPrSet PR-status OData endpoint).
+          this.dropdownListForStatus.push({ Valuekey: 'ZZCHECKED', Valuedescr: 'Checked Results' });
           this.filterData();
           //this.profileResponse =JSON.parse(_success._body).d.results[0];
         }
@@ -108,6 +112,7 @@ export class PatientRadComponent implements OnInit {
     );
   }
   initialfilterData(){
+    this.isCheckedView = false;
     this.dateFrom = new Date(new Date().setDate(new Date().getDate()-7));
     this.dateTo = new Date();
     this.modalForselectedItemsForStatus=[];
@@ -199,6 +204,13 @@ export class PatientRadComponent implements OnInit {
       this.selectedItemsForStatus = '';
       this.modalForselectedItemsForStatus = [];
     }
+    // "Checked Results" routes to the PR-status endpoint instead of the widget.
+    if (this.isCheckedResultsSelected()) {
+      this.isCheckedView = true;
+      this.loadCheckedRadResults();
+      return;
+    }
+    this.isCheckedView = false;
     let jsonObj = {
       Widgetid: 'MYRAD01',
       Datefrom: this.dateFrom.getFullYear() +'-'+ String(this.dateFrom.getMonth() +1).padStart(2, '0') +'-'+ String(this.dateFrom.getDate()).padStart(2, '0') +'T00:00:00',
@@ -412,6 +424,161 @@ export class PatientRadComponent implements OnInit {
     this.PartiallyAbnormalArr=[];
     this.pieChartData={};
     this.dataOnTable=[];
+  }
+
+  isCheckedResultsSelected(): boolean {
+    return (this.modalForselectedItemsForStatus || []).some(
+      (i: any) => i && i.Valuekey === 'ZZCHECKED'
+    );
+  }
+
+  // Loads already-checked radiology reports from the PR-status OData endpoint
+  // and renders them in the same table as the pending list.
+  loadCheckedRadResults() {
+    const patnr = this.formatMrn(this.patientMrn);
+    const from = this.formatDate(this.dateFrom);
+    const to = this.formatDate(this.dateTo);
+    if (from > to) {
+      Swal.fire({
+        title: 'Invalid date range',
+        text: 'Date From cannot be after Date To.',
+        icon: 'warning',
+      });
+      return;
+    }
+    this.resetPiechartData();
+    this._dataServices
+      .getCheckedRadResults(patnr, from, to)
+      .subscribe(
+        (_success: any) => {
+          this.showfilter = false;
+          let parsed: any =
+            _success && _success._body ? JSON.parse(_success._body) : _success;
+          let results =
+            parsed && parsed.d && parsed.d.results ? parsed.d.results : [];
+          this.dataOnTable = results.map((r: any) => this.normalizeRecord(r));
+          this.buildRadPieChart();
+          this.dataCount.emit(this.dataOnTable.length);
+        },
+        (_error: any) => {
+          this.dataOnTable = [];
+          this.dataCount.emit(0);
+          Swal.fire({
+            title: 'Could not load checked results',
+            text: this.extractSapError(_error),
+            icon: 'error',
+          });
+        }
+      );
+  }
+
+  // Pulls SAP's human-readable error message out of an OData error response.
+  extractSapError(_error: any): string {
+    try {
+      const body = _error && _error._body ? JSON.parse(_error._body) : _error;
+      if (body && body.error && body.error.message && body.error.message.value) {
+        return body.error.message.value;
+      }
+    } catch (e) {}
+    return 'Unable to load checked results.';
+  }
+
+  buildRadPieChart() {
+    this.dataOnTable.forEach(element => {
+      if (element.ZZRESULT_STATUS_TEXT == 'Not done') {
+        this.notDoneArr.push(element);
+      } if (element.ZZRESULT_STATUS_TEXT == 'Completed') {
+        this.completedArr.push(element);
+      } if (element.ZZRESULT_STATUS_TEXT == 'Completed with abnormal') {
+        this.completedCriticalArr.push(element);
+      } if (element.ZZRESULT_STATUS_TEXT == 'Partially done with abnormal') {
+        this.PartiallyAbnormalArr.push(element);
+      }
+    });
+    if (this.notDoneArr.length > 0 || this.completedArr.length > 0 || this.completedCriticalArr.length > 0 || this.PartiallyAbnormalArr.length > 0) {
+      this.pieChartData = {
+        labels: ['Completed', 'Completed with critical', 'Not done'],
+        datasets: [
+          {
+            label: '',
+            borderColor: ['green', 'red', 'blue'],
+            backgroundColor: ['green', 'red', 'blue'],
+            borderWidth: 2,
+            data: [this.completedArr.length, this.completedCriticalArr.length, this.notDoneArr.length]
+          }
+        ]
+      };
+    }
+  }
+
+  // Date -> 'YYYY-MM-DDT00:00:00' for the OData datetime literal.
+  formatDate(d: Date): string {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') + 'T00:00:00';
+  }
+
+  // SAP patient numbers are 10 digits, left-padded with zeros.
+  formatMrn(mrn: any): string {
+    let s = (mrn === undefined || mrn === null) ? '' : String(mrn).trim();
+    if (s && /^\d+$/.test(s)) { s = s.padStart(10, '0'); }
+    return s;
+  }
+
+  // OData rows may come back UPPERCASE (PATNR) or CamelCase (Patnr); map both
+  // onto the keys the table template binds to. Adjust here if a column is blank.
+  normalizeRecord(rec: any): any {
+    const map: any = {};
+    Object.keys(rec || {}).forEach(k => {
+      map[k.toUpperCase().replace(/_/g, '')] = rec[k];
+    });
+    const pick = (key: string) => {
+      const v = map[key.toUpperCase().replace(/_/g, '')];
+      return v === undefined || v === null ? '' : v;
+    };
+    // Time may come as STUNDE/MINUTEN or as an Ebzt duration ("PT16H40M02S").
+    const timeStr = this.formatTimeValue(pick('EBZT'));
+    const parts = timeStr ? timeStr.split(':') : [];
+    return {
+      ...rec,
+      DATUM: this.parseODataDate(pick('DATUM') || pick('EBGDT')),
+      STUNDE: pick('STUNDE') || (parts[0] || ''),
+      MINUTEN: pick('MINUTEN') || (parts[1] || ''),
+      PATNR: pick('PATNR'),
+      PATIENT: pick('PATIENT') || pick('PNAMEC') || pick('PNAME'),
+      FATYPTXT: pick('FATYPTXT') || pick('FALAR_TXT'),
+      ANMERKUNG: pick('ANMERKUNG') || pick('LEITXT'),
+      ZZRESULT_STATUS_TEXT: pick('ZZRESULT_STATUS_TEXT'),
+      ZZN2DOC_KEY: pick('ZZN2DOC_KEY'),
+      ZZN2DOC_KEY_IMG: pick('ZZN2DOC_KEY_IMG'),
+      ZZRADCRITICALIND: pick('ZZRADCRITICALIND'),
+      FALNR: pick('FALNR'),
+      EINRI: pick('EINRI'),
+      LFDBW: pick('LFDBW'),
+      BESSTATTEXT: pick('BESSTATTEXT'),
+    };
+  }
+
+  // OData V2 dates arrive as "/Date(1649721600000)/" -> real Date for the date pipe.
+  parseODataDate(v: any): any {
+    if (typeof v === 'string') {
+      const m = v.match(/\/Date\((-?\d+)/);
+      if (m) { return new Date(parseInt(m[1], 10)); }
+    }
+    return v || '';
+  }
+
+  // Time can arrive as an ISO-8601 duration ("PT16H40M02S") -> "HH:MM:SS".
+  formatTimeValue(v: any): string {
+    if (typeof v === 'string') {
+      const m = v.match(/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/);
+      if (m) {
+        const h = (m[1] || '0').padStart(2, '0');
+        const min = (m[2] || '0').padStart(2, '0');
+        const s = (m[3] || '0').padStart(2, '0');
+        return h + ':' + min + ':' + s;
+      }
+      return v;
+    }
+    return '';
   }
 
   openImageActionSet(data){

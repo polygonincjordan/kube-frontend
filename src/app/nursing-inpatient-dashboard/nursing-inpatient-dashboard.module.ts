@@ -142,15 +142,12 @@ import { SharedModuleModule } from '../shared-module/shared-module.module';
 import { NewbornAssessmentModule } from "../shared-module/newborn-assessment/newborn-assessment.module";
 import { ModifiedAldreteDocumentModule } from '../shared-module/modified-aldrete-document/modified-aldrete-document.module';
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
-import { ICBundlesComponent } from './nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 import { TimeOutChecklistModule } from '../shared-module/time-out-checklist/time-out-checklist.module';
 import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
-import { CvcMaintenanceComponent } from './nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
 import { NursAssessmentRestraintsComponent } from './nurs-treatment-workarea/patient-documentation/nurs-assessment-restraints/nurs-assessment-restraints.component';
 import { ListFilterPipe } from './list-filter.pipe';
 import { CriticalCarePainComponent } from './nurs-treatment-workarea/patient-documentation/critical-care-pain/critical-care-pain.component';
 import { MaternityEarlyWarningSignComponent } from './nurs-treatment-workarea/patient-documentation/maternity-early-warning-sign/maternity-early-warning-sign.component';
-import { IntraOperativeRecordComponent } from './nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { PaediatricsAdmDocumentModule } from '../shared-module/paediatrics-adm-document/paediatrics-adm-document.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
@@ -189,6 +186,7 @@ import { PatientProfileHeaderModule } from '../shared-module/patient-profile-hea
 import { ModifiedAldreteDocumentForInportComponent } from './nurs-treatment-workarea/patient-documentation/post-anesthesia-care-record/modified-aldrete-document/modified-aldrete-document.component';
 import { MorseFallScaleLaborComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/morse-fall-scale/morse-fall-scale.component';
 import { BradenScaleLaborComponent } from './nurs-treatment-workarea/patient-documentation/labor-room-flow-sheet/braden-scale/braden-scale.component';
+import { InpatientNursingDocumentsModule } from '../shared-module/inpatient-nursing-documents/inpatient-nursing-documents.module';
 
 
 
@@ -298,14 +296,11 @@ const route: Routes = [
     PastSurgicalComponent,
     PastMedicalComponent,
     FamilyHistoryComponent,
-    ICBundlesComponent,
-    CvcMaintenanceComponent,
     NursAssessmentRestraintsComponent,
     ListFilterPipe,
     CriticalCarePainComponent,
     ReceiveCartComponent,
     MaternityEarlyWarningSignComponent,
-    IntraOperativeRecordComponent,
     DocumentingDeliveryComponent,
     PediatricsFallRiskAssessmentComponent,
     NursingInitialAssessmentComponent,
@@ -393,7 +388,8 @@ const route: Routes = [
     IcuHoursFlowsheetModule,
     AdminAttechmentModule,
     ConsultationsOrdersModule,
-    PatientProfileHeaderModule
+    PatientProfileHeaderModule,
+    InpatientNursingDocumentsModule
 ],
 })
 export class NursingInpatientDashboardModule {}

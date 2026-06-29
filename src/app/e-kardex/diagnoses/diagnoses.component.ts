@@ -47,6 +47,7 @@ export class DiagnosesComponent implements OnInit {
   @ViewChild('PhysicianAssessment') PhysicianAssessment?: TemplateRef<any>;
   @ViewChild('newborndocument') newborndocument?: TemplateRef<any>;
   @ViewChild('pdfViewModal') pdfViewModal?: TemplateRef<any>;
+  @ViewChild('labpdfmodal') labpdfmodal?: TemplateRef<any>;
   @ViewChild(CorrespondenceDocumentComponent) CorrespondenceComp: CorrespondenceDocumentComponent;
   @ViewChild(MedicalReportComponent) MedicalReportComp: MedicalReportComponent;
   @ViewChild('newBornComp', { static: false }) newBornComp!: NewbornAssessmentComponent;
@@ -2022,6 +2023,10 @@ export class DiagnosesComponent implements OnInit {
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.userConfigurationService.getAttachmentVisitData(attachmentId).subscribe((data) => {
       if (data) {
+        if (data.AttMimeType === 'HTML') {
+          this.openHtmlVersionAttachment(attachmentId);
+          return;
+        }
         this.oldversion = true;
         this.patientVisitRecord = { ...data, DOCCATTOATTACHMENTS: { results: [data] } };
         this.pdfFormOpen();
@@ -2039,6 +2044,10 @@ export class DiagnosesComponent implements OnInit {
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.userConfigurationService.getAttachmentVisitData(attachmentId).subscribe((data) => {
       if (data) {
+        if (data.AttMimeType === 'HTML') {
+          this.openHtmlVersionAttachment(attachmentId);
+          return;
+        }
         this.oldversion = true;
         this.patientVisitRecord = { ...data, DOCCATTOATTACHMENTS: { results: [data] } };
         this.pdfFormOpen();
@@ -2049,6 +2058,22 @@ export class DiagnosesComponent implements OnInit {
         };
       }
     })
+  }
+
+  // HTML documents are not delivered by getAttachmentVisitData (no AttachmentDataStr),
+  // so fetch the rendered HTML from getPatientProfilePDF and show it in the html-aware modal.
+  private openHtmlVersionAttachment(dockey: any) {
+    this.admissionService.getPatientProfilePDF(dockey).subscribe((_success: any) => {
+      if (_success?.d) {
+        this.releaseDocumentImage = '';
+        this.pdfUrlType = 'html';
+        this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.pdfTemplateRef = this.bsModalService.show(this.labpdfmodal, config);
+      }
+    });
   }
 
   onInPatientCorrespondence(attachmentId: any) {

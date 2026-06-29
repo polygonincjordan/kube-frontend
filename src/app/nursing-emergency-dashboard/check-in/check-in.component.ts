@@ -48,6 +48,7 @@ export class CheckInComponent implements OnInit {
   @ViewChild('triageModal') triageModal: ErTriageComponent;
   @Output() sendErPatientCount = new EventEmitter<any>();
   @Output() redirectCheckInData = new EventEmitter<any>();
+  @Output() dataToParent = new EventEmitter<any>();
   isFormValidError: boolean = false;
   searchString: string = '';
   ERlistData: any[];
@@ -57,6 +58,7 @@ export class CheckInComponent implements OnInit {
   triageValueArr: any = [];
   physicianValueArr: any = [];
   statusValueArr: any = [];
+  bedValueArr: any = [];
   lastIndex: number;
   modalRefForRisk: BsModalRef;
   selectedERList: any;
@@ -236,6 +238,17 @@ export class CheckInComponent implements OnInit {
       var finalstr = str[0] + ':' + str[1];
       return finalstr;
     }
+  }
+
+  // Extracts the numeric age embedded in the patient name string, e.g. "Er14, Er Patient (F, 31)" -> "31"
+  getAgeFromName(value) {
+    if (value) {
+      const match = value.match(/\(\s*[A-Za-z]?\s*,\s*(\d+)\s*\)/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return '';
   }
 
   addItemForRisk(element?): void {
@@ -680,6 +693,7 @@ export class CheckInComponent implements OnInit {
           });
           this.ERlistDataClone = this.ERlistData;
           this.lastIndex = this.ERlistData.length - 1;
+          this.dataToParent.emit(this.ERlistDataClone);
         }
         // this.getPrintUrl()
       },
@@ -695,7 +709,8 @@ export class CheckInComponent implements OnInit {
     this.triageValueArr = [];
     this.physicianValueArr = [];
     this.statusValueArr = [];
-    if (event.Triage || event.Physician || event.Status || event.FCategory) {
+    this.bedValueArr = [];
+    if (event.Triage || event.Physician || event.Status || event.FCategory || event.BedidText || event.PatientAgeFrom || event.PatientAgeTo || event.AdmissionTimeFrom || event.AdmissionTimeTo || event.DateFrom || event.DateTo) {
       let filterValue = this.ERlistDataClone;
       if (event.Triage && event.Triage?.length) {
         event.Triage.forEach((triageValue) => {
@@ -749,6 +764,69 @@ export class CheckInComponent implements OnInit {
             }
           });
         }
+      }
+      if (event.BedidText && event.BedidText?.length) {
+        event.BedidText.forEach((bedValue) => {
+          this.bedValueArr.push(
+            filterValue.filter((element) => {
+              if (element.BehraumKb === bedValue.trimStart()) {
+                return element;
+              }
+            })
+          );
+        });
+        filterValue = this.bedValueArr.flat();
+      }
+      if (event.PatientAgeFrom || event.PatientAgeTo) {
+        filterValue = filterValue.filter((element) => {
+          const age = parseInt(this.getAgeFromName(element.Patient), 10);
+          if (isNaN(age)) {
+            return false;
+          }
+          let matches = true;
+          if (event.PatientAgeFrom !== '' && event.PatientAgeFrom != null) {
+            matches = matches && age >= +event.PatientAgeFrom;
+          }
+          if (event.PatientAgeTo !== '' && event.PatientAgeTo != null) {
+            matches = matches && age <= +event.PatientAgeTo;
+          }
+          return matches;
+        });
+      }
+      if (event.AdmissionTimeFrom || event.AdmissionTimeTo) {
+        filterValue = filterValue.filter((element) => {
+          const time = this.getTime(element.ZeitIntern);
+          if (!time) {
+            return false;
+          }
+          let matches = true;
+          if (event.AdmissionTimeFrom) {
+            matches = matches && time >= event.AdmissionTimeFrom;
+          }
+          if (event.AdmissionTimeTo) {
+            matches = matches && time <= event.AdmissionTimeTo;
+          }
+          return matches;
+        });
+      }
+      if (event.DateFrom || event.DateTo) {
+        filterValue = filterValue.filter((element) => {
+          const dateObj = this.getDate(element.Datum);
+          if (!dateObj) {
+            return false;
+          }
+          const day = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()).getTime();
+          let matches = true;
+          if (event.DateFrom) {
+            const from = new Date(event.DateFrom);
+            matches = matches && day >= new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime();
+          }
+          if (event.DateTo) {
+            const to = new Date(event.DateTo);
+            matches = matches && day <= new Date(to.getFullYear(), to.getMonth(), to.getDate()).getTime();
+          }
+          return matches;
+        });
       }
       this.ERlistData = filterValue;
       this.sendErPatientCount.emit(this.ERlistData.length);

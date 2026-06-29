@@ -32,7 +32,17 @@ export class TemplateDescriptionComponent {
     }
   }
   savePopup() {
-    this.onClose.emit({ Name: this.templateName, Desc: this.templateDescription });
+    if (!this.templateName || !this.templateName.trim()) {
+      swal.fire({
+        text: 'Please enter a template name.',
+        confirmButtonColor: '#0890c5',
+        confirmButtonText: 'OK',
+        customClass: { popup: 'myalertpopup' },
+        icon: 'error'
+      } as any);
+      return; // keep the popup open
+    }
+    this.onClose.emit({ Name: this.templateName.trim(), Desc: this.templateDescription });
     this.modalRef.hide();
   }
 

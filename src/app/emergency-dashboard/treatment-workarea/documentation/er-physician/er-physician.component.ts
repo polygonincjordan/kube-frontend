@@ -38,7 +38,9 @@ export class ErPhysicianComponent implements OnInit {
       Falnr: this.paramsObject.falnr,
       Lfdnr: this.paramsObject.lfdnr,
       Orgdo: [this.storageService.patientData.deptOrgUnit],
-      AttendPhy: [this.storageService.getUserProfile().Gpart],      
+      AttendPhy: [this.storageService.getUserProfile().Gpart],
+      "DocDate": [""],
+      "DocTime": [""],
       "AdmDate": [""],
       "AdmTime": [""],
       "DiscDate": [""],
@@ -71,6 +73,7 @@ export class ErPhysicianComponent implements OnInit {
       "FollowUp": [''],
       "Substances": [''],
       "ObgynComment": [''],
+      "GetLab": ["true"],
       "DocStatus": [""]
     });
    }
@@ -85,10 +88,14 @@ export class ErPhysicianComponent implements OnInit {
     //this.createDate = String(this.createDate.getDate()).padStart(2, '0') + '.' + String(this.createDate.getMonth() + 1).padStart(2, '0') + '.' + String(this.createDate.getFullYear());
     let createDiscTime = this.getTime(this.docDetails[0].DiscTime).split(':');
     createDiscTime = createDiscTime[0] + ':' + createDiscTime[1];
+    let createDocTime = this.getTime(this.docDetails[0].DocTime).split(':');
+    createDocTime = createDocTime[0] + ':' + createDocTime[1];
       this.PhyAssessmentForm.patchValue({
         "ZdocNr": this.docDetails[0].ZdocNr,
         "Dockey": this.docDetails[0].Dockey,
         "Dtid": "ZMED_ERPHY",
+        "DocDate": this.getDate(this.docDetails[0].DocDate),
+        "DocTime": createDocTime,
         Einri: this.paramsObject.einri,
         Patnr: this.paramsObject.patnr,
         Falnr: this.paramsObject.falnr,
@@ -110,7 +117,7 @@ export class ErPhysicianComponent implements OnInit {
         "InstructionDisp": this.docDetails[0].InstructionDisp,
         "DateDisp": this.getDate(this.docDetails[0].DateDisp),
         "Speciality": this.docDetails[0].Speciality,
-        "Allergies": this.docDetails[0].Allergies.toString(),
+        "Allergies": "true",
         "VitalSign": this.docDetails[0].VitalSign.toString(),
         "Diagnosis": this.docDetails[0].Diagnosis.toString(),
         "Hospital": this.docDetails[0].Hospital.toString(),
@@ -127,26 +134,13 @@ export class ErPhysicianComponent implements OnInit {
         "FollowUp": this.docDetails[0].FollowUp,
         "Substances":this.docDetails[0].Substances,
         "ObgynComment": this.docDetails[0].ObgynComment,
+        "GetLab": this.docDetails[0].GetLab != null ? this.docDetails[0].GetLab.toString() : "true",
         "DocStatus": this.docDetails[0].DocStatus
       })
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
       
     }else{
-    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
-    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
-    createTime = createTime[0] + ':' + createTime[1];
-    this.createDate = this.getDate(checkindata.Erdat);
-    //this.createDate = String(this.createDate.getDate()).padStart(2, '0') + '.' + String(this.createDate.getMonth() + 1).padStart(2, '0') + '.' + String(this.createDate.getFullYear()); 
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
-    //room/bed 
-    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
-    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
-    // 
-    this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
-    this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
-    this.PhyAssessmentForm.controls.Lfdnr.setValue(this.storageService.lfdnr);
-    this.PhyAssessmentForm.controls.Falnr.setValue(this.storageService.falnr);
+    this.setNewDocDefaults();
     }
     this.getChiefTemplate();
     this.getDispositionData();
@@ -155,6 +149,28 @@ export class ErPhysicianComponent implements OnInit {
     // }else{
     // this.PhyAssessmentForm.controls.ConditionDisp.disable();
     // }
+  }
+  // Defaults for a brand-new document (admission date/time from check-in, room/bed, identity).
+  private setNewDocDefaults() {
+    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
+    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
+    createTime = createTime[0] + ':' + createTime[1];
+    this.createDate = this.getDate(checkindata.Erdat);
+    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    //document date/time default to current date/time (editable)
+    const now = new Date();
+    const docTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    this.PhyAssessmentForm.controls.DocDate.setValue(now);
+    this.PhyAssessmentForm.controls.DocTime.setValue(docTime);
+    //room/bed
+    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
+    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
+    //
+    this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
+    this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
+    this.PhyAssessmentForm.controls.Lfdnr.setValue(this.storageService.lfdnr);
+    this.PhyAssessmentForm.controls.Falnr.setValue(this.storageService.falnr);
   }
   openPastHistory(template: TemplateRef<any>){
     const config: ModalOptions = { class: 'modal-dialog-centered modal-lg pastdochistory' };
@@ -176,6 +192,24 @@ export class ErPhysicianComponent implements OnInit {
       var str = str.replace(/[M]/g, ':');
       var str = str.replace(/[S]/g, '');
       return str;
+    }
+  }
+  // Format the Document Date/time controls into the SAP OData payload shape and
+  // attach them to a payload object (date -> yyyy-MM-ddT00:00:00, time -> PThHmM00S),
+  // mirroring the AdmDate/AdmTime handling. Omits empty values.
+  private applyDocDateTime(json: any) {
+    const dateVal = this.PhyAssessmentForm.controls.DocDate.value;
+    const timeVal = this.PhyAssessmentForm.controls.DocTime.value;
+    if (dateVal != '' && dateVal != undefined && dateVal != null) {
+      json['DocDate'] = `${new DatePipe('en-US').transform(dateVal, 'yyyy-MM-dd')}T00:00:00`;
+    } else {
+      delete json['DocDate'];
+    }
+    if (timeVal != '' && timeVal != undefined && timeVal != null) {
+      const t = timeVal.split(':');
+      json['DocTime'] = 'PT' + t[0] + 'H' + t[1] + 'M' + '00S';
+    } else {
+      delete json['DocTime'];
     }
   }
 
@@ -242,13 +276,17 @@ export class ErPhysicianComponent implements OnInit {
     }
    
     let createJson = this.PhyAssessmentForm.value;
+    createJson['Einri'] = this.storageService.einri;
+    createJson['Patnr'] = this.storageService.patnr;
+    createJson['Falnr'] = this.storageService.falnr;
+    createJson['Lfdnr'] = this.storageService.lfdnr;
     createJson['AdmDate'] = createAdmDate;
     createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['AdmTime'] = createAdmTime;
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
     createJson['DiscDate'] = createDiscDate;
-    createJson['Allergies'] = JSON.parse(createJson.Allergies);
+    createJson['Allergies'] = true;
     createJson['VitalSign'] = JSON.parse(createJson.VitalSign);
     createJson['Diagnosis'] = JSON.parse(createJson.Diagnosis);
     createJson['Hospital'] = JSON.parse(createJson.Hospital);
@@ -257,7 +295,10 @@ export class ErPhysicianComponent implements OnInit {
     createJson['Family'] = JSON.parse(createJson.Family);
     createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
     createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
+    createJson['GetLab'] = JSON.parse(createJson.GetLab);
     createJson['DocStatus'] = '1';
+    this.applyDocDateTime(createJson);
+    delete createJson['Dockey'];
     if (createJson['DiscDate'] == '') {
       delete createJson['DiscDate'];
     }
@@ -316,13 +357,17 @@ export class ErPhysicianComponent implements OnInit {
       createDateDisp = '';
     }
     let updateJson = this.PhyAssessmentForm.value;
+    updateJson['Einri'] = this.storageService.einri;
+    updateJson['Patnr'] = this.storageService.patnr;
+    updateJson['Falnr'] = this.storageService.falnr;
+    updateJson['Lfdnr'] = this.storageService.lfdnr;
     updateJson['AdmDate'] = createAdmDate;
     updateJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     updateJson['AdmTime'] = createAdmTime;
     updateJson['DiscTime'] = createDiscTime
     updateJson['DateDisp'] = createDateDisp;
     updateJson['DiscDate'] = createDiscDate;
-    updateJson['Allergies'] = JSON.parse(updateJson.Allergies);
+    updateJson['Allergies'] = true;
     updateJson['VitalSign'] = JSON.parse(updateJson.VitalSign);
     updateJson['Diagnosis'] = JSON.parse(updateJson.Diagnosis);
     updateJson['Hospital'] = JSON.parse(updateJson.Hospital);
@@ -331,7 +376,9 @@ export class ErPhysicianComponent implements OnInit {
     updateJson['Family'] = JSON.parse(updateJson.Family);
     updateJson['MedicalHist'] = JSON.parse(updateJson.MedicalHist);
     updateJson['ObgynHist'] = JSON.parse(updateJson.ObgynHist);
-    updateJson['DocStatus'] = '1';
+    updateJson['GetLab'] = JSON.parse(updateJson.GetLab);
+    updateJson['DocStatus'] = '2';
+    this.applyDocDateTime(updateJson);
     if (updateJson['DiscDate'] == '') {
       delete updateJson['DiscDate'];
     }
@@ -393,15 +440,17 @@ export class ErPhysicianComponent implements OnInit {
     updateJson['Patnr'] = this.storageService.patnr;
     updateJson['Lfdnr'] = this.storageService.lfdnr;
     updateJson['Allergies'] = true;
-    updateJson['VitalSign'] = true;
-    updateJson['Diagnosis'] = true;
-    updateJson['Hospital'] = true;
-    updateJson['SurgicalHist'] = true;
-    updateJson['Discharge'] = true;
-    updateJson['Family'] = true;
-    updateJson['MedicalHist'] = true;
+    updateJson['VitalSign'] = JSON.parse(updateJson.VitalSign);
+    updateJson['Diagnosis'] = JSON.parse(updateJson.Diagnosis);
+    updateJson['Hospital'] = JSON.parse(updateJson.Hospital);
+    updateJson['SurgicalHist'] = JSON.parse(updateJson.SurgicalHist);
+    updateJson['Discharge'] = JSON.parse(updateJson.Discharge);
+    updateJson['Family'] = JSON.parse(updateJson.Family);
+    updateJson['MedicalHist'] = JSON.parse(updateJson.MedicalHist);
     updateJson['ObgynHist'] = JSON.parse(updateJson.ObgynHist);
-    updateJson['DocStatus'] = '2';
+    updateJson['GetLab'] = JSON.parse(updateJson.GetLab);
+    updateJson['DocStatus'] = '4';
+    this.applyDocDateTime(updateJson);
     if (updateJson['DiscDate'] == '') {
       delete updateJson['DiscDate'];
     }
@@ -412,12 +461,13 @@ export class ErPhysicianComponent implements OnInit {
       delete updateJson['DateDisp'];
     }
     console.log(updateJson);
-    
+
     return this.emergencyService.releasePhyDoc(updateJson);
   }
   async deletePhyAssessment() {
     const json = {
       Dockey:this.docDetails[0].Dockey,
+      DocStatus: '3',
     }
    return this.emergencyService.deletePhyAssessment(json);
   }
@@ -478,7 +528,7 @@ export class ErPhysicianComponent implements OnInit {
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
     createJson['DiscDate'] = createDiscDate;
-    createJson['Allergies'] = JSON.parse(createJson.Allergies);
+    createJson['Allergies'] = true;
     createJson['VitalSign'] = JSON.parse(createJson.VitalSign);
     createJson['Diagnosis'] = JSON.parse(createJson.Diagnosis);
     createJson['Hospital'] = JSON.parse(createJson.Hospital);
@@ -487,7 +537,9 @@ export class ErPhysicianComponent implements OnInit {
     createJson['Family'] = JSON.parse(createJson.Family);
     createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
     createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
+    createJson['GetLab'] = JSON.parse(createJson.GetLab);
     createJson['DocStatus'] = '1';
+    this.applyDocDateTime(createJson);
     if (createJson['DiscDate'] == '') {
       delete createJson['DiscDate'];
     }
@@ -547,13 +599,17 @@ export class ErPhysicianComponent implements OnInit {
     }
    
     let createJson = this.PhyAssessmentForm.value;
+    createJson['Einri'] = this.storageService.einri;
+    createJson['Patnr'] = this.storageService.patnr;
+    createJson['Falnr'] = this.storageService.falnr;
+    createJson['Lfdnr'] = this.storageService.lfdnr;
     createJson['AdmDate'] = createAdmDate;
     createJson['Orgdo'] = this.storageService.patientData.deptOrgUnit;
     createJson['AdmTime'] = createAdmTime;
     createJson['DiscTime'] = createDiscTime;
     createJson['DateDisp'] = createDateDisp;
     createJson['DiscDate'] = createDiscDate;
-    createJson['Allergies'] = JSON.parse(createJson.Allergies);
+    createJson['Allergies'] = true;
     createJson['VitalSign'] = JSON.parse(createJson.VitalSign);
     createJson['Diagnosis'] = JSON.parse(createJson.Diagnosis);
     createJson['Hospital'] = JSON.parse(createJson.Hospital);
@@ -562,7 +618,10 @@ export class ErPhysicianComponent implements OnInit {
     createJson['Family'] = JSON.parse(createJson.Family);
     createJson['MedicalHist'] = JSON.parse(createJson.MedicalHist);
     createJson['ObgynHist'] = JSON.parse(createJson.ObgynHist);
-    createJson['DocStatus'] = '2';
+    createJson['GetLab'] = JSON.parse(createJson.GetLab);
+    createJson['DocStatus'] = '4';
+    this.applyDocDateTime(createJson);
+    delete createJson['Dockey'];
     if (createJson['DiscDate'] == '') {
       delete createJson['DiscDate'];
     }
@@ -586,6 +645,8 @@ export class ErPhysicianComponent implements OnInit {
       "Falnr": [""],
       "Orgdo": [""],
       "Lfdnr": [""],
+      "DocDate": [""],
+      "DocTime": [""],
       "AdmDate": [""],
       "AdmTime": [""],
       "DiscDate": [""],
@@ -619,6 +680,7 @@ export class ErPhysicianComponent implements OnInit {
       "FollowUp": [''],
       "Substances": [''],
       "ObgynComment": [''],
+      "GetLab": ["true"],
       "DocStatus": [""]
     });
    }

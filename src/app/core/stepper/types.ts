@@ -15,4 +15,7 @@ export interface StepperType {
   StartDate: string | null;
   EndDate: string | null;
   DeptUnit: string;
+  Lfdnr?: string;
+  Lfdbew?: string;
+  MovmntSeq?: string;
 }

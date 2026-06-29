@@ -15,6 +15,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { patientHeaderCheckbox } from 'src/app/core/constants';
 import swal from 'sweetalert2';
+import {
+  BLOCKED_CANCELLATION_TITLE,
+  buildBlockedMessage,
+  findBlockedLabRadItems,
+} from '@services/clinical-order-cancellation.util';
 @Component({
   selector: 'app-order-profile',
   templateUrl: './order-profile.component.html',
@@ -315,6 +320,22 @@ export class OrderProfileComponent implements OnInit ,OnChanges{
 
   onDeleteOrderItem(item: any, itemType: string) {
     if (!item) return;
+
+    // Only Lab/Rad are guarded; Med/Surgery/Consultation are unchanged.
+    if (itemType === 'LAB' || itemType === 'RAD') {
+      const blocked = findBlockedLabRadItems([item]);
+      if (blocked.length) {
+        swal.fire({
+          title: BLOCKED_CANCELLATION_TITLE,
+          text: buildBlockedMessage(blocked),
+          icon: 'warning',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#096798',
+          customClass: { popup: 'myalertpopup' },
+        });
+        return;
+      }
+    }
 
     const reasonsOptions = this.cancelReasons.reduce((obj, reason) => {
       obj[reason.Stoid] = reason.N1stotx;

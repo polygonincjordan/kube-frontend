@@ -9,6 +9,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
+import {
+  BLOCKED_CANCELLATION_TITLE,
+  buildBlockedMessage,
+  findBlockedLabRadItems,
+} from '@services/clinical-order-cancellation.util';
 @Component({
   selector: 'app-laboratory-table-list',
   templateUrl: './laboratory-table-list.component.html',
@@ -297,8 +302,33 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Blocks cancellation of Lab/Rad services whose work has already been
+   * performed (Done / Partially Done / Completed / Performed). Shows a warning
+   * and returns true when blocked; no backend call is made.
+   */
+  private isPerformedAndBlocked(items: any[]): boolean {
+    const blocked = findBlockedLabRadItems(items);
+    if (!blocked.length) {
+      return false;
+    }
+    Swal.fire({
+      title: BLOCKED_CANCELLATION_TITLE,
+      text: buildBlockedMessage(blocked),
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#096798',
+      customClass: { popup: 'myalertpopup' },
+    });
+    return true;
+  }
+
   deleteOrderItem(item: any) {
     if (!item) {
+      return;
+    }
+
+    if (this.isPerformedAndBlocked([item])) {
       return;
     }
 
@@ -418,6 +448,10 @@ export class LaboratoryTableListComponent implements OnInit, OnChanges {
 
     if (selectedServices.length < 1) {
       this.warningSwalModel('Please select at least one service to delete.');
+      return;
+    }
+
+    if (this.isPerformedAndBlocked(selectedServices)) {
       return;
     }
 

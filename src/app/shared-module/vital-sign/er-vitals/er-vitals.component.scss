@@ -219,6 +219,82 @@
    scroll-behavior: smooth;
  }
 
+ .vital-grid-scroll {
+   max-height: 37em;
+   overflow: auto;
+   position: relative;
+   width: 100%;
+   scroll-behavior: smooth;
+ }
+
+ .vital-grid-table {
+   --description-col-width: 200px;
+   --unit-col-width: 88px;
+   --range-col-width: 158px;
+   --date-col-width: 155px;
+
+   border-collapse: separate;
+   border-spacing: 0;
+   margin-bottom: 0;
+   min-width: 100%;
+   table-layout: fixed;
+   width: max-content;
+
+   th,
+   td {
+     height: 58px;
+     vertical-align: middle;
+     white-space: normal;
+   }
+
+   thead th {
+     position: sticky;
+     top: 0;
+     z-index: 4;
+   }
+
+   tbody td {
+     background: #fff;
+   }
+
+   .vital-sticky-col {
+     position: sticky;
+     z-index: 3;
+   }
+
+   thead .vital-sticky-col {
+     z-index: 5;
+   }
+
+   .vital-description-col {
+     left: 0;
+     width: var(--description-col-width);
+     min-width: var(--description-col-width);
+   }
+
+   .vital-unit-col {
+     left: var(--description-col-width);
+     width: var(--unit-col-width);
+     min-width: var(--unit-col-width);
+   }
+
+   .vital-range-col {
+     left: calc(var(--description-col-width) + var(--unit-col-width));
+     width: var(--range-col-width);
+     min-width: var(--range-col-width);
+   }
+
+   .vital-date-col {
+     min-width: var(--date-col-width);
+     width: var(--date-col-width);
+     font-weight: bold;
+   }
+
+   .selectedCol {
+     background: antiquewhite !important;
+   }
+ }
+
  .main_tabs_modal {
    border-radius: 1.5rem;
 

@@ -94,7 +94,7 @@
           position-relative pt-2">
           <span class="input-title z-indexlabel">Frequency</span>
           <span class="input-text-field d-inline-block align-top
-            w-100 edit-select">
+            w-100 edit-select frequency-input-group">
             <ng-select [searchable]="true" formControlName="N1znr" class="Medica-font-size editing-grid"
               (change)="validFromTobaseonDuration(editprofileForm.value);" (change)="onChangeFrequencySet(editprofileForm.get('N1znr').value)" (click)="onOpenFrequencySet()">
               <ng-option *ngFor=" let medicationFrequency of
@@ -102,6 +102,9 @@
                 {{ medicationFrequency.OptionField}}
               </ng-option>
             </ng-select>
+            <img src="assets/img/Calender.svg" height="20"
+              class="c-pointer ml-2 cycle-def-icon" tooltip="Cycle Definition" placement="top"
+              (click)="onOpenCycleDefinition()" alt="Cycle Definition">
           </span>
         </span>
       </td>
@@ -261,3 +264,5 @@
   (onUpdateprnData)="onUpdatedAdditionalInfoprn($event)"></addition-infoprn-popup> -->
 
 <prn-condition-popup #prnCondition (onUpdateData)="onUpdatedAdditionalInfoprn($event)"></prn-condition-popup>
+
+<cycle-definition-popup #cyclePopup (onSave)="onCycleSaved($event)"></cycle-definition-popup>

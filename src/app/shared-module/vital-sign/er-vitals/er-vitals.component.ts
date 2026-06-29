@@ -88,6 +88,7 @@ export class ErVitalsComponentComman implements OnInit {
   nextInputId: string;
   selectedRowsIndex: number;
   selectedColIndex: any;
+  private readonly mewsScoreExtid = 'MEWS SCORE';
   constructor(private chartService: ChartdataService, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, private modalService: BsModalService, private modalNgbService: NgbModal, public vitalsService: VitalsService, private emergencyService: EmergencyService, private formBuilder: FormBuilder, 
     private storageService: StorageService, private route: ActivatedRoute,) {
     this.chartDataConfig = this.chartService;
@@ -424,6 +425,7 @@ export class ErVitalsComponentComman implements OnInit {
     this.emergencyService.getAllVitalList(json).subscribe(
       (_success: any) => {
         this.vitalAllListResp = _success.d.results;
+        this.ensureMewsScoreDefaultVital();
 
       },
       (_error: any) => { }
@@ -863,7 +865,7 @@ export class ErVitalsComponentComman implements OnInit {
       "Origin": "",
       "Odate": createDate,
       "Otime": createTime,
-      "Descr": "TEsting Test",
+      "Descr": this.maintainVitalBarForm.controls.Descr.value,
       "Storn": false,
       "Stoid": this.selectedColData.Stoid,
       "TOITEM": EnteredvitalArr
@@ -903,6 +905,63 @@ export class ErVitalsComponentComman implements OnInit {
 
   //create
 
+  private getMewsScoreDefaultVital() {
+    const mewsScoreVital = this.vitalAllListResp?.find(item => item.Extid === this.mewsScoreExtid);
+
+    return {
+      "Einri": mewsScoreVital?.Einri || "",
+      "Valid": mewsScoreVital?.Valid || "",
+      "ValidVers": mewsScoreVital?.ValidVers || "",
+      "Bcpid": mewsScoreVital?.Bcpid || "",
+      "Extid": this.mewsScoreExtid,
+      "Name": mewsScoreVital?.Name || "MEWS Score",
+      "Value": "",
+      "ValueString": "",
+      "UnitTxt": mewsScoreVital?.UnitTxt || "UnLess",
+      "NormalRange": mewsScoreVital?.NormalRange || "",
+      "Origin": "",
+      "Descr": "",
+      "Obsid": mewsScoreVital?.Obsid || "",
+      "ObsidVers": mewsScoreVital?.ObsidVers || ""
+    };
+  }
+
+  private ensureMewsScoreDefaultVital() {
+    if (!this.vitalDefaultListResp) {
+      this.vitalDefaultListResp = [];
+    }
+
+    const mewsScoreDefaultVital = this.getMewsScoreDefaultVital();
+    const mewsScoreDefaultIndex = this.vitalDefaultListResp.findIndex(item => item.Extid === this.mewsScoreExtid);
+
+    if (mewsScoreDefaultIndex === -1) {
+      this.vitalDefaultListResp.push(mewsScoreDefaultVital);
+    } else {
+      this.vitalDefaultListResp[mewsScoreDefaultIndex] = {
+        ...this.vitalDefaultListResp[mewsScoreDefaultIndex],
+        ...mewsScoreDefaultVital
+      };
+    }
+
+    const maintainVitalItems = this.maintainvitalform.get('maintainVitalFormitems') as FormArray;
+    if (!maintainVitalItems || !maintainVitalItems.length) {
+      return;
+    }
+
+    const mewsScoreControl = maintainVitalItems.controls.find(control => control.value.Extid === this.mewsScoreExtid);
+    if (mewsScoreControl) {
+      mewsScoreControl.patchValue({
+        Bcpid: mewsScoreDefaultVital.Bcpid,
+        Valid: mewsScoreDefaultVital.Valid,
+        ValidVers: mewsScoreDefaultVital.ValidVers,
+        UnitTxt: mewsScoreDefaultVital.UnitTxt,
+        Name: mewsScoreDefaultVital.Name
+      });
+    } else {
+      this.addItemForVital(mewsScoreDefaultVital);
+    }
+  }
+
   CreateVitalList() {
     this.showMaintain = true;
     let createTime = 'PT' + new Date().getHours() + 'H' + new Date().getMinutes() + 'M' + '00S';
@@ -920,6 +979,7 @@ export class ErVitalsComponentComman implements OnInit {
     // this.maintainVitalBarForm.controls.Vma.setValue(this.storageService.getGpart());
     // this.maintainVitalBarForm.controls.Odate.setValue(new Date());
     // this.maintainVitalBarForm.controls.Otime.setValue(this.getTime(createTime));
+    this.ensureMewsScoreDefaultVital();
     this.vitalDefaultListResp.forEach(element => {
       this.addItemForVital(element);
     });

@@ -60,9 +60,11 @@
             <input type="text" class="form-control m-0"
               value="{{element.Routedescr || element.ROUTEDESCR}}" readonly>
           </div>
-          <div class="medication-field w-25 pr-2 flex-25">
-            <input type="text" class="form-control m-0"
+          <div class="medication-field w-25 pr-2 flex-25 d-flex align-items-center">
+            <input type="text" class="form-control m-0 flex-grow-1"
               value="{{element.N1ztxt ||element.N1ZTXT}}" readonly>
+            <img src="assets/img/Calender.svg" height="20" class="c-pointer ml-2 cycle-def-icon"
+              tooltip="View Cycle Definition" placement="top" (click)="onOpenCycleDefinition(element)" alt="Cycle Definition">
           </div>
           <div class="medication-field w-25 pr-2 flex-25">
             <input type="text" class="form-control m-0"
@@ -79,3 +81,5 @@
     </div>
   </div>
 </ng-template>
+
+<cycle-definition-popup #cyclePopup></cycle-definition-popup>

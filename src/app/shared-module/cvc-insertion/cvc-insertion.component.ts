@@ -245,23 +245,27 @@ export class CvcInsertionComponent implements OnInit {
           error: (err: any) => {
             this.sharedService.waringSwallModel(`Error ${err}`);
             this.sharedService.waringSwallModel(
-              `PUT Error at Correspondence document : ${err}`
+              `PUT Error at IC Bundles for CVC Insertion : ${err}`
             );
           },
           complete: () => {
             resolve(true);
-            if (actiontype === 'edit') {
-              this.sharedService.successSwallModel(
-                'Correspondence document updated successfully'
-              );
-            } else {
-              this.sharedService.successSwallModel(
-                'Correspondence document created successfully'
-              );
-            }
+            this.sharedService.successSwallModel(
+              this.getSuccessMessage(docStatus, actiontype)
+            );
           },
         });
     });
+  }
+
+  getSuccessMessage(docStatus: any, actiontype?: string): string {
+    if (docStatus === '2' || docStatus === '4' || docStatus === '5') {
+      return 'IC Bundles for CVC Insertion released successfully';
+    }
+    if (actiontype === 'edit') {
+      return 'IC Bundles for CVC Insertion updated successfully';
+    }
+    return 'IC Bundles for CVC Insertion created successfully';
   }
 
   ngOnDestroy() {

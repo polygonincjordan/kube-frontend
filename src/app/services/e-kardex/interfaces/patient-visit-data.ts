@@ -130,6 +130,9 @@ export interface PatientCaseSetDataType {
   StartDate: string | null;
   EndDate: string | null;
   DeptUnit: string;
+  Lfdnr?: string;
+  Lfdbew?: string;
+  MovmntSeq?: string;
 }
 
 export interface ReleaseHistoryDataType {

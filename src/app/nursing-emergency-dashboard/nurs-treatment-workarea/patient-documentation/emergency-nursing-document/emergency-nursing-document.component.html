@@ -294,7 +294,7 @@
           </div>
         </div>
         <div class="tab-content" style="border-radius: 7px;">
-          <div *ngIf="socialHistory" class="psychological-main">
+          <div *ngIf="socialHistory" class="psychological-main" [formGroup]="triageForm">
             <div class="scale-box-checkbox">
               <input type="checkbox" id="noHabitApplicable" [(ngModel)]="noHabitApplicable"
                 [ngModelOptions]="{ standalone: true }" />
@@ -341,19 +341,19 @@
                   <div class="col-md-3 row m-0 align-items-center">
                     <div class="col-md-6">Marital Status</div>
                     <div class="col-md-6">
-                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [disabled]="true" />
+                      <input class="form-control" placeholder="Married" [(ngModel)]="maritalStatus" [ngModelOptions]="{standalone: true}" [disabled]="true" />
                     </div>
                   </div>
                   <div class="col-md-2 row m-0 align-items-center">
                     <div class="col-md-3">Since</div>
                     <div class="col-md-8">
-                      <input class="form-control" />
+                      <input class="form-control" formControlName="Since" />
                     </div>
                   </div>
                   <div class="col-md-3 row m-0 align-items-center">
                     <div class="col-md-6">Number of spouse</div>
                     <div class="col-md-6">
-                      <input class="form-control" />
+                      <input class="form-control" formControlName="NumberOfSpouses" />
                     </div>
                   </div>
                 </div>
@@ -363,7 +363,7 @@
                       <label>Comments</label>
                     </div>
                     <div class="col-md-10">
-                      <textarea class="form-control"></textarea>
+                      <textarea class="form-control" formControlName="Comments"></textarea>
                     </div>
                   </div>
                 </div>

@@ -57,10 +57,10 @@
       style="width: 31%"
       />
        <input  placeholder="" style="width: 22%;
-    margin-left: 6px;" [ngxTimepicker]="fullTime"
+    margin-left: 6px;" [ngxTimepicker]="fullTimeDisc"
       [format]="24" formControlName="DiscTime">
       <ngx-material-timepicker
-      #fullTime
+      #fullTimeDisc
       style="z-index: 9999 !important; position: relative !important"></ngx-material-timepicker>
     </div>
     </div>
@@ -96,12 +96,12 @@
        <span class="vital-sign">Vital Signs </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="VitalSign" id="exampleRadios1" value="true" formControlName="VitalSign">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="VitalSign" id="lab-vital-sign-yes" value="true" formControlName="VitalSign">
+     <label class="form-check-label" for="lab-vital-sign-yes">
        Yes
      </label>
-     <input class="form-check-input" type="radio" name="VitalSign" id="exampleRadios1" value="false" formControlName="VitalSign">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="VitalSign" id="lab-vital-sign-no" value="false" formControlName="VitalSign">
+     <label class="form-check-label" for="lab-vital-sign-no">
        No
      </label>
 
@@ -115,12 +115,12 @@
        <span class="vital-sign">Hospital Medications </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="Hospital" id="exampleRadios1" value="true" formControlName="Hospital">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Hospital" id="lab-hospital-yes" value="true" formControlName="Hospital">
+     <label class="form-check-label" for="lab-hospital-yes">
        Yes
      </label>
-     <input class="form-check-input" type="radio" name="Hospital" id="exampleRadios1" value="false" formControlName="Hospital">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Hospital" id="lab-hospital-no" value="false" formControlName="Hospital">
+     <label class="form-check-label" for="lab-hospital-no">
        No
      </label>
 
@@ -134,12 +134,12 @@
        <span class="vital-sign">Past Surgical History </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="SurgicalHist" id="exampleRadios1" value="true" formControlName="SurgicalHist">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="SurgicalHist" id="lab-surgical-history-yes" value="true" formControlName="SurgicalHist">
+     <label class="form-check-label" for="lab-surgical-history-yes">
        Yes
      </label>
-     <input class="form-check-input" type="radio" name="SurgicalHist" id="exampleRadios1" value="false" formControlName="SurgicalHist">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="SurgicalHist" id="lab-surgical-history-no" value="false" formControlName="SurgicalHist">
+     <label class="form-check-label" for="lab-surgical-history-no">
        No
      </label>
 
@@ -154,12 +154,12 @@
        <span class="vital-sign">Diagnosis & Results </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="Diagnosis" id="exampleRadios1" value="true" formControlName="Diagnosis">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Diagnosis" id="lab-diagnosis-yes" value="true" formControlName="Diagnosis">
+     <label class="form-check-label" for="lab-diagnosis-yes">
        Yes
      </label>
-     <input class="form-check-input" type="radio" name="Diagnosis" id="exampleRadios1" value="false" formControlName="Diagnosis">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Diagnosis" id="lab-diagnosis-no" value="false" formControlName="Diagnosis">
+     <label class="form-check-label" for="lab-diagnosis-no">
        No
      </label>
 
@@ -168,17 +168,36 @@
 
        </div>
    </div>
+        <div class="col-md-4" style="margin-top: 10px;">
+          <div class="border-boxes laboratory-results-shell">
+            <span class="vital-sign">Laboratory Results </span>
+            <div class="form-check">
+              <span class="vital-sign mr-1">Import: </span>
+              <input class="form-check-input" type="radio" name="GetLab" id="lab-laboratory-results-yes" value="true" formControlName="GetLab">
+              <label class="form-check-label" for="lab-laboratory-results-yes">
+                Yes
+              </label>
+              <input class="form-check-input" type="radio" name="GetLab" id="lab-laboratory-results-no" value="false" formControlName="GetLab">
+              <label class="form-check-label" for="lab-laboratory-results-no">
+                No
+              </label>
+            </div>
+
+
+          </div>
+        </div>
+
    <div class="col-md-4" style="margin-top: 10px;">
      <div class="border-boxes">
      <span class="vital-sign">Discharge Medications </span>
    <div class="form-check">
     <span class="vital-sign mr-1">Import: </span>
-   <input class="form-check-input" type="radio" name="Discharge" id="exampleRadios1" value="true" formControlName="Discharge">
-   <label class="form-check-label" for="exampleRadios1">
+   <input class="form-check-input" type="radio" name="Discharge" id="lab-discharge-yes" value="true" formControlName="Discharge">
+   <label class="form-check-label" for="lab-discharge-yes">
      Yes
    </label>
-   <input class="form-check-input" type="radio" name="Discharge" id="exampleRadios1" value="false" formControlName="Discharge">
-   <label class="form-check-label" for="exampleRadios1">
+   <input class="form-check-input" type="radio" name="Discharge" id="lab-discharge-no" value="false" formControlName="Discharge">
+   <label class="form-check-label" for="lab-discharge-no">
      No
    </label>
  </div>
@@ -191,12 +210,12 @@
        <span class="vital-sign">Family History </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="Family" id="exampleRadios1" value="true" formControlName="Family">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Family" id="lab-family-history-yes" value="true" formControlName="Family">
+     <label class="form-check-label" for="lab-family-history-yes">
        Yes
      </label>
-     <input class="form-check-input" type="radio" name="Family" id="exampleRadios1" value="false" formControlName="Family">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Family" id="lab-family-history-no" value="false" formControlName="Family">
+     <label class="form-check-label" for="lab-family-history-no">
        No
      </label>
 
@@ -210,13 +229,9 @@
        <span class="vital-sign">Allergies </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="Allergies" id="exampleRadios1" value="true" formControlName="Allergies">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="Allergies" id="lab-allergies-yes" value="true" formControlName="Allergies">
+     <label class="form-check-label" for="lab-allergies-yes">
        Yes
-     </label>
-     <input class="form-check-input" type="radio" name="Allergies" id="exampleRadios1" value="false" formControlName="Allergies">
-     <label class="form-check-label" for="exampleRadios1">
-       No
      </label>
 
    </div>
@@ -229,12 +244,12 @@
        <span class="vital-sign">Past Medical History </span>
      <div class="form-check">
       <span class="vital-sign mr-1">Import: </span>
-     <input class="form-check-input" type="radio" name="MedicalHist" id="exampleRadios1" value="true" formControlName="MedicalHist">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="MedicalHist" id="lab-medical-history-yes" value="true" formControlName="MedicalHist">
+     <label class="form-check-label" for="lab-medical-history-yes">
        Yes
      </label>
-     <input class="form-check-input" type="radio" name="MedicalHist" id="exampleRadios1" value="false" formControlName="MedicalHist">
-     <label class="form-check-label" for="exampleRadios1">
+     <input class="form-check-input" type="radio" name="MedicalHist" id="lab-medical-history-no" value="false" formControlName="MedicalHist">
+     <label class="form-check-label" for="lab-medical-history-no">
        No
      </label>
 

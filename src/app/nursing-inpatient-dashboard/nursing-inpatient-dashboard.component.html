@@ -445,7 +445,7 @@
 </div>
 
 <div class="card" style="
-    width: 15rem;
+    width: 22rem;
     position: absolute;
     z-index: 999;
     right: 25px;
@@ -524,6 +524,38 @@
             {{ item }}
           </ng-option>
         </ng-select>
+
+        <div *ngIf="checkin" class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Age</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['PatientAgeFrom','PatientAgeTo'])"></i>
+        </div>
+        <div *ngIf="checkin" style="display: flex; gap: 8px;">
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Min" formControlName="PatientAgeFrom" />
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Max" formControlName="PatientAgeTo" />
+        </div>
+
+        <div *ngIf="checkin" class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Date</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['DateFrom','DateTo'])"></i>
+        </div>
+        <div *ngIf="checkin" style="display: flex; gap: 8px;">
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" #dpFrom="bsDatepicker" bsDatepicker formControlName="DateFrom"
+            placeholder="From" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" #dpTo="bsDatepicker" bsDatepicker formControlName="DateTo"
+            placeholder="To" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+        </div>
+
+        <div *ngIf="checkin" class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Time</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['AdmissionTimeFrom','AdmissionTimeTo'])"></i>
+        </div>
+        <div *ngIf="checkin" style="display: flex; gap: 8px;">
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeFrom" />
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeTo" />
+        </div>
 
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">

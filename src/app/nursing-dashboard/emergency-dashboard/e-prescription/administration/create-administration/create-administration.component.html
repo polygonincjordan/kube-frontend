@@ -190,6 +190,9 @@
                               justify-content-center"
                               *ngIf="item.value.Complex">Complex</span>
                           </span>
+                          <img src="assets/img/Calender.svg" height="20"
+                            class="c-pointer ml-2 cycle-def-icon" tooltip="Cycle Definition"
+                            placement="top" (click)="onOpenCycleDefinition(i)" alt="Cycle Definition">
                         </span>
                       </td>
                       <td class="align-middle border-0 w-12 p-1">
@@ -533,6 +536,7 @@
 
 <addition-info-popup #additionalPopup
   (onUpdateData)="onUpdatedAdditionalInfo($event)"></addition-info-popup>
+<cycle-definition-popup #cyclePopup (onSave)="onCycleSaved($event)"></cycle-definition-popup>
 <ng-template #hourPopover let-index="index">
   <div class="abc">
     <span class="position-relative d-flex align-items-center w-100 mb-3">

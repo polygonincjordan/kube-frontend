@@ -45,6 +45,9 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('nurErAttechment') nurErAttechment: AdminAttechmentComponent;
 
   @HostListener('document:click', ['$event']) onDocumentClick(event) {
+    if (this.showfilter) {
+      this.revertUnappliedFilters();
+    }
     this.showfilter = false;
   }
 
@@ -62,12 +65,15 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   noReleaseDoc: boolean = false;
   rxEmr: boolean = false;
   showfilter = false;
+  appliedFilterValue: any;
   selectedModule: any;
   currentDate: Date;
   defaultSelectedDateRange: any[] = [];
   allTriageData = [];
   assignUsersList: any;
   allStatus = [];
+  getCheckInData: any;
+  getCheckInBedFilterData: any;
   allFinancialCategory = [];
   phyOrder = 0;
   Medicationcount = 0;
@@ -202,7 +208,15 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       Status: [''],
       FCategory: [''],
+      BedidText: [''],
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
+      DateFrom: [''],
+      DateTo: [''],
     });
+    this.appliedFilterValue = this.filterForm.value;
     this.filterFormLab = this.formBuilder.group({
       Rooms: [''],
       Physician: [''],
@@ -315,10 +329,23 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
   showFilterFn($event) {
     $event.stopPropagation();
     if (this.showfilter) {
+      this.revertUnappliedFilters();
       this.showfilter = false;
     } else {
       this.showfilter = true;
     }
+  }
+
+  revertUnappliedFilters() {
+    if (this.appliedFilterValue) {
+      this.filterForm.patchValue(this.appliedFilterValue);
+    }
+  }
+
+  clearFilterControls(controls: string[]) {
+    const patch = {};
+    controls.forEach((control) => (patch[control] = ''));
+    this.filterForm.patchValue(patch);
   }
   inPatientListByFilter(ward?, specialtyData?) {
     if (this.AdministeredDoses) {
@@ -561,6 +588,7 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
     } else {
       this.PhysicianOrdersListComponent?.filterPhysicianOrders(this.form.value);
     }
+    this.appliedFilterValue = this.filterForm.value;
     this.showfilter = false;
   }
 
@@ -598,6 +626,13 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       Physician: '',
       Status: '',
       FCategory: '',
+      BedidText: '',
+      PatientAgeFrom: '',
+      PatientAgeTo: '',
+      AdmissionTimeFrom: '',
+      AdmissionTimeTo: '',
+      DateFrom: '',
+      DateTo: '',
     });
     this.filterFormLab.patchValue({
       Rooms: '',
@@ -1004,8 +1039,42 @@ export class NursingEmergencyDashboardComponent implements OnInit, OnDestroy {
       Physician: [''],
       Status: [''],
       FCategory: [''],
+      BedidText: [''],
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
+      DateFrom: [''],
+      DateTo: [''],
     });
+    this.appliedFilterValue = this.filterForm.value;
+  }
 
+  receiveDatatoCheckIn(data?: any) {
+    if (data && data.length) {
+      this.getCheckInData = data;
+
+      const pushIfValid = (acc: string[], val: any) => {
+        const value = val?.toString().trim();
+        if (value && !acc.includes(value)) {
+          acc.push(value);
+        }
+        return acc;
+      };
+
+      this.getCheckInBedFilterData = this.getCheckInData.reduce(
+        (acc: string[], cur) => pushIfValid(acc, cur?.BehraumKb), []
+      );
+    }
+  }
+
+  clearFilter() {
+    this.refreshFormGroup();
+    if (this.selectedModule == 'checkin') {
+      this.CheckInComponent.filterListData(this.filterForm.value);
+    } else if (this.selectedModule == 'erhistory') {
+      this.ErHistoryComponent.filterListData(this.filterForm.value);
+    }
   }
   openPatientInfo(template: TemplateRef<any>) {
     const config: ModalOptions = {

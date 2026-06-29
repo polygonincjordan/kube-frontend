@@ -317,6 +317,7 @@ export class DocumentationListComponent implements OnInit {
 
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
+    this.resetDocumentViewer();
     if (attachmentId.Mimetype == 'PDF' || attachmentId.Mimetype == 'url' || attachmentId.Mimetype == 'image/bmp' || attachmentId.Mimetype == 'HTML') {
       this.admissionService
         .getPatientProfilePDF(attachmentId.DocKey)
@@ -333,21 +334,8 @@ export class DocumentationListComponent implements OnInit {
               showOut: true,
             };
 
-            if (attachmentId.Mimetype == 'PDF') {
-              this.pdfUrlConvertToBlob(_success.d.AttachmentData);
-              console.log(this.pdfUrl, "--");
-              this.pdfUrlType = 'pdf';
+            if (this.renderDocumentContent(attachmentId.Mimetype, _success.d)) {
               this.pdfFormOpen();
-            } else if (attachmentId.Mimetype == 'url') {
-              window.open(_success.d.Url);
-            } else if (attachmentId.Mimetype == 'image/bmp') {
-              this.pdfUrlType = 'image';
-              this.pdfFormOpen();
-              this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
-            } else if (attachmentId.Mimetype == 'HTML') {
-              this.pdfUrlType = 'html';
-              this.pdfFormOpen();
-              this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
             }
           }
         });
@@ -392,17 +380,14 @@ export class DocumentationListComponent implements OnInit {
 
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
-    const config: ModalOptions = {
-      class: 'modal-dialog-centered modal-xl pdfmodal-size',
-    };
-    this.selectedIconPdf = this.modalService.show(this.currentDocPdfVer, config);
-    this.userConfigurationService
-      .getAttachmentVisitData(attachmentId.DocKey)
-      .subscribe((data) => {
-        if (data) {
+    this.resetDocumentViewer();
+    this.admissionService
+      .getPatientProfilePDF(attachmentId.DocKey)
+      .subscribe((_success: any) => {
+        if (_success) {
           this.patientVisitRecord = {
-            ...data,
-            DOCCATTOATTACHMENTS: { results: [data] },
+            ..._success,
+            DOCCATTOATTACHMENTS: { results: [_success] },
           };
 
           this.InOutPatientViewValue = {
@@ -410,7 +395,12 @@ export class DocumentationListComponent implements OnInit {
             showIn: false,
             showOut: true,
           };
-          this.sanitizeBase64();
+
+          const mimeType =
+            this.getAttachmentMimeType(attachmentId) || this.getAttachmentMimeType(_success.d);
+          if (this.renderDocumentContent(mimeType, _success.d)) {
+            this.pdfFormOpen();
+          }
           this.currentDocVersionRef.hide();
         }
       });
@@ -649,7 +639,7 @@ export class DocumentationListComponent implements OnInit {
   }
 
   openRealsePDFModal(item, template: TemplateRef<any>, index) {
-    this.isImageFrame = false;
+    this.resetDocumentViewer();
     this.enforceLtrLayout();
     this.admissionService.selectedCurrentDocDetails = item;
     this.admissionService.isCopyBtnHide = false;
@@ -683,6 +673,22 @@ export class DocumentationListComponent implements OnInit {
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl pdfmodal-size',
     };
+    const attachmentMimeType = this.getAttachmentMimeType(item);
+
+    if (attachmentMimeType && attachmentMimeType !== 'pdf') {
+      this.admissionService
+        .getPatientProfilePDF(item.Dockey)
+        .pipe(
+          untilDestroyed(this),
+          catchError((err) => {
+            return of([]);
+          })
+        )
+        .subscribe((_success: any) => {
+          this.showDocumentContent(attachmentMimeType, _success?.d, template, config);
+        });
+      return;
+    }
 
     // SOAP
     if (item.Dtid == 'ZMED_SOAP') {
@@ -754,6 +760,8 @@ export class DocumentationListComponent implements OnInit {
                   }).AttachmentData
                   }`
                 );
+                this.pdfUrl = postFileData;
+                this.pdfUrlType = 'image';
               }
           }
           // this.pdfUrl = postFileData;
@@ -851,6 +859,8 @@ export class DocumentationListComponent implements OnInit {
                   }).AttachmentData
                   }`
                 );
+                this.pdfUrl = postFileData;
+                this.pdfUrlType = 'image';
               }
           }
           // this.pdfUrl = postFileData;
@@ -892,6 +902,8 @@ export class DocumentationListComponent implements OnInit {
                   }).AttachmentData
                   }`
                 );
+                this.pdfUrl = postFileData;
+                this.pdfUrlType = 'image';
               }
           }
           // this.pdfUrl = postFileData;
@@ -1036,10 +1048,87 @@ export class DocumentationListComponent implements OnInit {
   }
 
 
-  pdfUrlConvertToBlob(pdfValue) {
-    let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
-    let file = new Blob([byteArray], { type: "application/pdf" });
-    this.pdfUrl = file;
+  pdfUrlConvertToBlob(pdfValue): boolean {
+    if (!pdfValue) {
+      this.setDocumentUnavailable();
+      return false;
+    }
+
+    try {
+      let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
+      let file = new Blob([byteArray], { type: "application/pdf" });
+      this.pdfUrl = file;
+      this.pdfUrlType = 'pdf';
+      return true;
+    } catch (error) {
+      this.setDocumentUnavailable();
+      return false;
+    }
+  }
+
+  private resetDocumentViewer() {
+    this.pdfUrl = '';
+    this.pdfUrlType = '';
+    this.htmlData = '';
+    this.releaseDocumentImage = '';
+    this.isImageFrame = false;
+  }
+
+  private setDocumentUnavailable() {
+    this.pdfUrl = '';
+    this.pdfUrlType = 'unavailable';
+  }
+
+  private getAttachmentMimeType(item: any): string {
+    return (item?.AttMimeType || item?.Mimetype || '').toString().trim().toLowerCase();
+  }
+
+  private renderDocumentContent(mimeType: string, documentData: any): boolean {
+    const normalizedMimeType = (mimeType || '').toString().trim().toLowerCase();
+
+    if (normalizedMimeType == 'pdf') {
+      this.pdfUrlConvertToBlob(documentData?.AttachmentData);
+      return true;
+    }
+
+    if (normalizedMimeType == 'html') {
+      if (documentData?.AttachmentDataStr) {
+        this.htmlData = this.sanitizer.bypassSecurityTrustHtml(documentData.AttachmentDataStr);
+        this.pdfUrlType = 'html';
+      } else {
+        this.setDocumentUnavailable();
+      }
+      return true;
+    }
+
+    if (normalizedMimeType == 'url') {
+      if (documentData?.Url) {
+        window.open(documentData.Url);
+        return false;
+      }
+      this.setDocumentUnavailable();
+      return true;
+    }
+
+    if (normalizedMimeType == 'image/bmp') {
+      if (documentData?.AttachmentData) {
+        this.releaseDocumentImage = 'data:image/png;base64,' + documentData.AttachmentData;
+        this.pdfUrlType = 'image';
+      } else {
+        this.setDocumentUnavailable();
+      }
+      return true;
+    }
+
+    this.setDocumentUnavailable();
+    return true;
+  }
+
+  private showDocumentContent(mimeType: string, documentData: any, template: TemplateRef<any>, config: ModalOptions) {
+    this.resetDocumentViewer();
+    if (this.renderDocumentContent(mimeType, documentData)) {
+      this.pdfTemplateRef = this.modalService.show(template, config);
+    }
   }
 
   realodEducationList(event) {
@@ -1087,34 +1176,14 @@ export class DocumentationListComponent implements OnInit {
     this.pdfTemplateRef.hide();
   }
   getReleasedPdf(item, template: TemplateRef<any>) {
-    this.releaseDocumentImage = ''
+    this.resetDocumentViewer();
     this.admissionService
       .getPatientProfilePDF(item.Dockey)
       .subscribe((_success: any) => {
-        if (item.AttMimeType == 'PDF') {
-          this.pdfUrlConvertToBlob(_success.d.AttachmentData);
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.pdfTemplateRef = this.modalService.show(template, config);
-          this.pdfUrlType = 'pdf';
-        } else if (item.AttMimeType == 'url') {
-          window.open(_success.d.Url);
-        } else if (item.AttMimeType == 'image/bmp') {
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.pdfTemplateRef = this.modalService.show(template, config);
-          this.releaseDocumentImage = 'data:image/png;base64,' + _success.d.AttachmentData;
-          this.pdfUrlType = 'image';
-        } else if (item.AttMimeType == 'HTML') {
-          const config: ModalOptions = {
-            class: 'modal-dialog-centered modal-xl pdfmodal-size',
-          };
-          this.pdfTemplateRef = this.modalService.show(template, config);
-          this.htmlData = this.sanitizer.bypassSecurityTrustHtml(_success.d.AttachmentDataStr);
-          this.pdfUrlType = 'html';
-        }
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.showDocumentContent(item.AttMimeType, _success?.d, template, config);
       });
   }
 
@@ -1201,7 +1270,8 @@ export class DocumentationListComponent implements OnInit {
               return obj.FileId === '';
             }
           ).AttachmentData
-          return this.pdfUrlConvertToBlob(pdfAttechemnt);
+          this.pdfUrlConvertToBlob(pdfAttechemnt);
+          return this.pdfUrl;
         } else {
           this.isImageFrame = true;
           this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
@@ -1231,7 +1301,8 @@ export class DocumentationListComponent implements OnInit {
           let pdfAttechemnt = this.patientVisitRecord.VISITTOATTACHMENTS.results.find((obj) => {
             return obj.FileID === '';
           }).AttachmentData
-          return this.pdfUrlConvertToBlob(pdfAttechemnt);
+          this.pdfUrlConvertToBlob(pdfAttechemnt);
+          return this.pdfUrl;
         } else {
           this.isImageFrame = true;
           this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(

@@ -2783,6 +2783,10 @@ export class PatientDocumentationComponent implements OnInit {
           this.modalRef = this.modalService.show(this.releasepdfmodal, config);
           this.pdfUrlType = 'image';
         } else if (item.AttMimeType == 'HTML') {
+          if (!_success?.d?.AttachmentDataStr) {
+            this.sharedService.waringSwallModel('Document content is not available');
+            return;
+          }
           const config: ModalOptions = {
             class: 'modal-dialog-centered modal-xl pdfmodal-size',
           };

@@ -31,7 +31,8 @@
                <div class="col-md-1 p-0 d-flex align-items-center" (click)="$event.preventDefault()">
                 <div class="col-md-6 p-0" *ngIf="item.NodocText !='N/A'">
                   <img src="assets/img/eye-icon.svg" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" />
-                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="item?.DokstText == 'Released' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')"></i>
+                  <img src="assets/img/document-html.png" width="17" height="17" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="item?.DokstText == 'Released' && item?.AttMimeType == 'HTML' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')" />
+                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="item?.DokstText == 'Released' && item?.AttMimeType != 'HTML' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')"></i>
                 </div>
                   <div class="col-md-6 p-0">
                     <div class="d-flex" style="width: 100%;"
@@ -181,6 +182,9 @@
     <div class="w-100" *ngIf="pdfUrlType == 'html'">
       <div [innerHTML]="htmlData"></div>
     </div>
+    <div class="alert alert-warning text-center" *ngIf="pdfUrlType == 'unavailable'">
+      Document content is not available.
+    </div>
     <div class="mt-2" style="text-align: center">
       <button
         class="btn btn-primary"
@@ -195,7 +199,7 @@
 <ng-template #releasepdfmodal>
   <div class="modal-body">
     <ngx-extended-pdf-viewer
-      *ngIf="pdfUrlType != 'html'"
+      *ngIf="pdfUrlType == 'pdf'"
       [src]="pdfUrl"
       height="80vh"
       [backgroundColor]="'#525659'"
@@ -207,9 +211,15 @@
       [showBookmarkButton]="false"
     >
     </ngx-extended-pdf-viewer>
+    <div class="row justify-content-center" *ngIf="pdfUrlType == 'image' && releaseDocumentImage">
+      <img [src]="releaseDocumentImage" style="height: 70vh;" />
+    </div>
     <iframe *ngIf="isImageFrame" [src]="pdfUrl" width="2000" height="600"> </iframe>
      <div class="w-100" *ngIf="pdfUrlType == 'html'">
       <div [innerHTML]="htmlData"></div>
+    </div>
+    <div class="alert alert-warning text-center" *ngIf="pdfUrlType == 'unavailable'">
+      Document content is not available.
     </div>
     <div class="mt-2" style="text-align: center">
       <button
@@ -300,6 +310,9 @@
       </div>
       <div class="w-100" *ngIf="pdfUrlType == 'html'">
         <div [innerHTML]="htmlData"></div>
+      </div>
+      <div class="alert alert-warning text-center" *ngIf="pdfUrlType == 'unavailable'">
+        Document content is not available.
       </div>
 
       <div class="mt-2" style="text-align: center">

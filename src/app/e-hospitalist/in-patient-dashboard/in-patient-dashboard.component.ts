@@ -165,6 +165,13 @@ export class InPatientDashboardComponent implements OnInit {
   attendingPhysicianList: any;
   inSurgeryWorklistClone: any[];
   consultationsOrdersList: any;
+
+  // Frontend-only filters for the main in-patient tabs (Admitted, New Admissions,
+  // Planned Discharges, Discharges). Applied client-side over the complete loaded list.
+  inHospitalistListClone: Array<HospitalistType> = [];
+  genderFilterOptions: string[] = [];
+  roomFilterOptions: string[] = [];
+  ageRangeError: string = '';
   constructor(
     private _EMRServices: EEmrService,
     private hospitalistService: HospitalistService,
@@ -248,6 +255,12 @@ export class InPatientDashboardComponent implements OnInit {
       CaseType: [''],
       PerformaceUnit: [''],
       FinCate: [''],
+      // Frontend-only filters for the main in-patient tabs.
+      PatientAgeFrom: [''],
+      PatientAgeTo: [''],
+      PatientGender: [''],
+      AdmissionTimeFrom: [''],
+      AdmissionTimeTo: [''],
     });
 
     this.getSurgeryList();
@@ -339,6 +352,7 @@ export class InPatientDashboardComponent implements OnInit {
     this.f.specialty.setValue('');
     this.f.patientStatus.setValue('');
     // this.f.patient.setValue('');
+    this.clearInPatientFilterFields();
     this.navTabBoxActiveValue = key;
     this.navModule('home');
     this.countOfNavModules();
@@ -928,6 +942,146 @@ export class InPatientDashboardComponent implements OnInit {
 
   }
 
+  // Build the Gender and Room/Bed dropdown options from the complete loaded list.
+  buildInPatientFilterOptions() {
+    const pushIfValid = (acc: string[], val: any) => {
+      const value = val?.toString().trim();
+      if (value && !acc.includes(value)) {
+        acc.push(value);
+      }
+      return acc;
+    };
+    this.genderFilterOptions = (this.inHospitalistListClone || []).reduce(
+      (acc: string[], cur) => pushIfValid(acc, cur?.PatientGender), []
+    );
+    this.roomFilterOptions = (this.inHospitalistListClone || []).reduce(
+      (acc: string[], cur) => pushIfValid(acc, cur?.RoomidText), []
+    );
+  }
+
+  // Extract the leading integer from an age value (e.g. "45", "45 Y").
+  parsePatientAge(value: any): number | null {
+    if (value === null || value === undefined) {
+      return null;
+    }
+    const match = /\d+/.exec(value.toString());
+    return match ? parseInt(match[0], 10) : null;
+  }
+
+  // Convert a time value to minutes-of-day. Accepts the SAP duration format
+  // returned by the API (e.g. "PT11H29M30S") and the HH:MM format from the inputs.
+  parseTimeToMinutes(value: any): number | null {
+    if (!value) {
+      return null;
+    }
+    const str = value.toString().trim();
+    const sap = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/i.exec(str);
+    if (sap && (sap[1] || sap[2] || sap[3])) {
+      const hours = parseInt(sap[1] || '0', 10);
+      const minutes = parseInt(sap[2] || '0', 10);
+      return hours * 60 + minutes;
+    }
+    const hm = /^(\d{1,2}):(\d{2})/.exec(str);
+    if (hm) {
+      return parseInt(hm[1], 10) * 60 + parseInt(hm[2], 10);
+    }
+    return null;
+  }
+
+  // Apply the frontend-only filters (age, gender, room, admission time) to the
+  // complete loaded list. Fields are combined with AND; multi-selects use OR.
+  applyInPatientFilters() {
+    if (!this.inHospitalistListClone) {
+      return;
+    }
+    const value = this.filterForm.value;
+    this.ageRangeError = '';
+
+    const hasValue = (v: any) => v !== '' && v !== null && v !== undefined;
+    const ageFrom = hasValue(value.PatientAgeFrom) ? Number(value.PatientAgeFrom) : null;
+    const ageTo = hasValue(value.PatientAgeTo) ? Number(value.PatientAgeTo) : null;
+
+    if (ageFrom !== null && (isNaN(ageFrom) || ageFrom < 0)) {
+      this.ageRangeError = 'Enter a valid minimum age';
+      return;
+    }
+    if (ageTo !== null && (isNaN(ageTo) || ageTo < 0)) {
+      this.ageRangeError = 'Enter a valid maximum age';
+      return;
+    }
+    if (ageFrom !== null && ageTo !== null && ageFrom > ageTo) {
+      this.ageRangeError = 'Minimum age cannot be greater than maximum age';
+      return;
+    }
+
+    const genders: string[] = value.PatientGender || [];
+    const rooms: string[] = value.RoomidText || [];
+    const timeFrom = this.parseTimeToMinutes(value.AdmissionTimeFrom);
+    const timeTo = this.parseTimeToMinutes(value.AdmissionTimeTo);
+
+    let result = [...this.inHospitalistListClone];
+
+    if (ageFrom !== null) {
+      result = result.filter(item => {
+        const age = this.parsePatientAge(item?.PatientAge);
+        return age !== null && age >= ageFrom;
+      });
+    }
+    if (ageTo !== null) {
+      result = result.filter(item => {
+        const age = this.parsePatientAge(item?.PatientAge);
+        return age !== null && age <= ageTo;
+      });
+    }
+    if (genders.length) {
+      result = result.filter(item =>
+        genders.includes(item?.PatientGender?.toString().trim())
+      );
+    }
+    if (rooms.length) {
+      result = result.filter(item =>
+        rooms.includes(item?.RoomidText?.toString().trim())
+      );
+    }
+    if (timeFrom !== null) {
+      result = result.filter(item => {
+        const time = this.parseTimeToMinutes(item?.AdmissionTime);
+        return time !== null && time >= timeFrom;
+      });
+    }
+    if (timeTo !== null) {
+      result = result.filter(item => {
+        const time = this.parseTimeToMinutes(item?.AdmissionTime);
+        return time !== null && time <= timeTo;
+      });
+    }
+
+    this.inHospitalistList = result;
+  }
+
+  // Clear only the new filter fields without touching the loaded list. Used when
+  // switching the main patient tab.
+  clearInPatientFilterFields() {
+    if (!this.filterForm) {
+      return;
+    }
+    this.ageRangeError = '';
+    this.filterForm.patchValue({
+      PatientAgeFrom: '',
+      PatientAgeTo: '',
+      PatientGender: '',
+      RoomidText: '',
+      AdmissionTimeFrom: '',
+      AdmissionTimeTo: '',
+    });
+  }
+
+  // Reset behavior: clear the new fields and restore the original loaded list.
+  resetInPatientFilters() {
+    this.clearInPatientFilterFields();
+    this.inHospitalistList = [...(this.inHospitalistListClone || [])];
+  }
+
   getCheckInStatusFilterData: any;
   getCaseTypeFilterData: any;
   getCheckInRoomidTextFilterData: any;
@@ -1114,6 +1268,11 @@ export class InPatientDashboardComponent implements OnInit {
               }
             }
           }
+          // Keep the complete loaded list as the source for client-side filters,
+          // refresh the gender/room option lists, and re-apply any active filters.
+          this.inHospitalistListClone = [...(this.inHospitalistList || [])];
+          this.buildInPatientFilterOptions();
+          this.applyInPatientFilters();
         });
     }
 

@@ -9,6 +9,7 @@ import { formatDate } from 'ngx-bootstrap/chronos';
 import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
+import { CycleDefinitionPopupComponent } from '../../../shared-module/cycle-definition/cycle-definition-popup.component';
 import { TemplateDescriptionComponent } from './template-description/template-description.component';
 
 @Component({
@@ -33,6 +34,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   @ViewChild('additionalPopup', { static: true }) additionalPopup: AdditionInfoPopupComponent;
   @ViewChild('prnPopup', { static: true }) prnPopup: AdditionInfoPopupComponent;
   @ViewChild('templateDescription', { static: true }) templateDescription: TemplateDescriptionComponent;
+  @ViewChild('cyclePopup', { static: true }) cyclePopup: CycleDefinitionPopupComponent;
   SelectMedicinesubscription: Subscription;
   @Input() set templateData(data: TemplateMedDataList[]) { if (data && data.length) { this.processTemplateData(data) } else { return; } }
   @Input() Chemotherapeutic: any;
@@ -73,6 +75,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Dosdef: item.Dosdef,
             N1ztxt:item.N1ztxt,
             TOCOMPLEX: item.TOCOMPLEX.results,
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
           })
           const findFormIndex = this.drugArray.controls.findIndex(d => d.value === notTouchedForms[notTouchedFormIndex].value);
           notTouchedForms[notTouchedFormIndex].markAsTouched();
@@ -101,6 +104,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Dosdef: item.Dosdef,
             N1ztxt:item.N1ztxt,
             TOCOMPLEX: item.TOCOMPLEX.results,
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
           })
           this.drugArray.push(arrayOfFormControl);
           this.onChangeFrequencySet(item.N1znr, this.drugArray.controls.length - 1)
@@ -140,6 +144,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Priority: new FormControl('010', Validators.required),
       Routedescr: new FormControl(null, Validators.required),
       TOCOMPLEX: new FormControl([]),
+      TOCYCDEF: new FormControl([]),
       TOEVENTDATA: new FormControl([]),
       Formatdescr: new FormControl(null),
       Result_Drug_Name: new FormControl(null, Validators.required),
@@ -362,14 +367,17 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        const defineDoses = this.drugArray.value[index].Dosdef ? this.drugArray.value[index].Dosdef.split(" ") : [];
+        const defineDoses = this.drugArray.value[index].Dosdef ? this.drugArray.value[index].Dosdef.split("-") : [];
         if (defineDoses && defineDoses.length) {
           let deftimDcycleData = [];
           defineDoses.forEach((element) => {
             const quanUnitDescription = element.split("(")[0];
-            const defineTime = element.match(/\(([^)]+)\)/)[1];
-            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`), Agentid:this.drugArray.value[index].Agentid });
-            this.drugArray.controls[index].get('deftimcycleData').setValue(deftimDcycleData)
+            const defineTimeMatch = element.match(/\(([^)]+)\)/);
+            if (defineTimeMatch && defineTimeMatch[1]) {
+              const defineTime = defineTimeMatch[1];
+              deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`), Agentid:this.drugArray.value[index].Agentid });
+              this.drugArray.controls[index].get('deftimcycleData').setValue(deftimDcycleData)
+            }
           });
           deftimDcycleData = [];
         } else {
@@ -573,6 +581,57 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     this.additionalPopup.showPopup(data.get('Descr').value, index);
   }
 
+  onOpenCycleDefinition(index: number) {
+    const item = this.drugArray.controls[index];
+    if (!item.get('N1znr') || !item.get('N1znr').value) {
+      this.showErrorPopup('', 'Please select a medication and frequency ', 'Error');
+      return;
+    }
+    const existing = item.get('TOCYCDEF').value || [];
+    const n1znr = item.get('N1znr').value;
+    const title = item.get('Descr').value || (item.get('N1ztxt') ? item.get('N1ztxt').value : '');
+    const startDate = item.get('StartD').value;
+    if (existing && existing.length) {
+      this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: existing });
+      return;
+    }
+    if (n1znr) {
+      // Load the master cycle definition for this frequency key (N1znr) and populate the popup.
+      this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
+        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+        this.cyclePopup.showPopup({ index, n1znr, title, startDate, records });
+      }, () => this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: [] }));
+      return;
+    }
+    this.cyclePopup.showPopup({ index, n1znr, title, startDate, records: [] });
+  }
+
+  onCycleSaved(event: { index: number; data: any[] }) {
+    this.drugArray.controls[event.index].get('TOCYCDEF').setValue(event.data || []);
+    this.drugArray.controls[event.index].markAsTouched();
+  }
+
+  /**
+   * Normalise the cycle-definition records for the EstdordSet payload: keep only
+   * the documented TOCYCDEF fields and re-stamp the order frequency key (N1znr)
+   * so it stays in sync if the Frequency was changed after the cycles were set.
+   */
+  normalizeCycleDef(element: any): any[] {
+    const records = element.TOCYCDEF && element.TOCYCDEF.length ? element.TOCYCDEF : [];
+    return records.map((r: any, i: number) => ({
+      N1znr: element.N1znr,
+      N1lfnr: r.N1lfnr || `${i + 1}`.padStart(4, '0'),
+      Menge: `${r.Menge}`,
+      Begdt: r.Begdt,
+      Enddt: r.Enddt,
+      Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
+      IntervalDay: +r.IntervalDay || 1,
+      IntervalHour: `${r.IntervalHour || '0'}`,
+      TiStart: r.TiStart,
+      TiEnd: r.TiEnd
+    }));
+  }
+
   onUpdatedAdditionalInfo(event: any) {
     this.drugArray.controls[event.index].patchValue({ Descr: event.data })
   }
@@ -619,8 +678,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
           // element.StartD = this.sanitizeSAPDateFormat(this.parseDate(element.StartD),element.StartT);
           element.EndT = this.parseTime(element.EndD);
-          element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
-          element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
+          element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid : element.Aprouteid;
+          element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr : element.Routedescr;
           element.EndD = element.EndD !== null ? `${this.parseDatedata(element.EndD)}${this.parseTimedata(element.EndD)}` : null;
           element.Complex = element.Complex ? "X" : "";
           element.AddDose = element.AddDose ? "X" : "";
@@ -637,6 +696,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           delete element.IsFrequencyDeftim;
           delete element.deftimcycleData;
           delete element.AgentidResult;
+          element.TOCYCDEF = this.normalizeCycleDef(element);
           element.TOCOMPLEX.forEach(element => {
             delete element.N1zxtr;
             element.Quan = `${element.Quan}`;
@@ -679,6 +739,17 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
 
   onTemplateData() {
     const TouchedForms = this.drugArray.controls.filter(d => d.touched && d.valid);
+    if (!TouchedForms || !TouchedForms.length) {
+      this.isFormSubmitted = true;
+      this.showErrorPopup('', 'Please add at least one complete medication before creating a template.', 'Error');
+      return;
+    }
+    const IncompleteForms = this.drugArray.controls.filter(d => d.touched && !d.valid);
+    if (IncompleteForms && IncompleteForms.length) {
+      this.isFormSubmitted = true;
+      this.showErrorPopup('', 'Please complete all required fields (including Route) for each medication, or remove the incomplete row.', 'Error');
+      return;
+    }
     if ((this.drugArray.controls && this.drugArray.controls.length) && (TouchedForms && TouchedForms.length)) {
       this.templateDescription.showPopup();
       if (this.subscription) { this.subscription.unsubscribe(); }
@@ -695,8 +766,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             element.Prncond = element.Prncond ? element.Prncond : "";
             element.StartT = this.parseTime(element.StartD);
             element.StartD = `${this.parseDatedata(element.StartD)}${this.parseTimedata(element.StartD)}`;
-            element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
-            element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
+            element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid : element.Aprouteid;
+            element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr : element.Routedescr;
             // element.StartD = this.sanitizeSAPDateFormat(this.parseDate(element.StartD),element.StartT);
             element.EndT = this.parseTime(element.EndD);
             element.EndD = element.EndD !== null ? `${this.parseDatedata(element.EndD)}${this.parseTimedata(element.EndD)}` : null;
@@ -715,6 +786,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             delete element.IsFrequencyDeftim;
             delete element.deftimcycleData;
             delete element.AgentidResult;
+            element.TOCYCDEF = this.normalizeCycleDef(element);
             element.TOCOMPLEX.forEach(element => {
               delete element.N1zxtr;
               element.Quan = `${element.Quan}`;
@@ -965,7 +1037,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         validData.Complex = validData.Complex ? "X" : "";
         validData.AddDose = validData.AddDose ? "X" : "";
         validData.Pduru = validData.Pduru !== null ? validData.Pduru : "";
-        validData.Aprouteid = validData.Routedescr.Aprouid !== undefined ? validData.Routedescr.Aprouid :validData.Aprouteid;
+        validData.Aprouteid = validData.Routedescr && validData.Routedescr.Aprouid !== undefined ? validData.Routedescr.Aprouid : validData.Aprouteid;
         delete validData.Routedescr;
         delete validData.Formatdescr;
         delete validData.Result_Drug_Name;

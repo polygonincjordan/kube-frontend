@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.edit-data {
+  display: block;
+  overflow-x: auto;
+}
+
+.edit-data > table {
+  min-width: 1280px;
+  table-layout: fixed;
+}
+
+.edit-data .form-btn {
+  min-width: 1280px;
+}
+
+.frequency-input-group {
+  align-items: center;
+  display: flex !important;
+  gap: 8px;
+  min-width: 0;
+}
+
+.frequency-input-group .editing-grid {
+  display: block !important;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.frequency-input-group .cycle-def-icon {
+  flex: 0 0 20px;
+  height: 20px;
+  margin-left: 0 !important;
+  width: 20px;
+}
+
+@media (max-width: 1400px) {
+  .edit-data {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}

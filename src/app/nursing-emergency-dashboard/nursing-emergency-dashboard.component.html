@@ -170,7 +170,7 @@ float: right;" />
 </div>
 
 <div class="card" style="
-    width: 15rem;
+    width: 22rem;
     position: absolute;
     z-index: 999;
     right: 25px;
@@ -213,21 +213,59 @@ float: right;" />
           <ng-option value="Self Payer">Self Payer</ng-option>
           <ng-option value="Insurance">Insurance</ng-option>
         </ng-select>
+
+        <p style="margin: auto; margin-top: 5px">Room</p>
+        <ng-select class="" id="inputGroupSelect01" formControlName="BedidText" [multiple]="true">
+          <ng-option [value]="item" *ngFor="let item of getCheckInBedFilterData">
+            {{ item }}
+          </ng-option>
+        </ng-select>
+
+        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Age</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['PatientAgeFrom','PatientAgeTo'])"></i>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Min" formControlName="PatientAgeFrom" />
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Max" formControlName="PatientAgeTo" />
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Date</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['DateFrom','DateTo'])"></i>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" #dpFrom="bsDatepicker" bsDatepicker formControlName="DateFrom"
+            placeholder="From" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" #dpTo="bsDatepicker" bsDatepicker formControlName="DateTo"
+            placeholder="To" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Time</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['AdmissionTimeFrom','AdmissionTimeTo'])"></i>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeFrom" />
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeTo" />
+        </div>
+
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
-    border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;"
+            (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 <div class="card" style="
-width: 15rem;
+width: 22rem;
 position: absolute;
 z-index: 999;
 right: 25px;
@@ -263,14 +301,45 @@ font-size: 12px;
           <ng-option value="Self Payer">Self Payer</ng-option>
           <ng-option value="Insurance">Insurance</ng-option>
         </ng-select>
+
+        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Age</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['PatientAgeFrom','PatientAgeTo'])"></i>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Min" formControlName="PatientAgeFrom" />
+          <input type="number" min="0" class="form-control" style="flex: 1; min-width: 0;" placeholder="Max" formControlName="PatientAgeTo" />
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Date</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['DateFrom','DateTo'])"></i>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" bsDatepicker formControlName="DateFrom"
+            placeholder="From" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+          <input type="text" class="form-control" style="flex: 1; min-width: 0;" bsDatepicker formControlName="DateTo"
+            placeholder="To" [bsConfig]="{ showWeekNumbers: false, dateInputFormat: 'DD.MM.YYYY' }" />
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px;">
+          <p style="margin: 0;">Time</p>
+          <i class="fa fa-times" style="cursor: pointer; font-size: 12px; color: #888;" title="Clear"
+            (click)="clearFilterControls(['AdmissionTimeFrom','AdmissionTimeTo'])"></i>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeFrom" />
+          <input type="time" class="form-control" style="flex: 1; min-width: 0;" formControlName="AdmissionTimeTo" />
+        </div>
+
         <div class="mt-2" style="display: flex; justify-content: space-around">
           <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8" (click)="filterList()">
             Filter
           </button>
-          <!-- <button class="btn btn-primary" style="    background-color: #0082c8;
-    border: #0082c8;" (click)="clearFilter()">
-      Clear
-    </button> -->
+          <button class="btn btn-primary" style="background-color: #0082c8; border: #0082c8;"
+            (click)="clearFilter()">Reset</button>
         </div>
       </form>
     </div>
@@ -545,6 +614,7 @@ font-size: 12px;
     </div>
   </div>
   <app-check-in (sendErPatientCount)="collectErPatientCount($event)" (redirectCheckInData)="collectCheckInData($event)"
+    (dataToParent)="receiveDatatoCheckIn($event)"
     style="width: calc(100% - 60px)" *ngIf="checkin"></app-check-in>
   <app-reservation style="width: calc(100% - 105px);background:#fbfcff" *ngIf="reservation"></app-reservation>
   <app-lab-results (sendErPatientCount)="collectErPatientCount($event)" (dataToParent)="receiveDataFromChild($event)"

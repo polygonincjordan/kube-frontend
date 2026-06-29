@@ -1,0 +1,242 @@
+$brand: #1b3a8c;
+$border: #e3e6ef;
+
+.cycle-def {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  font-size: 13px;
+  color: #333;
+  overflow-x: hidden;
+
+  // Inputs / checkboxes / radios — consistent sizing, brand accent, touch targets.
+  .form-control {
+    min-width: 0;
+    height: 38px;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 17px;
+    height: 17px;
+    accent-color: $brand;
+    flex: 0 0 auto;
+    cursor: pointer;
+  }
+
+  // Visible focus for keyboard users.
+  .form-control:focus,
+  input:focus-visible,
+  button:focus-visible {
+    outline: 2px solid rgba(27, 58, 140, 0.55);
+    outline-offset: 1px;
+    box-shadow: none;
+  }
+
+  // Disabled / read-only fields stay distinct but readable.
+  .form-control:disabled,
+  .form-control[readonly] {
+    background: #eef0f4;
+    color: #5b6470;
+    cursor: not-allowed;
+  }
+
+  // ---- header ----
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    background: $brand;
+    color: #fff;
+    padding: 14px 18px;
+
+    h5 { font-size: 18px; font-weight: 500; }
+    small { display: block; opacity: 0.85; font-size: 12px; }
+  }
+
+  &__close {
+    background: transparent;
+    border: 0;
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    padding: 0 4px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  // ---- single cycle indicator ----
+  &__tabs {
+    border-bottom: 1px solid $border;
+    padding: 12px 18px 0;
+  }
+
+  &__tab {
+    display: inline-block;
+    padding-bottom: 6px;
+    font-weight: 500;
+    color: #6c757d;
+    border-bottom: 2px solid transparent;
+    margin:0 10px;
+    &.active { color: $brand; border-bottom-color: $brand; }
+  }
+
+  // ---- scrollable body ----
+  &__body {
+    padding: 18px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+  }
+
+  // ---- responsive two-column grid ----
+  &__grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
+    margin-bottom: 16px;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // ---- label + field row (inline on desktop, stacked on mobile) ----
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__label {
+    min-width: 72px;
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+  }
+
+  &__field { max-width: 200px; }
+
+  &__check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    label { font-weight: 400; }
+  }
+
+  // ---- scheduling panel ----
+  &__section {
+    border: 1px solid $border;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  &__regularly-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  &__section-title { font-weight: 500; }
+
+  &__regularly { pointer-events: none; }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 12px;
+  }
+
+  &__day {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  &__interval {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__num {
+    width: 84px;
+    flex: 0 0 auto;
+  }
+
+  // ---- sticky footer ----
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 18px;
+    background: #fff;
+    border-top: 1px solid $border;
+  }
+
+  &__btn {
+    min-width: 100px;
+    border: 0;
+    border-radius: 20px;
+    padding: 8px 22px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  &__save { background: $brand; color: #fff; &:hover { background: #152f73; } }
+  &__cancel { background: #e9ecef; color: #333; &:hover { background: #dde1e6; } }
+
+  // ---- tablet ----
+  @media (max-width: 991.98px) {
+    &__grid2 { gap: 12px 18px; }
+    &__field { max-width: 100%; }
+  }
+
+  // ---- mobile: stack rows, labels above inputs, full-width actions ----
+  @media (max-width: 767.98px) {
+    max-height: 95vh;
+
+    &__grid2 { grid-template-columns: 1fr; gap: 14px; }
+
+    &__row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+    }
+
+    &__label { min-width: 0; }
+    &__field { max-width: 100%; }
+
+    &__weekdays { grid-template-columns: repeat(2, 1fr); }
+
+    &__footer { gap: 12px; }
+    &__btn { flex: 1 1 0; min-width: 0; }
+  }
+}
+
+// ngx-bootstrap applies the `class` option to the .modal-dialog element itself,
+// so target it as a compound selector (not a descendant). Cover the container
+// case too for safety across versions.
+::ng-deep .cycle-definition-modal.modal-dialog,
+::ng-deep .cycle-definition-modal .modal-dialog {
+  max-width: 1040px !important;
+  width: 96vw;
+
+  @media (max-width: 767.98px) {
+    max-width: 100% !important;
+    width: auto;
+    margin: 0.5rem;
+  }
+}
+
+::ng-deep .cycle-definition-modal .modal-content,
+::ng-deep .cycle-definition-modal.modal-dialog .modal-content {
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}

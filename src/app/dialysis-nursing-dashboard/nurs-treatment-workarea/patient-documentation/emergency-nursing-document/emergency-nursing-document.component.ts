@@ -38,9 +38,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('socialAddHabit') socialAddHabit: AddHabitSocialComponent;
 
   public modeArrivalList: commonKeyValuePair[] = [
-    { value: '0', label: 'Stretcher' },
-    { value: '1', label: 'Ambulatory' },
-    { value: '2', label: 'Wheel Chair' },
+    { value: '0', label: 'Ambulatory' },
+    { value: '1', label: 'Wheel Chair' },
+    { value: '2', label: 'Stretcher' },
     { value: '3', label: 'Carried' },
     { value: '4', label: 'Cuddled' },
     { value: '5', label: 'Other' },
@@ -206,6 +206,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
 
 
   public initForm(triageValue?: any) {
+    this.noHabitApplicable = triageValue?.NoHabit ? true : false;
     this.triageForm = this.formBuilder.group({
       Dockey: triageValue?.Dockey ? triageValue?.Dockey : '',
       Dtid: triageValue?.Dtid ? triageValue?.Dtid : 'ZMED_TRASM',
@@ -231,6 +232,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       PsyCombative: triageValue?.PsyCombative ? triageValue?.PsyCombative : false,
       PsyOther: triageValue?.PsyOther ? triageValue?.PsyOther : false,
       PsyComments: triageValue?.PsyComments ? triageValue?.PsyComments : '',
+      Since: triageValue?.Since ? triageValue?.Since : '',
+      NumberOfSpouses: triageValue?.NumberOfSpouses ? triageValue?.NumberOfSpouses : '',
+      Comments: triageValue?.Comments ? triageValue?.Comments : '',
       AttendPhy: triageValue?.AttendPhy ? triageValue?.AttendPhy : this.storageService.getGpart(),
       DocStatus: '1',
     });

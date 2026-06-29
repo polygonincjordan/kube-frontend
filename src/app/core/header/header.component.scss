@@ -594,8 +594,69 @@
   color: #eb251e;
 }
 
+// Patient Search Result modal.
+// The modal sizes to its content but is capped at the viewport: a short list
+// gives a short modal (no empty space), a long list caps at the screen height
+// and the table area scrolls. There is NO inner scroll box — the table area is
+// the single scroller, so there's never dead space under the rows.
+::ng-deep .patient-search-modal {
+  // ngx-bootstrap sets this class on .modal-dialog
+  &.modal-dialog {
+    max-height: calc(100vh - 3.5rem);   // centered dialog has ~1.75rem margin top/bottom
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .modal-content {
+    max-height: calc(100vh - 3.5rem);   // never taller than the viewport
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;                   // height follows content up to the cap
+  }
+
+  .modal-header,
+  .modal-footer {
+    flex: 0 0 auto;      // fixed; never shrink
+  }
+
+  .modal-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;       // critical so the inner scroll area can shrink
+    overflow: hidden;
+  }
+
+  .icon-group {
+    flex: 0 0 auto;      // the quick-search bar stays fixed
+  }
+
+  // The results table is the single scroll area. It only grows as tall as its
+  // rows; when those exceed the capped modal height it scrolls.
+  .patient-search-table-wrap {
+    flex: 0 1 auto;      // size to content, but allowed to shrink + scroll
+    min-height: 0;
+    overflow: auto;
+    padding: 0;
+
+    table {
+      margin-bottom: 0;
+    }
+  }
+
+  // Inside this modal the nested case list must NOT have its own scroll box —
+  // it expands so the rows flow into the single outer scroller above. This is
+  // what removes the empty space under the case list.
+  .complex-table-container {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding-left: 0;
+  }
+}
+
 .complex-table-container {
-  height: 180px;
+  max-height: 180px;
   overflow: auto;
   padding-left: 20px;
   table th {

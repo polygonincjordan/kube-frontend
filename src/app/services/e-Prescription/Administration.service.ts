@@ -55,6 +55,10 @@ export class AddministrationService {
     });
   }
 
+  getStatFrequency() {
+    return this.frequencyList ? this.frequencyList.find(d => d.N1id === "STAT") : null;
+  }
+
   loadMedicationDrugList() {
     this.ePrescriptionService.loadData(`e-prescription/medicationDetails?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Searchtype=${'B'}&SearchString=${''}`, false, false, false, false).subscribe({
       next: (resp: any) => {

@@ -9,6 +9,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import * as _ from 'lodash';
 import { environment } from 'src/environments/environment';
+import {
+  BLOCKED_CANCELLATION_TITLE,
+  buildBlockedMessage,
+  findBlockedLabRadItems,
+} from '@services/clinical-order-cancellation.util';
 @Component({
   selector: 'app-laboratory-table-list',
   templateUrl: './laboratory-table-list.component.html',
@@ -301,6 +306,20 @@ export class LaboratoryTableListComponent implements OnInit ,OnChanges{
 
     if (selectedServices.length < 1) {
       this.warningSwalModel('Please select at least one service to delete.');
+      return;
+    }
+
+    // Block when any selected Lab service has already been performed / done.
+    const blocked = findBlockedLabRadItems(selectedServices);
+    if (blocked.length) {
+      Swal.fire({
+        title: BLOCKED_CANCELLATION_TITLE,
+        text: buildBlockedMessage(blocked),
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#096798',
+        customClass: { popup: 'myalertpopup' },
+      });
       return;
     }
 

@@ -276,10 +276,9 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
               Agentid: resp.body.d.results[0].AgentID,
               Drugid: resp.body.d.results[0].DrugID,
               Phformid: resp.body.d.results[0].NAVDRUGFORMATROUTES.results[0].FormID,
-              // Aprouteid: resp.body.d.results[0].NAVDRUGFORMATROUTES.results[0].RouteID,
               Result_Drug_Name: selectedData[0].Drugname ,
               Formatdescr: selectedData[0].Formatdescr,
-              // Routedescr: selectedData[0].Routedescr,
+              Routedescr: this.getOralRouteDefault(selectedData[0]),
             });
             this.dosageUnitList = resp.body.d.results[0].NAVDRUGFORMATROUTEUNITS.results
           }
@@ -302,6 +301,19 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
         });
       }
     }
+  }
+
+  // Default the route to Oral only when the selected drug is an oral medication.
+  // Returns the matching route-dropdown object (so ng-select shows it selected),
+  // or null to leave the field empty. The clinician can always change it.
+  getOralRouteDefault(drug: any) {
+    if (!drug || !drug.Routedescr) { return null; }
+    if (drug.Routedescr.toString().trim().toLowerCase() !== 'oral') { return null; }
+    const routeList = this.addministrationService.routeDropdownList || [];
+    return routeList.find(option =>
+      (drug.Aprou && option.Aprou && option.Aprou.toString().trim().toUpperCase() === drug.Aprou.toString().trim().toUpperCase()) ||
+      (option.Descr && option.Descr.toString().trim().toLowerCase() === 'oral')
+    ) || null;
   }
 
   searchMedicationDrugList() {
@@ -470,8 +482,8 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
           element.Prncond = element.Prn ? element.Prncond : "";
           element.N1ztxt = frequencyData && frequencyData.Text ? frequencyData.Text : element.N1ztxt!="" ? element.N1ztxt :"";
           element.N1znr =  frequencyData && frequencyData.CycleKey ? frequencyData.CycleKey : element.N1znr!=""? element.N1znr:"";
-          element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
-          element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
+          element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
+          element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
           delete element.IsPatientMedication;
           delete element.AgentidResult;
           delete element.deftimcycleData;
@@ -528,8 +540,8 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
             element.Quan = `${element.Quan}`;
             element.Pdur = `${element.Pdur}`;
             element.Prncond = element.Prn ? element.Prncond : "";
-            element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
-            element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
+            element.Aprouteid = element.Routedescr && element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
+            element.Routedescr = element.Routedescr && element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
             element.N1ztxt = frequencyData && frequencyData.Text ? frequencyData.Text : element.N1ztxt!="" ? element.N1ztxt :"";
             element.N1znr =  frequencyData && frequencyData.CycleKey ? frequencyData.CycleKey : element.N1znr!=""? element.N1znr:"";
             delete element.IsPatientMedication;

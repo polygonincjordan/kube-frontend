@@ -91,11 +91,11 @@
                           <span class="input-title z-indexlabel">Dosage</span>
                           <span class="input-text-field d-inline-block align-top
                             w-100">
-                            <input type="text" class="form-control" formControlName="Dosdef" [ngClass]="item.touched
+                            <input type="text" class="form-control" formControlName="Quan" [ngClass]="item.touched
                               &&
-                              item.get('Dosdef').errors &&
+                              item.get('Quan').errors &&
                               isFormSubmitted ?
-                              'ep-error-message': ''" [readonly]="item.value.Complex" />
+                              'ep-error-message': ''" [readonly]="item.value.Complex" appDigitDecimaNumber />
                           </span>
                         </span>
                       </td>
@@ -152,6 +152,9 @@
                             <span class="hover-effect d-flex align-items-center
                               justify-content-center" *ngIf="item.value.Complex">Complex</span>
                           </span>
+                          <img src="assets/img/Calender.svg" height="20"
+                            class="c-pointer ml-2 cycle-def-icon" tooltip="Cycle Definition"
+                            placement="top" (click)="onOpenCycleDefinition(i)" alt="Cycle Definition">
                         </span>
                       </td>
                       <td class="align-middle border-0 w-12 p-1">
@@ -437,6 +440,8 @@
 <template-description #templateDescription></template-description>
 
 <addition-info-popup #additionalPopup (onUpdateData)="onUpdatedAdditionalInfo($event)"></addition-info-popup>
+
+<cycle-definition-popup #cyclePopup (onSave)="onCycleSaved($event)"></cycle-definition-popup>
 <ng-template #hourPopover let-index="index">
   <div class="abc">
     <span class="position-relative d-flex align-items-center w-100 mb-3">

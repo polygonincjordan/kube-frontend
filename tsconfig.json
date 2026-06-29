@@ -13,19 +13,20 @@
     "lib": ["es2018", "dom"],
     "moduleResolution": "node",
     "outDir": "./dist/out-tsc",
+    "noImplicitAny": false,
     "paths": {
       "@urls": ["./src/app/app.urls.ts"],
       "@shared/*": ["./src/app/shared/*"],
       "@dynamics/*": ["./src/app/dynamics/*"],
       "@services/*": ["./src/app/services/*"],
       "@pipes/*": ["./src/app/dynamics/pipes/*"],
-      "@utilities/*": ["./src/app/dynamics/utilities/*"],
+      "@utilities/*": ["./src/app/dynamics/utilities/*"]
     }
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "enableI18nLegacyMessageIdFormat": false,
+    "enableI18nLegacyMessageIdFormat": false
   }
 }

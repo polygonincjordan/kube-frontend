@@ -40,9 +40,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   public AssessmentType: any;
 
   public modeArrivalList: commonKeyValuePair[] = [
-    { value: '0', label: 'Stretcher' },
-    { value: '1', label: 'Ambulatory' },
-    { value: '2', label: 'Wheel Chair' },
+    { value: '0', label: 'Ambulatory' },
+    { value: '1', label: 'Wheel Chair' },
+    { value: '2', label: 'Stretcher' },
     { value: '3', label: 'Carried' },
     { value: '4', label: 'Cuddled' },
     { value: '5', label: 'Other' },
@@ -799,6 +799,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       PsyCombative: new FormControl(),
       PsyOther: new FormControl(),
       PsyComments: new FormControl(),
+      Since: new FormControl(),
+      NumberOfSpouses: new FormControl(),
+      Comments: new FormControl(),
       AttendPhy: [this.storageService.getGpart()],
 
       FunSelfNoProblem: new FormControl(),
@@ -1056,6 +1059,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   }
 
   private patchValuetoFormDate(triageValue?: any) {
+    this.noHabitApplicable = triageValue?.NoHabit ? true : false;
     if (this.documentMode == ActionType.Add$) {
       this.triageForm = this.formBuilder.group({
         Dockey: [''],
@@ -1082,6 +1086,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsyCombative: [false],
         PsyOther: [false],
         PsyComments: [''],
+        Since: [''],
+        NumberOfSpouses: [''],
+        Comments: [''],
         AttendPhy: [this.storageService.getGpart()],
 
         FunSelfNoProblem: [{ value: false, disabled: false }],
@@ -1346,6 +1353,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         PsyCombative: triageValue?.PsyCombative ? triageValue?.PsyCombative : false,
         PsyOther: triageValue?.PsyOther ? triageValue?.PsyOther : false,
         PsyComments: triageValue?.PsyComments ? triageValue?.PsyComments : '',
+        Since: triageValue?.Since ? triageValue?.Since : '',
+        NumberOfSpouses: triageValue?.NumberOfSpouses ? triageValue?.NumberOfSpouses : '',
+        Comments: triageValue?.Comments ? triageValue?.Comments : '',
         AttendPhy: triageValue?.AttendPhy ? triageValue?.AttendPhy : this.storageService.getGpart(),
 
         FunSelfNoProblem: triageValue?.FunSelfNoProblem ? triageValue?.FunSelfNoProblem : false,
@@ -2481,6 +2491,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
 
       let payload = {
         ...this.triageForm.value,
+        NoHabit: this.noHabitApplicable,
         TOALLERGIES: this.toAllergyArr,
         TOVITALSIGNS: this.toVitalsArr,
         TOSCALE: checkScalesList,
@@ -2499,8 +2510,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       this.subscription = this.emergencyService.saveNurEmrTriage(payload).subscribe({
         next: (data: any) => {
           // Handle successful data retrieval
-          this.updateTriageStatus();
           this.sharedService.successSwallModel('Triage history saved successfully');
+          this.updateTriageStatus();
           // this.modalRefForAllergy?.hide();
         },
         error: (error: any) => {
@@ -2533,6 +2544,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
 
       let payload = {
         ...this.triageForm.value,
+        NoHabit: this.noHabitApplicable,
         TOALLERGIES: this.toAllergyArr,
         TOVITALSIGNS: this.toVitalsArr,
         TOSCALE: checkScalesList,
@@ -2551,8 +2563,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       this.subscription = this.emergencyService.saveNurEmrTriage(payload).subscribe({
         next: (data: any) => {
           // Handle successful data retrieval
-          this.updateTriageStatus();
           this.sharedService.successSwallModel('Triage form done successfully');
+          this.updateTriageStatus();
           // this.modalRefForAllergy?.hide();
         },
         error: (error: any) => {
@@ -2568,6 +2580,8 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
   }
 
   public updateTriageStatus() {
+    const selectedPriority = this.triageList.find((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority);
+    if (!selectedPriority) return;
     let payload = {
       Dockey: this.triageForm.value.Dockey,
       Dokst: "FR",
@@ -2586,9 +2600,9 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
       Patnr: this.paramsObject.patnr,
       Referredby: "",
       Released: false,
-      TriageColor: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriageColor,
-      TriagePriorityCode: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriagePriorityCode,
-      TriagePriorityText: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].label,
+      TriageColor: selectedPriority.TriageColor,
+      TriagePriorityCode: selectedPriority.TriagePriorityCode,
+      TriagePriorityText: selectedPriority.label,
       Zimmr: "",
       Mode: true,
     }

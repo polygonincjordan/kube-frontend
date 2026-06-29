@@ -389,7 +389,7 @@ export class DrugEventsAdminComponent implements OnInit {
               }
             });
         }
-        else if (this.administratiForm.get('Secwitness').value === '') {
+        else {
           const PayloadData = {
             ...this.administratiForm.get('Administrator').value,
             Meresp1: this.getUserConfigData.VMA,
@@ -448,7 +448,7 @@ export class DrugEventsAdminComponent implements OnInit {
               }
             });
         }
-        else if (this.administratiForm.get('Secwitness').value === '') {
+        else {
           const PayloadData = {
             ...this.administratiForm.get('NotAdminister').value,
             Meresp1: this.getUserConfigData.VMA,

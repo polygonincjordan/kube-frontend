@@ -390,7 +390,7 @@ export class AdministeredDoesEventComponent {
             }
           });
       }
-      else if (this.eventSet[0].Secwitness === '') {
+      else {
         const PayloadData = {
           ...this.administratiForm.get('Administrator').value,
           Meresp2: "",
@@ -433,7 +433,7 @@ export class AdministeredDoesEventComponent {
             }
           });
       }
-      else if (this.eventSet[0].Secwitness === '') {
+      else {
         const PayloadData = {
           ...this.administratiForm.get('NotAdminister').value,
           Meresp2: "",

@@ -123,6 +123,7 @@ import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { CorrespondenceDocumentModule } from '../shared-module/correspondence-document/correspondence-document.module';
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
+import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
@@ -132,6 +133,7 @@ import { SbarNursingEndorsementComponent } from './nurs-treatment-workarea/patie
 import { NursingDischargeSummaryModule } from '../shared-module/nursing-discharge-summary/nursing-discharge-summary.module';
 import { PatientProfileHeaderModule } from '../shared-module/patient-profile-header/patient-profile-header.module';
 import { SharedModuleModule } from '../shared-module/shared-module.module';
+import { InpatientNursingDocumentsModule } from '../shared-module/inpatient-nursing-documents/inpatient-nursing-documents.module';
 
 const route: Routes = [
   {
@@ -257,11 +259,13 @@ const route: Routes = [
     CorrespondenceDocumentModule,
     HistoryAssessmentModule,
     CprDocumentModule,
+    CvcInsertionModule,
     AdminAttechmentModule,
     NursingDischargeSummaryModule,
     ConsultationsOrdersModule,
     PatientProfileHeaderModule,
-    SharedModuleModule
+    SharedModuleModule,
+    InpatientNursingDocumentsModule
   ],
 })
 export class NursingEmergencyDashboardModule { }
