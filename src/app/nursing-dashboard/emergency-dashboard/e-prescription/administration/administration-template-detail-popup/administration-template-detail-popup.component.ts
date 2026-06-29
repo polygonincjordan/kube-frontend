@@ -35,32 +35,41 @@ export class AdministrationTemplateDetailPopupComponent implements OnInit {
     }
   }
 
-  /** View the cycle definition for a template row (read-only). Reads the order
-   *  cycle first (OrdCycleDefSet by Meordid); falls back to the master cycle by
-   *  frequency key (N1znr) when the order has none. */
+  /** View the cycle definition for a template row (read-only). Reads template
+   *  cycles first (TOCYCDEFSet by OrderId); falls back to the master cycle by
+   *  frequency key (N1znr) when the template has none. */
   onOpenCycleDefinition(element: any): void {
     const n1znr = element && (element.N1znr || element.N1ZNR);
-    const meordid = this.getOrderCycleId(element);
-    if (!n1znr && !meordid) { return; }
+    const orderId = this.getTemplateOrderId(element);
+    if (!n1znr && !orderId) { return; }
     const title = element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '';
-    if (meordid) {
-      this.ePrescriptionService.loadData(`e-prescription/OrdCycleDefSet?Meordid=${encodeURIComponent(meordid)}`, false, false, false, false).subscribe((res: any) => {
-        const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
-        if (records.length) { this.showCycleDefinition(records, n1znr, title); return; }
-        this.loadMasterCycleDefinition(n1znr, title);
-      }, () => this.loadMasterCycleDefinition(n1znr, title));
+    const existing = element.TOCYCDEF && element.TOCYCDEF.results ? element.TOCYCDEF.results : [];
+    if (existing.length) {
+      this.showCycleDefinition(existing, n1znr, title);
+      return;
+    }
+    if (orderId) {
+      this.loadTemplateCycleDefinition(orderId, n1znr, title);
       return;
     }
     this.loadMasterCycleDefinition(n1znr, title);
   }
 
-  private getOrderCycleId(element: any): string {
+  private getTemplateOrderId(element: any): string {
     return element && (
-      element.Meordid || element.MEORDID ||
       element.Eorderid || element.EORDERID ||
       element.OrderId || element.ORDERID ||
       element.Prscrid || element.PRSCRID
     ) || '';
+  }
+
+  private loadTemplateCycleDefinition(orderId: string, n1znr: string, title: string): void {
+    this.ePrescriptionService.loadData(`e-prescription/TOCYCDEFSet?OrderId=${encodeURIComponent(orderId)}`, false, false, false, false).subscribe((res: any) => {
+      const allRecords = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      const records = allRecords.filter((record: any) => !n1znr || !record.N1znr || record.N1znr === n1znr);
+      if (records.length) { this.showCycleDefinition(records, n1znr, title); return; }
+      this.loadMasterCycleDefinition(n1znr, title);
+    }, () => this.loadMasterCycleDefinition(n1znr, title));
   }
 
   /** Read the master cycle definition by frequency key (N1znr). */

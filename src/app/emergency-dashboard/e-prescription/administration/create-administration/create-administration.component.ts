@@ -75,8 +75,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Prn: item.Prn,
             Descr: item.Descr,
             Complex: item.Complex,
-            TOCOMPLEX: item.TOCOMPLEX.results,
-            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
+            TOCOMPLEX: item.TOCOMPLEX && item.TOCOMPLEX.results ? item.TOCOMPLEX.results : (item.TOCOMPLEX || []),
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : (item.TOCYCDEF || []),
           })
           notTouchedForms[notTouchedFormIndex].markAsTouched();
           this.onChangeFrequencySet(item.N1znr, notTouchedFormIndex)
@@ -101,8 +101,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Prn: item.Prn,
             Descr: item.Descr,
             Complex: item.Complex,
-            TOCOMPLEX: item.TOCOMPLEX.results,
-            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
+            TOCOMPLEX: item.TOCOMPLEX && item.TOCOMPLEX.results ? item.TOCOMPLEX.results : (item.TOCOMPLEX || []),
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : (item.TOCYCDEF || []),
           })
           this.drugArray.push(arrayOfFormControl);
           this.onChangeFrequencySet(item.N1znr, this.drugArray.controls.length - 1)
