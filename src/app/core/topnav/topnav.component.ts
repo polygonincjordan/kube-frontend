@@ -55,6 +55,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
   patientDataSubscription: Subscription;
   private patientSubscription: Subscription;
   private userData: any = {};
+  private lastLoadedEncounterId = '';
   allergyList: any;
   allergenValues: any;
   allergenGroupValues: any;
@@ -89,6 +90,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
       this.storageService.setFalnr(params['falnr']);
       this.storageService.setLfdnr(params['lfdnr']);
       this.storageService.setPatnr(params['patnr']);
+      this.loadCurrentEncounter();
     });
   }
   onDarkModeChange(event: any): void {
@@ -114,8 +116,6 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sidebarSubscription = this.sidebarService.sidebar.subscribe(
       (res) => (this.sidebar = res)
     );
-    this.getDataPatient(this.storageService.getEncounterId());
-    this.loadPatientData();
 
     this.patientSubscription = this.patientService.patientapi.subscribe((res) =>{
       this.getDataPatient(res);
@@ -131,6 +131,24 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     //this.popupService.formPopup = this.formPopup;
   }
+
+  private loadCurrentEncounter() {
+    const encounterId = this.storageService.getEncounterId();
+    if (
+      !this.storageService.einri ||
+      !this.storageService.falnr ||
+      encounterId === this.lastLoadedEncounterId
+    ) {
+      return;
+    }
+
+    this.lastLoadedEncounterId = encounterId;
+    if (this.storageService.lfdnr) {
+      this.getDataPatient(encounterId);
+    }
+    this.loadPatientData();
+  }
+
   getDataPatient(encounterId) {    
     //const appTitle = this.titleService.getTitle();
     this.patientService
@@ -276,7 +294,18 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
         if (resp._body) {
           success = JSON.parse(resp._body);
         }
-        let data = success.d.results[0].CASTOPATSET;
+        const caseDetails = success?.d?.results?.[0];
+        if (!caseDetails) {
+          this.spinner.hide();
+          return;
+        }
+
+        let data = caseDetails.CASTOPATSET;
+        if (!data) {
+          this.spinner.hide();
+          return;
+        }
+
         let dob = data.gbdat.replace(/[^0-9]/g, '');
         this.userData.patientName = data.patnamefull;
         this.userData.age = data.age;
@@ -286,11 +315,11 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
           ? this.datePipe.transform(dob, 'dd.MM.yyyy')
           : '';
         this.userData.patnr = data.patnr;
-        this.userData.case = success.d.results[0].falnr;
-        this.userData.deparment = success.d.results[0].deptorgna;
+        this.userData.case = caseDetails.falnr;
+        this.userData.deparment = caseDetails.deptorgna;
         this.userData.attendingPhysician =
-          success.d.results[0].CASTOPHYSSET.results.length > 0
-            ? success.d.results[0].CASTOPHYSSET.results[0].physname
+          caseDetails.CASTOPHYSSET?.results?.length > 0
+            ? caseDetails.CASTOPHYSSET.results[0].physname
             : '';
         let allergies: any = [];
         data.NAVTOALLERGY.results.forEach((obj: any) => {
@@ -309,7 +338,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
           data.PATTOIMAGE.image_binary !== '';
         this.userData.allergies =
           allergies.length > 0 ? allergies.toString() : 'N/A';
-        this.userData.payerType = success.d.results[0].FinCat;
+        this.userData.payerType = caseDetails.FinCat;
 
         // Reconcile lfdnr to the selected case's actual movement.
         // Entry points (header-search widget URL, stepper switch) can carry an
@@ -317,7 +346,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
         // EINRI+FALNR+LFDNR key (blank banner / Case# NaN) and misfiled writes.
         // CASESET is keyed by falnr only, so it is authoritative for this case.
         const movementResults =
-          success.d.results[0].CASTOMOVEMENTSET?.results ?? [];
+          caseDetails.CASTOMOVEMENTSET?.results ?? [];
         const urlLfdnr = this.storageService.lfdnr;
         const lfdnrIsValidForCase = movementResults.some(
           (m: any) => m.movmntSeq === urlLfdnr
@@ -326,7 +355,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
           .map((m: any) => m.movmntSeq)
           .sort()
           .slice(-1)[0];
-        const correctLfdnr = success.d.results[0].lfdnr || latestMovement;
+        const correctLfdnr = caseDetails.lfdnr || latestMovement;
         if (!lfdnrIsValidForCase && correctLfdnr && correctLfdnr !== urlLfdnr) {
           this.storageService.setLfdnr(correctLfdnr);
           this.router.navigate([], {
@@ -338,7 +367,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         const movmntSeqData =
-          success.d.results[0].CASTOMOVEMENTSET?.results.filter(
+          caseDetails.CASTOMOVEMENTSET?.results.filter(
             (obj: any) =>
               obj['movmntSeq'] === this.storageService.lfdnr
           );

@@ -112,7 +112,7 @@ export class StorageService {
   }
 
   private normalizeId(id: any, length?: number): string {
-    const normalized = (id ?? '').toString().trim();
+    const normalized = (id ?? '').toString().trim().replace(/\D/g, '');
     return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 

@@ -1477,7 +1477,7 @@ export class InPatientDashboardComponent implements OnInit {
   }
 
   private normalizeId(value: any, length?: number): string {
-    const normalized = (value ?? '').toString().trim();
+    const normalized = (value ?? '').toString().trim().replace(/\D/g, '');
     return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 

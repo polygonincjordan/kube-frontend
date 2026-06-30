@@ -129,16 +129,18 @@ export class StepperComponent implements OnDestroy {
     // carry no movement number, so the old fallback silently reused the prior
     // case's lfdnr against the newly-selected case (blank banner / Case# NaN).
     // Leaving it empty lets topnav reconcile the correct movement from CASESET.
-    const itemLfdnr = (listItem.Lfdnr ?? listItem.Lfdbew ?? listItem.MovmntSeq ?? '').toString();
-    const paddedFalnr = listItem.Case.toString().padStart(10, '0');
-    const paddedPatnr = listItem.Patient.toString().padStart(10, '0');
+    const itemLfdnr = this.normalizeId(listItem.Lfdnr ?? listItem.Lfdbew ?? listItem.MovmntSeq);
+    const paddedFalnr = this.normalizeId(listItem.Case, 10);
+    const paddedPatnr = this.normalizeId(listItem.Patient, 10);
 
-    this.storageService.einri = listItem.Einri;
-    this.storageService.falnr = paddedFalnr;
-    this.storageService.patnr = paddedPatnr;
-    this.storageService.lfdnr = itemLfdnr;
+    this.storageService.setEinri(listItem.Einri);
+    this.storageService.setFalnr(paddedFalnr);
+    this.storageService.setPatnr(paddedPatnr);
+    this.storageService.setLfdnr(itemLfdnr);
 
-    this.patientService.patientapi.next(listItem.Einri + paddedFalnr + itemLfdnr);
+    if (itemLfdnr) {
+      this.patientService.patientapi.next(this.storageService.getEncounterId());
+    }
 
     const currentParams = this.route.snapshot.queryParams;
     this.router.navigate([], {
@@ -146,6 +148,11 @@ export class StepperComponent implements OnDestroy {
       queryParams: { ...currentParams, einri: listItem['Einri'], falnr: paddedFalnr, patnr: paddedPatnr, lfdnr: itemLfdnr },
       queryParamsHandling: 'merge',
     });
+  }
+
+  private normalizeId(value: any, length?: number): string {
+    const normalized = (value ?? '').toString().trim().replace(/\D/g, '');
+    return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 
   goback(goback) {
@@ -261,4 +268,3 @@ export class StepperComponent implements OnDestroy {
 function loadPatientData() {
   throw new Error('Function not implemented.');
 }
-
