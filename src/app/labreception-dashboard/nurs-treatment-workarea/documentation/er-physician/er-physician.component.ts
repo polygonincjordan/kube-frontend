@@ -128,15 +128,16 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
 
     }else{
-    // Admission date/time defaults to the current system date/time for a new document.
-    const now = new Date();
-    const createTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    this.createDate = now;
-    this.PhyAssessmentForm.controls.AdmDate.setValue(now);
+    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
+    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
+    createTime = createTime[0] + ':' + createTime[1];
+    this.createDate = this.getDate(checkindata.Erdat);
+    //this.createDate = String(this.createDate.getDate()).padStart(2, '0') + '.' + String(this.createDate.getMonth() + 1).padStart(2, '0') + '.' + String(this.createDate.getFullYear());
+    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
     this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
     //room/bed
-    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData?.location?.room);
-    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData?.location?.bed);
+    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
+    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
     //
     this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
     this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);

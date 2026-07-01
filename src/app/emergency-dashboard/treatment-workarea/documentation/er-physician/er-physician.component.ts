@@ -150,19 +150,22 @@ export class ErPhysicianComponent implements OnInit {
     // this.PhyAssessmentForm.controls.ConditionDisp.disable();
     // }
   }
-  // Defaults for a brand-new document: Admission and Document date/time both
-  // default to the current system date/time, regardless of how the case was opened.
+  // Defaults for a brand-new document (admission date/time from check-in, room/bed, identity).
   private setNewDocDefaults() {
+    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
+    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
+    createTime = createTime[0] + ':' + createTime[1];
+    this.createDate = this.getDate(checkindata.Erdat);
+    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    //document date/time default to current date/time (editable)
     const now = new Date();
-    const nowTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    const docTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     this.PhyAssessmentForm.controls.DocDate.setValue(now);
-    this.PhyAssessmentForm.controls.DocTime.setValue(nowTime);
-    this.createDate = now;
-    this.PhyAssessmentForm.controls.AdmDate.setValue(now);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(nowTime);
+    this.PhyAssessmentForm.controls.DocTime.setValue(docTime);
     //room/bed
-    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData?.location?.room);
-    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData?.location?.bed);
+    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
+    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
     //
     this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
     this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
@@ -230,20 +233,6 @@ export class ErPhysicianComponent implements OnInit {
     } else if(this.PhyAssessmentForm.controls.AdmTime.value == '') {
       Swal.fire({
         text: "Admission Time is mandatory",
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        customClass: { popup: 'myalertpopup' }
-      })
-    } else if(this.PhyAssessmentForm.controls.DocDate.value == '' || this.PhyAssessmentForm.controls.DocDate.value == null || this.PhyAssessmentForm.controls.DocDate.value == undefined) {
-      Swal.fire({
-        text: "Document Date is mandatory",
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        customClass: { popup: 'myalertpopup' }
-      })
-    } else if(this.PhyAssessmentForm.controls.DocTime.value == '' || this.PhyAssessmentForm.controls.DocTime.value == null || this.PhyAssessmentForm.controls.DocTime.value == undefined) {
-      Swal.fire({
-        text: "Document Time is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: { popup: 'myalertpopup' }
