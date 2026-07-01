@@ -152,20 +152,31 @@ export class ErPhysicianComponent implements OnInit {
   }
   // Defaults for a brand-new document (admission date/time from check-in, room/bed, identity).
   private setNewDocDefaults() {
-    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
-    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
-    createTime = createTime[0] + ':' + createTime[1];
-    this.createDate = this.getDate(checkindata.Erdat);
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
-    //document date/time default to current date/time (editable)
+    // checkindata may be missing when the document is opened via the toolbar
+    // patient search; default to an empty object so date defaulting never crashes.
+    const checkindata:any = JSON.parse(localStorage.getItem('checkindata')) || {};
+    //document date/time default to current date/time (editable) - set first so a
+    //missing checkindata can never leave these blank.
     const now = new Date();
     const docTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     this.PhyAssessmentForm.controls.DocDate.setValue(now);
     this.PhyAssessmentForm.controls.DocTime.setValue(docTime);
+    //admission date/time -> from check-in, else case admission (periodStart), else now
+    this.createDate = checkindata.Erdat
+      ? this.getDate(checkindata.Erdat)
+      : (this.storageService.patientData?.periodStart
+          ? this.getDate(this.storageService.patientData.periodStart)
+          : now);
+    let createTime = docTime;
+    if (checkindata.ZeitIntern) {
+      const t = this.getTime(checkindata.ZeitIntern).split(':');
+      createTime = t[0] + ':' + t[1];
+    }
+    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
     //room/bed
-    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
-    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
+    this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData?.location?.room);
+    this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData?.location?.bed);
     //
     this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
     this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
@@ -233,6 +244,20 @@ export class ErPhysicianComponent implements OnInit {
     } else if(this.PhyAssessmentForm.controls.AdmTime.value == '') {
       Swal.fire({
         text: "Admission Time is mandatory",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      })
+    } else if(this.PhyAssessmentForm.controls.DocDate.value == '' || this.PhyAssessmentForm.controls.DocDate.value == null || this.PhyAssessmentForm.controls.DocDate.value == undefined) {
+      Swal.fire({
+        text: "Document Date is mandatory",
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' }
+      })
+    } else if(this.PhyAssessmentForm.controls.DocTime.value == '' || this.PhyAssessmentForm.controls.DocTime.value == null || this.PhyAssessmentForm.controls.DocTime.value == undefined) {
+      Swal.fire({
+        text: "Document Time is mandatory",
         icon: 'error',
         confirmButtonText: 'Ok',
         customClass: { popup: 'myalertpopup' }

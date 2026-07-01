@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { StorageService } from '@services/storage.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -16,7 +17,7 @@ export class PatientSearchComponent implements OnInit {
   form: FormGroup;
   patientSearchData: any;
   searchString!: string;
-  constructor( private modalService: BsModalService,private formBuilder: FormBuilder,private emergencyService:EmergencyService) { 
+  constructor( private modalService: BsModalService,private formBuilder: FormBuilder,private emergencyService:EmergencyService, private storageService: StorageService) { 
     this.form = this.formBuilder.group({
       dob: [''],
       mrn: [''],
@@ -75,7 +76,8 @@ export class PatientSearchComponent implements OnInit {
       Falnr:visitdata.Falnr,
       Lfdnr:visitdata.Lfdnr
     }
-    //this.storageService.setCheckinData(data);
+    this.storageService.setCheckinData(visitdata);
+    localStorage.setItem('checkindata', JSON.stringify(visitdata));
     this.modalRefForList.hide();
     this.sendToERhistory.emit(json);
   }

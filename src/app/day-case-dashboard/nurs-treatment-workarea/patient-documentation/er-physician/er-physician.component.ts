@@ -134,16 +134,27 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm', this.PhyAssessmentForm);
 
     } else {
-      let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
-      let createTime = this.getTime(checkindata.ZeitIntern).split(':');
-      createTime = createTime[0] + ':' + createTime[1];
-      this.createDate = this.getDate(checkindata.Erdat);
-      //this.createDate = String(this.createDate.getDate()).padStart(2, '0') + '.' + String(this.createDate.getMonth() + 1).padStart(2, '0') + '.' + String(this.createDate.getFullYear());
+      // checkindata may be missing when the document is opened via the toolbar
+      // patient search; default to an empty object so date defaulting never crashes.
+      const checkindata: any = JSON.parse(localStorage.getItem('checkindata')) || {};
+      const now = new Date();
+      const fallbackTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      //admission date/time -> from check-in, else case admission (periodStart), else now
+      this.createDate = checkindata.Erdat
+        ? this.getDate(checkindata.Erdat)
+        : (this.storageService.patientData?.periodStart
+            ? this.getDate(this.storageService.patientData.periodStart)
+            : now);
+      let createTime = fallbackTime;
+      if (checkindata.ZeitIntern) {
+        const t = this.getTime(checkindata.ZeitIntern).split(':');
+        createTime = t[0] + ':' + t[1];
+      }
       this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
       this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
       //room/bed
-      this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
-      this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);
+      this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData?.location?.room);
+      this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData?.location?.bed);
       //
       this.PhyAssessmentForm.controls.Einri.setValue(this.storageService.einri);
       this.PhyAssessmentForm.controls.Patnr.setValue(this.storageService.patnr);
