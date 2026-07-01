@@ -128,23 +128,11 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
 
     }else{
-    // checkindata may be missing when the document is opened via the toolbar
-    // patient search; default to an empty object so date defaulting never crashes.
-    const checkindata:any = JSON.parse(localStorage.getItem('checkindata')) || {};
+    // Admission date/time defaults to the current system date/time for a new document.
     const now = new Date();
-    const fallbackTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    //admission date/time -> from check-in, else case admission (periodStart), else now
-    this.createDate = checkindata.Erdat
-      ? this.getDate(checkindata.Erdat)
-      : (this.storageService.patientData?.periodStart
-          ? this.getDate(this.storageService.patientData.periodStart)
-          : now);
-    let createTime = fallbackTime;
-    if (checkindata.ZeitIntern) {
-      const t = this.getTime(checkindata.ZeitIntern).split(':');
-      createTime = t[0] + ':' + t[1];
-    }
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+    const createTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    this.createDate = now;
+    this.PhyAssessmentForm.controls.AdmDate.setValue(now);
     this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
     //room/bed
     this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData?.location?.room);

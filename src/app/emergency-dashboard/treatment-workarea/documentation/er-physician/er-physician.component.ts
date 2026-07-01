@@ -150,30 +150,16 @@ export class ErPhysicianComponent implements OnInit {
     // this.PhyAssessmentForm.controls.ConditionDisp.disable();
     // }
   }
-  // Defaults for a brand-new document (admission date/time from check-in, room/bed, identity).
+  // Defaults for a brand-new document: Admission and Document date/time both
+  // default to the current system date/time, regardless of how the case was opened.
   private setNewDocDefaults() {
-    // checkindata may be missing when the document is opened via the toolbar
-    // patient search; default to an empty object so date defaulting never crashes.
-    const checkindata:any = JSON.parse(localStorage.getItem('checkindata')) || {};
-    //document date/time default to current date/time (editable) - set first so a
-    //missing checkindata can never leave these blank.
     const now = new Date();
-    const docTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    const nowTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     this.PhyAssessmentForm.controls.DocDate.setValue(now);
-    this.PhyAssessmentForm.controls.DocTime.setValue(docTime);
-    //admission date/time -> from check-in, else case admission (periodStart), else now
-    this.createDate = checkindata.Erdat
-      ? this.getDate(checkindata.Erdat)
-      : (this.storageService.patientData?.periodStart
-          ? this.getDate(this.storageService.patientData.periodStart)
-          : now);
-    let createTime = docTime;
-    if (checkindata.ZeitIntern) {
-      const t = this.getTime(checkindata.ZeitIntern).split(':');
-      createTime = t[0] + ':' + t[1];
-    }
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    this.PhyAssessmentForm.controls.DocTime.setValue(nowTime);
+    this.createDate = now;
+    this.PhyAssessmentForm.controls.AdmDate.setValue(now);
+    this.PhyAssessmentForm.controls.AdmTime.setValue(nowTime);
     //room/bed
     this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData?.location?.room);
     this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData?.location?.bed);

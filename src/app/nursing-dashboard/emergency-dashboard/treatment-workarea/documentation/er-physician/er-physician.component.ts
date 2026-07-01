@@ -110,23 +110,10 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
       
     }else{
-    // checkinPatientData may be missing when the document is opened via the toolbar
-    // patient search; default to an empty object so date defaulting never crashes.
-    const checkinPatientData:any = this.storageService.checkinPatientData || {};
+    // Admission date/time defaults to the current system date/time for a new document.
     const now = new Date();
-    const fallbackTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    let createTime = fallbackTime;
-    if (checkinPatientData.ZeitIntern) {
-      const t = this.getTime(checkinPatientData.ZeitIntern).split(':');
-      createTime = t[0] + ':' + t[1];
-    }
-    //admission date -> from check-in, else case admission (periodStart), else now
-    const admDateObj = checkinPatientData.Erdat
-      ? this.getDate(checkinPatientData.Erdat)
-      : (this.storageService.patientData?.periodStart
-          ? this.getDate(this.storageService.patientData.periodStart)
-          : now);
-    this.createDate = String(admDateObj.getDate()).padStart(2, '0') + '.' + String(admDateObj.getMonth() + 1).padStart(2, '0') + '.' + String(admDateObj.getFullYear());
+    const createTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    this.createDate = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + String(now.getFullYear());
     this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
     this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
     //room/bed
