@@ -414,6 +414,10 @@ export class ErHistoryComponent implements OnInit, OnChanges {
     }
     this.emergencyService.getErList(json).subscribe(
       (_success: any) => {
+      console.log('emergencyListSet response (er-history)', _success);
+      console.table(_success?.d?.results?.map((r: any) => ({
+        Patnr: r.Patnr, Falnr: r.Falnr, Lfdnr: r.Lfdbw, Erdat: r.Erdat, ZeitIntern: r.ZeitIntern
+      })));
       // this.ERlistData = _success.d.results;
       this.ERlistData = [];
       if (_success.d.results.length == 0) {
