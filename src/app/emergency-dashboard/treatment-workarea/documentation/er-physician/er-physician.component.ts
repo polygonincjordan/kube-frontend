@@ -150,14 +150,30 @@ export class ErPhysicianComponent implements OnInit {
     // this.PhyAssessmentForm.controls.ConditionDisp.disable();
     // }
   }
-  // Defaults for a brand-new document (admission date/time from check-in, room/bed, identity).
+  // Defaults for a brand-new document (admission date/time from encounter, room/bed, identity).
   private setNewDocDefaults() {
-    let checkindata:any = JSON.parse(localStorage.getItem('checkindata'));
-    let createTime = this.getTime(checkindata.ZeitIntern).split(':');
-    createTime = createTime[0] + ':' + createTime[1];
-    this.createDate = this.getDate(checkindata.Erdat);
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    // Admission comes from the encounter's real admission timestamp
+    // (Encounter.period.start), a UTC ISO value e.g. 2019-04-10T07:18:43Z.
+    const encounterStart = this.storageService.patientData?.encounterStart;
+    if (encounterStart) {
+      const admissionDateTime = new Date(encounterStart); // UTC -> local
+      this.createDate = admissionDateTime;
+      const admTime = String(admissionDateTime.getHours()).padStart(2, '0') + ':' +
+                      String(admissionDateTime.getMinutes()).padStart(2, '0');
+      this.PhyAssessmentForm.controls.AdmDate.setValue(admissionDateTime);
+      this.PhyAssessmentForm.controls.AdmTime.setValue(admTime);
+    } else {
+      // Temporary fallback to legacy check-in data when encounterStart is absent.
+      const checkindata: any = JSON.parse(localStorage.getItem('checkindata') || 'null');
+      if (checkindata && checkindata.Erdat) {
+        let createTime = this.getTime(checkindata.ZeitIntern).split(':');
+        createTime = createTime[0] + ':' + createTime[1];
+        this.createDate = this.getDate(checkindata.Erdat);
+        this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+        this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+      }
+      // else: leave AdmDate/AdmTime empty -> existing mandatory validation blocks save.
+    }
     //document date/time default to current date/time (editable)
     const now = new Date();
     const docTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
