@@ -20,8 +20,8 @@ export const environment = {
   eOrderAPIUrl: 'http://abdaliwebserver.ach.jo:6051/',
   eOrderpdfPrint: 'http://amcqaemr01.ach.jo:8000/sap/opu/odata/sap/ZNISHMEDEORDER_SRV/',
   eKardexApiUrl: 'http://abdaliwebserver.ach.jo:6051',
-  labChartUrl: 'http://abdaliwebserver.ach.jo:8090/e-Application-QA/#/home/application?',
-  visitNoteUrl: 'http://abdaliwebserver.ach.jo:8090/e-Application-QA/#/home/application?',
+  labChartUrl: 'http://amcqaemr01.ach.jo:8000/sap/bc/ui5_ui5/sap/zn_ish_enav/index.html?sap-client=210&',
+  visitNoteUrl: 'http://amcqaemr01.ach.jo:8000/sap/bc/ui5_ui5/sap/zn_ish_enav/index.html?sap-client=210&',
   radiologyUrl: 'https://radportal.ach.jo/portal/?user_name=amcamc&password=amc123&key_images=true&',
 };
 // export const environment = {
