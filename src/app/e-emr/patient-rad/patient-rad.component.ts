@@ -10,6 +10,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-patient-rad',
   templateUrl: './patient-rad.component.html',
@@ -52,7 +53,8 @@ export class PatientRadComponent implements OnInit {
     private _dataServices: EEmrService,
     private chartService: ChartService,
     private modalService: BsModalService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService
   ) {
     this.chartDataConfig = this.chartService;
   }
@@ -447,10 +449,12 @@ export class PatientRadComponent implements OnInit {
       return;
     }
     this.resetPiechartData();
+    this.spinner.show();
     this._dataServices
       .getCheckedRadResults(patnr, from, to)
       .subscribe(
         (_success: any) => {
+          this.spinner.hide();
           this.showfilter = false;
           let parsed: any =
             _success && _success._body ? JSON.parse(_success._body) : _success;
@@ -461,6 +465,7 @@ export class PatientRadComponent implements OnInit {
           this.dataCount.emit(this.dataOnTable.length);
         },
         (_error: any) => {
+          this.spinner.hide();
           this.dataOnTable = [];
           this.dataCount.emit(0);
           Swal.fire({
