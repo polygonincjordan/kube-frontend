@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, interval, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, forkJoin, interval, Observable, of, Subject, Subscription } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import swal from 'sweetalert2';
 
@@ -430,6 +431,78 @@ export class EPrescriptionService implements OnDestroy {
     }
     return this.httpClient.get(url, { withCredentials: true, observe: 'response',headers:header })
   }
+
+  loadAdministrationTemplateRowsForTemplates(templates: any[]): Observable<any[]> {
+    if (!templates || !templates.length) { return of([]); }
+    return forkJoin(templates.map((template) => this.loadAdministrationTemplateRows(template))).pipe(
+      map((templateRows: any[][]) => templateRows.reduce((acc, rows) => acc.concat(rows || []), []))
+    );
+  }
+
+  loadAdministrationTemplateRows(template: any): Observable<any[]> {
+    if (!template) { return of([]); }
+    const templateUrl = template.Tmptype === '1'
+      ? `e-prescription/OrderTemplateget?Einri=${this.parameters.einri}&Falnr=${this.parameters.falnr}&Tpgid=${template.Prscrid}&Ordtype=1`
+      : `e-prescription/userTemplateMedication?EINRI=${this.parameters.einri}&FALNR=${this.parameters.falnr}&PRSCRID=${template.Prscrid}&Ordtype=1`;
+
+    return this.loadData(templateUrl, false, false, false, false).pipe(
+      map((resp: any) => this.extractTemplateRows(resp)),
+      switchMap((rows: any[]) => this.attachTemplateCycleDefinitions(rows))
+    );
+  }
+
+  attachTemplateCycleDefinitions(rows: any[]): Observable<any[]> {
+    if (!rows || !rows.length) { return of([]); }
+    const orderIds = rows
+      .map((row) => this.getTemplateCycleOrderId(row))
+      .filter((orderId, index, all) => orderId && all.indexOf(orderId) === index);
+
+    if (!orderIds.length) { return of(rows); }
+
+    const cycleRequests = orderIds.map((orderId) =>
+      this.loadData(`e-prescription/TOCYCDEFSet?OrderId=${encodeURIComponent(orderId)}`, false, false, false, false).pipe(
+        map((resp: any) => ({ orderId, records: this.extractResults(resp) })),
+        catchError(() => of({ orderId, records: [] }))
+      )
+    );
+
+    return forkJoin(cycleRequests).pipe(
+      map((results: any[]) => {
+        const cyclesByOrderId = results.reduce((acc, result) => {
+          acc[result.orderId] = result.records || [];
+          return acc;
+        }, {});
+
+        rows.forEach((row) => {
+          const orderId = this.getTemplateCycleOrderId(row);
+          const n1znr = row.N1znr || row.N1ZNR;
+          const records = (cyclesByOrderId[orderId] || []).filter((record: any) => !n1znr || !record.N1znr || record.N1znr === n1znr);
+          if (records.length) {
+            row.TOCYCDEF = { results: records };
+          }
+        });
+
+        return rows;
+      })
+    );
+  }
+
+  private extractTemplateRows(resp: any): any[] {
+    const root = resp && resp.body && resp.body.d && resp.body.d.results && resp.body.d.results[0];
+    if (!root) { return []; }
+    if (root.TOORDERTEMPLATE && root.TOORDERTEMPLATE.results) { return root.TOORDERTEMPLATE.results; }
+    if (root.PrescriptionItemSet && root.PrescriptionItemSet.results) { return root.PrescriptionItemSet.results; }
+    return [];
+  }
+
+  private extractResults(resp: any): any[] {
+    return resp && resp.body && resp.body.d && resp.body.d.results ? resp.body.d.results : [];
+  }
+
+  private getTemplateCycleOrderId(row: any): string {
+    return row && (row.Eorderid || row.EORDERID || row.OrderId || row.ORDERID || row.Prscrid || row.PRSCRID) || '';
+  }
+
   getData(entitySetName: any) {
     let url = this.BaseUrl + entitySetName
     return this.httpClient.get(url, { withCredentials: true, observe: 'response' });

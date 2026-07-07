@@ -81,22 +81,9 @@ export class AdministrationTemplatePopupComponent implements OnInit {
   onOpenTemplateDetail(data) {
     this.modalRef.hide();
     if (data) {
-      let templateList = [];
-      if (data.Tmptype === "1") {
-        this.ePrescriptionService.loadData(`e-prescription/orderTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
-          if (resp.body && resp.body.d && resp.body.d.results) {
-            templateList = resp.body.d.results[0].PrescriptionItemSet.results
-          }
-          this.templateDetailPopup.showPopup(templateList);
-        });
-      } else if (data.Tmptype === "2") {
-        this.ePrescriptionService.loadData(`e-prescription/userTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${data.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
-          if (resp.body && resp.body.d && resp.body.d.results) {
-            templateList = resp.body.d.results[0].PrescriptionItemSet.results
-          }
-          this.templateDetailPopup.showPopup(templateList);
-        });
-      }
+      this.ePrescriptionService.loadAdministrationTemplateRows(data).subscribe((templateList: any[]) => {
+        this.templateDetailPopup.showPopup(templateList);
+      });
     }
     if (this.templateDetailSubscription) { this.templateDetailSubscription.unsubscribe(); }
     this.templateDetailSubscription = this.templateDetailPopup.onClose.subscribe(data => {

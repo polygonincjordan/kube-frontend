@@ -259,27 +259,19 @@ export class AdmitProcessComponent implements OnInit {
       speciality = this.commaSeparatForSpecialty(this.paramsFilter.speciality);
     }
    
-    window.open(
-      'admit-process?patnr=' +
-        data.Mrn +
-        '&falnr=' +
-        data.CaseNumber +
-        '&einri=' +
-        data.Institute +
-        '&lfdnr=' +
-        data.Lfdnr +
-        '&admittedFrom=' +
-        admittedFrom +
-        '&admittedTo=' +
-        admittedTo +
-        '&wardNo=' + wardNo +
-        '&physician=' + physician +
-        '&speciality=' + speciality +
-        '&Deptou=' + data.Deptou +
-        '&activeValue=' +
-        this.navTabBoxActiveValue,
-      '_self'
-    );
+    this.openAdmitProcessUrl({
+      patnr: data.Mrn,
+      falnr: data.CaseNumber,
+      einri: data.Institute,
+      lfdnr: data.Lfdnr,
+      admittedFrom,
+      admittedTo,
+      wardNo,
+      physician,
+      speciality,
+      Deptou: data.Deptou,
+      activeValue: this.navTabBoxActiveValue
+    });
   
   }
 
@@ -311,50 +303,55 @@ export class AdmitProcessComponent implements OnInit {
     }
 
     if(this.navTabBoxActiveValue == '07') {
-      window.open(
-        'admit-process?patnr=' +
-          data.Patnr +
-          '&falnr=' +
-          data.Falnr +
-          '&einri=' +
-          data.Einri +
-          '&lfdnr=' +
-          data.Lfdbw +
-          '&admittedFrom=' +
-          admittedFrom +
-          '&admittedTo=' +
-          admittedTo +
-          '&wardNo=' + wardNo +
-          '&physician=' + physician +
-          '&speciality=' + speciality +
-          '&Deptou=' + data.Deptou +
-          '&activeValue=' +
-          this.navTabBoxActiveValue,
-        '_self'
-      );
+      this.openAdmitProcessUrl({
+        patnr: data.Patnr,
+        falnr: data.Falnr,
+        einri: data.Einri,
+        lfdnr: data.Lfdbw,
+        admittedFrom,
+        admittedTo,
+        wardNo,
+        physician,
+        speciality,
+        Deptou: data.Deptou,
+        activeValue: this.navTabBoxActiveValue
+      });
     } else {
-      window.open(
-        'admit-process?patnr=' +
-          data.Mrn +
-          '&falnr=' +
-          data.CaseNumber +
-          '&einri=' +
-          data.Institute +
-          '&lfdnr=' +
-          data.Lfdnr +
-          '&admittedFrom=' +
-          admittedFrom +
-          '&admittedTo=' +
-          admittedTo +
-          '&wardNo=' + wardNo +
-          '&physician=' + physician +
-          '&speciality=' + speciality +
-          '&Deptou=' + data.Deptou +
-          '&activeValue=' +
-          this.navTabBoxActiveValue,
-        '_self'
-      );
+      this.openAdmitProcessUrl({
+        patnr: data.Mrn,
+        falnr: data.CaseNumber,
+        einri: data.Institute,
+        lfdnr: data.Lfdnr,
+        admittedFrom,
+        admittedTo,
+        wardNo,
+        physician,
+        speciality,
+        Deptou: data.Deptou,
+        activeValue: this.navTabBoxActiveValue
+      });
     }
+  }
+
+  private openAdmitProcessUrl(params: any) {
+    const queryParams = new URLSearchParams();
+    queryParams.set('patnr', this.normalizeId(params.patnr, 10));
+    queryParams.set('falnr', this.normalizeId(params.falnr, 10));
+    queryParams.set('einri', this.normalizeId(params.einri));
+    queryParams.set('lfdnr', this.normalizeId(params.lfdnr));
+    queryParams.set('admittedFrom', params.admittedFrom ?? '');
+    queryParams.set('admittedTo', params.admittedTo ?? '');
+    queryParams.set('wardNo', params.wardNo ?? '');
+    queryParams.set('physician', params.physician ?? '');
+    queryParams.set('speciality', params.speciality ?? '');
+    queryParams.set('Deptou', params.Deptou ?? '');
+    queryParams.set('activeValue', params.activeValue ?? '');
+    window.open('admit-process?' + queryParams.toString(), '_self');
+  }
+
+  private normalizeId(value: any, length?: number): string {
+    const normalized = (value ?? '').toString().trim().replace(/\D/g, '');
+    return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 
   phyOrderFilterList(formFilter: any) {

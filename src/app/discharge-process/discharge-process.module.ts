@@ -76,6 +76,7 @@ import { DocVisitNoteComponent } from './documentation/documentation-list/doc-vi
 import { VitalSignModule } from '../shared-module/vital-sign/vital-sign.module';
 import { NeonatalDischDocumentModule } from '../shared-module/neonatal-disch-document/neonatal-disch-document.module';
 import { PaediatricPhysicianAssessmentModule } from '../shared-module/paediatric-physician-assessment/paediatric-physician-assessment.module';
+import { CycleDefinitionModule } from '../shared-module/cycle-definition/cycle-definition.module';
 
 
 export const ePrescriptionRoutes: Routes = [
@@ -153,7 +154,8 @@ export const ePrescriptionRoutes: Routes = [
     NgxExtendedPdfViewerModule,
     VitalSignModule,
     NeonatalDischDocumentModule,
-    PaediatricPhysicianAssessmentModule
+    PaediatricPhysicianAssessmentModule,
+    CycleDefinitionModule
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService,
     ErDischargeordersService, AddministrationService, PatientService, PatientHistoryService,

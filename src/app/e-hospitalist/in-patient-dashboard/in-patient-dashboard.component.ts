@@ -1457,24 +1457,28 @@ export class InPatientDashboardComponent implements OnInit {
   }
 
   windowRedirect(tabName, patnr, falnr, einri, ifdnr, admittedFrom, admittedTo, wardNo, physician, speciality, Deptou) {
+    const queryParams = new URLSearchParams();
+    queryParams.set('patnr', this.normalizeId(patnr, 10));
+    queryParams.set('falnr', this.normalizeId(falnr, 10));
+    queryParams.set('einri', this.normalizeId(einri));
+    queryParams.set('lfdnr', this.normalizeId(ifdnr));
+    queryParams.set('admittedFrom', admittedFrom ?? '');
+    queryParams.set('admittedTo', admittedTo ?? '');
+    queryParams.set('wardNo', wardNo ?? '');
+    queryParams.set('physician', physician ?? '');
+    queryParams.set('speciality', speciality ?? '');
+    queryParams.set('Deptou', Deptou ?? '');
+    queryParams.set('activeValue', this.navTabBoxActiveValue ?? '');
+
     window.open(
-      tabName + '?patnr=' +
-      patnr +
-      '&falnr=' +
-      falnr
-      +
-      '&einri=' +
-      einri +
-      '&lfdnr=' + ifdnr +
-      '&admittedFrom=' + admittedFrom +
-      '&admittedTo=' + admittedTo +
-      '&wardNo=' + wardNo +
-      '&physician=' + physician +
-      '&speciality=' + speciality +
-      '&Deptou=' + Deptou +
-      '&activeValue=' + this.navTabBoxActiveValue,
+      tabName + '?' + queryParams.toString(),
       '_blank'
     );
+  }
+
+  private normalizeId(value: any, length?: number): string {
+    const normalized = (value ?? '').toString().trim().replace(/\D/g, '');
+    return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 
   getCountsByType(type: any) {

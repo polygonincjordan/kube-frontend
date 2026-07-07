@@ -110,7 +110,7 @@ export class CycleDefinitionPopupComponent {
       Sa: [this.toBool(r.Sa, true)],
       Su: [this.toBool(r.Su, true)],
       PublHol: [this.toBool(r.PublHol, true)],
-      multipleDayFixedInterval: [false],
+      multipleDayFixedInterval: [this.toBool(r.N1cwft, false)],
       // From/To time come back from SAP as ISO durations (e.g. PT05H00M00S).
       fromTime: [this.parseDuration(r.TiStart) || '09:00'],
       toTime: [this.parseDuration(r.TiEnd) || '09:00'],
@@ -151,6 +151,7 @@ export class CycleDefinitionPopupComponent {
       Sa: pick('Sa', 'N1sa'),
       Su: pick('Su', 'N1so'),
       PublHol: pick('Holiday', 'PublHol', 'N1feiertag'),
+      N1cwft: pick('N1cwft'),
       TiStart: pick('TiStart', 'TIStart', 'N1begzt'),
       TiEnd: pick('TiEnd', 'TIEnd', 'N1endzt')
     };
@@ -188,6 +189,7 @@ export class CycleDefinitionPopupComponent {
         Su: !!v.Su,
         IntervalDay: v.everyDay ? 1 : (+v.IntervalDay || 1),
         IntervalHour: `${this.cleanNumber(v.IntervalHour, '0')}`,
+        N1cwft: !!v.multipleDayFixedInterval,
         TiStart: this.toDuration(v.fromTime),
         TiEnd: this.toDuration(v.toTime)
       };

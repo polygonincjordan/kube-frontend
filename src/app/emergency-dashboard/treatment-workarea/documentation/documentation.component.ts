@@ -362,6 +362,7 @@ export class DocumentationComponent implements OnInit {
     const json = {
       Einri: this.storageService.einri,
       Falnr: this.storageService.falnr,
+      Lfdnr: this.storageService.lfdnr,
     }
     this.emergencyService.getPhyAssessment(json).subscribe(
       (_success: any) => {

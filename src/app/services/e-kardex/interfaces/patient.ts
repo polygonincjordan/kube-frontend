@@ -13,6 +13,7 @@ export interface Patient {
   email?: string;
   address?: string;
   periodStart: string;
+  encounterStart?: string;
   lenghtOfStay: number;
   location: LocationPatient;
   careManager: string;

@@ -9,6 +9,7 @@ import { Colors } from '../../services/colors.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-patient-lab',
   templateUrl: './patient-lab.component.html',
@@ -50,7 +51,8 @@ export class PatientLabComponent implements OnInit {
     private chartService: ChartService,
     private storageService:StorageService,
     private modalService: BsModalService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService
   ) {
     this.chartDataConfig = this.chartService;
   }
@@ -450,10 +452,12 @@ export class PatientLabComponent implements OnInit {
         return;
       }
       this.resetPiechartData();
+      this.spinner.show();
       this._dataServices
         .getCheckedLabResults(patnr, from, to)
         .subscribe(
           (_success: any) => {
+            this.spinner.hide();
             this.showfilter = false;
             let parsed: any =
               _success && _success._body ? JSON.parse(_success._body) : _success;
@@ -464,6 +468,7 @@ export class PatientLabComponent implements OnInit {
             this.dataCount.emit(this.dataOnTable.length);
           },
           (_error: any) => {
+            this.spinner.hide();
             this.dataOnTable = [];
             this.dataCount.emit(0);
             Swal.fire({

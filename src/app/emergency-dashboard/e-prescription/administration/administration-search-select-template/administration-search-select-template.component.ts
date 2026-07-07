@@ -61,18 +61,8 @@ export class AdministrationSearchSelectTemplateComponent implements OnInit {
   }
 
   broadcastEvent(event: any) {
-    if (event.Tmptype === "1") {
-      this.ePrescriptionService.loadData(`e-prescription/OrderTemplateget?Einri=${this.ePrescriptionService.parameters.einri}&Falnr=${this.ePrescriptionService.parameters.falnr}&Tpgid=${event.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
-        if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results[0].TOORDERTEMPLATE.results && resp.body.d.results[0].TOORDERTEMPLATE.results.length) {
-          this.ePrescriptionService.templatePopupSaveData = resp.body.d.results[0].TOORDERTEMPLATE.results;
-        }
-      });
-    } else if (event.Tmptype === "2") {
-      this.ePrescriptionService.loadData(`e-prescription/userTemplateMedication?EINRI=${this.ePrescriptionService.parameters.einri}&FALNR=${this.ePrescriptionService.parameters.falnr}&PRSCRID=${event.Prscrid}&Ordtype=${'1'}`, false, false, false, false).subscribe((resp: any) => {
-        if (resp.body && resp.body.d && resp.body.d.results && resp.body.d.results[0].PrescriptionItemSet.results && resp.body.d.results[0].PrescriptionItemSet.results.length) {
-          this.ePrescriptionService.templatePopupSaveData = resp.body.d.results[0].PrescriptionItemSet.results;
-        }
-      });
-    }
+    this.ePrescriptionService.loadAdministrationTemplateRows(event).subscribe((templateList: any[]) => {
+      this.ePrescriptionService.templatePopupSaveData = templateList;
+    });
   }
 }

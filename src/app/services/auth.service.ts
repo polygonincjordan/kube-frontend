@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { WebService } from './web.service';
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AuthService {
       Authorization: 'Basic ' + btoa(username + ':' + password),
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'sap-client': 210,
+      'sap-client': environment.client,
     };
     return this.webService.get('loginUser', custHeaders, headers, false);
   }
@@ -24,7 +25,7 @@ export class AuthService {
       Authorization: 'Basic ' + btoa(username + ':' + password),
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'sap-client': '210',
+      'sap-client': environment.client,
     };
   
     return this.webService.get(

@@ -49,43 +49,49 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     const notTouchedForms = this.drugArray.controls.filter(d => !d.touched);
     let notTouchedFormIndex = 0;
     if (data && data.length) {
-      data.forEach((item: TemplateMedDataList) => {
+      data.forEach((item: any) => {
+        const toComplex = item.TOCOMPLEX && item.TOCOMPLEX.results ? item.TOCOMPLEX.results : (item.TOCOMPLEX || []);
+        const toCycDef = item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : (item.TOCYCDEF || []);
         if (notTouchedForms && notTouchedForms.length && notTouchedForms.length > notTouchedFormIndex) {
           notTouchedForms[notTouchedFormIndex].patchValue({
-            Agentid: item.AGENTID,
-            Drugid: item.DRUGID,
-            N1znr: item.N1ZNR,
-            Result_Drug_Name: item.RESULT_DRUG_NAME,
-            Quan: `${Math.floor(+(item.QUAN))}`,
-            Quanunit: item.QUANUNIT,
-            Formatdescr: item.FORMATDESCR,
-            Routedescr: item.ROUTEDESCR,
-            Pdur: `${Math.floor(+(item.PDUR))}`,
-            Pduru: item.PDURU,
-            Aprouteid: item.APROUTEID,
-            Phformid: item.PHFORMID
+            Agentid: item.Agentid || item.AGENTID,
+            Drugid: item.Drugid || item.DRUGID,
+            N1znr: item.N1znr || item.N1ZNR,
+            Result_Drug_Name: item.Result_Drug_Name || item.RESULT_DRUG_NAME,
+            Quan: item.Quan ? (item.Quan === '0.000' ? '0' : item.Quan) : `${Math.floor(+(item.QUAN || 0))}`,
+            Quanunit: item.Quanunit || item.QUANUNIT,
+            Formatdescr: item.Formatdescr || item.FORMATDESCR,
+            Routedescr: item.Routedescr || item.ROUTEDESCR,
+            Pdur: item.Pdur ? (parseInt(item.Pdur) === 0 ? '' : `${Math.floor(item.Pdur)}`) : `${Math.floor(+(item.PDUR || 0))}`,
+            Pduru: item.Pduru || item.PDURU,
+            Aprouteid: item.Aprouteid || item.APROUTEID,
+            Phformid: item.Phformid || item.PHFORMID,
+            TOCOMPLEX: toComplex,
+            TOCYCDEF: toCycDef
           });
           notTouchedForms[notTouchedFormIndex].markAsTouched();
-          this.onChangeFrequencySet(item.N1ZNR, notTouchedFormIndex)
+          this.onChangeFrequencySet(item.N1znr || item.N1ZNR, notTouchedFormIndex)
           notTouchedFormIndex = notTouchedFormIndex + 1;
         } else {
           const arrayOfFormControl = this.generateForm();
           arrayOfFormControl.patchValue({
-            Agentid: item.AGENTID,
-            Drugid: item.DRUGID,
-            N1znr: item.N1ZNR,
-            Result_Drug_Name: item.RESULT_DRUG_NAME,
-            Quan: `${Math.floor(+(item.QUAN))}`,
-            Quanunit: item.QUANUNIT,
-            Formatdescr: item.FORMATDESCR,
-            Routedescr: item.ROUTEDESCR,
-            Pdur: `${Math.floor(+(item.PDUR))}`,
-            Pduru: item.PDURU,
-            Aprouteid: item.APROUTEID,
-            Phformid: item.PHFORMID
+            Agentid: item.Agentid || item.AGENTID,
+            Drugid: item.Drugid || item.DRUGID,
+            N1znr: item.N1znr || item.N1ZNR,
+            Result_Drug_Name: item.Result_Drug_Name || item.RESULT_DRUG_NAME,
+            Quan: item.Quan ? (item.Quan === '0.000' ? '0' : item.Quan) : `${Math.floor(+(item.QUAN || 0))}`,
+            Quanunit: item.Quanunit || item.QUANUNIT,
+            Formatdescr: item.Formatdescr || item.FORMATDESCR,
+            Routedescr: item.Routedescr || item.ROUTEDESCR,
+            Pdur: item.Pdur ? (parseInt(item.Pdur) === 0 ? '' : `${Math.floor(item.Pdur)}`) : `${Math.floor(+(item.PDUR || 0))}`,
+            Pduru: item.Pduru || item.PDURU,
+            Aprouteid: item.Aprouteid || item.APROUTEID,
+            Phformid: item.Phformid || item.PHFORMID,
+            TOCOMPLEX: toComplex,
+            TOCYCDEF: toCycDef
           })
           this.drugArray.push(arrayOfFormControl);
-          this.onChangeFrequencySet(item.N1ZNR, this.drugArray.controls.length - 1)
+          this.onChangeFrequencySet(item.N1znr || item.N1ZNR, this.drugArray.controls.length - 1)
         }
       });
     }
@@ -541,6 +547,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
       IntervalHour: `${r.IntervalHour || '0'}`,
+      N1cwft: !!r.N1cwft,
       TiStart: r.TiStart,
       TiEnd: r.TiEnd
     }));

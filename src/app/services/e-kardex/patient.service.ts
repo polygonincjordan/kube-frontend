@@ -70,6 +70,7 @@ export class PatientService {
       birthDate: subject?.birthDate,
       age: dayjs().diff(subject?.birthDate, 'years'),
       periodStart: _get(episodeOfCare, 'period.start'),
+      encounterStart: _get(data, 'period.start'),
       lenghtOfStay: this.getLenghtOfStay(episodeOfCare),
       location: {
         room: _get(location, '[0].name', ''),

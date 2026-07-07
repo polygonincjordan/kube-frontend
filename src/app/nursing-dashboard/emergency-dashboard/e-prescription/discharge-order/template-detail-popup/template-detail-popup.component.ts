@@ -31,29 +31,59 @@ export class TemplateDetailPopupComponent {
     }
   }
 
-  /** View the cycle definition for a template row (read-only). Cycle comes from the
-   *  master by frequency key (N1znr); shows a notice if none is defined. */
+  /** View the cycle definition for a template row (read-only). Reads template
+   *  cycles first (TOCYCDEFSet by OrderId); falls back to the master cycle by
+   *  frequency key (N1znr) when the template has none. Shows a notice if neither has one. */
   onOpenCycleDefinition(element: any): void {
-    const n1znr = element.N1znr || element.N1ZNR;
-    if (!n1znr) { return; }
+    const n1znr = element && (element.N1znr || element.N1ZNR);
+    const orderId = this.getTemplateOrderId(element);
+    if (!n1znr && !orderId) { return; }
+    const title = element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '';
+    const existing = element.TOCYCDEF && element.TOCYCDEF.results ? element.TOCYCDEF.results : [];
+    if (existing.length) { this.showCycleDefinition(existing, n1znr, title); return; }
+    if (orderId) {
+      this.loadTemplateCycleDefinition(orderId, n1znr, title);
+      return;
+    }
+    this.loadMasterCycleDefinition(n1znr, title);
+  }
+
+  private getTemplateOrderId(element: any): string {
+    return element && (
+      element.Eorderid || element.EORDERID ||
+      element.OrderId || element.ORDERID ||
+      element.Prscrid || element.PRSCRID
+    ) || '';
+  }
+
+  private loadTemplateCycleDefinition(orderId: string, n1znr: string, title: string): void {
+    this.ePrescriptionService.loadData(`e-prescription/TOCYCDEFSet?OrderId=${encodeURIComponent(orderId)}`, false, false, false, false).subscribe((res: any) => {
+      const allRecords = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
+      const records = allRecords.filter((record: any) => !n1znr || !record.N1znr || record.N1znr === n1znr);
+      if (records.length) { this.showCycleDefinition(records, n1znr, title); return; }
+      this.loadMasterCycleDefinition(n1znr, title);
+    }, () => this.loadMasterCycleDefinition(n1znr, title));
+  }
+
+  /** Read the master cycle definition by frequency key (N1znr). */
+  private loadMasterCycleDefinition(n1znr: string, title: string): void {
+    if (!n1znr) { this.showNoCycleDefinition(); return; }
     this.ePrescriptionService.loadData(`e-prescription/CycleDefMasterSet?N1znr=${n1znr}`, false, false, false, false).subscribe((res: any) => {
       const records = res && res.body && res.body.d && res.body.d.results ? res.body.d.results : [];
-      if (!records.length) {
-        Swal.fire({
-          text: 'No cycle definition available for this frequency', icon: 'info',
-          confirmButtonColor: '#0890c5', confirmButtonText: 'OK', customClass: { popup: 'myalertpopup' }
-        } as any);
-        return;
-      }
-      this.cyclePopup.showPopup({
-        index: 0,
-        n1znr,
-        title: element.Result_Drug_Name || element.RESULT_DRUG_NAME || element.N1ztxt || element.N1ZTXT || '',
-        startDate: null,
-        records,
-        readOnly: true
-      });
-    });
+      if (!records.length) { this.showNoCycleDefinition(); return; }
+      this.showCycleDefinition(records, n1znr, title);
+    }, () => this.showNoCycleDefinition());
+  }
+
+  private showCycleDefinition(records: any[], n1znr: string, title: string): void {
+    this.cyclePopup.showPopup({ index: 0, n1znr, title, startDate: null, records, readOnly: true });
+  }
+
+  private showNoCycleDefinition(): void {
+    Swal.fire({
+      text: 'No cycle definition available for this frequency', icon: 'info',
+      confirmButtonColor: '#0890c5', confirmButtonText: 'OK', customClass: { popup: 'myalertpopup' }
+    } as any);
   }
 
   onCheckallMedicationData(event) {

@@ -110,12 +110,25 @@ export class ErPhysicianComponent implements OnInit {
       console.log('PhyAssessmentForm',this.PhyAssessmentForm);
       
     }else{
-    let createTime = this.getTime(this.storageService.checkinPatientData.ZeitIntern).split(':');
-    createTime = createTime[0] + ':' + createTime[1];
-    this.createDate = this.getDate(this.storageService.checkinPatientData.Erdat);
-    this.createDate = String(this.createDate.getDate()).padStart(2, '0') + '.' + String(this.createDate.getMonth() + 1).padStart(2, '0') + '.' + String(this.createDate.getFullYear());
-    this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
-    this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    // Admission comes from the encounter's real admission timestamp
+    // (Encounter.period.start), a UTC ISO value e.g. 2019-04-10T07:18:43Z.
+    const encounterStart = this.storageService.patientData?.encounterStart;
+    if (encounterStart) {
+      const admissionDateTime = new Date(encounterStart); // UTC -> local
+      this.createDate = String(admissionDateTime.getDate()).padStart(2, '0') + '.' + String(admissionDateTime.getMonth() + 1).padStart(2, '0') + '.' + String(admissionDateTime.getFullYear());
+      const admTime = String(admissionDateTime.getHours()).padStart(2, '0') + ':' + String(admissionDateTime.getMinutes()).padStart(2, '0');
+      this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+      this.PhyAssessmentForm.controls.AdmTime.setValue(admTime);
+    } else if (this.storageService.checkinPatientData && this.storageService.checkinPatientData.Erdat) {
+      // Temporary fallback to legacy check-in data when encounterStart is absent.
+      let createTime = this.getTime(this.storageService.checkinPatientData.ZeitIntern).split(':');
+      createTime = createTime[0] + ':' + createTime[1];
+      const admDateObj = this.getDate(this.storageService.checkinPatientData.Erdat);
+      this.createDate = String(admDateObj.getDate()).padStart(2, '0') + '.' + String(admDateObj.getMonth() + 1).padStart(2, '0') + '.' + String(admDateObj.getFullYear());
+      this.PhyAssessmentForm.controls.AdmDate.setValue(this.createDate);
+      this.PhyAssessmentForm.controls.AdmTime.setValue(createTime);
+    }
+    // else: leave AdmDate/AdmTime empty.
     //room/bed 
     this.PhyAssessmentForm.controls.Room.setValue(this.storageService.patientData.location.room);
     this.PhyAssessmentForm.controls.Bed.setValue(this.storageService.patientData.location.bed);

@@ -95,20 +95,25 @@ export class StorageService {
   }
 
   setEinri(id: string) {
-    this.einri = id;
+    this.einri = this.normalizeId(id);
   }
   setPatnr(id: string) {
-    this.patnr = id;
+    this.patnr = this.normalizeId(id, 10);
   }
   setFalnr(id: string) {
-    this.falnr = id;
+    this.falnr = this.normalizeId(id, 10);
   }
   setLfdnr(id: string) {
-    this.lfdnr = id;
+    this.lfdnr = this.normalizeId(id);
   }
 
   getEncounterId() {
     return this.einri + this.falnr + this.lfdnr;
+  }
+
+  private normalizeId(id: any, length?: number): string {
+    const normalized = (id ?? '').toString().trim().replace(/\D/g, '');
+    return normalized && length ? normalized.padStart(length, '0') : normalized;
   }
 
   getImgAvatarByDefault() {

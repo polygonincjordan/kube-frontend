@@ -74,8 +74,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Complex: item.Complex,
             Dosdef: item.Dosdef,
             N1ztxt:item.N1ztxt,
-            TOCOMPLEX: item.TOCOMPLEX.results,
-            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
+            TOCOMPLEX: item.TOCOMPLEX && item.TOCOMPLEX.results ? item.TOCOMPLEX.results : (item.TOCOMPLEX || []),
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : (item.TOCYCDEF || []),
           })
           const findFormIndex = this.drugArray.controls.findIndex(d => d.value === notTouchedForms[notTouchedFormIndex].value);
           notTouchedForms[notTouchedFormIndex].markAsTouched();
@@ -103,8 +103,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             Complex: item.Complex,
             Dosdef: item.Dosdef,
             N1ztxt:item.N1ztxt,
-            TOCOMPLEX: item.TOCOMPLEX.results,
-            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : [],
+            TOCOMPLEX: item.TOCOMPLEX && item.TOCOMPLEX.results ? item.TOCOMPLEX.results : (item.TOCOMPLEX || []),
+            TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : (item.TOCYCDEF || []),
           })
           this.drugArray.push(arrayOfFormControl);
           this.onChangeFrequencySet(item.N1znr, this.drugArray.controls.length - 1)
@@ -627,6 +627,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Mo: !!r.Mo, Tu: !!r.Tu, We: !!r.We, Th: !!r.Th, Fr: !!r.Fr, Sa: !!r.Sa, Su: !!r.Su,
       IntervalDay: +r.IntervalDay || 1,
       IntervalHour: `${r.IntervalHour || '0'}`,
+      N1cwft: !!r.N1cwft,
       TiStart: r.TiStart,
       TiEnd: r.TiEnd
     }));
