@@ -1,187 +1,164 @@
 <form action="" [formGroup]="inPatientPhdisDataSet">
   <div class="row dg-in-patient-panel">
     <div class="col-md-6">
-      <div class="d-flex align-items-center mb-2">
+      <div class="discharge-panel">
+        <div class="openPopup-btn d-flex w-60 py-1 align-items-center in-patient-title mb-2">
+          <img width="30" src="assets/img/info-document.png" />
+          <span class="ml-2">Admission Summary</span>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div class="col-md-3 pl-0">
+            <label for="reason-for-admission" class="col-form-label">Reason for Admission and Comorbidities</label>
+          </div>
+          <div class="col-md-9 p-0">
+            <textarea type="text" class="form-control" formControlName="AdmissionReason"
+              id="reason-for-admission"></textarea>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div class="col-md-3 pl-0">
+            <label for="reason-for-admission" class="col-form-label">Diagnosis</label>
+          </div>
+          <div class="col-md-9 p-0">
+            <textarea type="text" class="form-control" formControlName="Diagnoses" id="reason-for-admission"></textarea>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div class="col-md-3 pl-0">
+            <label for="reason-for-admission" class="col-form-label">Significant Physical and Other Finding</label>
+          </div>
+          <div class="col-md-9 p-0">
+            <textarea type="text" class="form-control" formControlName="SignificantPhysical"
+              id="reason-for-admission"></textarea>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <div class="col-md-3 pl-0">
+            <label for="reason-for-admission" class="col-form-label">Diagnostic and Therapeutic Procedures
+              Performed</label>
+          </div>
+          <div class="col-md-9 p-0">
+            <textarea type="text" class="form-control" formControlName="DiagnosticTherapeutic"
+              id="reason-for-admission"></textarea>
+          </div>
+        </div>
+        <!-- <div class="d-flex align-items-center mb-2">
         <div class="col-md-3 pl-0">
-          <label for="reason-for-admission" class="col-form-label"
-            >Reason for Admission</label
-          >
+          <label for="summary-for-evolution" class="col-form-label">Summary for Evolution</label>
         </div>
         <div class="col-md-9 p-0">
-          <textarea
-            type="text"
-            class="form-control"
-            formControlName="AdmissionReason"
-            id="reason-for-admission"
-          ></textarea>
+          <textarea type="text" class="form-control" id="summary-for-evolution"
+            formControlName="EvolutionSummary"></textarea>
         </div>
       </div>
       <div class="d-flex align-items-center mb-2">
         <div class="col-md-3 pl-0">
-          <label for="summary-for-evolution" class="col-form-label"
-            >Summary for Evolution</label
-          >
+          <label for="relevant-results-during-admission" class="col-form-label">Relevant results during
+            Admission</label>
         </div>
         <div class="col-md-9 p-0">
-          <textarea
-            type="text"
-            class="form-control"
-            id="summary-for-evolution"
-            formControlName="EvolutionSummary"
-          ></textarea>
+          <textarea type="text" class="form-control" formControlName="RelevantResultsAdm"
+            id="relevant-results-during-admission"></textarea>
         </div>
       </div>
       <div class="d-flex align-items-center mb-2">
         <div class="col-md-3 pl-0">
-          <label for="relevant-results-during-admission" class="col-form-label"
-            >Relevant results during Admission</label
-          >
+          <label for="physical-examination" class="col-form-label">Physical examination at Discharge</label>
         </div>
         <div class="col-md-9 p-0">
-          <textarea
-            type="text"
-            class="form-control"
-            formControlName="RelevantResultsAdm"
-            id="relevant-results-during-admission"
-          ></textarea>
+          <textarea type="text" class="form-control" id="physical-examination"
+            formControlName="PhysicalExaminationDischarge"></textarea>
         </div>
-      </div>
-      <div class="d-flex align-items-center mb-2">
-        <div class="col-md-3 pl-0">
-          <label for="physical-examination" class="col-form-label"
-            >Physical examination at Discharge</label
-          >
-        </div>
-        <div class="col-md-9 p-0">
-          <textarea
-            type="text"
-            class="form-control"
-            id="physical-examination"
-            formControlName="PhysicalExaminationDischarge"
-          ></textarea>
-        </div>
-      </div>
-      <!-- <div class="border-between w-100 mt-3"></div> -->
-      <div class="surgery-team-table">
-        <div
-          class="openPopup-btn d-flex w-60 py-1 my-1 align-items-center in-patient-title mb-2"
-        >
+      </div> -->
+        <!-- <div class="border-between w-100 mt-3"></div> -->
+        <!-- <div class="surgery-team-table">
+        <div class="openPopup-btn d-flex w-60 py-1 my-1 align-items-center in-patient-title mb-2">
           <img width="30" src="assets/img/info-document.png" />
           <span class="ml-2">Treatment and therapeutic intervensions</span>
         </div>
         <div class="d-flex align-items-center mb-2">
           <div class="col-md-3 pl-0">
-            <label for="pre-operative" class="col-form-label"
-              >Management and treatment plan</label
-            >
+            <label for="pre-operative" class="col-form-label">Management and treatment plan</label>
           </div>
           <div class="col-md-9 p-0">
-            <textarea
-              type="text"
-              class="form-control"
-              formControlName="MgmtTreatmentPlan"
-              id="pre-operative"
-            ></textarea>
+            <textarea type="text" class="form-control" formControlName="MgmtTreatmentPlan"
+              id="pre-operative"></textarea>
           </div>
         </div>
         <div class="d-flex align-items-center mb-2">
           <div class="col-md-3 pl-0">
-            <label for="pre-operative" class="col-form-label"
-              >Management recommendations</label
-            >
+            <label for="pre-operative" class="col-form-label">Management recommendations</label>
           </div>
           <div class="col-md-9 p-0">
-            <textarea
-              type="text"
-              class="form-control"
-              formControlName="MgmtRecommendations"
-              id="pre-operative"
-            ></textarea>
+            <textarea type="text" class="form-control" formControlName="MgmtRecommendations"
+              id="pre-operative"></textarea>
           </div>
         </div>
+      </div> -->
       </div>
     </div>
     <div class="col-md-6">
       <div class="discharge-panel">
-        <div
-          class="openPopup-btn d-flex w-60 py-1 align-items-center in-patient-title mb-2"
-        >
+        <div class="openPopup-btn d-flex w-60 py-1 align-items-center in-patient-title mb-2">
           <img width="30" src="assets/img/info-document.png" />
           <span class="ml-2">Discharge Data</span>
         </div>
-        <div class="d-flex flex-wrap align-items-center mb-2">
+        <!-- <div class="d-flex flex-wrap align-items-center mb-2">
           <div class="col-md-3 pl-0 mb-2">
-            <label for="surgery-date" class="col-form-label"
-              >Discharge Date / Discharge Time</label
-            >
+            <label for="surgery-date" class="col-form-label">Discharge Date / Discharge Time</label>
           </div>
           <div class="col-md-9 pl-0 mb-2 d-flex">
             <div class="col-md-6 pl-0">
-              <div class="date-function mr-4" style=" border-radius: 8px; position: relative; top: -8px; min-width: 61%;">
-                    <span class="pn-input-title z-indexlabel">Date </span>
-                    <img src="assets/img/Calender.svg" alt="" style="position: relative; top: 37px; right: 6px; float: right; transform: translateY(-50%);" />
-                    <input #drp="bsDatepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }" class="form-control height-normal" formControlName="Date" />
-                </div>
+              <div class="date-function mr-4"
+                style=" border-radius: 8px; position: relative; top: -8px; min-width: 61%;">
+                <span class="pn-input-title z-indexlabel">Date </span>
+                <img src="assets/img/Calender.svg" alt=""
+                  style="position: relative; top: 37px; right: 6px; float: right; transform: translateY(-50%);" />
+                <input #drp="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY', showWeekNumbers: false }"
+                  class="form-control height-normal" formControlName="Date" />
+              </div>
             </div>
             <div class="col-md-6 pl-0">
-              <input
-                type="time"
-                step="2"
-                class="form-control height-normal"
-                min="08:00:00" max="17:00:00"
-                id="surgery-time"
-                formControlName="Time"
-              />
+              <input type="time" step="2" class="form-control height-normal" min="08:00:00" max="17:00:00"
+                id="surgery-time" formControlName="Time" />
             </div>
+          </div>
+        </div> -->
+        <div class="d-flex align-items-center mb-2">
+          <div class="col-md-3 pl-0">
+            <label for="reason-for-admission" class="col-form-label">Therapeutic Equipment at Time of Discharge</label>
+          </div>
+          <div class="col-md-9 p-0">
+            <textarea type="text" class="form-control" formControlName="TherapeuticEquipment"
+              id="reason-for-admission"></textarea>
           </div>
         </div>
         <div class="d-flex flex-wrap align-items-center mb-2">
           <div class="col-md-3 pl-0 mb-2">
-            <label for="surgery-date" class="col-form-label"
-              >Discharge disposition</label
-            >
+            <label for="surgery-date" class="col-form-label">Discharge Disposition</label>
           </div>
           <div class="col-md-5 pl-0 mb-2">
-            <ng-select
-              [searchable]="true"
-              class="form-control p-0"
-              formControlName="DischargeDisposition"
-              (change)="onChangeOtherOption(inPatientPhdisDataSet.value)"
-            >
-              <ng-option
-                *ngFor="let item of dischargeDispositionList"
-                [value]="item.Value"
-                >{{ item.Desc }}</ng-option
-              >
+            <ng-select [searchable]="true" class="form-control p-0" formControlName="DischargeDisposition"
+              (change)="onChangeOtherOption(inPatientPhdisDataSet.value)">
+              <ng-option *ngFor="let item of dischargeDispositionList" [value]="item.Value">
+                <span style="font-weight: bold; display:none">{{item.Value}}-</span>
+                {{ item.Desc }}
+              </ng-option>
             </ng-select>
           </div>
           <div class="col-md-4 p-0 mb-2">
-            <input
-              type="text"
-              class="form-control height-normal"
-              id="dischargedisposition"
-              formControlName="DischargeDispositionOthers"
-              [readonly]="isDisabledOther"
-            />
+            <input type="text" class="form-control height-normal" id="dischargedisposition"
+              formControlName="DischargeDispositionOth" [readonly]="isDisabledOther" />
           </div>
-          <div class="col-md-3 pl-0">
-            <label for="surgery-time" class="col-form-label"
-              >Needs transport</label
-            >
+          <!-- <div class="col-md-3 pl-0">
+            <label for="surgery-time" class="col-form-label">Needs transport</label>
           </div>
           <div class="col-md-5 pl-0">
-            <ng-select
-              [searchable]="true"
-              class="form-control p-0"
-              formControlName="NeedsTransport"
-            >
-              <ng-option
-                *ngFor="let item of NeedTransport"
-                [value]="item.Value"
-                >{{ item.Desc }}</ng-option
-              >
+            <ng-select [searchable]="true" class="form-control p-0" formControlName="NeedsTransport">
+              <ng-option *ngFor="let item of NeedTransport" [value]="item.Value">{{ item.Desc }}</ng-option>
             </ng-select>
-          </div>
+          </div> -->
           <!-- <div class="col-md-5 pl-0 mb-2">
                   <ng-select [searchable]="true" class="form-control p-0"
                      (change)="onChangeOtherOption(4)">
@@ -196,70 +173,55 @@
         </div>
         <div class="d-flex align-items-center mb-2">
           <div class="col-md-3 pl-0">
-            <label for="indication-for-surgery" class="col-form-label"
-              >Condition at discharge</label
-            >
+            <label for="indication-for-surgery" class="col-form-label">Patient Condition at discharge</label>
           </div>
           <div class="col-md-9 p-0">
-            <textarea
-              type="text"
-              class="form-control"
-              id="indication-for-surgery"
-              formControlName="DischargeCondition"
-            ></textarea>
+            <textarea type="text" class="form-control" id="indication-for-surgery"
+              formControlName="PatientCondition"></textarea>
           </div>
         </div>
         <div class="d-flex align-items-center mb-2">
           <div class="col-md-3 pl-0">
-            <label for="indication-for-surgery" class="col-form-label"
-              >Discharge reason</label
-            >
+            <label for="indication-for-surgery" class="col-form-label">Discharge reason</label>
           </div>
           <div class="col-md-9 p-0">
-            <textarea
-              type="text"
-              class="form-control"
-              formControlName="DischargeReason"
-              id="indication-for-surgery"
-            ></textarea>
+            <textarea type="text" class="form-control" formControlName="DischargeReason"
+              id="indication-for-surgery"></textarea>
           </div>
         </div>
         <div class="d-flex align-items-center mb-2">
           <div class="col-md-3 pl-0">
-            <label for="indication-for-surgery" class="col-form-label"
-              >Discharge and Follow-Up Instruction</label
-            >
+            <label for="indication-for-surgery" class="col-form-label">Discharge Plan and Follow-Up Instruction</label>
           </div>
           <div class="col-md-9 p-0">
-            <textarea
-              type="text"
-              class="form-control"
-              id="indication-for-surgery"
-              formControlName="DischargeFollowipInstruction"
-            ></textarea>
+            <textarea type="text" class="form-control" id="indication-for-surgery"
+              formControlName="DischargePlan"></textarea>
           </div>
         </div>
       </div>
     </div>
 
     <div class="section w-100 mt-3">
-      <div class="section-title">Medications</div>
+      <!-- <div class="section-title">Medications</div> -->
+      <div class="openPopup-btn d-flex w-100 py-1 align-items-center in-patient-title mb-2">
+        <img width="30" src="assets/img/info-document.png" />
+        <span class="ml-2">Medications</span>
+      </div>
       <app-import-medication [(data)]="medicationImportData"></app-import-medication>
     </div>
 
-    <div class="section w-100 mt-3">
+    <!-- <div class="section w-100 mt-3">
       <div class="section-title">Diagnosis</div>
       <div>
         <div class="d-flex mb-2" style="justify-content: space-between; padding-right: 22px">
           <div style="display: flex; align-items: center; gap: 10px;">
-            <input type="checkbox" style="width: 36px; height: 22px;" formControlName="NoDiagnosis" [disabled]="toDiagnosisArr.length > 0" />
+            <input type="checkbox" style="width: 36px; height: 22px;" formControlName="NoDiagnosis"
+              [disabled]="toDiagnosisArr.length > 0" />
             <label class="admitting-physician">No Diagnosis Applicable</label>
           </div>
           <div>
             <button class="create-diagnosis" (click)="openModalForDiagnosis()">Create
               & Import</button>
-            <!-- <img  class="cursor-pointer" title="Add row" src="assets/img/add.png" style="width: 22px; margin-left: 14px" />
-          <img title="Import" class="cursor-pointer" src="assets/img/texteditor.png" style="width: 22px; margin-left: 14px" /> -->
           </div>
 
         </div>
@@ -284,14 +246,14 @@
                 <td style="width: 14%;    padding: 10px !important;">{{item.Code}}</td>
                 <td style="width: 32%;    padding: 10px !important;">{{item.Description}}</td>
                 <td style="    width:23%;padding: 10px !important;">{{item.Remarks}}</td>
-                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.AdmDiagnosisInd"
-                    [ngModelOptions]="{standalone: true}"></td>
-                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.SurgeryDiagnosisInd"
-                    [ngModelOptions]="{standalone: true}"></td>
+                <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                    [(ngModel)]="item.AdmDiagnosisInd" [ngModelOptions]="{standalone: true}"></td>
+                <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                    [(ngModel)]="item.SurgeryDiagnosisInd" [ngModelOptions]="{standalone: true}"></td>
                 <td style="text-align: center;"><input type="checkbox" style="width:18px"
                     [(ngModel)]="item.PreoprativeDiagnosisInd" [ngModelOptions]="{standalone: true}"></td>
-                <td style="text-align: center;"><input type="checkbox" style="width:18px" [(ngModel)]="item.DischargDiagnosisInd"
-                    [ngModelOptions]="{standalone: true}"></td>
+                <td style="text-align: center;"><input type="checkbox" style="width:18px"
+                    [(ngModel)]="item.DischargDiagnosisInd" [ngModelOptions]="{standalone: true}"></td>
                 <td style="text-align: center;width:5%" (click)="deleteDiagnosisFromTable(item,i)"><img
                     src="assets/img/Delete.svg" style="position: relative;
                 top: 6px;" /></td>
@@ -300,7 +262,7 @@
           </table>
         </form>
       </div>
-    </div>
+    </div> -->
   </div>
 </form>
 

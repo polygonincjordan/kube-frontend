@@ -447,7 +447,7 @@ export class DocumentationListComponent implements OnInit {
       date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
       documents: this.patientProfileDocumet[key]
     }));
-    console.log(this.sortedDocuments, "sortedDocuments");
+    // console.log(this.sortedDocuments, "sortedDocuments");
 
     // Sort the array based on the date property
     if (this.asc) {
@@ -518,7 +518,7 @@ export class DocumentationListComponent implements OnInit {
 
       return isCreatedByMatch && isDepartmentMatch;
     });
-    console.log(this.documentTypeFilterValue, "filterByPeriod");
+    // console.log(this.documentTypeFilterValue, "filterByPeriod");
   }
   parseODataDate(odataDate: string): Date {
     // Extract timestamp from the OData date format

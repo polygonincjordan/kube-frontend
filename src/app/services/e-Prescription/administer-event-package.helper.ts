@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs';
-import swal from 'sweetalert2';
+import swal, { SweetAlertResult } from 'sweetalert2';
 import { EPrescriptionService } from './e-prescription.service';
 
 export const LAST_PACKAGE_INSUFFICIENT_MESSAGE =
@@ -64,13 +64,11 @@ const ADMINISTER_EVENT_DIALOG_BASE = {
 } as const;
 
 /** Close (X) or Esc — dismiss without retrying getAdministerEvent. */
-function isDismissWithoutApiRetry(result: {
-  isDismissed?: boolean;
-  dismiss?: string;
-}): boolean {
+function isDismissWithoutApiRetry(result: SweetAlertResult<any>): boolean {
   return (
-    !!result.isDismissed &&
-    (result.dismiss === swal.DismissReason.close || result.dismiss === swal.DismissReason.esc)
+    result.isDismissed &&
+    (result.dismiss === swal.DismissReason.close ||
+      result.dismiss === swal.DismissReason.esc)
   );
 }
 

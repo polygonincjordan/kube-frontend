@@ -53,7 +53,6 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
   ) {
     this.getMaterialList();
     // this.actionTypeSubscription$ = this.dataShareService.actionsType$.subscribe((data) => {
-    //   debugger
     //   if (data != null) {
     //     if (data.type == ActionType.Save$ && data.isAllow == true && data.value == this.wordType.MaterialCode$) {
     //       this.saveRecords();

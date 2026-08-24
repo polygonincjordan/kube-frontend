@@ -3,17 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InPatientDataResult } from '@services/e-kardex/interfaces/inpatient-data';
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
-import {
-  BehaviorSubject,
-  Observable,
-  ReplaySubject,
-  catchError,
-  lastValueFrom,
-  map,
-  tap,
-  throwError
-} from 'rxjs';
-import { DocumentationListComponent } from 'src/app/discharge-process/documentation/documentation-list/documentation-list.component';
+import { BehaviorSubject, Observable, ReplaySubject, catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { StorageService } from '../storage.service';
@@ -185,7 +175,7 @@ export class AdmissionService {
     } else if (tabName && tabName === 'discharge') {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = true;
     } else if (tabName && tabName === 'vitalSign') {
-      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false,this.vitalSign = true;
+      this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false, this.vitalSign = true;
     } else if (tabName && tabName === 'DietMealOrdering') {
       this.PhysicianOrders = false; this.ProgressNotes = false; this.Diagnosis = false; this.Documentation = false; this.isDischargeProcess = false; this.isDietMealOrdering = true;
     }
@@ -525,7 +515,7 @@ export class AdmissionService {
       if (this.selectedCurrentDocDetails.NodocText == 'N/A' && actionType == 'edit') {
         return;
       }
-
+      debugger
       if (this.selectedCurrentDocDetails.Dtid == 'ZMED_EDUAS') {
         if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') return;
         if (actionType == 'edit') {
@@ -1012,13 +1002,82 @@ export class AdmissionService {
     return this.http.get(`${environment.eKardexApiUrl}/inpatientData/getDischargeSummarySet?Einri=${paramsObj.einri}&Falnr=${paramsObj.falnr}`, { withCredentials: true })
   }
 
+  transformPayload(input) {
+    // Extract form details from the first element of ToFormData array if available
+    const formData = (input.ToFormData && input.ToFormData[0]) || {};
+    let docStatus: string = '';
+    if (input.Released == true && input.Dockey != '') {
+      docStatus = '2'
+    } else if (input.Released == true && input.Dockey == '') {
+      docStatus = '4'
+    } else {
+      docStatus = '1'
+    }
+    return {
+      d: {
+        Dockey: this.isCloneDischargeSummery ? '' : input.Dockey || "",
+        Dtid: input.Dtid || "ZMED_PHDIS",
+        Einri: input.Einri || "",
+        Patnr: input.Patnr || "",
+        Falnr: input.Falnr || "",
+        Lfdnr: input.Lfdbew || "00001",
+        Orgdo: input.Orgdo || formData.Orgdo || "",
+        Datee: formData.Datee || input.Dodat || "",
+        Timee: formData.Timee || input.Dotim || "",
+        AdmissionReason: formData.AdmissionReason || "",
+        Diagnoses: formData.Diagnoses || "",
+        SignificantPhysical: formData.SignificantPhysical || "",
+        DiagnosticTherapeutic: formData.DiagnosticTherapeutic || "",
+        TherapeuticEquipment: formData.TherapeuticEquipment || "",
+        PatientCondition: formData.PatientCondition || "",
+        DischargePlan: formData.DischargePlan || "",
+        DischargeReason: formData.DischargeReason || "",
+        DischargeDisposition: formData.DischargeDisposition || "0",
+        DischargeDispositionOth: formData.DischargeDispositionOth || "",
+        AttendPhy: input.Mitarb || "",
+        // DocStatus: input.Released === true ? "2" : "1",
+        DocStatus: docStatus,
+
+        // Map Hospital Medications
+        TOHOSPMED: (input.ToHospitalMed || []).map((med) => ({
+          Dockey: this.isCloneDischargeSummery ? '' : input.Dockey || "",
+          Meevtid: med.EventId || "",
+          Descr: med.EventDesc ? med.EventDesc : med.Descr || "",
+          Dose: med.Dose || "",
+          Validity: med.Validity ? `Since ${med.Validity}` : "",
+          Route: med.Route || "",
+          Rate: med.Rate || "",
+          Cycle: med.Cycle || ""
+        })),
+
+        // Map Discharge Medications
+        TODISCHMED: (input.ToDischargeMed || []).map((med) => ({
+          Dockey: this.isCloneDischargeSummery ? '' : input.Dockey || "",
+          OrderType: med.OrderType || "Discharge",
+          Description: med.Description ? med.Description : med.OrderDesc || "",
+          HomeMedication: med.HomeMedication || false,
+          PatientOwnMed: med.PatientOwnMed || false,
+          Dose: med.Dose || "",
+          Validity: med.Validity || "",
+          Route: med.Route || "",
+          Amount: med.Amount || "",
+          Rate: med.Rate || "",
+          Therapy: med.Therapy || "00000",
+          Id: med.Id || "",
+          OrderingPhysician: med.OrderingPhysician || "",
+          Cycle: med.Cycle || ""
+        }))
+      }
+    };
+  }
+
   saveInPatientPhdisData(data: { Release: boolean, ToFormData: any, ToDiagnosis: any, ToHospitalMed: any, ToDischargeMed: any }, userConfiguration: any, paramsObj: any) {
     const payloadData = {
       Dockey: data.ToFormData?.Dockey ?? "",
       Einri: paramsObj.einri,
       Patnr: paramsObj.patnr,
       Falnr: paramsObj.falnr,
-      Orgdo: "",
+      Orgdo: localStorage.getItem('initOrg'),
       Mitarb: "",
       Dtid: "",
       Dtvers: "",
@@ -1032,7 +1091,6 @@ export class AdmissionService {
       Orgpf: "",
       Released: data.Release,
     }
-
     const payload = {
       ...payloadData,
       ToFormData: [data.ToFormData],
@@ -1040,10 +1098,20 @@ export class AdmissionService {
       ToHospitalMed: data.ToHospitalMed || [],
       ToDischargeMed: data.ToDischargeMed || [],
     };
-
-    const url = `${environment.eKardexApiUrl}/inpatientData/saveReleaseDischargeSummarySet`;
-    return this.http.post(url, payload, { withCredentials: true });
+    // console.log('saveInPatientPhdisData payload:', payload);
+    console.log('transformPayload', this.transformPayload(payload));
+    debugger;
+    const url = `${environment.eKardexApiUrl}/inpatientData/saveReleasePhyDischSummarySet`;
+    return this.http.post(url, this.transformPayload(payload), { withCredentials: true });
   }
+
+  directReleaseInPatientPhdisData(data: any) {
+    console.log('transformPayload', this.transformPayload(data));
+    const url = `${environment.eKardexApiUrl}/inpatientData/saveReleasePhyDischSummarySet`;
+    return this.http.post(url, this.transformPayload(data), { withCredentials: true });
+  }
+
+
 
   getPatientVisitDataByDocKey(docKey: string, einri: string, patnr: string): Observable<InPatientDataResult> {
     const url = this.getUrlInPatientVisitDataByDocKey(
@@ -1058,6 +1126,14 @@ export class AdmissionService {
         return throwError(error);
       })
     );
+  }
+
+
+  getPhyDischSummarySetPDF(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/inPatientData/getPhyDischSummarySetPDF`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
   }
 
 
