@@ -504,6 +504,63 @@
   </div>
   <!-- impression and plan of care section till -->
 
+  <section class="discharge-planning-section" aria-labelledby="pediatric-discharge-planning-title"
+    [formGroup]="nursingAdmissionForm">
+    <h3 id="pediatric-discharge-planning-title" class="discharge-planning-title">Discharge Planning</h3>
+    <div class="discharge-planning-fields">
+      <div class="discharge-planning-row">
+        <label for="pediatric-expected-length-stay">Expected Length of Stay</label>
+        <input id="pediatric-expected-length-stay" type="text" class="form-control"
+          formControlName="ExpectedLengthStay" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-medications">Medications</label>
+        <input id="pediatric-medications" type="text" class="form-control"
+          formControlName="Medications" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-diet">Diet</label>
+        <input id="pediatric-diet" type="text" class="form-control"
+          formControlName="Diet" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-level-mobility">Level of Mobility</label>
+        <input id="pediatric-level-mobility" type="text" class="form-control"
+          formControlName="LevelMobility" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-pain-management">Pain Management (if applicable)</label>
+        <input id="pediatric-pain-management" type="text" class="form-control"
+          formControlName="PainManagement" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-medical-equipment">Medical Equipment (if applicable)</label>
+        <input id="pediatric-medical-equipment" type="text" class="form-control"
+          formControlName="MedicalEquipment" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-home-community">Home-Community Support Services</label>
+        <input id="pediatric-home-community" type="text" class="form-control"
+          formControlName="HomeCommunity" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-smoking-cessation">Smoking Cessation Services</label>
+        <input id="pediatric-smoking-cessation" type="text" class="form-control"
+          formControlName="SmokingCessation" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-clinical-appointments">Clinical Appointments</label>
+        <input id="pediatric-clinical-appointments" type="text" class="form-control"
+          formControlName="ClinicalAppointments" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-others">Others</label>
+        <input id="pediatric-others" type="text" class="form-control"
+          formControlName="Others1" [readonly]="isReadOnly">
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>

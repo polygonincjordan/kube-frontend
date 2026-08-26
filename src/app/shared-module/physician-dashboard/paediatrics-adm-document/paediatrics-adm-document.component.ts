@@ -727,7 +727,17 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         })
       ]),
 
-      Impression: ''
+      Impression: '',
+      ExpectedLengthStay: '',
+      Medications: '',
+      Diet: '',
+      LevelMobility: '',
+      PainManagement: '',
+      MedicalEquipment: '',
+      HomeCommunity: '',
+      SmokingCessation: '',
+      ClinicalAppointments: '',
+      Others1: ''
     });
     this.defaultAddRow();
     this.defaultAddRowforTOINFECTIONS();
