@@ -402,3 +402,263 @@ ul.respiratory-check-box .form-check label {
     min-height: 260px;
   }
 }
+
+
+
+.discharge-planning-container {
+  width        : 100%;
+  border       : 2px solid #bdbdbd;
+  border-radius: 18px;
+  background   : #fff;
+  padding      : 0 16px 16px;
+  margin-top   : 10px;
+  box-sizing   : border-box;
+
+  .section-title {
+    height          : 48px;
+    display         : flex;
+    align-items     : center;
+    position        : relative;
+    // border-bottom: 1px solid #333;
+
+    label {
+      position     : absolute;
+      left         : 0;
+      top          : 10px;
+      background   : #fff;
+      padding-right: 15px;
+      font-size    : 15px;
+      font-weight  : 600;
+      color        : #111;
+      z-index      : 2;
+    }
+
+    &::after {
+      content      : '';
+      position     : absolute;
+      left         : 0;
+      bottom       : -1px;
+      width        : 220px;
+      height       : 2px;
+      // background: #1769aa;
+    }
+  }
+
+  .discharge-planning-body {
+    display      : flex;
+    width        : 100%;
+    min-height   : 400px;
+    border       : 1px solid #4779a8;
+    border-radius: 18px;
+    overflow     : hidden;
+    margin-top   : 0;
+    background   : #fff;
+  }
+
+  // -----------------------------------------
+  // LEFT MENU
+  // -----------------------------------------
+
+  .discharge-menu {
+    width     : 30%;
+    min-width : 240px;
+    background: #e9edef;
+    margin    : 16px 16px 14px 12px;
+    align-self: stretch;
+
+    .menu-item {
+      min-height   : 46px;
+      padding      : 12px 8px;
+      display      : flex;
+      align-items  : center;
+      border-bottom: 1px solid #c8ced2;
+      font-size    : 14px;
+      color        : #111;
+      cursor       : pointer;
+      box-sizing   : border-box;
+      transition   : all 0.2s ease;
+
+      &:hover {
+        background: #dce7ee;
+      }
+
+      &.active {
+        background : #d5e1e7;
+        color      : #075b8d;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // -----------------------------------------
+  // RIGHT CONTENT
+  // -----------------------------------------
+
+  .discharge-content {
+    flex     : 1;
+    padding  : 18px 16px 18px 0;
+    min-width: 0;
+  }
+
+  .form-section {
+    margin-bottom: 8px;
+
+    .form-label {
+      display      : block;
+      font-size    : 14px;
+      font-weight  : 500;
+      color        : #222;
+      margin-bottom: 7px;
+    }
+
+    .form-control {
+      height       : 40px;
+      border       : 1px solid #0865c0;
+      border-radius: 5px;
+      font-size    : 14px;
+      padding      : 7px 10px;
+      box-shadow   : none;
+
+      &:focus {
+        border-color: #0865c0;
+        box-shadow  : 0 0 0 1px rgba(8, 101, 192, 0.15);
+      }
+    }
+  }
+
+  // -----------------------------------------
+  // DISCHARGE NEEDS TITLE
+  // -----------------------------------------
+
+  .content-section-title {
+    height       : 32px;
+    display      : flex;
+    align-items  : center;
+    position     : relative;
+    margin-bottom: 14px;
+
+    &::before {
+      content   : '';
+      position  : absolute;
+      left      : 0;
+      right     : 0;
+      top       : 50%;
+      height    : 1px;
+      background: #333;
+    }
+
+    span {
+      position     : relative;
+      background   : #fff;
+      padding-right: 15px;
+      font-size    : 14px;
+      font-weight  : 600;
+      color        : #111;
+      z-index      : 1;
+    }
+  }
+
+  // -----------------------------------------
+  // FORM GRID
+  // -----------------------------------------
+
+  .form-grid {
+    display              : grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap           : 18px;
+    row-gap              : 14px;
+  }
+
+  .form-field {
+    min-width    : 0;
+    margin-bottom: 8px;
+
+    label {
+      display      : block;
+      font-size    : 13px;
+      font-weight  : 500;
+      color        : #222;
+      margin-bottom: 6px;
+
+      .optional-text {
+        font-size  : 11px;
+        font-weight: 400;
+        color      : #777;
+      }
+    }
+
+    .form-control {
+      width        : 100%;
+      height       : 38px;
+      border       : 1px solid #0865c0;
+      border-radius: 5px;
+      padding      : 6px 10px;
+      font-size    : 13px;
+      color        : #222;
+      background   : #fff;
+      box-shadow   : none;
+      box-sizing   : border-box;
+
+      &:focus {
+        border-color: #0865c0;
+        outline     : none;
+        box-shadow  : 0 0 0 1px rgba(8, 101, 192, 0.15);
+      }
+
+      &:disabled {
+        background: #f3f4f5;
+        cursor    : not-allowed;
+      }
+    }
+  }
+}
+
+// -----------------------------------------
+// RESPONSIVE
+// -----------------------------------------
+
+@media (max-width: 992px) {
+
+  .discharge-planning-container {
+
+    .discharge-planning-body {
+      flex-direction: column;
+    }
+
+    .discharge-menu {
+      width     : calc(100% - 24px);
+      min-width : unset;
+      margin    : 12px;
+      display   : flex;
+      overflow-x: auto;
+
+      .menu-item {
+        min-width      : 160px;
+        justify-content: center;
+        border-right   : 1px solid #c8ced2;
+        border-bottom  : none;
+      }
+    }
+
+    .discharge-content {
+      padding: 10px 16px 18px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+
+  .discharge-planning-container {
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .discharge-menu {
+      .menu-item {
+        min-width: 140px;
+        font-size: 12px;
+      }
+    }
+  }
+}
