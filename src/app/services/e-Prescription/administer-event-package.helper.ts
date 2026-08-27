@@ -66,7 +66,7 @@ const ADMINISTER_EVENT_DIALOG_BASE = {
 /** Close (X) or Esc — dismiss without retrying getAdministerEvent. */
 function isDismissWithoutApiRetry(result: {
   isDismissed?: boolean;
-  dismiss?: swal.DismissReason;
+  dismiss?: (typeof swal.DismissReason)[keyof typeof swal.DismissReason];
 }): boolean {
   return (
     !!result.isDismissed &&
