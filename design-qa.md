@@ -2,6 +2,7 @@
 
 - Compared the supplied SAP-style field reference with a browser-rendered preview of the shared discharge-planning layout.
 - Expected Length of Stay remains a compact, single-line field at 160px wide.
+- Expected Length of Stay is limited to 10 characters in every target template, matching the working OBG field and SAP constraint.
 - Physician retains all nine discharge-needs text areas.
 - Pediatric uses Medications, Diet, Level of Mobility, Pain Management, Medical Equipment, Home-Community Support Services, Clinical Appointments, and Others; Smoking Cessation is excluded because it is not exposed by the Pediatric API.
 - Newborn uses Medications, Diet, Level of Mobility, Pain Management, Medical Equipment, Clinical Appointments, and Others; Home-Community Support Services and Smoking Cessation are excluded to match the Newborn API.

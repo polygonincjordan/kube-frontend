@@ -510,7 +510,7 @@
     <div class="discharge-planning-fields">
       <div class="discharge-planning-row">
         <label for="pediatric-expected-length-stay">Expected Length of Stay</label>
-        <input id="pediatric-expected-length-stay" type="text" class="form-control discharge-planning-short-field"
+        <input id="pediatric-expected-length-stay" type="text" maxlength="10" class="form-control discharge-planning-short-field"
           formControlName="ExpectedLengthStay" [readonly]="isReadOnly">
       </div>
       <div class="discharge-planning-row">
