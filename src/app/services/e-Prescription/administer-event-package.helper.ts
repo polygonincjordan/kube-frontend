@@ -66,14 +66,16 @@ const ADMINISTER_EVENT_DIALOG_BASE = {
 /** Close (X) or Esc — dismiss without retrying getAdministerEvent. */
 function isDismissWithoutApiRetry(result: {
   isDismissed?: boolean;
-  dismiss?: string;
+  dismiss?: swal.DismissReason;
 }): boolean {
   return (
     !!result.isDismissed &&
-    (result.dismiss === swal.DismissReason.close || result.dismiss === swal.DismissReason.esc)
+    (
+      result.dismiss === swal.DismissReason.close ||
+      result.dismiss === swal.DismissReason.esc
+    )
   );
 }
-
 function extractODataErrorMessage(error: any): string {
   try {
     const v =

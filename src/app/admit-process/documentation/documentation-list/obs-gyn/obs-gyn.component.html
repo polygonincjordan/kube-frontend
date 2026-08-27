@@ -1170,7 +1170,116 @@
       </form>
     </div>
   </div>
-  <div class="gyno-history-block mt-2">
+  <div class="discharge-planning-container">
+
+    <!-- Main Title -->
+    <div class="section-title">
+      <label>Discharge Planning</label>
+    </div>
+
+    <div class="discharge-planning-body">
+
+      <!-- Left Navigation -->
+      <div class="discharge-menu">
+
+        <div class="menu-item">
+          Expected Length of Stay
+        </div>
+
+        <div class="menu-item">
+          Medications
+        </div>
+
+        <div class="menu-item">
+          Diet
+        </div>
+
+        <div class="menu-item">
+          Level of Mobility
+        </div>
+
+        <div class="menu-item">
+          Pain Management
+          <span class="optional-text">(if applicable)</span>
+        </div>
+
+        <div class="menu-item">
+          Medical Equipment
+          <span class="optional-text">(if applicable)</span>
+        </div>
+
+        <div class="menu-item">
+          Home / Community Support
+        </div>
+
+        <div class="menu-item">
+          Smoking Cessation
+        </div>
+
+        <div class="menu-item">
+          Clinical Appointments
+        </div>
+
+        <div class="menu-item">
+          Others
+        </div>
+
+      </div>
+
+      <!-- Right Content -->
+      <div class="discharge-content">
+        <!-- Expected Length of Stay -->
+        <div class="form-field">
+          <input type="text" class="form-control" formControlName="ExpectedLengthStay" maxlength="10">
+        </div>
+        <!-- Medications -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="Medications"></textarea>
+        </div>
+
+        <!-- Diet -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="Diet"></textarea>
+        </div>
+
+        <!-- Level of Mobility -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="LevelMobility"></textarea>
+        </div>
+
+        <!-- Pain Management -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="PainManagement"></textarea>
+        </div>
+
+        <!-- Medical Equipment -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="MedicalEquipment"></textarea>
+        </div>
+
+        <!-- Home Community -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="HomeCommunity"></textarea>
+        </div>
+
+        <!-- Smoking Cessation -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="SmokingCessation"></textarea>
+        </div>
+
+        <!-- Clinical Appointments -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="ClinicalAppointments"></textarea>
+        </div>
+
+        <!-- Others -->
+        <div class="form-field">
+          <textarea class="form-control" rows="2" formControlName="Others1"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="gyno-history-block mt-2">
     <div class="mt-2" style="height: 24px;border-bottom: 1px solid;">
       <label class="admitting-physician">Discharge Planning :</label>
     </div>
@@ -1240,7 +1349,7 @@
       </div>
     </div>
 
-  </div>
+  </div> -->
 </div>
 <ng-template #additionalInfo>
   <div class="additional-input additional-input p-3">
