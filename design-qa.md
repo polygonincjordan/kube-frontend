@@ -7,6 +7,7 @@
 - Newborn uses Medications, Diet, Level of Mobility, Pain Management, Medical Equipment, Clinical Appointments, and Others; Home-Community Support Services and Smoking Cessation are excluded to match the Newborn API.
 - The text areas expose vertical resizing and retain the horizontal label/control layout.
 - Verified all four target templates: Physician admission, Physician discharge, Pediatric, and Newborn.
+- Verified the read paths: Physician patches the complete response, Pediatric explicitly maps every supported discharge-planning property, and Newborn initializes the form from the fetched response.
 - Angular AOT compilation and the production build pass.
 - Obstetrics & Gynecology files are unchanged.
 

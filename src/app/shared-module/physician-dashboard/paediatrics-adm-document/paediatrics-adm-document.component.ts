@@ -1078,7 +1078,16 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
             OpVGivenByTxt: result.OpVGivenByTxt,
 
             Phy: result.Phy,
-            Impression: result.Impression
+            Impression: result.Impression,
+            ExpectedLengthStay: result.ExpectedLengthStay,
+            Medications: result.Medications,
+            Diet: result.Diet,
+            LevelMobility: result.LevelMobility,
+            PainManagement: result.PainManagement,
+            MedicalEquipment: result.MedicalEquipment,
+            HomeCommunity: result.HomeCommunity,
+            ClinicalAppointments: result.ClinicalAppointments,
+            Others1: result.Others1
           });
 
           this.nursingAdmissionForm.patchValue({ Datee: this.convertDateFormat(Datee) })
