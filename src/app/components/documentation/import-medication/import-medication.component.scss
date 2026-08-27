@@ -3,95 +3,26 @@
 }
 
 .tab-navigation-part .tab-navigate .tab-nav {
-  padding      : 0px !important;
+  padding: 0px !important;
   border-bottom: none !important;
 }
 
 .tab-action {
-  border       : 1px solid;
-  background   : #3b82f6;
-  color        : #fff;
-  padding      : 5px 20px;
+  border: 1px solid;
+  background: #3b82f6;
+  color: #fff;
+  padding: 5px 20px;
   border-radius: 4px;
-  font-weight  : 700;
-  height       : fit-content;
+  font-weight: 700;
+  height: fit-content;
 }
 
 .tab-action:disabled {
-  background  : gray;
+  background: gray;
   border-color: gray;
-  cursor      : not-allowed;
+  cursor: not-allowed;
 }
 
-.table th,
-.table td {
+.table th, .table td {
   vertical-align: middle;
-}
-
-
-
-// Main outer container (the main card/border)
-.order-type-filter-container {
-  background   : #f5f8fb;
-  border       : 1px solid #dce5ed;
-  border-radius: 8px;
-  .form-label {
-    // Ensuring the label "Order Type:" doesn't have an input under it
-    cursor: default;
-  }
-}
-
-// Inner container that holds both tabs (the shaded light blue box)
-.tabs-group-container {
-  display         : flex;
-  background-color: #f1f5f9; // A slightly darker shaded blue
-  border          : 1px solid #dce5ed;
-  border-radius   : 6px;
-  padding         : 4px; // Internal padding for the tabs
-  gap             : 0; // No gap; we want the tabs to touch
-
-  .form-check {
-    position: relative; // Context for the absolute input
-    margin  : 0;
-  }
-
-  // --- THIS IS THE FIX ---
-  // Hide the browser's default radio circle
-  .form-check-input[type="radio"] {
-    position: absolute;
-    opacity : 0; // The crucial part - visually gone but still interactable
-    z-index : -1; // Moved out of the way
-    width   : 0;
-    height  : 0;
-    margin  : 0;
-    padding : 0;
-  }
-
-  // Define the styling for all labels (tabs)
-  .form-check-label {
-    display         : inline-block;
-    padding         : 8px 16px;
-    cursor          : pointer;
-    font-weight     : 500;
-    color           : #555;
-    background-color: transparent; // Default is clear
-    border-radius   : 4px; // Small curve on each tab
-    transition      : background-color 0.2s, color 0.2s, box-shadow 0.2s;
-    user-select     : none; // Prevent text selection on click
-
-    // Handle hover
-    &:hover {
-      background-color: #e2e8f0; // Subtle grey hover
-    }
-  }
-
-  // --- APPLY STYLING TO THE CHECKED STATE ---
-  // When the input *before* the label is :checked, style the label
-  .form-check-input:checked+.form-check-label {
-    background-color                       : #ffffff; // White active background
-    color                                  : #333; // Darker active text
-    font-weight                            : 600;
-    // Optional shadow for elevation effect:
-    box-shadow                             : 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  }
 }

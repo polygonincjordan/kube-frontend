@@ -81,11 +81,11 @@ export enum RedirectionType {
   DIALYSIS$ = 'DIALYSIS', // Dialysis Assessment
   HBCA$ = 'HBCA', // Hemo Catheter,
   HBFG$ = 'HBFG', // Hemo Dialysis Fistula Graft,
-  NAA$ = 'NAA',//Nursing Admission Assessment
-  SRGPP$ = "SRGPP",//Surgical Passport
-  NURDS$ = "NURDS",//Nursing Discharge Summary
-  NCP$ = "NCP", //, Nursing Care Plan (
-  PRECATH$ = "NCP",//, Nursing Care Plan (
+  NAA$='NAA',//Nursing Admission Assessment
+  SRGPP$="SRGPP",//Surgical Passport
+  NURDS$="NURDS",//Nursing Discharge Summary
+  NCP$="NCP", //, Nursing Care Plan (
+  PRECATH$="NCP",//, Nursing Care Plan (
   NEWBORN$ = 'NEWBORN$',
   Bundles$ = 'Bundles$',
   CvcMain$ = 'CvcMain$',
@@ -115,7 +115,6 @@ export enum MedicationOrderTypeEnum {
   Anesthesia = '70',
   Surgery = '80',
   Verbal = '90',
-  Home = '00'
 }
 
 export const MedicationOrderTypeLabels: Record<MedicationOrderTypeEnum, string> = {
@@ -130,5 +129,4 @@ export const MedicationOrderTypeLabels: Record<MedicationOrderTypeEnum, string> 
   '70': 'Anesthesia',
   '80': 'Surgery',
   '90': 'Verbal',
-  '00': 'Home'
 };

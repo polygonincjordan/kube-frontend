@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output, ViewChild, } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { InPatientConfigurationService } from '@services/e-kardex/inPatient.service';
@@ -14,7 +23,6 @@ import { SharedService } from '@services/shared.service';
 import { MedicationOrderTypeLabels } from '@services/interfaces/common.enum';
 import { IMedicationImportData } from 'src/app/components/documentation/import-medication/import-medication.component';
 import { DocsService } from '@services/docs.service';
-import { CommanService } from '@services/comman.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -22,18 +30,19 @@ import { CommanService } from '@services/comman.service';
   styleUrls: ['./discharge-summary.component.scss'],
 })
 export class DischargeSummaryComponent implements OnInit, OnChanges {
-  @Input() soapFormEvent!: string;
+  @Input() soapFormEvent: string;
   @Output() reloadTableList = new EventEmitter();
-  @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex!: GynDiagnosisComponent;
+  @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: GynDiagnosisComponent;
+  
   orderType = MedicationOrderTypeLabels;
-  inPatientPhdisDataSet!: FormGroup;
+  inPatientPhdisDataSet: FormGroup;
   dischargeDispositionList: any = [
-    { Desc: 'Vitally Stable', Value: '0' },
-    { Desc: 'Discharged Home', Value: '1' },
-    { Desc: 'DAMA', Value: '2' },
-    { Desc: 'Deceased', Value: '3' },
-    { Desc: 'Transferred to another hospital', Value: '4' },
-    { Desc: 'Others, Specify', Value: '5' },
+    { Desc: 'Discharge Home', Value: '0' },
+    { Desc: 'DAMA', Value: '1' },
+    { Desc: 'Deceased', Value: '2' },
+    { Desc: 'Others', Value: '3' },
+    { Desc: 'Admitted to hospital', Value: '4' },
+    { Desc: 'Transferred to another hospital', Value: '5' },
   ];
   NeedTransport: any = [
     { Desc: 'Yes', Value: true },
@@ -44,7 +53,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     this.userConfig = data;
   }
 
-  medicationImportData!: IMedicationImportData;
+  medicationImportData: IMedicationImportData;
 
   userConfig: UserConfig = {} as UserConfig;
   paramsObj
@@ -60,8 +69,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     public storageService: StorageService,
     public ePrescriptionService: EPrescriptionService,
     public sharedService: SharedService,
-    private docsService: DocsService,
-    private commanService: CommanService
+    private docsService: DocsService
 
   ) {
     this.route.queryParams.subscribe((res) => {
@@ -76,26 +84,24 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.soapFormEvent.currentValue == 'add') {
-      this.savePhysicianDischarge(false);
-    }
+        this.savePhysicianDischarge(false);
+      }
     if (changes.soapFormEvent.currentValue == 'saveClose') {
-      this.savePhysicianDischarge(false);
-    }
+        this.savePhysicianDischarge(false);
+      }
 
     if (changes.soapFormEvent.currentValue == 'edit') {
-      this.savePhysicianDischarge(false);
-    }
+        this.savePhysicianDischarge(false);
+      }
 
     if (changes.soapFormEvent.currentValue == 'release') {
       this.savePhysicianDischarge(true)
-    }
+      }
 
     if (changes.soapFormEvent.currentValue == 'toReleaseDis') {
-      this.getDichargeDataByDockey(true);
-    }
-    debugger;
+        this.getDichargeDataByDockey(true);
+      }
     if (this.admissionService.isCloneDischargeSummery || this.admissionService.isEditDischargeSummery) {
-      debugger;
       if (!this.isCheckAPICall) {
         this.getDichargeDataByDockey(false);
       }
@@ -103,71 +109,55 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   }
 
   getDichargeDataByDockey(isRelease) {
-    this.inPatientConfigurationService
-      .getPhyDischSummarySetByDocKey(this.admissionService.selectedCurrentDocDetails.Dockey)
-      .subscribe((resp) => {
-        if (resp && resp.results && resp.results.length) {
-          this.inPatientDischargeData = resp.results[0];
-          console.log(this.inPatientDischargeData);
-          this.isCheckAPICall = true;
-          let dockey: string = '';
-          if (this.admissionService.isCloneDischargeSummery) {
-            dockey = '';
-          } else {
-            dockey = this.inPatientDischargeData.Dockey;
-          }
-          // const FormData = resp.results[0].ToFormData.results[0];
+    this.inPatientConfigurationService.getPatientSummaryDataByDocKey(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe((resp) => {
+      if (resp && resp.results && resp.results.length) {
+        this.inPatientDischargeData = resp.results[0];
+        this.isCheckAPICall = true;
+        const FormData = resp.results[0].ToFormData.results[0];
+        this.inPatientPhdisDataSet.patchValue({
+          Dockey: FormData.Dockey,
+          AdmissionReason: FormData.AdmissionReason,
+          EvolutionSummary: FormData.EvolutionSummary,
+          RelevantResultsAdm: FormData.RelevantResultsAdm,
+          PhysicalExaminationDischarge: FormData.PhysicalExaminationDischarge,
+          MgmtTreatmentPlan: FormData.MgmtTreatmentPlan,
+          MgmtRecommendations: FormData.MgmtRecommendations,
+          DischargeCondition: FormData.DischargeCondition,
+          DischargeDisposition: FormData.DischargeDisposition,
+          DischargeDispositionOthers: FormData.DischargeDispositionOthers,
+          NeedsTransport: FormData.NeedsTransport,
+          DischargeReason: FormData.DischargeReason,
+          DischargeFollowipInstruction: FormData.DischargeFollowipInstruction,
+          NoDiagnosis: FormData.NoDiagnosis,
+          NomedSubstancesAppl: FormData.NomedSubstancesAppl,
+          Substances: FormData.Substances,
+          NoMedordAppl: FormData.NoMedordAppl,
+        });
+
+        if (!this.admissionService.isCloneDischargeSummery) {
           this.inPatientPhdisDataSet.patchValue({
-            Dockey: dockey,
-            AdmissionReason: this.inPatientDischargeData.AdmissionReason,
-            Diagnoses: this.inPatientDischargeData.Diagnoses,
-            DiagnosticTherapeutic: this.inPatientDischargeData.DiagnosticTherapeutic,
-            // EvolutionSummary: this.inPatientDischargeData.EvolutionSummary,
-            // RelevantResultsAdm: this.inPatientDischargeData.RelevantResultsAdm,
-            PhysicalExaminationDischarge: this.inPatientDischargeData.PhysicalExaminationDischarge,
-            DischargePlan: this.inPatientDischargeData.DischargePlan,
-            PatientCondition: this.inPatientDischargeData.PatientCondition,
-            SignificantPhysical: this.inPatientDischargeData.SignificantPhysical,
-            TherapeuticEquipment: this.inPatientDischargeData.TherapeuticEquipment,
-            // MgmtTreatmentPlan: this.inPatientDischargeData.MgmtTreatmentPlan,
-            // MgmtRecommendations: this.inPatientDischargeData.MgmtRecommendations,
-            // DischargeCondition: this.inPatientDischargeData.DischargeCondition,
-            DischargeDisposition: this.inPatientDischargeData.DischargeDisposition,
-            DischargeDispositionOth: this.inPatientDischargeData.DischargeDispositionOth,
-            NeedsTransport: this.inPatientDischargeData.NeedsTransport,
-            DischargeReason: this.inPatientDischargeData.DischargeReason,
-            // DischargeFollowipInstruction: this.inPatientDischargeData.DischargeFollowipInstruction,
-            NoDiagnosis: this.inPatientDischargeData.NoDiagnosis,
-            NomedSubstancesAppl: this.inPatientDischargeData.NomedSubstancesAppl,
-            Substances: this.inPatientDischargeData.Substances,
-            NoMedordAppl: this.inPatientDischargeData.NoMedordAppl,
-          });
-
-          if (!this.admissionService.isCloneDischargeSummery) {
-            this.inPatientPhdisDataSet.patchValue({
-              Date: this.getDate(this.inPatientDischargeData.Datee),
-              Time: this.parseTime(this.inPatientDischargeData.Timee),
-            })
-          }
-          // this.toDiagnosisArr = this.inPatientDischargeData.ToDiagnosis.results;
-
-          this.medicationImportData = {
-            'Hospital Medication': {
-              applicable: this.inPatientPhdisDataSet.value.NomedSubstancesAppl,
-              importedMedications: this.inPatientDischargeData?.TOHOSPMED?.results,
-            },
-            'Discharge and Home Medication': {
-              applicable: this.inPatientPhdisDataSet.value.NoMedordAppl,
-              importedMedications: this.inPatientDischargeData?.TODISCHMED?.results,
-            },
-          };
-          console.log('medicationImportData', this.medicationImportData);
-
-          if (isRelease) {
-            this.savePhysicianDischarge(true);
-          }
+            Date: this.getDate(FormData.Date),
+            Time: this.parseTime(FormData.Time),
+          })
         }
-      })
+        this.toDiagnosisArr = this.inPatientDischargeData.ToDiagnosis.results;
+
+        this.medicationImportData = {
+          'Hospital Medication': {
+            applicable: this.inPatientPhdisDataSet.value.NomedSubstancesAppl,
+            importedMedications: this.inPatientDischargeData.ToHospitalMed.results,
+          },
+          'Discharge Medication': {
+            applicable: this.inPatientPhdisDataSet.value.NoMedordAppl,
+            importedMedications: this.inPatientDischargeData.ToDischargeMed.results,
+          },
+        };
+
+        if (isRelease) {
+          this.savePhysicianDischarge(true);
+        }
+      }
+    })
   }
 
   parseDate(date: string) {
@@ -189,23 +179,24 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     const ToFormData = this.inPatientPhdisDataSet.value;
     ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
     ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
-    
+
     const ToDiagnosis = this.toDiagnosisArr;
     ToFormData['NoDiagnosis'] = this.inPatientPhdisDataSet.value.NoDiagnosis;
     
     const ToHospitalMed = this.medicationImportData?.['Hospital Medication']?.importedMedications;
     ToFormData['NomedSubstancesAppl'] = this.medicationImportData?.['Hospital Medication']?.applicable;
-    
-    const ToDischargeMed = this.medicationImportData?.['Discharge and Home Medication']?.importedMedications;
-    ToFormData['NoMedordAppl'] = this.medicationImportData?.['Discharge and Home Medication']?.applicable;
 
-    const data = {
-      Release: isRelease,
-      ToFormData,
-      ToDiagnosis,
-      ToHospitalMed,
-      ToDischargeMed
+    const ToDischargeMed = this.medicationImportData?.['Discharge Medication']?.importedMedications;
+    ToFormData['NoMedordAppl'] = this.medicationImportData?.['Discharge Medication']?.applicable;
+
+    const data = { 
+      Release: isRelease, 
+      ToFormData, 
+      ToDiagnosis, 
+      ToHospitalMed, 
+      ToDischargeMed 
     };
+
     this.admissionService.saveInPatientPhdisData(data, this.userConfig, this.paramsObj).subscribe({
       next: () => {
         this.reloadTableList.next(true);
@@ -213,7 +204,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
         this.admissionService.clearSoapEvent.next(true);
         this.admissionService.isEditDischargeSummery = false;
         this.admissionService.isCloneDischargeSummery = false;
-        this.docsService.showSuccessMsg(this.soapFormEvent, 'Physician Discharge Summary');
+        this.docsService.showSuccessMsg(this.soapFormEvent,'Physician Discharge Summary');
       },
       error: (error: any) => {
         this.admissionService.clearSoapEvent.next(true);
@@ -226,25 +217,25 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   }
 
   updatePhysicianDischarge(isRelease) {
-    debugger;
     const ToFormData = this.inPatientPhdisDataSet.value;
     ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
     ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
 
     const ToDiagnosis = this.toDiagnosisArr;
     ToFormData['NoDiagnosis'] = this.inPatientPhdisDataSet.value.NoDiagnosis;
+    
     const ToHospitalMed = this.medicationImportData?.['Hospital Medication']?.importedMedications;
     ToFormData['NomedSubstancesAppl'] = this.medicationImportData?.['Hospital Medication']?.applicable;
 
     const ToDischargeMed = this.medicationImportData?.['Discharge Medication']?.importedMedications;
     ToFormData['NoMedordAppl'] = this.medicationImportData?.['Discharge Medication']?.applicable;
 
-    const data = {
-      Release: isRelease,
-      ToFormData,
-      ToDiagnosis,
-      ToHospitalMed,
-      ToDischargeMed
+    const data = { 
+      Release: isRelease, 
+      ToFormData, 
+      ToDiagnosis, 
+      ToHospitalMed, 
+      ToDischargeMed 
     };
 
     this.admissionService.updateInPatientPhdisData(data, this.userConfig, this.paramsObj).subscribe({
@@ -296,25 +287,16 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     this.inPatientPhdisDataSet = new FormGroup({
       Dockey: new FormControl(''),
       AdmissionReason: new FormControl(''),
-      Diagnoses: new FormControl(''),
-      SignificantPhysical: new FormControl(''),
-      DiagnosticTherapeutic: new FormControl(''),
-      TherapeuticEquipment: new FormControl(''),
-      PatientCondition: new FormControl(''),
-      DischargePlan: new FormControl(''),
-      // EvolutionSummary: new FormControl(''),
-      // RelevantResultsAdm: new FormControl(''),
+      EvolutionSummary: new FormControl(''),
+      RelevantResultsAdm: new FormControl(''),
       PhysicalExaminationDischarge: new FormControl(''),
       MgmtTreatmentPlan: new FormControl(''),
-      // MgmtRecommendations: new FormControl(''),
-      // DischargeCondition: new FormControl(''),
-      Orgdo: new FormControl(''),
-      Datee: new FormControl(''),
-      Timee: new FormControl(''),
-      // Date: new FormControl(null),
-      // Time: new FormControl(this.parseTime(this.datePipe.transform(new Date(), "hh:mm:ss"))),
+      MgmtRecommendations: new FormControl(''),
+      DischargeCondition: new FormControl(''),
+      Date: new FormControl(null),
+      Time: new FormControl(this.parseTime(this.datePipe.transform(new Date(), "hh:mm:ss"))),
       DischargeDisposition: new FormControl(null),
-      DischargeDispositionOth: new FormControl(''),
+      DischargeDispositionOthers: new FormControl(''),
       NeedsTransport: new FormControl(false),
       DischargeReason: new FormControl(''),
       DischargeFollowipInstruction: new FormControl(''),
@@ -326,7 +308,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   }
 
   onChangeOtherOption(data: any) {
-    data.DischargeDisposition === '5'
+    data.DischargeDisposition === '4'
       ? (this.isDisabledOther = false)
       : (this.isDisabledOther = true);
   }
