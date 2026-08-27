@@ -44,9 +44,9 @@
       line-height: 1.25;
     }
 
-    input.form-control {
+    input.form-control,
+    textarea.form-control {
       width: 100%;
-      height: 34px;
       min-width: 0;
       padding: 5px 9px;
       border: 0;
@@ -66,6 +66,25 @@
         background: #f4f5f6;
       }
     }
+
+    input.form-control {
+      height: 34px;
+    }
+
+    textarea.form-control {
+      min-height: 42px;
+      line-height: 1.35;
+      resize: vertical;
+    }
+
+    input.discharge-planning-short-field {
+      align-self: center;
+      width: 160px;
+      height: 30px;
+      margin: 3px 8px;
+      border: 1px solid #b9c7d3;
+      border-radius: 3px;
+    }
   }
 }
 
@@ -77,6 +96,10 @@
       label {
         border-right: 0;
         border-bottom: 1px solid #d8e0e7;
+      }
+
+      input.discharge-planning-short-field {
+        width: min(160px, calc(100% - 16px));
       }
     }
   }
