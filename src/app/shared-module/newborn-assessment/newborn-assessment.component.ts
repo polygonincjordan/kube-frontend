@@ -529,8 +529,6 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
       LevelMobility: [data?.LevelMobility || ''],
       PainManagement: [data?.PainManagement || ''],
       MedicalEquipment: [data?.MedicalEquipment || ''],
-      HomeCommunity: [data?.HomeCommunity || ''],
-      SmokingCessation: [data?.SmokingCessation || ''],
       ClinicalAppointments: [data?.ClinicalAppointments || ''],
       Others1: [data?.Others1 || ''],
     })

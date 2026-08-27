@@ -735,7 +735,6 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
       PainManagement: '',
       MedicalEquipment: '',
       HomeCommunity: '',
-      SmokingCessation: '',
       ClinicalAppointments: '',
       Others1: ''
     });
