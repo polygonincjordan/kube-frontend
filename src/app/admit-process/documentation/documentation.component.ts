@@ -32,9 +32,9 @@ export class DocumentationComponent implements OnInit {
   @Output() formEvent = new EventEmitter();
 
   @ViewChild('soapDocument', { static: true })
-  soapDocument: SopaDocumentComponent;
+  soapDocument!: SopaDocumentComponent;
 
-  formDetailGroup: FormGroup;
+  formDetailGroup!: FormGroup;
   paramsObject: any;
   dateRange: any;
   selectedDocType: any;
@@ -133,7 +133,7 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.clearVarValue();
       this.admissionService.isPDFObstetricRisk = false;
       this.admissionService.educationAddForm('add');
-    } else if(type == 'saveClose') {
+    } else if (type == 'saveClose') {
       this.formEvent.next('saveClose');
       console.log(type, "1");
     } else {
@@ -214,43 +214,43 @@ export class DocumentationComponent implements OnInit {
       });
     }
   }
-     //working on here (Pediatrics Admission Assessment) bottom one
-   deletePediatricAdmAssess(docKey: string) {
-      this.emergencyService.deletePediatricAdmAssesDoc(docKey).subscribe({
-          next: (_success: any) => {
-            this.admissionService.isRealoadData.next(true);
-                Swal.fire({
-              text: "Document is deleted successfully",
-              icon: 'success',
-              confirmButtonText: 'Ok',
-              customClass: { popup: 'myalertpopup' }
-            })
-          },
-          error: (_error: any) => {
-                Swal.fire({
-              text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
-              icon: 'warning',
-              confirmButtonText: 'Ok',
-              customClass: { popup: 'myalertpopup' }
-            })
-          }
-        }
-        );
+  //working on here (Pediatrics Admission Assessment) bottom one
+  deletePediatricAdmAssess(docKey: string) {
+    this.emergencyService.deletePediatricAdmAssesDoc(docKey).subscribe({
+      next: (_success: any) => {
+        this.admissionService.isRealoadData.next(true);
+        Swal.fire({
+          text: "Document is deleted successfully",
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        })
+      },
+      error: (_error: any) => {
+        Swal.fire({
+          text: `${_error.error.error.innererror?.errordetails[0]?.message}`,
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' }
+        })
+      }
+    }
+    );
   }
   directReleaseNeonatalDischargeDoc() {
-     this.dayCaseDashboardService
+    this.dayCaseDashboardService
       .fetcNeonatalDischargeDocDetails(this.admissionService.selectedCurrentDocDetails.Dockey).subscribe({
         next: (data: any) => {
           let paylaod = data.d.results[0];
           delete paylaod.__metadata
           paylaod.DocStatus = '2';
-            this.dayCaseDashboardService.saveNeonatalDischargeDocument({ d: paylaod }).subscribe({
+          this.dayCaseDashboardService.saveNeonatalDischargeDocument({ d: paylaod }).subscribe({
             next: (data: any) => { },
             error: (err: any) => {
               this.docsService.showErrorMsg(err)
             },
             complete: () => {
-              this.docsService.showSuccessMsg('release','Neonatal Discharge Summary')
+              this.docsService.showSuccessMsg('release', 'Neonatal Discharge Summary')
               this.admissionService.isRealoadData.next(true);
             }
           });
@@ -406,14 +406,14 @@ export class DocumentationComponent implements OnInit {
     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_NEODS') {
       this.directReleaseNeonatalDischargeDoc();
     }
-     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_TRFAS') {
-       this.releasePhysicianDoc()
+    if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_TRFAS') {
+      this.releasePhysicianDoc()
     }
-     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_PDASM') {
-       this.releasePediatricAdmAssesDoc()
+    if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_PDASM') {
+      this.releasePediatricAdmAssesDoc()
     }
-     if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_OPERT') {
-       this.releaseSurgaryDoc()
+    if (this.admissionService.selectedCurrentDocDetails.Dtid === 'ZMED_OPERT') {
+      this.releaseSurgaryDoc()
     }
   }
 
@@ -449,13 +449,13 @@ export class DocumentationComponent implements OnInit {
       };
       d.d.DocStatus = '2';
       d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
-       this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
+      this.emergencyService.CreatePediatricAdmAssesDoc(d).subscribe(
         (result) => {
-          this.docsService.showSuccessMsg('release','Pediatrics Admission Assessment')
+          this.docsService.showSuccessMsg('release', 'Pediatrics Admission Assessment')
           this.admissionService.isRealoadData.next(true);
         }, error => {
-      this.docsService.showErrorMsg(error);
-    }
+          this.docsService.showErrorMsg(error);
+        }
       );
     }, error => {
       this.docsService.showErrorMsg(error);
@@ -463,7 +463,7 @@ export class DocumentationComponent implements OnInit {
   }
   releasePhysicianDoc() {
     let json = {
-      Dockey:this.admissionService.selectedCurrentDocDetails.Dockey
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey
     }
     this.admissionService.getTansferAssessData(json).subscribe((res: any) => {
       console.log(res, "--");
@@ -471,20 +471,20 @@ export class DocumentationComponent implements OnInit {
       let d: any = {
         d: res?.results[0],
       };
-      d .d.DocStatus = '2';
+      d.d.DocStatus = '2';
       if (d.d.Datee != '') {
-  // Extract timestamp from "/Date(1747785600000)/"
-  const match = /\/Date\((\d+)\)\//.exec(d.d.Datee);
-  if (match && match[1]) {
-    const dateObj = new Date(+match[1]); // convert to Date
-    d.d.Datee = `${new DatePipe('en-US').transform(
-      dateObj,
-      'yyyy-MM-dd'
-    )}T00:00:00`;
-  } else {
-    d.d.Datee = ''; // fallback or handle invalid case
-  }
-}
+        // Extract timestamp from "/Date(1747785600000)/"
+        const match = /\/Date\((\d+)\)\//.exec(d.d.Datee);
+        if (match && match[1]) {
+          const dateObj = new Date(+match[1]); // convert to Date
+          d.d.Datee = `${new DatePipe('en-US').transform(
+            dateObj,
+            'yyyy-MM-dd'
+          )}T00:00:00`;
+        } else {
+          d.d.Datee = ''; // fallback or handle invalid case
+        }
+      }
       delete d.d.__metadata;
       d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.admissionService.releaseTransferDoc(d.d).subscribe(
@@ -492,8 +492,8 @@ export class DocumentationComponent implements OnInit {
           this.admissionService.isRealoadData.next(true);
           this.docsService.showSuccessMsg('release', 'Transfer Assessment Document');
         }, error => {
-      this.docsService.showErrorMsg(error);
-    }
+          this.docsService.showErrorMsg(error);
+        }
       );
     }, error => {
       this.docsService.showErrorMsg(error);
@@ -501,52 +501,52 @@ export class DocumentationComponent implements OnInit {
   }
   releaseSurgaryDoc() {
     let json = {
-      Dockey:this.admissionService.selectedCurrentDocDetails.Dockey
+      Dockey: this.admissionService.selectedCurrentDocDetails.Dockey
     }
-    this.inPatientConfigurationService.getPatientVisitDataByDocKey(json.Dockey,this.paramsObject).subscribe((res: any) => {
+    this.inPatientConfigurationService.getPatientVisitDataByDocKey(json.Dockey, this.paramsObject).subscribe((res: any) => {
       console.log(res, "--");
 
       let d: any = {
         d: res,
       };
-      d .d.Released = true;
+      d.d.Released = true;
       if (d.d.Erdattim != '') {
-  // Extract timestamp from "/Date(1747785600000)/"
-  const match = /\/Date\((\d+)\)\//.exec(d.d.Erdattim);
-  if (match && match[1]) {
-    const dateObj = new Date(+match[1]); // convert to Date
-    d.d.Erdattim = `${new DatePipe('en-US').transform(
-      dateObj,
-      'yyyy-MM-dd'
-    )}T00:00:00`;
-  } else {
-    d.d.Erdattim = ''; // fallback or handle invalid case
-  }
+        // Extract timestamp from "/Date(1747785600000)/"
+        const match = /\/Date\((\d+)\)\//.exec(d.d.Erdattim);
+        if (match && match[1]) {
+          const dateObj = new Date(+match[1]); // convert to Date
+          d.d.Erdattim = `${new DatePipe('en-US').transform(
+            dateObj,
+            'yyyy-MM-dd'
+          )}T00:00:00`;
+        } else {
+          d.d.Erdattim = ''; // fallback or handle invalid case
+        }
       }
       if (d.d.Dodat != '') {
-  // Extract timestamp from "/Date(1747785600000)/"
-  const match = /\/Date\((\d+)\)\//.exec(d.d.Dodat);
-  if (match && match[1]) {
-    const dateObj = new Date(+match[1]); // convert to Date
-    d.d.Dodat = `${new DatePipe('en-US').transform(
-      dateObj,
-      'yyyy-MM-dd'
-    )}T00:00:00`;
-  } else {
-    d.d.Dodat = ''; // fallback or handle invalid case
-  }
+        // Extract timestamp from "/Date(1747785600000)/"
+        const match = /\/Date\((\d+)\)\//.exec(d.d.Dodat);
+        if (match && match[1]) {
+          const dateObj = new Date(+match[1]); // convert to Date
+          d.d.Dodat = `${new DatePipe('en-US').transform(
+            dateObj,
+            'yyyy-MM-dd'
+          )}T00:00:00`;
+        } else {
+          d.d.Dodat = ''; // fallback or handle invalid case
+        }
       }
       delete d.d.__metadata;
       d.d.AttendPhy = this.storageService.getUserProfile().Gpart;
       this.inPatientConfigurationService.saveSurgery(d.d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-           this.docsService.showSuccessMsg('release','Department of Surgery - Operation Notes')
+          this.docsService.showSuccessMsg('release', 'Department of Surgery - Operation Notes')
         }, error => {
-      this.docsService.showErrorMsg(error);
-    }
+          this.docsService.showErrorMsg(error);
+        }
       );
-    }, error =>  {
+    }, error => {
       this.docsService.showErrorMsg(error);
     })
   }
@@ -572,10 +572,10 @@ export class DocumentationComponent implements OnInit {
             .toReleaseSoapPatientVisitData(patientData)
             .then((res: any) => {
               this.admissionService.isRealoadData.next(true);
-              this.docsService.showSuccessMsg('release', 'SOAP Document');  
+              this.docsService.showSuccessMsg('release', 'SOAP Document');
             }, error => {
-      this.docsService.showErrorMsg(error);
-    });
+              this.docsService.showErrorMsg(error);
+            });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -593,10 +593,10 @@ export class DocumentationComponent implements OnInit {
           this.admissionService
             .updateObstetricDoc(obstetricData).subscribe((resp) => {
               this.admissionService.isRealoadData.next(true);
-              this.docsService.showSuccessMsg('release','Obstetric VTE Risk Assess&Mgt Postaprtum');
+              this.docsService.showSuccessMsg('release', 'Obstetric VTE Risk Assess&Mgt Postaprtum');
             }, error => {
-        this.docsService.showErrorMsg(error);
-      });
+              this.docsService.showErrorMsg(error);
+            });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -613,10 +613,10 @@ export class DocumentationComponent implements OnInit {
           this.admissionService
             .updateObsVteAntDoc(obstetricData).subscribe((resp) => {
               this.admissionService.isRealoadData.next(true);
-              this.docsService.showSuccessMsg('release','Obstetric VTE Risk Assess&Mgt Antepartum');
+              this.docsService.showSuccessMsg('release', 'Obstetric VTE Risk Assess&Mgt Antepartum');
             }, error => {
-        this.docsService.showErrorMsg(error);
-      });
+              this.docsService.showErrorMsg(error);
+            });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -665,36 +665,124 @@ export class DocumentationComponent implements OnInit {
               this.admissionService.isRealoadData.next(true);
               this.docsService.showSuccessMsg('release', 'Operation Report');
             }, error => {
-        this.docsService.showErrorMsg(error);
-      });
+              this.docsService.showErrorMsg(error);
+            });
           // this.inPatientOrrptDataSet.patchValue(res.PATDOCTOOPERRPTDOCDETAIL.results[0])
         }
       }, error => {
         this.docsService.showErrorMsg(error);
       });
   }
+  private mapPhyDischSummary(source: any): any {
+    const padNumber = (value: any, length: number): string => {
+      if (value === null || value === undefined || value === '') {
+        return ''.padStart(length, '0');
+      }
+      return String(value).padStart(length, '0');
+    };
+    const hospitalMedications =
+      source?.TOHOSPMED?.results?.map((med: any) => ({
+        ...med,
+        Validity: med?.Validity?.replace(/^Since\s+Since\s+/i, 'Since ')
+      })) ?? [];
+
+    const dischargeMedications =
+      source?.TODISCHMED?.results?.map((med: any) => ({
+        ...med
+      })) ?? [];
+
+    const formData = {
+      Dockey: source?.Dockey ?? '',
+      AdmissionReason: source?.AdmissionReason ?? '',
+      Diagnoses: source?.Diagnoses ?? '',
+      SignificantPhysical: source?.SignificantPhysical ?? '',
+      DiagnosticTherapeutic: source?.DiagnosticTherapeutic ?? '',
+      TherapeuticEquipment: source?.TherapeuticEquipment ?? '',
+      PatientCondition: source?.PatientCondition ?? '',
+      DischargePlan: source?.DischargePlan ?? '',
+      MgmtTreatmentPlan: '',
+      Orgdo: localStorage.getItem('initOrg'),
+      Datee: '',
+      Timee: '',
+      DischargeDisposition: source?.DischargeDisposition ?? '',
+      DischargeDispositionOth: source?.DischargeDispositionOth ?? '',
+      DischargeReason: source?.DischargeReason ?? '',
+      DischargeFollowipInstruction: '',
+      Time: null,
+      Date: null
+    };
+
+    return {
+      Dockey: source?.Dockey ?? '',
+      Einri: source?.Einri ?? '',
+      Patnr: padNumber(source?.Patnr, 10),
+      Falnr: padNumber(source?.Falnr, 10),
+      Orgdo: localStorage.getItem('initOrg'),
+      Mitarb: '',
+      Dtid: '',
+      Dtvers: '',
+      Dodat: source?.Datee ?? '',
+      Dotim: source?.Timee ?? '',
+      Erusr: this.userConfig?.UserId,
+      Erdat: source?.Datee ?? '',
+      Dokst: '',
+      Lfdbew: source?.Lfdnr ?? '',
+      Orgfa: '',
+      Orgpf: '',
+      Released: true,
+
+      ToFormData: [formData],
+
+      ToDiagnosis: [],
+
+      ToHospitalMed: hospitalMedications,
+
+      ToDischargeMed: dischargeMedications
+    };
+  }
+
+
+  //  dischargeSumRelease() {
+  //   this.inPatientConfigurationService
+  //     .getPatientSummaryDataByDocKey(
+  //       this.admissionService.selectedCurrentDocDetails.Dockey
+  //     )
+  //     .subscribe((resp) => {
+  //       if (resp && resp.results && resp.results.length) {
+  //         const ToFormData = resp.results[0].ToFormData.results[0];
+  //         const ToDischargeMed = resp.results[0].ToDischargeMed.results;
+  //         const ToHospitalMed = resp.results[0].ToHospitalMed.results;
+  //         const ToDiagnosis = resp.results[0].ToDiagnosis.results;
+
+  //         const data = {
+  //           Release: true,
+  //           ToFormData,
+  //           ToDiagnosis,
+  //           ToHospitalMed,
+  //           ToDischargeMed,
+  //         }
+
+  //         this.admissionService.saveInPatientPhdisData(data, this.admissionService.dichargeUserConfig, this.paramsObject).subscribe(() => {
+  //           this.admissionService.cancelAllForm();
+  //           this.admissionService.isSaveEducationData.next(true);
+  //           this.admissionService.isRealoadData.next(true);
+  //         });
+  //       }
+  //     }, error => {
+  //       this.docsService.showErrorMsg(error);
+  //     });
+  // }
 
   dischargeSumRelease() {
     this.inPatientConfigurationService
-      .getPatientSummaryDataByDocKey(
-        this.admissionService.selectedCurrentDocDetails.Dockey
-      )
+      .getPhyDischSummarySetByDocKey(this.admissionService.selectedCurrentDocDetails.Dockey)
       .subscribe((resp) => {
         if (resp && resp.results && resp.results.length) {
-          const ToFormData = resp.results[0].ToFormData.results[0];
-          const ToDischargeMed = resp.results[0].ToDischargeMed.results;
-          const ToHospitalMed = resp.results[0].ToHospitalMed.results;
-          const ToDiagnosis = resp.results[0].ToDiagnosis.results;
-
-          const data = {
-            Release: true,
-            ToFormData,
-            ToDiagnosis,
-            ToHospitalMed,
-            ToDischargeMed,
-          }
-          
-          this.admissionService.saveInPatientPhdisData(data, this.admissionService.dichargeUserConfig, this.paramsObject).subscribe(() => {
+          debugger;
+          const data = this.mapPhyDischSummary(resp.results[0]);
+          // console.log(data);
+          // return;
+          this.admissionService.directReleaseInPatientPhdisData(data).subscribe(() => {
             this.admissionService.cancelAllForm();
             this.admissionService.isSaveEducationData.next(true);
             this.admissionService.isRealoadData.next(true);
@@ -775,8 +863,8 @@ export class DocumentationComponent implements OnInit {
               this.admissionService.isRealoadData.next(true);
               this.docsService.showSuccessMsg('release', 'Medical Report Report');
             }, error => {
-        this.docsService.showErrorMsg(error);
-      });
+              this.docsService.showErrorMsg(error);
+            });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -813,8 +901,8 @@ export class DocumentationComponent implements OnInit {
               this.admissionService.isRealoadData.next(true);
               this.docsService.showSuccessMsg('release', 'Obstetrics & Gynecology Physician Assess');
             }, error => {
-        this.docsService.showErrorMsg(error);
-      });
+              this.docsService.showErrorMsg(error);
+            });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -850,7 +938,7 @@ export class DocumentationComponent implements OnInit {
             .subscribe((res: any) => {
               this.admissionService.isRealoadData.next(true);
               this.docsService.showSuccessMsg('release', 'Neonatal Progress Note');
-            }, error => {this.docsService.showErrorMsg(error); });
+            }, error => { this.docsService.showErrorMsg(error); });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -887,8 +975,8 @@ export class DocumentationComponent implements OnInit {
               this.admissionService.isRealoadData.next(true);
               this.docsService.showSuccessMsg('release', 'Neonatal Medical Report');
             }, error => {
-        this.docsService.showErrorMsg(error);
-      });
+              this.docsService.showErrorMsg(error);
+            });
         }
       }, error => {
         this.docsService.showErrorMsg(error);
@@ -975,10 +1063,10 @@ export class DocumentationComponent implements OnInit {
         let patientData = patientResult?.results[0];
         const chiefComplaint = patientData['ChiefComplaint'];
         if (chiefComplaint == null || String(chiefComplaint).trim() === '') {
-           this.docsService.showWarningMsg('Chief Complaint is required to release the document.');
-           this.admissionService.clearSoapEvent.next(true);
-           return;
-          }
+          this.docsService.showWarningMsg('Chief Complaint is required to release the document.');
+          this.admissionService.clearSoapEvent.next(true);
+          return;
+        }
         if (patientData) {
           patientData['DocStatus'] = '2';
           this.admissionService
@@ -1006,7 +1094,7 @@ export class DocumentationComponent implements OnInit {
       .releaseVisitNoteDoc(json)
       .subscribe((patientResult: any) => {
         this.admissionService.isRealoadData.next(true);
-        this.docsService.showSuccessMsg('release','Visit Note Document')
+        this.docsService.showSuccessMsg('release', 'Visit Note Document')
       }, error => {
         this.docsService.showErrorMsg(error);
       });
@@ -1021,12 +1109,12 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.createNewBorn(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-          this.docsService.showSuccessMsg('release','Newborn Physician Assessment');
+          this.docsService.showSuccessMsg('release', 'Newborn Physician Assessment');
         }, error => {
-        this.docsService.showErrorMsg(error);
-      }
+          this.docsService.showErrorMsg(error);
+        }
       );
-    },error => {
+    }, error => {
       this.docsService.showErrorMsg(error);
     })
   }
@@ -1039,10 +1127,10 @@ export class DocumentationComponent implements OnInit {
       this.admissionService.createNicuSet(d).subscribe(
         (result) => {
           this.admissionService.isRealoadData.next(true);
-          this.docsService.showSuccessMsg('release','NICU Admission Note');
+          this.docsService.showSuccessMsg('release', 'NICU Admission Note');
         }, error => {
-        this.docsService.showErrorMsg(error);
-      }
+          this.docsService.showErrorMsg(error);
+        }
       );
     }, error => {
       this.docsService.showErrorMsg(error);

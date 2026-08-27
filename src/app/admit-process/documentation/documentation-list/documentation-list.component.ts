@@ -444,7 +444,7 @@ export class DocumentationListComponent implements OnInit {
       date: new Date(parseInt(key.replace('/Date(', '').replace(')/', ''))),
       documents: this.patientProfileDocumet[key]
     }));
-    console.log(this.sortedDocuments, "sortedDocuments");
+    // console.log(this.sortedDocuments, "sortedDocuments");
 
     // Sort the array based on the date property
     if (this.asc) {
@@ -515,7 +515,7 @@ export class DocumentationListComponent implements OnInit {
 
       return isCreatedByMatch && isDepartmentMatch;
     });
-    console.log(this.documentTypeFilterValue, "filterByPeriod");
+    // console.log(this.documentTypeFilterValue, "filterByPeriod");
   }
   parseODataDate(odataDate: string): Date {
     // Extract timestamp from the OData date format
@@ -721,52 +721,67 @@ export class DocumentationListComponent implements OnInit {
     }
     // Discharge Summary
     else if (item.Dtid == 'ZMED_PHDIS') {
+      const json = {
+        Dockey: item.Dockey,
+      };
       this.admissionService
-        .getPatientVisitDataByDocKey(
-          item.Dockey,
-          this.paramsObject.einri,
-          this.paramsObject.patnr
-        )
+        .getPhyDischSummarySetPDF(json)
         .pipe(
           untilDestroyed(this),
           catchError((err) => {
             return of([]);
           })
         )
-        .subscribe((patientResult: InPatientDataResult) => {
-          let postFileData;
-          if (patientResult && patientResult.DOCCATTOATTACHMENTS) {
-            if (
-              patientResult.DOCCATTOATTACHMENTS?.results.length > 0 &&
-              patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
-                return obj.FileId === '';
-              }) != null
-            )
-              if (
-                patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
-                  return obj.AttMimeType === 'PDF';
-                }) != null
-              ) {
-                let getAttechment = patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
-                  return obj.FileId === '';
-                }).AttachmentData
-                this.pdfUrlConvertToBlob(getAttechment);
-
-              } else {
-                this.isImageFrame = true;
-                postFileData = this.sanitizer.bypassSecurityTrustResourceUrl(
-                  `data:application/image;base64, ${patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
-                    return obj.FileId === '';
-                  }).AttachmentData
-                  }`
-                );
-                this.pdfUrl = postFileData;
-                this.pdfUrlType = 'image';
-              }
-          }
-          // this.pdfUrl = postFileData;
+        .subscribe((data: any) => {
+          this.pdfUrlConvertToBlob(data?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
         });
+      // this.admissionService
+      //   .getPatientVisitDataByDocKey(
+      //     item.Dockey,
+      //     this.paramsObject.einri,
+      //     this.paramsObject.patnr
+      //   )
+      //   .pipe(
+      //     untilDestroyed(this),
+      //     catchError((err) => {
+      //       return of([]);
+      //     })
+      //   )
+      //   .subscribe((patientResult: InPatientDataResult) => {
+      //     let postFileData;
+      //     if (patientResult && patientResult.DOCCATTOATTACHMENTS) {
+      //       if (
+      //         patientResult.DOCCATTOATTACHMENTS?.results.length > 0 &&
+      //         patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
+      //           return obj.FileId === '';
+      //         }) != null
+      //       )
+      //         if (
+      //           patientResult.DOCCATTOATTACHMENTS?.results.find((obj) => {
+      //             return obj.AttMimeType === 'PDF';
+      //           }) != null
+      //         ) {
+      //           let getAttechment = patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+      //             return obj.FileId === '';
+      //           }).AttachmentData
+      //           this.pdfUrlConvertToBlob(getAttechment);
+
+      //         } else {
+      //           this.isImageFrame = true;
+      //           postFileData = this.sanitizer.bypassSecurityTrustResourceUrl(
+      //             `data:application/image;base64, ${patientResult.DOCCATTOATTACHMENTS.results.find((obj) => {
+      //               return obj.FileId === '';
+      //             }).AttachmentData
+      //             }`
+      //           );
+      //           this.pdfUrl = postFileData;
+      //           this.pdfUrlType = 'image';
+      //         }
+      //     }
+      //     // this.pdfUrl = postFileData;
+      //     this.pdfTemplateRef = this.modalService.show(template, config);
+      //   });
     }
     // Medical Report
     else if (item.Dtid == 'ZMED_MEDRP') {
@@ -1036,13 +1051,13 @@ export class DocumentationListComponent implements OnInit {
           this.pdfTemplateRef = this.modalService.show(template, config);
         })
     }
-    else if(item.Dtid == 'ZMED_PDASM') {
+    else if (item.Dtid == 'ZMED_PDASM') {
       this.admissionService
-      .getPatientProfilePDF(item.Dockey)
-      .subscribe((_success: any) => {
-        this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
+        .getPatientProfilePDF(item.Dockey)
+        .subscribe((_success: any) => {
+          this.pdfUrlConvertToBlob(_success?.d?.AttachmentData);
           this.pdfTemplateRef = this.modalService.show(template, config);
-      })
+        })
     }
 
   }

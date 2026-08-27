@@ -190,7 +190,6 @@ export class SurgicalPassportComponent implements OnInit {
   }
 
   public importVitalsData(data) {
-    debugger
     data.forEach((el) => {
       this.toVitalsArr = this.toVitalsArr.concat({
         Dockey: '',
