@@ -1,64 +1,71 @@
 @import "../documentation-list.component.scss";
+
 .physician-conatinar {
   .header {
-    display: flex;
+    display        : flex;
     justify-content: space-between;
+
     .admission-date {
       white-space: pre;
-      font-size: 14px;
+      font-size  : 14px;
       font-weight: bolder;
-      margin: 0;
+      margin     : 0;
     }
 
     .header-filter {
-      display: flex;
-      width: 30%;
+      display    : flex;
+      width      : 30%;
       align-items: center;
     }
   }
 
   .chief-complain {
     textarea {
-        height: 100px;
-        border-radius: 10px;
-        font-size: 12px;
+      height       : 100px;
+      border-radius: 10px;
+      font-size    : 12px;
     }
-    span.input-title{
-      position: relative !important;
-      cursor: text;
-      font-size: 12px;
-      opacity: 1;
-      top: 0.6em;
-      left: 20px;
-      z-index: 3;
+
+    span.input-title {
+      position   : relative !important;
+      cursor     : text;
+      font-size  : 12px;
+      opacity    : 1;
+      top        : 0.6em;
+      left       : 20px;
+      z-index    : 3;
       line-height: 0.2 !important;
       font-weight: bold;
-      color: #0890c5;
-      background: #fff;
-      padding: 0 10px;
+      color      : #0890c5;
+      background : #fff;
+      padding    : 0 10px;
     }
-    .z-indexlabel{
+
+    .z-indexlabel {
       z-index: 999;
     }
   }
-  .admitting-physician{
+
+  .admitting-physician {
     white-space: pre;
-      font-size: 14px;
-      font-weight: bolder;
-      margin: 0;
+    font-size  : 14px;
+    font-weight: bolder;
+    margin     : 0;
   }
-  .form-control{
+
+  .form-control {
     border: 1px solid #0056b0;
   }
-  .source-info{
-    position: relative;
-    bottom: 8px;
-    display: flex;
+
+  .source-info {
+    position       : relative;
+    bottom         : 8px;
+    display        : flex;
     justify-content: space-between;
-    align-items: center;
-    border: 1px solid #ccc;
-    padding: 21px 18px;
-    border-radius: 7px;
+    align-items    : center;
+    border         : 1px solid #ccc;
+    padding        : 21px 18px;
+    border-radius  : 7px;
   }
 }
 
@@ -66,224 +73,271 @@
   input {
     font-size: 12px;
   }
+
   img {
-    position: absolute;
-    top: 50%;
-    left: 12px;
+    position : absolute;
+    top      : 50%;
+    left     : 12px;
     transform: translateY(-50%);
-    width: 14px;
+    width    : 14px;
   }
 }
 
 .border {
-    border: 1px solid #cacaca !important;
-    padding: 4px 10px 4px 10px;
-    align-items: center;
-    border-radius: 6px;
-    margin: 10px 30px 0px 0px;
+  border       : 1px solid #cacaca !important;
+  padding      : 4px 10px 4px 10px;
+  align-items  : center;
+  border-radius: 6px;
+  margin       : 10px 30px 0px 0px;
 }
 
 .checkbox-list {
-    border: 1px solid #cacaca;
-    border-radius: 10px;
-    padding: 0 10px 10px 15px;
+  border       : 1px solid #cacaca;
+  border-radius: 10px;
+  padding      : 0 10px 10px 15px;
 }
 
 .impression {
-    border: 1px solid #cacaca;
-    border-radius: 6px;
-    .header {
-        padding: 10px;
-        border-bottom: 1px solid #cacaca;
-    }
+  border       : 1px solid #cacaca;
+  border-radius: 6px;
+
+  .header {
+    padding      : 10px;
+    border-bottom: 1px solid #cacaca;
+  }
 }
 
 .personal-hist-drop {
-    display: flex;
-    align-items: center;
-    background-color: #f3f3f3;
-    padding: 0 0 0 10px;
-    border-radius: 6px;
-    justify-content: space-between;
+  display         : flex;
+  align-items     : center;
+  background-color: #f3f3f3;
+  padding         : 0 0 0 10px;
+  border-radius   : 6px;
+  justify-content : space-between;
 }
 
 .drop-down-list {
-    display: flex;
-    justify-content: space-between;
-    height: 28px;
+  display        : flex;
+  justify-content: space-between;
+  height         : 28px;
 }
 
 .h-28 {
-    max-height: 28px !important;
-    height: 28px !important;
+  max-height: 28px !important;
+  height    : 28px !important;
 }
 
 .comment-input {
-    width: 100%;
-    display: flex;
-    padding: 5px 15px 0 25px;
-    align-items: center;
+  width      : 100%;
+  display    : flex;
+  padding    : 5px 15px 0 25px;
+  align-items: center;
 }
-.create-diagnosis{
-  border: 1px solid;
-  background: #3b82f6;
-  color: #fff;
-  padding: 5px 20px;
+
+.create-diagnosis {
+  border       : 1px solid;
+  background   : #3b82f6;
+  color        : #fff;
+  padding      : 5px 20px;
   border-radius: 4px;
-  font-weight: 700;
+  font-weight  : 700;
 }
-.nav-item a{
-  font-size: 18px;
-    font-weight: bold;
+
+.nav-item a {
+  font-size  : 18px;
+  font-weight: bold;
 }
+
 .table th,
 .table td {
   border-color: #5d5c5c !important;
 }
-.gyno-history-block{
-  border: 1px solid #ccc;
-  padding: 12px;
+
+.gyno-history-block {
+  border       : 1px solid #ccc;
+  padding      : 12px;
   border-radius: 7px;
 }
+
 // physical exam part
 
-/*FRIST SECTION CSS START*/ 
+/*FRIST SECTION CSS START*/
 .physical-examination .container {
-    width: 98%;
-    padding: 15px;
-    margin: 15px;
-    max-width: 100%;
-} 
+  width    : 98%;
+  padding  : 15px;
+  margin   : 15px;
+  max-width: 100%;
+}
+
 .main-border {
-    border: 2px solid #bababc;
-    border-radius: 15px;
+  border       : 2px solid #bababc;
+  border-radius: 15px;
 }
+
 .physical-examination .New-border {
-    border: 1px solid #355473;
-    padding: 10px;
-    border-radius: 15px;
-    height: 100%;
-    box-shadow: 0px 0px 2px #355473;
+  border       : 1px solid #355473;
+  padding      : 10px;
+  border-radius: 15px;
+  height       : 100%;
+  box-shadow   : 0px 0px 2px #355473;
 }
+
 .physical-examination .mode-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #000;
+  font-size  : 14px;
+  font-weight: bold;
+  color      : #000;
 }
+
 .physical-examination .New-border ul.general-boxes {
-    padding: 0px;
-    margin: 0px;
-    list-style: none;
-    background: #e9edee;
-    position: relative;
-    font-size: 13px;
-    color: #000;
-    font-weight: 500;
+  padding    : 0px;
+  margin     : 0px;
+  list-style : none;
+  background : #e9edee;
+  position   : relative;
+  font-size  : 13px;
+  color      : #000;
+  font-weight: 500;
 }
+
 .physical-examination .New-border ul.general-boxes li {
-    padding: 8px 5px;
-    border-bottom: 1px solid #c8cccf;
+  padding      : 8px 5px;
+  border-bottom: 1px solid #c8cccf;
 }
-.physical-examination select.new-slect-box, .physical-examination .input-boxes input {
-    width: 100%;
-    border: 1px solid #0056b0 ;
-    border-radius: 5px;
-    width: 100%;
-    height: 35px;
-    margin-bottom: 6px !important;
-    padding: 0px 5px;
-    font-size: 14px;
-    box-shadow: 0px 0px 1px #0056b0 !important;
+
+.physical-examination select.new-slect-box,
+.physical-examination .input-boxes input {
+  width        : 100%;
+  border       : 1px solid #0056b0;
+  border-radius: 5px;
+  width        : 100%;
+  height       : 35px;
+  margin-bottom: 6px !important;
+  padding      : 0px 5px;
+  font-size    : 14px;
+  box-shadow   : 0px 0px 1px #0056b0 !important;
 }
-.physical-examination select.new-slect-box:last-child, .physical-examination input:last-child {
-    margin: 0px;
+
+.physical-examination select.new-slect-box:last-child,
+.physical-examination input:last-child {
+  margin: 0px;
 }
-.physical-examination select.new-slect-box:focus-visible, .physical-examination input:focus-visible {
-    border:  1px solid #324c7d;
-    background: #fff !important;
-    outline: none;
+
+.physical-examination select.new-slect-box:focus-visible,
+.physical-examination input:focus-visible {
+  border    : 1px solid #324c7d;
+  background: #fff !important;
+  outline   : none;
 }
+
 /*FRIST SECTION CSS CLOSE*/
 
 /*SECOUND SECTION CSS START*/
-ul.respiratory-check-box, ul { padding: 0px;list-style: none; position: relative; margin-top: 11px;}
-ul.respiratory-check-box li label.form-check-label { padding-left: 30px;padding-top: 2px;}
+ul.respiratory-check-box,
+ul {
+  padding   : 0px;
+  list-style: none;
+  position  : relative;
+  margin-top: 11px;
+}
+
+ul.respiratory-check-box li label.form-check-label {
+  padding-left: 30px;
+  padding-top : 2px;
+}
+
 ul.respiratory-check-box li input.form-check-input {
-    width: 20px;
-    border: none;
-    box-shadow: inherit;
-    height: 25px;
-    margin: 0px;
-    padding: 0px;
-    font-size: 10px;
+  width     : 20px;
+  border    : none;
+  box-shadow: inherit;
+  height    : 25px;
+  margin    : 0px;
+  padding   : 0px;
+  font-size : 10px;
 }
+
 .physical-examination .mode-label.label-new-respiratory {
-    position: absolute;
-    top: -22px;
-    left: 20px;
-    background: #fff;
-    padding: 0px 10px;
+  position  : absolute;
+  top       : -22px;
+  left      : 20px;
+  background: #fff;
+  padding   : 0px 10px;
 }
+
 ul.respiratory-check-box li {
-    font-weight: 500;
-    font-size: 11px;
-    color: #444444;
-    width: 32.1%;
-    display: inline-block;
-    margin-right: 5px;
-    vertical-align: top;
+  font-weight   : 500;
+  font-size     : 11px;
+  color         : #444444;
+  width         : 32.1%;
+  display       : inline-block;
+  margin-right  : 5px;
+  vertical-align: top;
 }
-.textarea-box textarea::placeholder {color: #324c7d;}
+
+.textarea-box textarea::placeholder {
+  color: #324c7d;
+}
+
 .textarea-box textarea {
-    width: 100%;
-    border: 1px solid #324c7d;
-    border-radius: 5px;
-    width: 100%;
-    height: 55px;
-    padding: 15px 10px 10px;
-    font-size: 16px;
-    box-shadow: 0px 0px 1px #355473;
-    border-radius: 13px;
+  width        : 100%;
+  border       : 1px solid #324c7d;
+  border-radius: 5px;
+  width        : 100%;
+  height       : 55px;
+  padding      : 15px 10px 10px;
+  font-size    : 16px;
+  box-shadow   : 0px 0px 1px #355473;
+  border-radius: 13px;
 }
 
 .right-bottom-text input {
-    width: 20px;
-    border: none;
-    box-shadow: inherit;
-    height: 25px;
-    margin: 0px;
-    padding: 0px;
-    font-size: 10px;
+  width     : 20px;
+  border    : none;
+  box-shadow: inherit;
+  height    : 25px;
+  margin    : 0px;
+  padding   : 0px;
+  font-size : 10px;
 }
+
 .right-bottom-text label.form-check-label {
-    padding-left: 25px;
-    font-weight: 500;
-    color: #000;
+  padding-left: 25px;
+  font-weight : 500;
+  color       : #000;
 }
+
 .right-bottom-text {
-    text-align: right;
+  text-align: right;
 }
+
 .elimination-box ul.respiratory-check-box {
-    vertical-align: middle;
-    align-items: center;
-    display: flex;
+  vertical-align: middle;
+  align-items   : center;
+  display       : flex;
 }
+
 ul.respiratory-check-box li .box-one-disable input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    color: #000;
-    border: 1px solid #cfcfcf;
+  width        : 100%;
+  margin-bottom: 10px;
+  padding      : 5px 10px;
+  color        : #000;
+  border       : 1px solid #cfcfcf;
 }
+
 /*SECOUND SECTION CSS CLOSE*/
-ul.respiratory-check-box .form-check {  padding: 0px;}
-ul.respiratory-check-box .form-check label {line-height: 19px;}
+ul.respiratory-check-box .form-check {
+  padding: 0px;
+}
+
+ul.respiratory-check-box .form-check label {
+  line-height: 19px;
+}
+
 .additional-info-temp.modal-dialog {
   max-width: 600px !important;
 
   .additional-input {
     label {
-      font-size: 17px;
+      font-size  : 17px;
       font-weight: 700;
     }
 
@@ -297,11 +351,11 @@ ul.respiratory-check-box .form-check label {line-height: 19px;}
     border-top: 2px solid #e4e4e4;
 
     button {
-      background: #0072c6;
-      border: none;
-      color: #fff;
-      padding: 5px 8px;
-      font-size: 15px !important;
+      background : #0072c6;
+      border     : none;
+      color      : #fff;
+      padding    : 5px 8px;
+      font-size  : 15px !important;
       font-weight: 500;
 
       img {
@@ -310,28 +364,301 @@ ul.respiratory-check-box .form-check label {line-height: 19px;}
 
       &:last-child {
         background: #f4f4f4;
-        color: #000;
+        color     : #000;
       }
     }
   }
 }
+
 @media only screen and (max-width:3000px) {
-  ul.respiratory-check-box.peripheral {  min-height: 215px;}
-  .pap-smear-head {gap: 0%; align-items: center; padding-left: 28px;    padding-right: 0;}
+  ul.respiratory-check-box.peripheral {
+    min-height: 215px;
+  }
+
+  .pap-smear-head {
+    gap          : 0%;
+    align-items  : center;
+    padding-left : 28px;
+    padding-right: 0;
+  }
+
   .pap-smear-head .main-head-first {
     width: 13.5%;
-}
+  }
 
 }
-@media only screen and (max-width:1920px) {
-  
-}
+
+@media only screen and (max-width:1920px) {}
+
 @media only screen and (max-width:1600px) {
-  ul.respiratory-check-box.peripheral {  min-height: 235px;}
-  
+  ul.respiratory-check-box.peripheral {
+    min-height: 235px;
+  }
+
 }
+
 @media only screen and (max-width:1290px) {
-  ul.respiratory-check-box.peripheral {  min-height: 260px;} 
+  ul.respiratory-check-box.peripheral {
+    min-height: 260px;
+  }
 }
 
 
+
+.discharge-planning-container {
+  width        : 100%;
+  border       : 2px solid #bdbdbd;
+  border-radius: 18px;
+  background   : #fff;
+  padding      : 0 16px 16px;
+  margin-top   : 10px;
+  box-sizing   : border-box;
+
+  .section-title {
+    height          : 48px;
+    display         : flex;
+    align-items     : center;
+    position        : relative;
+    // border-bottom: 1px solid #333;
+
+    label {
+      position     : absolute;
+      left         : 0;
+      top          : 10px;
+      background   : #fff;
+      padding-right: 15px;
+      font-size    : 15px;
+      font-weight  : 600;
+      color        : #111;
+      z-index      : 2;
+    }
+
+    &::after {
+      content      : '';
+      position     : absolute;
+      left         : 0;
+      bottom       : -1px;
+      width        : 220px;
+      height       : 2px;
+      // background: #1769aa;
+    }
+  }
+
+  .discharge-planning-body {
+    display      : flex;
+    width        : 100%;
+    min-height   : 400px;
+    border       : 1px solid #4779a8;
+    border-radius: 18px;
+    overflow     : hidden;
+    margin-top   : 0;
+    background   : #fff;
+  }
+
+  // -----------------------------------------
+  // LEFT MENU
+  // -----------------------------------------
+
+  .discharge-menu {
+    width     : 30%;
+    min-width : 240px;
+    background: #e9edef;
+    margin    : 16px 16px 14px 12px;
+    align-self: stretch;
+
+    .menu-item {
+      min-height   : 46px;
+      padding      : 12px 8px;
+      display      : flex;
+      align-items  : center;
+      border-bottom: 1px solid #c8ced2;
+      font-size    : 14px;
+      color        : #111;
+      cursor       : pointer;
+      box-sizing   : border-box;
+      transition   : all 0.2s ease;
+
+      &:hover {
+        background: #dce7ee;
+      }
+
+      &.active {
+        background : #d5e1e7;
+        color      : #075b8d;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // -----------------------------------------
+  // RIGHT CONTENT
+  // -----------------------------------------
+
+  .discharge-content {
+    flex     : 1;
+    padding  : 18px 16px 18px 0;
+    min-width: 0;
+  }
+
+  .form-section {
+    margin-bottom: 8px;
+
+    .form-label {
+      display      : block;
+      font-size    : 14px;
+      font-weight  : 500;
+      color        : #222;
+      margin-bottom: 7px;
+    }
+
+    .form-control {
+      height       : 40px;
+      border       : 1px solid #0865c0;
+      border-radius: 5px;
+      font-size    : 14px;
+      padding      : 7px 10px;
+      box-shadow   : none;
+
+      &:focus {
+        border-color: #0865c0;
+        box-shadow  : 0 0 0 1px rgba(8, 101, 192, 0.15);
+      }
+    }
+  }
+
+  // -----------------------------------------
+  // DISCHARGE NEEDS TITLE
+  // -----------------------------------------
+
+  .content-section-title {
+    height       : 32px;
+    display      : flex;
+    align-items  : center;
+    position     : relative;
+    margin-bottom: 14px;
+
+    &::before {
+      content   : '';
+      position  : absolute;
+      left      : 0;
+      right     : 0;
+      top       : 50%;
+      height    : 1px;
+      background: #333;
+    }
+
+    span {
+      position     : relative;
+      background   : #fff;
+      padding-right: 15px;
+      font-size    : 14px;
+      font-weight  : 600;
+      color        : #111;
+      z-index      : 1;
+    }
+  }
+
+  // -----------------------------------------
+  // FORM GRID
+  // -----------------------------------------
+
+  .form-grid {
+    display              : grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap           : 18px;
+    row-gap              : 14px;
+  }
+
+  .form-field {
+    min-width    : 0;
+    margin-bottom: 8px;
+
+    label {
+      display      : block;
+      font-size    : 13px;
+      font-weight  : 500;
+      color        : #222;
+      margin-bottom: 6px;
+
+      .optional-text {
+        font-size  : 11px;
+        font-weight: 400;
+        color      : #777;
+      }
+    }
+
+    .form-control {
+      width        : 100%;
+      height       : 38px;
+      border       : 1px solid #0865c0;
+      border-radius: 5px;
+      padding      : 6px 10px;
+      font-size    : 13px;
+      color        : #222;
+      background   : #fff;
+      box-shadow   : none;
+      box-sizing   : border-box;
+
+      &:focus {
+        border-color: #0865c0;
+        outline     : none;
+        box-shadow  : 0 0 0 1px rgba(8, 101, 192, 0.15);
+      }
+
+      &:disabled {
+        background: #f3f4f5;
+        cursor    : not-allowed;
+      }
+    }
+  }
+}
+
+// -----------------------------------------
+// RESPONSIVE
+// -----------------------------------------
+
+@media (max-width: 992px) {
+
+  .discharge-planning-container {
+
+    .discharge-planning-body {
+      flex-direction: column;
+    }
+
+    .discharge-menu {
+      width     : calc(100% - 24px);
+      min-width : unset;
+      margin    : 12px;
+      display   : flex;
+      overflow-x: auto;
+
+      .menu-item {
+        min-width      : 160px;
+        justify-content: center;
+        border-right   : 1px solid #c8ced2;
+        border-bottom  : none;
+      }
+    }
+
+    .discharge-content {
+      padding: 10px 16px 18px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+
+  .discharge-planning-container {
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .discharge-menu {
+      .menu-item {
+        min-width: 140px;
+        font-size: 12px;
+      }
+    }
+  }
+}

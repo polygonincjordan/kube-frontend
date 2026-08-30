@@ -523,6 +523,14 @@ export class NewbornAssessmentComponent implements OnInit, OnChanges {
       VitK: [data?.VitK || ''],
       HepB: [data?.HepB || ''],
       Comments: [data?.Comments || ''],
+      ExpectedLengthStay: [data?.ExpectedLengthStay || ''],
+      Medications: [data?.Medications || ''],
+      Diet: [data?.Diet || ''],
+      LevelMobility: [data?.LevelMobility || ''],
+      PainManagement: [data?.PainManagement || ''],
+      MedicalEquipment: [data?.MedicalEquipment || ''],
+      ClinicalAppointments: [data?.ClinicalAppointments || ''],
+      Others1: [data?.Others1 || ''],
     })
   }
 
