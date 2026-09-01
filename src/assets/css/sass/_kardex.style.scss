@@ -4161,6 +4161,49 @@ select.mr-2[name=""] {
   cursor: pointer;
 }
 
+// Keep Current Visit document metadata inside its Bootstrap columns.
+.docs-event {
+  align-items: center;
+
+  > [class*="col-md-"] {
+    min-width: 0;
+  }
+
+  > .col-md-2,
+  > .col-md-3 {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.35;
+  }
+
+  > .col-md-1 {
+    align-items: center;
+    flex-wrap: nowrap;
+
+    > .d-flex {
+      width: auto !important;
+      flex: 0 0 auto;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .docs-event {
+    flex-wrap: wrap;
+    row-gap: 0.35rem;
+
+    > [class*="col-md-"] {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    > .col-md-1 {
+      justify-content: flex-start;
+    }
+  }
+}
+
 textarea.form-control {
   line-height: 1.5;
 }

@@ -76,6 +76,36 @@ function hasCompactHistoryControl(block) {
   );
 }
 
+function hasSafeHistoryVisibilityGuard(block) {
+  const conditions = [...block.matchAll(/\*ngIf=(?:"([^"]+)"|'([^']+)')/gi)]
+    .map((match) => match[1] ?? match[2])
+    .filter(Boolean);
+  const condition = conditions.find(
+    (candidate) =>
+      /\b(?:Zversion|Dokvr)\b/.test(candidate) && /N\/A/.test(candidate)
+  );
+
+  if (!condition) {
+    return false;
+  }
+
+  const hasNonEmptyCollection = /(?:\?|)\.length\b/.test(condition);
+  const hasDocumentKey = /\b(?:Dockey|DocKey)\b/.test(condition);
+  const versionReferences = condition.match(/\b(?:Zversion|Dokvr)\b/g) ?? [];
+  const hasExplicitVersionValue = versionReferences.length > 1;
+  const excludesNotAvailable =
+    /\b(?:StatusTxt|DokstText|NodocText)\b/.test(condition) &&
+    /N\/A/.test(condition);
+  const excludesVersionZero =
+    /\b(?:Zversion|Dokvr)\b/.test(condition) && /00/.test(condition);
+
+  return (
+    (hasNonEmptyCollection || (hasDocumentKey && hasExplicitVersionValue)) &&
+    excludesNotAvailable &&
+    excludesVersionZero
+  );
+}
+
 function hasCurrentDocumentViewer(block) {
   return /<(?:i|img)\b[^>]*\(click\)=["'][^"']+["'][^>]*>/i.test(block);
 }
@@ -103,6 +133,7 @@ const failures = currentVisitTemplates.flatMap((file) => {
       return (
         !hasHistoryHandler ||
         !hasCompactHistoryControl(block) ||
+        !hasSafeHistoryVisibilityGuard(block) ||
         !hasCurrentDocumentViewer(block)
       );
     })
@@ -114,6 +145,8 @@ const failures = currentVisitTemplates.flatMap((file) => {
         ? 'history handler or current document argument is missing'
         : !hasCompactHistoryControl(block)
           ? 'history control is missing the compact style hook'
+          : !hasSafeHistoryVisibilityGuard(block)
+            ? 'history control can appear without a real current document'
           : 'current released document viewer icon is missing',
     }));
 });
