@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
+import { mergeReleasedDocumentVersions } from '@services/document-version-history.util';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 
@@ -22,10 +23,9 @@ export class DiagnosisHistoryPopupComponent {
 
   constructor(private modalService: BsModalService) { }
 
-  showPopup(data): void {
-    this.configurationData = [];
-    if (data && data.length) {
-      this.configurationData = data;
+  showPopup(data, currentDocument?): void {
+    this.configurationData = mergeReleasedDocumentVersions(data, currentDocument);
+    if (this.configurationData.length) {
       this.modalRef = this.modalService.show(this.releaseHistory, { backdrop: true, ignoreBackdropClick: false, class: 'release-history' });
     } else {
       Swal.fire({
@@ -46,16 +46,21 @@ export class DiagnosisHistoryPopupComponent {
   }
 
   onOpenModelInpatient(value: any) {
-    if(value.Dtid === "ZMED_OPERT" || value.Dtid === "ZMED_ORRPT" || value.Dtid === "ZMED_PHDIS"){
-      this.onReleseCloseInPatient.emit({value: value, Oldversion: true})
+    const selectedValue = value.sourceDocument || value;
+    const event = {
+      value: selectedValue,
+      Oldversion: !value.isCurrentVersion,
+      isCurrentVersion: !!value.isCurrentVersion,
+    };
+    if(selectedValue.Dtid === "ZMED_OPERT" || selectedValue.Dtid === "ZMED_ORRPT" || selectedValue.Dtid === "ZMED_PHDIS"){
+      this.onReleseCloseInPatient.emit(event)
     }else {
-      this.onReleseClose.emit({value: value, Oldversion: true});
+      this.onReleseClose.emit(event);
     }
     this.modalRef.hide();
   }
 
   onOpenAttachmentInpatient(value: any) {
-    console.log(value,"sdfdfd");
     if(value.Dtid === "ZMED_OPERT" || value.Dtid === "ZMED_ORRPT" || value.Dtid === "ZMED_PHDIS"){
       this.onInPatientAttachmentClose.emit(value.DocKey)
     } else if(value.Dtid === "ZMED_CORES") {

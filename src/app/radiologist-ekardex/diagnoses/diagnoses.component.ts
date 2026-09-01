@@ -306,7 +306,7 @@ export class DiagnosesComponent implements OnInit {
       .getReleaseHistoryData(releaseId, this.paramsObject.einri)
       .subscribe((data) => {
         if (data && data.length) {
-          this.diagnosisHistory.showPopup(data);
+          this.diagnosisHistory.showPopup(data, item);
         }
       });
   }
@@ -2062,13 +2062,13 @@ export class DiagnosesComponent implements OnInit {
   //   }
   // }
 
-  onReleaseHistoryData(releaseId: any) {
+  onReleaseHistoryData(releaseId: any, currentDocument: any) {
     this.selectedPatient = releaseId;
     this.inPatientVisitData = {} as InPatientDataResult;
     this.patientVisitRecord = {} as PatientVisitDataResult;
     this.userConfigurationService.getReleaseHistoryData(releaseId).subscribe((data) => {
       if (data && data.length) {
-        this.diagnosisHistory.showPopup(data)
+        this.diagnosisHistory.showPopup(data, currentDocument)
       }
     })
   }
