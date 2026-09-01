@@ -78,23 +78,33 @@ export function normalizeCurrentDocument(
 }
 
 /**
- * Adds the current released document to its API history, removes duplicate
- * versions, and returns newest-to-oldest numeric version order.
+ * Keeps the popup limited to previous releases, removes duplicate versions,
+ * and returns newest-to-oldest numeric version order.
  */
 export function mergeReleasedDocumentVersions(
   history: any,
   currentDocument: any
 ): DocumentVersionHistoryRow[] {
+  const currentVersion = getDocumentVersion(currentDocument);
+  const currentDocumentKeys = new Set(
+    [currentDocument?.DocKey, currentDocument?.Dockey].filter(Boolean)
+  );
   const historyRows: DocumentVersionHistoryRow[] = Array.isArray(history)
-    ? history.map((row) => ({ ...row, isCurrentVersion: false }))
+    ? history
+      .filter((row) => {
+        const rowVersion = getDocumentVersion(row);
+        const rowKeys = [row?.DocKey, row?.Dockey].filter(Boolean);
+
+        return !(
+          (currentVersion !== null && rowVersion === currentVersion) ||
+          rowKeys.some((key) => currentDocumentKeys.has(key))
+        );
+      })
+      .map((row) => ({ ...row, isCurrentVersion: false }))
     : [];
 
-  const rows = isReleasedDocument(currentDocument)
-    ? [normalizeCurrentDocument(currentDocument, historyRows[0]), ...historyRows]
-    : historyRows;
-
   const seenVersions = new Set<string>();
-  const uniqueRows = rows.filter((row) => {
+  const uniqueRows = historyRows.filter((row) => {
     const version = getDocumentVersion(row);
     const key = version === null
       ? `doc:${row.DocKey ?? row.Dockey ?? ''}`

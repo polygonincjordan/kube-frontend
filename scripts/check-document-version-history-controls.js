@@ -76,6 +76,10 @@ function hasCompactHistoryControl(block) {
   );
 }
 
+function hasCurrentDocumentViewer(block) {
+  return /<(?:i|img)\b[^>]*\(click\)=["'][^"']+["'][^>]*>/i.test(block);
+}
+
 function getRowLabel(block) {
   return block
     .replace(/<[^>]+>/g, ' ')
@@ -96,15 +100,21 @@ const failures = currentVisitTemplates.flatMap((file) => {
     .filter(({ block }) => isVersionedDocumentRow(block))
     .filter(({ block }) => {
       const hasHistoryHandler = hasHistoryHandlerWithCurrentDocument(block);
-      return !hasHistoryHandler || !hasCompactHistoryControl(block);
+      return (
+        !hasHistoryHandler ||
+        !hasCompactHistoryControl(block) ||
+        !hasCurrentDocumentViewer(block)
+      );
     })
     .map(({ block, line }) => ({
       file: path.relative(process.cwd(), file),
       label: getRowLabel(block),
       line,
-      reason: hasHistoryHandlerWithCurrentDocument(block)
-        ? 'history control is missing the compact style hook'
-        : 'history handler or current document argument is missing',
+      reason: !hasHistoryHandlerWithCurrentDocument(block)
+        ? 'history handler or current document argument is missing'
+        : !hasCompactHistoryControl(block)
+          ? 'history control is missing the compact style hook'
+          : 'current released document viewer icon is missing',
     }));
 });
 

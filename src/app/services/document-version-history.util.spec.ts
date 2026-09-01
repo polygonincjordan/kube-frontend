@@ -29,7 +29,7 @@ describe('document-version-history.util', () => {
   });
 
   describe('mergeReleasedDocumentVersions', () => {
-    it('prepends and normalizes the current released version', () => {
+    it('keeps the current released version out of the history popup', () => {
       const current = {
         Dockey: 'current-key',
         Zversion: '02',
@@ -43,15 +43,13 @@ describe('document-version-history.util', () => {
         current
       );
 
-      expect(result.map((row) => row.Dokvr)).toEqual(['2', '01']);
-      expect(result[0].DocKey).toBe('current-key');
+      expect(result.map((row) => row.Dokvr)).toEqual(['01']);
+      expect(result[0].DocKey).toBe('old-key');
       expect(result[0].DtidText).toBe('Assessment');
-      expect(result[0].Mimetype).toBe('HTML');
-      expect(result[0].isCurrentVersion).toBe(true);
-      expect(result[0].sourceDocument).toBe(current);
+      expect(result[0].isCurrentVersion).toBe(false);
     });
 
-    it('does not add a draft current document', () => {
+    it('keeps released predecessors available for a draft current document', () => {
       const history = [{ DocKey: 'old-key', Dokvr: '00' }];
       const result = mergeReleasedDocumentVersions(history, {
         Dockey: 'draft-key',
@@ -64,7 +62,7 @@ describe('document-version-history.util', () => {
       expect(result[0].isCurrentVersion).toBe(false);
     });
 
-    it('keeps the current row when the API also returns its version', () => {
+    it('removes the current version when the API also returns it', () => {
       const result = mergeReleasedDocumentVersions(
         [
           { DocKey: 'duplicate-key', Dokvr: '02' },
@@ -77,8 +75,8 @@ describe('document-version-history.util', () => {
         }
       );
 
-      expect(result.map((row) => row.DocKey)).toEqual(['current-key', 'old-key']);
-      expect(result[0].isCurrentVersion).toBe(true);
+      expect(result.map((row) => row.DocKey)).toEqual(['old-key']);
+      expect(result[0].isCurrentVersion).toBe(false);
     });
 
     it('sorts versions numerically from newest to oldest', () => {
