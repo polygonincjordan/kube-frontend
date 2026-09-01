@@ -4147,6 +4147,20 @@ select {
   box-shadow: initial !important;
 }
 
+// Empty selects are used as the document version-history arrow.
+select.mr-2[name=""] {
+  width: 18px !important;
+  min-width: 18px !important;
+  max-width: 18px !important;
+  height: 25px !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 2px !important;
+  flex: 0 0 18px;
+  cursor: pointer;
+}
+
 textarea.form-control {
   line-height: 1.5;
 }

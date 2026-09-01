@@ -70,6 +70,12 @@ function hasHistoryHandlerWithCurrentDocument(block) {
   return /onReleaseHistoryData(?:Current|New)?\s*\([^)]*,[^)]*\)/.test(block);
 }
 
+function hasCompactHistoryControl(block) {
+  return /<select\b[^>]*class=["'][^"']*\bmr-2\b[^"']*["'][^>]*name=["']["'][^>]*>/i.test(
+    block
+  );
+}
+
 function getRowLabel(block) {
   return block
     .replace(/<[^>]+>/g, ' ')
@@ -87,24 +93,27 @@ const failures = currentVisitTemplates.flatMap((file) => {
   const source = preserveLinesWhileRemovingComments(fs.readFileSync(file, 'utf8'));
 
   return getDocumentRows(source)
-    .filter(
-      ({ block }) =>
-        isVersionedDocumentRow(block) &&
-        !hasHistoryHandlerWithCurrentDocument(block)
-    )
+    .filter(({ block }) => isVersionedDocumentRow(block))
+    .filter(({ block }) => {
+      const hasHistoryHandler = hasHistoryHandlerWithCurrentDocument(block);
+      return !hasHistoryHandler || !hasCompactHistoryControl(block);
+    })
     .map(({ block, line }) => ({
       file: path.relative(process.cwd(), file),
       label: getRowLabel(block),
       line,
+      reason: hasHistoryHandlerWithCurrentDocument(block)
+        ? 'history control is missing the compact style hook'
+        : 'history handler or current document argument is missing',
     }));
 });
 
 if (failures.length > 0) {
   console.error(
-    'Versioned Current Visit rows without a history handler and current document:'
+    'Versioned Current Visit rows with an incomplete history control:'
   );
-  failures.forEach(({ file, label, line }) => {
-    console.error(`- ${file}:${line} ${label}`);
+  failures.forEach(({ file, label, line, reason }) => {
+    console.error(`- ${file}:${line} ${reason}: ${label}`);
   });
   process.exitCode = 1;
 } else {
