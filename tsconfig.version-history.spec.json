@@ -13,6 +13,7 @@
   ],
   "include": [
     "src/**/*.d.ts",
-    "src/app/services/document-version-history.util.spec.ts"
+    "src/app/services/document-version-history.util.spec.ts",
+    "src/app/shared-module/cpr-document/cpr-document-payload.util.spec.ts"
   ]
 }
