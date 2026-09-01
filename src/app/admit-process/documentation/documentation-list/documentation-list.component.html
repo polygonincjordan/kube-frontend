@@ -250,7 +250,9 @@
             data.Orgdo }}
           </p>
           <span class="fix-width mw-135 version-class">{{
-            data.DtidText }} {{ dockVer(data.Dokvr) }}</span>
+            data.DtidText }} {{ dockVer(data.Dokvr) }}
+            <small *ngIf="data.isCurrentVersion" class="badge badge-primary ml-1">Current</small>
+          </span>
         </div>
         <div class="d-flex align-items-center">
             <div class="d-flex" style="min-width: 72.6%!important;">

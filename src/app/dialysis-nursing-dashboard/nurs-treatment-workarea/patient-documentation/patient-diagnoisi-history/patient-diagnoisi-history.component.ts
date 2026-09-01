@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { mergeReleasedDocumentVersions } from '@services/document-version-history.util';
 
 @Component({
   selector: 'app-patient-diagnoisi-history',
@@ -23,10 +24,9 @@ export class PatientDiagnoisiHistoryComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showPopup(data): void {
-    this.configurationData = [];
-    if (data && data.length) {
-      this.configurationData = data;
+  showPopup(data, currentDocument?): void {
+    this.configurationData = mergeReleasedDocumentVersions(data, currentDocument);
+    if (this.configurationData.length) {
       this.modalRef = this.modalService.show(this.releaseHistory, { backdrop: true, ignoreBackdropClick: false, class: 'release-history' });
     } else {
       Swal.fire({
@@ -47,7 +47,11 @@ export class PatientDiagnoisiHistoryComponent implements OnInit {
   }
 
   onOpenModelInpatient(value: any) {
-    this.onReleseClose.emit({ value: value, Oldversion: true });
+    this.onReleseClose.emit({
+      value: value.sourceDocument || value,
+      Oldversion: !value.isCurrentVersion,
+      isCurrentVersion: !!value.isCurrentVersion,
+    });
     this.modalRef.hide();
   }
 

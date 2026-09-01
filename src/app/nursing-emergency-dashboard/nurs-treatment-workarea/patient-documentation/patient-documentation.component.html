@@ -384,9 +384,12 @@
                 </div>
                 <div class="col-md-3">{{nurseEndorsementList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1">
-                  <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
-                  (click)="getPatientProfileData(nurseEndorsementList[0])"
-                  *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                  <div
+                    *ngIf="nurseEndorsementList.length && nurseEndorsementList[0]?.StatusTxt != 'N/A' && nurseEndorsementList[0]?.Zversion != '00'"
+                    class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(nurseEndorsementList[0]?.Dockey, nurseEndorsementList[0])">
+                    <select class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
             <!-- Surgical passport -->

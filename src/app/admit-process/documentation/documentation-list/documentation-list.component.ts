@@ -15,10 +15,11 @@ import { PatientVisitDataResult } from '@services/e-kardex/interfaces/patient-vi
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { mergeReleasedDocumentVersions } from '@services/document-version-history.util';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable, ReplaySubject, catchError, of } from 'rxjs';
-import { DiagnosisHistoryPopupComponent } from 'src/app/e-kardex/diagnoses/dignosis-history-popup/diagnosis-history-popup.component';
+import { DiagnosisHistoryPopupComponent } from './dignosis-history-popup/diagnosis-history-popup.component';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { StorageService } from '@services/storage.service';
@@ -253,7 +254,7 @@ export class DocumentationListComponent implements OnInit {
       .getReleaseHistoryData(releaseId, this.paramsObject.einri)
       .subscribe((data) => {
         if (data && data.length) {
-          this.diagnosisHistory.showPopup(data);
+          this.diagnosisHistory.showPopup(data, item);
         }
       });
   }
@@ -265,22 +266,18 @@ export class DocumentationListComponent implements OnInit {
     this.admissionService
       .getReleaseHistoryData(releaseId, this.paramsObject.einri)
       .subscribe((data) => {
-        if (data && data.length) {
-          this.configurationData = [];
-          this.configurationData = data;
-          if (data && data.length) {
-            this.configurationData = data;
-            this.currentDocVersionRef = this.modalService.show(template, { backdrop: true, ignoreBackdropClick: false, class: 'release-history' });
-          } else {
-            Swal.fire({
-              text: 'No Data Found',
-              confirmButtonColor: '#0890c5',
-              cancelButtonColor: '#84898c',
-              confirmButtonText: 'OK',
-              customClass: { popup: 'myalertpopup' },
-              icon: 'error',
-            } as any);
-          }
+        this.configurationData = mergeReleasedDocumentVersions(data, item);
+        if (this.configurationData.length) {
+          this.currentDocVersionRef = this.modalService.show(template, { backdrop: true, ignoreBackdropClick: false, class: 'release-history' });
+        } else {
+          Swal.fire({
+            text: 'No Data Found',
+            confirmButtonColor: '#0890c5',
+            cancelButtonColor: '#84898c',
+            confirmButtonText: 'OK',
+            customClass: { popup: 'myalertpopup' },
+            icon: 'error',
+          } as any);
         }
       });
   }
