@@ -492,6 +492,11 @@
             <img src="assets/img/document-html.png" width="18px" height="18px"
                (click)="openPDfModal(sbarDocumentHTML, sbarNurEndList[0])"
               *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'" />
+            <div class="d-flex ml-2" style="width: 100%;"
+              (click)="$event.stopPropagation(); onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
+              <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt != 'N/A' && sbarNurEndList[0]?.Zversion != '00'"
+                class="mr-2" name="" id=""></select>
+            </div>
           </div>
       </div>
 

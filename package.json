@@ -5,6 +5,7 @@
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test",
+    "check:document-history": "node scripts/check-document-version-history-controls.js",
     "postinstall": "ngcc",
     "depcheck": "npx depcheck",
     "start": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve -o --port=4200",
