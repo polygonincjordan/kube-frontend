@@ -16,7 +16,10 @@ import { PatientVisitDataResult } from '@services/e-kardex/interfaces/patient-vi
 import { UserConfig } from '@services/e-kardex/interfaces/user-config';
 import { UserConfigurationService } from '@services/e-kardex/user-configuration.service';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
-import { mergeReleasedDocumentVersions } from '@services/document-version-history.util';
+import {
+  isReleasedDocument as isDocumentReleased,
+  mergeReleasedDocumentVersions,
+} from '@services/document-version-history.util';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable, ReplaySubject, catchError, of } from 'rxjs';
@@ -33,6 +36,7 @@ import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-d
   styleUrls: ['./documentation-list.component.scss'],
 })
 export class DocumentationListComponent implements OnInit {
+  readonly isReleasedDocument = isDocumentReleased;
   @ViewChild('diagnosisHistory', { static: true })
   diagnosisHistory: DiagnosisHistoryPopupComponent;
   @ViewChild('selectIconPdf', { static: true }) selectIconPdf: TemplateRef<any>;

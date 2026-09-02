@@ -4,7 +4,7 @@ export interface DocumentVersionHistoryRow {
   sourceDocument?: any;
 }
 
-const RELEASED_VALUES = ['RELEASED', 'X', 'TRUE'];
+const RELEASED_VALUES = ['RELEASED', 'X', 'TRUE', '2', 'FR'];
 
 /** Returns true only when the dashboard document is explicitly released. */
 export function isReleasedDocument(document: any): boolean {
@@ -12,7 +12,19 @@ export function isReleasedDocument(document: any): boolean {
     return false;
   }
 
-  const status = document.StatusTxt ?? document.DokstText ?? document.Released;
+  const status = [
+    document.StatusTxt,
+    document.NodocText,
+    document.DokstText,
+    document.Released,
+    document.DocStatus,
+    document.Dokst,
+  ].find(
+    (value) =>
+      value !== null &&
+      value !== undefined &&
+      (typeof value === 'boolean' || String(value).trim() !== '')
+  );
   if (typeof status === 'boolean') {
     return status;
   }

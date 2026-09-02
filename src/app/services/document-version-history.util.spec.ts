@@ -9,6 +9,9 @@ describe('document-version-history.util', () => {
     it('recognizes the released values used by dashboard document shapes', () => {
       expect(isReleasedDocument({ StatusTxt: 'Released' })).toBe(true);
       expect(isReleasedDocument({ DokstText: 'Released' })).toBe(true);
+      expect(isReleasedDocument({ NodocText: 'Released' })).toBe(true);
+      expect(isReleasedDocument({ DocStatus: '2' })).toBe(true);
+      expect(isReleasedDocument({ Dokst: 'FR' })).toBe(true);
       expect(isReleasedDocument({ Released: 'X' })).toBe(true);
       expect(isReleasedDocument({ Released: true })).toBe(true);
     });
@@ -16,6 +19,9 @@ describe('document-version-history.util', () => {
     it('rejects draft, N/A, and missing documents', () => {
       expect(isReleasedDocument({ StatusTxt: 'Draft' })).toBe(false);
       expect(isReleasedDocument({ StatusTxt: 'N/A' })).toBe(false);
+      expect(
+        isReleasedDocument({ NodocText: 'N/A', DokstText: 'Released' })
+      ).toBe(false);
       expect(isReleasedDocument(null)).toBe(false);
     });
   });

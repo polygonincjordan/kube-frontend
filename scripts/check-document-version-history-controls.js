@@ -29,7 +29,7 @@ function getDocumentRows(source) {
     const openingTag = match[0];
     if (
       openingTag.startsWith('</') ||
-      !openingTag.includes('docs-event') ||
+      !/(?:docs-event|\bdocument-list\b)/.test(openingTag) ||
       /\*ngIf\s*=\s*["']false\b/.test(openingTag)
     ) {
       return;
@@ -110,6 +110,18 @@ function hasCurrentDocumentViewer(block) {
   return /<(?:i|img)\b[^>]*\(click\)=["'][^"']+["'][^>]*>/i.test(block);
 }
 
+function hasReleasedViewerGuard(block) {
+  const viewerTags = [
+    ...block.matchAll(/<(?:i|img)\b[^>]*\(click\)=["'][^"']+["'][^>]*>/gi),
+  ].map((match) => match[0]);
+
+  return viewerTags.some(
+    (tag) =>
+      /isReleasedDocument\s*\(/.test(tag) ||
+      /\b(?:StatusTxt|DokstText)\b[^>]*Released/.test(tag)
+  );
+}
+
 function getRowLabel(block) {
   return block
     .replace(/<[^>]+>/g, ' ')
@@ -123,33 +135,39 @@ const currentVisitTemplates = findHtmlFiles(sourceRoot).filter((file) =>
   fs.readFileSync(file, 'utf8').toLowerCase().includes('current visit')
 );
 
-const failures = currentVisitTemplates.flatMap((file) => {
+const currentVisitRows = currentVisitTemplates.flatMap((file) => {
   const source = preserveLinesWhileRemovingComments(fs.readFileSync(file, 'utf8'));
 
   return getDocumentRows(source)
     .filter(({ block }) => isVersionedDocumentRow(block))
-    .filter(({ block }) => {
-      const hasHistoryHandler = hasHistoryHandlerWithCurrentDocument(block);
-      return (
-        !hasHistoryHandler ||
-        !hasCompactHistoryControl(block) ||
-        !hasSafeHistoryVisibilityGuard(block) ||
-        !hasCurrentDocumentViewer(block)
-      );
-    })
-    .map(({ block, line }) => ({
-      file: path.relative(process.cwd(), file),
-      label: getRowLabel(block),
-      line,
-      reason: !hasHistoryHandlerWithCurrentDocument(block)
-        ? 'history handler or current document argument is missing'
-        : !hasCompactHistoryControl(block)
-          ? 'history control is missing the compact style hook'
-          : !hasSafeHistoryVisibilityGuard(block)
-            ? 'history control can appear without a real current document'
-          : 'current released document viewer icon is missing',
-    }));
+    .map((row) => ({ ...row, file }));
 });
+
+const failures = currentVisitRows
+  .filter(({ block }) => {
+    const hasHistoryHandler = hasHistoryHandlerWithCurrentDocument(block);
+    return (
+      !hasHistoryHandler ||
+      !hasCompactHistoryControl(block) ||
+      !hasSafeHistoryVisibilityGuard(block) ||
+      !hasCurrentDocumentViewer(block) ||
+      !hasReleasedViewerGuard(block)
+    );
+  })
+  .map(({ block, file, line }) => ({
+    file: path.relative(process.cwd(), file),
+    label: getRowLabel(block),
+    line,
+    reason: !hasHistoryHandlerWithCurrentDocument(block)
+      ? 'history handler or current document argument is missing'
+      : !hasCompactHistoryControl(block)
+        ? 'history control is missing the compact style hook'
+        : !hasSafeHistoryVisibilityGuard(block)
+          ? 'history control can appear without a real current document'
+          : !hasCurrentDocumentViewer(block)
+            ? 'current released document viewer icon is missing'
+            : 'viewer icon does not follow the displayed release status',
+  }));
 
 if (failures.length > 0) {
   console.error(
@@ -161,6 +179,6 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Document history template audit passed across ${currentVisitTemplates.length} Current Visit templates.`
+    `Document history template audit passed for ${currentVisitRows.length} versioned rows across ${currentVisitTemplates.length} Current Visit templates.`
   );
 }
