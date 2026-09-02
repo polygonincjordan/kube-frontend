@@ -5,6 +5,7 @@
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test",
+    "test:document-history": "ng test --main src/test-version-history.ts --ts-config tsconfig.version-history.spec.json --watch=false --browsers=ChromeHeadless",
     "check:document-history": "node scripts/check-document-version-history-controls.js",
     "postinstall": "ngcc",
     "depcheck": "npx depcheck",
