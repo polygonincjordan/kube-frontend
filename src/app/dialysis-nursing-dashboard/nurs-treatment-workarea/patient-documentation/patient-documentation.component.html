@@ -187,7 +187,7 @@
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openDiaAssessReleasePdf(latestDocData.Dockey)" *ngIf="latestDocData?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestDocData?.Dockey, latestDocData)">
-                      <select *ngIf="latestDocData && latestDocData?.StatusTxt !='N/A' && latestDocData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestDocData?.Dockey && latestDocData?.Zversion && latestDocData?.StatusTxt !='N/A' && latestDocData?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                   (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                     *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
-                      <select *ngIf="latestMorseFallScaleData && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestMorseFallScaleData?.Dockey && latestMorseFallScaleData?.Zversion && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -252,7 +252,7 @@
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="getPatientProfileData(latestHemoCatheterData)" *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestHemoCatheterData?.Dockey, latestHemoCatheterData)">
-                      <select *ngIf="latestHemoCatheterData && latestHemoCatheterData?.StatusTxt !='N/A' && latestHemoCatheterData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestHemoCatheterData?.Dockey && latestHemoCatheterData?.Zversion && latestHemoCatheterData?.StatusTxt !='N/A' && latestHemoCatheterData?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openFistulaGraftPDF(latestHemoDialysisFistulaGraftData.Dockey)" *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestHemoDialysisFistulaGraftData?.Dockey, latestHemoDialysisFistulaGraftData)">
-                      <select *ngIf="latestHemoDialysisFistulaGraftData && latestHemoDialysisFistulaGraftData?.StatusTxt !='N/A' && latestHemoDialysisFistulaGraftData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestHemoDialysisFistulaGraftData?.Dockey && latestHemoDialysisFistulaGraftData?.Zversion && latestHemoDialysisFistulaGraftData?.StatusTxt !='N/A' && latestHemoDialysisFistulaGraftData?.Zversion != '00'" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>

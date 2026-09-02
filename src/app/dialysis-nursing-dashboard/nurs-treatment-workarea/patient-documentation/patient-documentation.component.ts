@@ -994,7 +994,7 @@ export class PatientDocumentationComponent implements OnInit {
       .getReleaseHistoryData(releaseId, this.paramsObject.einri)
       .subscribe((data) => {
         if (data && data.length) {
-          this.patientDiagnosisHistory.showPopup(data);
+          this.patientDiagnosisHistory.showPopup(data, item);
         }
       });
   }

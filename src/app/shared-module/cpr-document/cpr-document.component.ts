@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '@services/storage.service';
 import { ErVitalsComponent } from './er-vitals/er-vitals.component';
 import { DatePipe } from '@angular/common';
+import { prepareCprDocumentPayload } from './cpr-document-payload.util';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
@@ -599,8 +600,19 @@ export class CprDocumentComponent implements OnInit {
       if (this.cprForm.invalid) {
         return;
       }
-      this.cprForm.value.DocStatus = docStatus;
-      let paylaod = this.cprForm.value;
+      let paylaod;
+      try {
+        paylaod = prepareCprDocumentPayload(
+          this.cprForm.value,
+          docStatus,
+          actiontype,
+          this.docKey
+        );
+      } catch (error) {
+        this.sharedService.waringSwallModel(error.message);
+        reject(error);
+        return;
+      }
       if (this.cprForm.value.DateArrest) paylaod.DateArrest = this.cprForm.value.DateArrest.toISOString().split('T')[0] + "T00:00:00";
       if (this.cprForm.value.FDate) paylaod.FDate = this.cprForm.value.FDate.toISOString().split('T')[0] + "T00:00:00";
 

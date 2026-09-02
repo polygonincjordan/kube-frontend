@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/version-history-spec",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "files": [
+    "src/test-version-history.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "src/app/services/document-version-history.util.spec.ts",
+    "src/app/shared-module/cpr-document/cpr-document-payload.util.spec.ts"
+  ]
+}

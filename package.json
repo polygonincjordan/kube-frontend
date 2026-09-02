@@ -5,6 +5,8 @@
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test",
+    "test:document-history": "ng test --main src/test-version-history.ts --ts-config tsconfig.version-history.spec.json --watch=false --browsers=ChromeHeadless",
+    "check:document-history": "node scripts/check-document-version-history-controls.js",
     "postinstall": "ngcc",
     "depcheck": "npx depcheck",
     "start": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve -o --port=4200",
@@ -16,7 +18,7 @@
     "analyzer": "webpack-bundle-analyzer dist/kardex/stats.json",
     "build": "ng build --base-href='/e-Kardex-New/' --aot=true --optimization=true --configuration=production --named-chunks",
     "build:analyzer": "ng build --stats-json --named-chunks --configuration production",
-   "build:prod": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --base-href='/e-Kardex-Prod-New/' --aot=true --optimization=true --configuration=prod --named-chunks"
+    "build:prod": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng build --base-href='/e-Kardex-Prod-New/' --aot=true --optimization=true --configuration=prod --named-chunks"
   },
   "private": true,
   "dependencies": {
@@ -81,6 +83,7 @@
     "jasmine-spec-reporter": "~5.0.2",
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "^2.2.1",
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~3.3.1",
     "karma-jasmine-html-reporter": "^1.5.4",

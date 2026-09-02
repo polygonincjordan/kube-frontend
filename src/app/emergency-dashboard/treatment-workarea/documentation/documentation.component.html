@@ -227,25 +227,36 @@ min-width: 10%;">
               <div class="col-md-3" style="    text-overflow: ellipsis;
    overflow: hidden;
    white-space: nowrap;" [title]="latestDocList[0]?.PhyNm">{{latestDocList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                   (click)="openReleasePdf(latestDocList[0].Dockey)"
                   *ngIf="latestDocList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;"
+                  (click)="$event.stopPropagation(); onReleaseHistoryData(latestDocList[0]?.Dockey, latestDocList[0])">
+                  <select *ngIf="latestDocList.length && latestDocList[0]?.StatusTxt != 'N/A' && latestDocList[0]?.Zversion != '00'"
+                    class="mr-2" name="" id=""></select>
+                </div>
               </div>
             </div>
             <div
               [ngClass]="medReport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               (click)="selectAssessment('medreport',medlatestDocList[0])" style="
   font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'MER'">
-              <div class="col-md-4">Medical Report:</div>
+              <div class="col-md-4">Medical Report {{medlatestDocList[0]?.Zversion ?
+                dockVer(medlatestDocList[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{medlatestDocList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2">{{getDate(medlatestDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 {{getTime(medlatestDocList[0]?.DocTime)}}</div>
               <div class="col-md-3">{{medlatestDocList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                   (click)="openMedReleasePdf(medlatestDocList[0].Dockey)"
                   *ngIf="medlatestDocList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;"
+                  (click)="$event.stopPropagation(); onReleaseHistoryData(medlatestDocList[0]?.Dockey, medlatestDocList[0])">
+                  <select *ngIf="medlatestDocList.length && medlatestDocList[0]?.StatusTxt != 'N/A' && medlatestDocList[0]?.Zversion != '00'"
+                    class="mr-2" name="" id=""></select>
+                </div>
               </div>
             </div>
             <!-- <div class="box-col d-flex mt-2 docs-event" style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'EDS'">
@@ -264,10 +275,15 @@ min-width: 10%;">
               <div class="col-md-2">{{getDate(educationAssList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 {{getTime(educationAssList[0]?.DocTime)}}</div>
               <div class="col-md-3">{{educationAssList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                   (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                   *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;"
+                  (click)="$event.stopPropagation(); onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
+                  <select *ngIf="educationAssList.length && educationAssList[0]?.StatusTxt != 'N/A' && educationAssList[0]?.Zversion != '00'"
+                    class="mr-2" name="" id=""></select>
+                </div>
               </div>
             </div>
           <!--  Correspondence Document -->

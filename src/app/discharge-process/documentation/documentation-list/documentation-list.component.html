@@ -29,13 +29,13 @@
               </div>
                <div class="col-md-1 p-0 d-flex align-items-center" (click)="$event.preventDefault()">
                 <div class="col-md-6 p-0" *ngIf="item.NodocText !='N/A'">
-                  <img src="assets/img/eye-icon.svg" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="item?.DokstText == 'Released' && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" />
-                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="item?.DokstText == 'Released' && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')"></i>
+                  <img src="assets/img/eye-icon.svg" (click)="openRealsePDFModal(item, releasepdfmodal, i)" *ngIf="isReleasedDocument(item) && (item.Dtid == 'ZMED_OBPPT' ||  item.Dtid == 'ZMED_OBANT')" />
+                  <i aria-hidden="true" (click)="openRealsePDFModal(item, releasepdfmodal, i)" class="fa fa-file-pdf-o mr-1" style="font-size: 17px; color: red;"  *ngIf="isReleasedDocument(item) && (item.Dtid != 'ZMED_OBPPT' && item.Dtid != 'ZMED_OBANT')"></i>
                 </div>
                   <div class="col-md-6 p-0">
                     <div class="d-flex" style="width: 100%;"
                     (click)="onReleaseHistoryDataCurrent(item.Dockey, item, documentVersionList)">
-                    <select *ngIf="item.NodocText !='N/A' && item.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                    <select *ngIf="item?.Dockey && item?.Dokvr && item.NodocText !='N/A' && item.Dokvr != '00'" class="mr-2" name="" id=""></select>
                   </div>
                 </div>
               </div>
@@ -218,7 +218,9 @@
             data.Orgdo }}
           </p>
           <span class="fix-width mw-135 version-class">{{
-            data.DtidText }} {{ dockVer(data.Dokvr) }}</span>
+            data.DtidText }} {{ dockVer(data.Dokvr) }}
+            <small *ngIf="data.isCurrentVersion" class="badge badge-primary ml-1">Current</small>
+          </span>
         </div>
         <div class="d-flex align-items-center">
             <div class="d-flex" style="min-width: 72.6%!important;">

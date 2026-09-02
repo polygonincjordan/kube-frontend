@@ -441,6 +441,11 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                      (click)="openPDfModal(NursingCarePlanHTML, latestNurCarePlanList[0])"
                     *ngIf="latestNurCarePlanList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
+                    <select *ngIf="latestNurCarePlanList.length && latestNurCarePlanList[0]?.StatusTxt != 'N/A' && latestNurCarePlanList[0]?.Zversion != '00'"
+                      class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
 
@@ -513,7 +518,7 @@
               (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                 *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
-                  <select *ngIf="latestMorseFallScaleData && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestMorseFallScaleData?.Dockey && latestMorseFallScaleData?.Zversion && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
                     id=""></select>
                 </div>
             </div>
@@ -622,10 +627,16 @@
                   {{getDate(nurseEndorsementList[0]?.DocDate) | date: "dd.MM.y" || '-'}} / {{getTime(nurseEndorsementList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{nurseEndorsementList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
-                  <!-- <img src="assets/img/document-html.png" width="15px" height="15px"
-                  (click)="getPatientProfileData(nurseEndorsementList[0])"
-                  *ngIf="nurseEndorsement[0]?.StatusTxt == 'Released'" /> -->
+                <div class="col-md-1 d-flex">
+                  <img src="assets/img/document-html.png" width="18px" height="18px"
+                    (click)="$event.stopPropagation(); getScaleDetails(nurseEndorsementList[0])"
+                    *ngIf="nurseEndorsementList[0]?.StatusTxt == 'Released'" />
+                  <div
+                    *ngIf="nurseEndorsementList.length && nurseEndorsementList[0]?.StatusTxt != 'N/A' && nurseEndorsementList[0]?.Zversion != '00'"
+                    class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(nurseEndorsementList[0]?.Dockey, nurseEndorsementList[0])">
+                    <select class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
 
@@ -856,10 +867,15 @@
                   {{getDate(latestCVCInsertionList[0]?.DocDate) | date: "dd.MM.y" || '-'}} / {{getTime(latestCVCInsertionList[0]?.DocTime)}}
                 </div>
                 <div class="col-md-3">{{latestCVCInsertionList[0]?.PhyNm || '-'}}</div>
-                <div class="col-md-1">
+                <div class="col-md-1 d-flex">
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openCVCInsertionDocumentPdf(latestCVCInsertionList[0]?.Dockey)"
                     *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(latestCVCInsertionList[0]?.Dockey, latestCVCInsertionList[0])">
+                    <select *ngIf="latestCVCInsertionList.length && latestCVCInsertionList[0]?.StatusTxt != 'N/A' && latestCVCInsertionList[0]?.Zversion != '00'"
+                      class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
 
@@ -944,6 +960,11 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                      (click)="openPDfModal(sbarDocumentHTML, sbarNurEndList[0])"
                     *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
+                    <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt != 'N/A' && sbarNurEndList[0]?.Zversion != '00'"
+                      class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
 
@@ -1025,6 +1046,11 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                      (click)="openPDfModal(ObstetricFallRiskHTML, latestObstetricFallRiskAssessmentList[0])"
                     *ngIf="latestObstetricFallRiskAssessmentList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(latestObstetricFallRiskAssessmentList[0]?.Dockey, latestObstetricFallRiskAssessmentList[0])">
+                    <select *ngIf="latestObstetricFallRiskAssessmentList.length && latestObstetricFallRiskAssessmentList[0]?.StatusTxt != 'N/A' && latestObstetricFallRiskAssessmentList[0]?.Zversion != '00'"
+                      class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
 
@@ -1085,6 +1111,11 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                      (click)="openPDfModal(NursingInitialGynoHTML, latestNursingInitialList[0])"
                     *ngIf="latestNursingInitialList[0]?.StatusTxt == 'Released'" />
+                  <div class="d-flex ml-2" style="width: 100%;"
+                    (click)="$event.stopPropagation(); onReleaseHistoryData(latestNursingInitialList[0]?.Dockey, latestNursingInitialList[0])">
+                    <select *ngIf="latestNursingInitialList.length && latestNursingInitialList[0]?.StatusTxt != 'N/A' && latestNursingInitialList[0]?.Zversion != '00'"
+                      class="mr-2" name="" id=""></select>
+                  </div>
                 </div>
               </div>
 

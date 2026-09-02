@@ -334,7 +334,7 @@
               (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                 *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
-                  <select *ngIf="latestMorseFallScaleData && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestMorseFallScaleData?.Dockey && latestMorseFallScaleData?.Zversion && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
                     id=""></select>
                 </div>
             </div>

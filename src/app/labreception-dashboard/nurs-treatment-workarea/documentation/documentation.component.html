@@ -245,15 +245,21 @@ min-width: 15%;">
               [ngClass]="medReport ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
               (click)="selectAssessment('medreport',medlatestDocList[0])" style="
   font-weight: bold;">
-              <div class="col-md-4">Medical Report:</div>
+              <div class="col-md-4">Medical Report {{medlatestDocList[0]?.Zversion ?
+                dockVer(medlatestDocList[0]?.Zversion) : ''}}:</div>
               <div class="col-md-2 status-color">{{medlatestDocList[0]?.StatusTxt || 'N/A'}}</div>
               <div class="col-md-2">{{getDate(medlatestDocList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 {{getTime(medlatestDocList[0]?.DocTime)}}</div>
               <div class="col-md-3">{{medlatestDocList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
+              <div class="col-md-1 d-flex">
                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                   (click)="openMedReleasePdf(medlatestDocList[0].Dockey)"
                   *ngIf="medlatestDocList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;"
+                  (click)="$event.stopPropagation(); onReleaseHistoryData(medlatestDocList[0]?.Dockey, medlatestDocList[0])">
+                  <select *ngIf="medlatestDocList.length && medlatestDocList[0]?.StatusTxt != 'N/A' && medlatestDocList[0]?.Zversion != '00'"
+                    class="mr-2" name="" id=""></select>
+                </div>
               </div>
             </div>
             <!-- <div class="box-col d-flex mt-2 docs-event" style="
@@ -301,11 +307,16 @@ min-width: 15%;">
                 {{getDate(latestCorrespondenceList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
               </div>
               <div class="col-md-3">{{latestCorrespondenceList[0]?.PhyNm || '-'}}</div>
-              <div class="col-md-1">
-              
+              <div class="col-md-1 d-flex">
+
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCorrespondenceDocumentPdf(latestCorrespondenceList[0]?.Dockey)"
                 *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
+                <div class="d-flex ml-2" style="width: 100%;"
+                  (click)="$event.stopPropagation(); onReleaseHistoryData(latestCorrespondenceList[0]?.Dockey, latestCorrespondenceList[0])">
+                  <select *ngIf="latestCorrespondenceList.length && latestCorrespondenceList[0]?.StatusTxt != 'N/A' && latestCorrespondenceList[0]?.Zversion != '00'"
+                    class="mr-2" name="" id=""></select>
+                </div>
               </div>
             </div>
 

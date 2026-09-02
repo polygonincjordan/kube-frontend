@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
+import { mergeReleasedDocumentVersions } from '@services/document-version-history.util';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 
@@ -19,10 +20,9 @@ export class DiagnosisHistoryPopupComponent {
 
   constructor(private modalService: BsModalService) { }
 
-  showPopup(data): void {
-    this.configurationData = [];
-    if (data && data.length) {
-      this.configurationData = data;
+  showPopup(data, currentDocument?): void {
+    this.configurationData = mergeReleasedDocumentVersions(data, currentDocument);
+    if (this.configurationData.length) {
       this.modalRef = this.modalService.show(this.releaseHistory, { backdrop: true, ignoreBackdropClick: false, class: 'release-history' });
     } else {
       Swal.fire({
@@ -43,7 +43,11 @@ export class DiagnosisHistoryPopupComponent {
   }
 
   onOpenModelInpatient(value: any) {
-    this.onReleseClose.emit({value: value, Oldversion: true});
+    this.onReleseClose.emit({
+      value: value.sourceDocument || value,
+      Oldversion: !value.isCurrentVersion,
+      isCurrentVersion: !!value.isCurrentVersion,
+    });
     this.modalRef.hide();
   }
 
