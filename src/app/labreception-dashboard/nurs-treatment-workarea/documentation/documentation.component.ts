@@ -21,6 +21,8 @@ import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-d
 import { SharedService } from '@services/shared.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
+import { DataShareService } from '@services/data-share.service';
+import { ActionType, WordType } from '@services/interfaces/common.enum';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -117,7 +119,8 @@ export class DocumentationComponent implements OnInit {
   InOutPatientViewValue: { showBoth: boolean; showIn: boolean; showOut: boolean; };
   imgType: any;
   constructor(private modalService: BsModalService, private emergencyService: EmergencyService, private inPatientConfigurationService: InPatientConfigurationService, private userconfig: UserConfigurationService, private patientHistoryService: PatientHistoryService, private storageService: StorageService, private route: ActivatedRoute, private sanitizer: DomSanitizer, private admissionService: AdmissionService, private userConfigurationService: UserConfigurationService, private formBuilder: FormBuilder, 
-    private dayCaseDashboardService: DayCaseDashboardService, private sharedService: SharedService) {
+    private dayCaseDashboardService: DayCaseDashboardService, private sharedService: SharedService,
+    private dataShareService: DataShareService) {
     this.route.queryParams.subscribe((params) => {
       this.paramsObject = params;
       this.storageService.setEinri(params['einri']);
@@ -750,11 +753,21 @@ export class DocumentationComponent implements OnInit {
     }  else if (this.isCPRDocument) {
       if (action == 'create') {
         this.openCPRDocument = true;
+        // Clear any Copy/Update key left from a previous CPR session so a new
+        // document is not saved as a version of the previously selected one.
+        this.dataShareService.sendActionType(null);
         // this.educationAssessmentComp.resetAll();
         // this.educationAssessmentComp.ngOnInit();
 
       } else if (action == 'edit') {
         this.openCPRDocument = true;
+        if (this.selectedDocData?.Dockey && this.selectedDocData?.StatusTxt == 'Draft') {
+          let valueObj = {
+            type: WordType.EditBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Update$, true, valueObj);
+        }
         // this.educationAssessmentComp.ngOnInit();
       } else if (action == 'delete') {
         // this.educationAssessmentComp.ngOnInit();
@@ -765,6 +778,15 @@ export class DocumentationComponent implements OnInit {
         // this.releaseMed();
       } else if (action == 'copy') {
         this.openCPRDocument = true;
+        if (this.selectedDocData?.Dockey && this.selectedDocData?.StatusTxt == 'Released') {
+          // Pass the released source document key so the form loads its fields
+          // and SAP saves the result as the next version of the same document.
+          let valueObj = {
+            type: WordType.CopyBS,
+            docKey: this.selectedDocData.Dockey
+          }
+          this.dataShareService.sendActionType(ActionType.Copy$, true, valueObj);
+        }
         // this.educationAssessmentComp.ngOnInit();
       } else if (action == 'createandrelease') {
         this.openCPRDocument = true;
