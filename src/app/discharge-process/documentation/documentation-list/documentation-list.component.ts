@@ -29,6 +29,7 @@ import Swal from 'sweetalert2';
 import { StorageService } from '@services/storage.service';
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation-list',
@@ -637,6 +638,12 @@ export class DocumentationListComponent implements OnInit {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   openRealsePDFModal(item, template: TemplateRef<any>, index) {

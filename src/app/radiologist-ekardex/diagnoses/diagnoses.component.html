@@ -76,11 +76,11 @@
                 <div class="d-flex align-items-center" >
                   <div class="d-flex" style="width: 100%;">
                     <span class="border-0 txt-al-ctr" (click)="modelFormOpen(paitentData, false, pdfViewModal)"
-                    [ngStyle]="{'min-width': paitentData.Dokvr != '00' ? '80px': '104px' }">{{
+                    [ngStyle]="{'min-width': hasPreviousVersions(paitentData) ? '80px': '104px' }">{{
                       paitentData.Released == "X" ? "Released" : "Draft"
                       }}</span>
                     <select
-                      *ngIf="paitentData.Dokvr != '00'"
+                      *ngIf="hasPreviousVersions(paitentData)"
                       class="mr-2" name="" id=""
                       (click)="$event.stopPropagation(); onReleaseHistoryData(paitentData.DocKey, paitentData)"></select>
                   </div>
@@ -270,7 +270,7 @@
                       <div class="col-md-6 p-0">
                         <div class="d-flex" style="width: 100%;"
                         (click)="onReleaseNewHistoryData(member.Dockey, member)">
-                        <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                        <select *ngIf="member.NodocText !='N/A' && hasPreviousVersions(member)" class="mr-2" name="" id=""></select>
                       </div>
                     </div>
                   </div>
@@ -391,7 +391,7 @@
                       paitentData.Released == "X" ? "Released" : "Draft"
                       }}</span>
                     <select
-                      *ngIf="paitentData.Dokvr != '00'"
+                      *ngIf="hasPreviousVersions(paitentData)"
                       class="mr-2" name="" id=""
                       (click)="$event.stopPropagation(); onReleaseHistoryData(paitentData.DocKey, paitentData)"></select>
                   </div>

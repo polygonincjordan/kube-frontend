@@ -158,7 +158,7 @@
                     (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
-                      <select *ngIf="latestBridentScaleList.length && latestBridentScaleList[0]?.StatusTxt !='N/A' && latestBridentScaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestBridentScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestBridentScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openDiaAssessReleasePdf(latestDocData.Dockey)" *ngIf="latestDocData?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestDocData?.Dockey, latestDocData)">
-                      <select *ngIf="latestDocData?.Dockey && latestDocData?.Zversion && latestDocData?.StatusTxt !='N/A' && latestDocData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestDocData?.StatusTxt !='N/A' && hasPreviousVersions(latestDocData)" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                   (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                     *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
-                      <select *ngIf="latestMorseFallScaleData?.Dockey && latestMorseFallScaleData?.Zversion && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestMorseFallScaleData?.StatusTxt !='N/A' && hasPreviousVersions(latestMorseFallScaleData)" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                   (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.NAA$)"
                   *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurAdmissionList[0]?.Dockey, latestNurAdmissionList[0])">
-                    <select *ngIf="latestNurAdmissionList.length && latestNurAdmissionList[0]?.StatusTxt !='N/A' && latestNurAdmissionList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="latestNurAdmissionList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurAdmissionList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -252,7 +252,7 @@
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="getPatientProfileData(latestHemoCatheterData)" *ngIf="latestHemoCatheterData?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestHemoCatheterData?.Dockey, latestHemoCatheterData)">
-                      <select *ngIf="latestHemoCatheterData?.Dockey && latestHemoCatheterData?.Zversion && latestHemoCatheterData?.StatusTxt !='N/A' && latestHemoCatheterData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestHemoCatheterData?.StatusTxt !='N/A' && hasPreviousVersions(latestHemoCatheterData)" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                 <div class="col-md-1 d-flex"><i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 17px; color: red;"
                     (click)="openFistulaGraftPDF(latestHemoDialysisFistulaGraftData.Dockey)" *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestHemoDialysisFistulaGraftData?.Dockey, latestHemoDialysisFistulaGraftData)">
-                      <select *ngIf="latestHemoDialysisFistulaGraftData?.Dockey && latestHemoDialysisFistulaGraftData?.Zversion && latestHemoDialysisFistulaGraftData?.StatusTxt !='N/A' && latestHemoDialysisFistulaGraftData?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestHemoDialysisFistulaGraftData?.StatusTxt !='N/A' && hasPreviousVersions(latestHemoDialysisFistulaGraftData)" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -295,8 +295,8 @@
                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                   (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
                   *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
-                    <select *ngIf="latestCprList.length && latestCprList[0]?.StatusTxt !='N/A' && latestCprList[0]?.Zversion != '00'" class="mr-2" name=""
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
+                    <select *ngIf="latestCprList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestCprList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
                 </div>
@@ -318,11 +318,11 @@
                     (click)="getScaleDetails(latestNurCarePlanList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNurCarePlanList[0]?.StatusTxt == 'Released'" />
                     <!-- <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
-                      <select *ngIf="latestNurCarePlanList[0]?.StatusTxt !='N/A' && latestNurCarePlanList[0]?.Dokvr != '00'" class="mr-2" name=""
+                      <select *ngIf="latestNurCarePlanList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurCarePlanList[0])" class="mr-2" name=""
                         id=""></select>
                     </div> -->
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
-                      <select *ngIf="latestNurCarePlanList.length && latestNurCarePlanList[0]?.StatusTxt !='N/A' && latestNurCarePlanList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestNurCarePlanList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurCarePlanList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -347,7 +347,7 @@
                   (click)="openPreCathDocPdf(latestPreCardiacCathList[0]?.Dockey)"
                   *ngIf="latestPreCardiacCathList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPreCardiacCathList[0]?.Dockey, latestPreCardiacCathList[0])">
-                    <select *ngIf="latestPreCardiacCathList.length && latestPreCardiacCathList[0]?.StatusTxt !='N/A' && latestPreCardiacCathList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="latestPreCardiacCathList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestPreCardiacCathList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
                 </div>
@@ -390,7 +390,7 @@
                   <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                   <div class="col-md-1 p-0">
                     <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
-                      <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                      <select *ngIf="member.NodocText !='N/A' && hasPreviousVersions(member)" class="mr-2" name=""
                         id=""></select>
                     </div>
                   </div>

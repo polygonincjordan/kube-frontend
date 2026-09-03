@@ -64,6 +64,7 @@ import { RichmondScaleComponent } from './richmond-scale/richmond-scale.componen
 import { RamsaySedationScaleComponent } from 'src/app/shared-module/ramsay-sedation-scale/ramsay-sedation-scale.component';
 import { LaborRoomFlowSheetComponent } from './labor-room-flow-sheet/labor-room-flow-sheet.component';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 
 @UntilDestroy()
 @Component({
@@ -9548,6 +9549,12 @@ export class PatientDocumentationComponent implements OnInit {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   openPDfModal(template, item: any) {

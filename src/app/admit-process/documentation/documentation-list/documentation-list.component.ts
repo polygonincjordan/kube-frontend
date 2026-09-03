@@ -30,6 +30,7 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { PatientHistoryService } from '@services/e-kardex/patient-history.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 @UntilDestroy()
 @Component({
   selector: 'app-documentation-list',
@@ -637,6 +638,12 @@ export class DocumentationListComponent implements OnInit {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   openRealsePDFModal(item, template: TemplateRef<any>, index) {

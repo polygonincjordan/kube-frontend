@@ -38,6 +38,7 @@ import { CvcInsertionComponent } from 'src/app/shared-module/cvc-insertion/cvc-i
 import { CvcMaintenanceComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
 import { ICBundlesComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 import { IntraOperativeRecordComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -3570,6 +3571,12 @@ export class PatientDocumentationComponent implements OnInit {
   closePopup() { if (this.modalService) { this.modalService.hide(); } }
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   closePdfModal() {

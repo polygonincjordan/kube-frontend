@@ -1,5 +1,6 @@
 import {
   getDocumentVersion,
+  hasPreviousDocumentVersions,
   isReleasedDocument,
   mergeReleasedDocumentVersions,
 } from './document-version-history.util';
@@ -96,6 +97,32 @@ describe('document-version-history.util', () => {
       );
 
       expect(result.map((row) => getDocumentVersion(row))).toEqual([10, 2, 0]);
+    });
+  });
+
+  describe('hasPreviousDocumentVersions', () => {
+    it('hides the history control when no previous release exists', () => {
+      expect(hasPreviousDocumentVersions(null)).toBe(false);
+      expect(hasPreviousDocumentVersions({ Zversion: '02' })).toBe(false);
+      expect(hasPreviousDocumentVersions({ Dockey: 'doc-1' })).toBe(false);
+      expect(
+        hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '' })
+      ).toBe(false);
+      expect(
+        hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '00' })
+      ).toBe(false);
+      expect(
+        hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '01' })
+      ).toBe(false);
+    });
+
+    it('shows the history control from the second version onwards', () => {
+      expect(
+        hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '02' })
+      ).toBe(true);
+      expect(
+        hasPreviousDocumentVersions({ DocKey: 'doc-1', Dokvr: '10' })
+      ).toBe(true);
     });
   });
 });

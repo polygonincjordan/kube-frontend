@@ -32,6 +32,7 @@ import { GlasgowComaScaleComponent } from './glasgow-coma-scale/glasgow-coma-sca
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
 import { PostAnesthesiaCareRecordComponent } from './post-anesthesia-care-record/post-anesthesia-care-record.component';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -3621,6 +3622,12 @@ async deletePostCareRecordDoc(docKey: string) {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   closePdfModal() {

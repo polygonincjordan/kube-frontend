@@ -23,6 +23,7 @@ import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspon
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 import { DataShareService } from '@services/data-share.service';
 import { ActionType, WordType } from '@services/interfaces/common.enum';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -1597,6 +1598,12 @@ async deleteCorrespondenceDoc(docKey: string) {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   closePdfModal() {

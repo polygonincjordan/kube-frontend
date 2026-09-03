@@ -38,6 +38,7 @@ import { DatePipe } from '@angular/common';
 import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-document.component';
 import { NursingCarePlansComponent } from 'src/app/shared-module/nursing-care-plan-document/nursing-care-plans/nursing-care-plans.component';
 import { PreCardiacCathComponent } from 'src/app/shared-module/pre-cardiac-cath/pre-cardiac-cath.component';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 
 @Component({
   selector: 'app-patient-documentation',
@@ -3220,6 +3221,12 @@ export class PatientDocumentationComponent implements OnInit {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   closePdfModal() {

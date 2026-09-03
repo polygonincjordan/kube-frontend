@@ -21,6 +21,7 @@ import { SharedService } from '@services/shared.service';
 import { DayCaseDashboardService } from '@services/day-case.dashboard/day-case-dashboard.service';
 import { CorrespondenceDocumentComponent } from 'src/app/shared-module/correspondence-document/correspondence-document.component';
 import { DocsService } from '@services/docs.service';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -1512,6 +1513,12 @@ async deleteCorrespondenceDoc(docKey: string) {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
 
   closePdfModal() {

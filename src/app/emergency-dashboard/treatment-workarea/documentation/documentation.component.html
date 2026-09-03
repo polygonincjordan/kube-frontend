@@ -233,7 +233,7 @@ min-width: 10%;">
                   *ngIf="latestDocList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;"
                   (click)="$event.stopPropagation(); onReleaseHistoryData(latestDocList[0]?.Dockey, latestDocList[0])">
-                  <select *ngIf="latestDocList.length && latestDocList[0]?.StatusTxt != 'N/A' && latestDocList[0]?.Zversion != '00'"
+                  <select *ngIf="latestDocList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(latestDocList[0])"
                     class="mr-2" name="" id=""></select>
                 </div>
               </div>
@@ -254,7 +254,7 @@ min-width: 10%;">
                   *ngIf="medlatestDocList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;"
                   (click)="$event.stopPropagation(); onReleaseHistoryData(medlatestDocList[0]?.Dockey, medlatestDocList[0])">
-                  <select *ngIf="medlatestDocList.length && medlatestDocList[0]?.StatusTxt != 'N/A' && medlatestDocList[0]?.Zversion != '00'"
+                  <select *ngIf="medlatestDocList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(medlatestDocList[0])"
                     class="mr-2" name="" id=""></select>
                 </div>
               </div>
@@ -281,7 +281,7 @@ min-width: 10%;">
                   *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;"
                   (click)="$event.stopPropagation(); onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
-                  <select *ngIf="educationAssList.length && educationAssList[0]?.StatusTxt != 'N/A' && educationAssList[0]?.Zversion != '00'"
+                  <select *ngIf="educationAssList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(educationAssList[0])"
                     class="mr-2" name="" id=""></select>
                 </div>
               </div>
@@ -342,7 +342,7 @@ min-width: 10%;">
                   <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                   <div class="col-md-1 p-0">
                     <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
-                      <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                      <select *ngIf="member.NodocText !='N/A' && hasPreviousVersions(member)" class="mr-2" name=""
                         id=""></select>
                     </div>
                   </div>

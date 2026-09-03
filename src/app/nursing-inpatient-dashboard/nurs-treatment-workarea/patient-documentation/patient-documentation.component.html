@@ -291,7 +291,7 @@
                     (click)="openSurgicalAssPdf(surgicalPassportList[0]?.Dockey)"
                     *ngIf="surgicalPassportList[0]?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(surgicalPassportList[0]?.Dockey, surgicalPassportList[0])">
-                      <select *ngIf="surgicalPassportList.length && surgicalPassportList[0]?.StatusTxt !='N/A' && surgicalPassportList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="surgicalPassportList[0]?.StatusTxt !='N/A' && hasPreviousVersions(surgicalPassportList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -312,7 +312,7 @@
                     (click)="openNewBornPdf(newBornList[0]?.Dockey)"
                     *ngIf="newBornList[0]?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(newBornList[0]?.Dockey, newBornList[0])">
-                      <select *ngIf="newBornList.length && newBornList[0]?.StatusTxt !='N/A' && newBornList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="newBornList[0]?.StatusTxt !='N/A' && hasPreviousVersions(newBornList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -334,7 +334,7 @@
                     (click)="openBundlesPdf(bundlesList[0]?.Dockey)"
                     *ngIf="bundlesList[0]?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(bundlesList[0]?.Dockey, bundlesList[0])">
-                      <select *ngIf="bundlesList.length && bundlesList[0]?.StatusTxt !='N/A' && bundlesList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="bundlesList[0]?.StatusTxt !='N/A' && hasPreviousVersions(bundlesList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -355,7 +355,7 @@
                   (click)="openCvcMainsPdf(cvcMainList[0]?.Dockey)"
                   *ngIf="cvcMainList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(cvcMainList[0]?.Dockey, cvcMainList[0])">
-                    <select *ngIf="cvcMainList.length && cvcMainList[0]?.StatusTxt !='N/A' && cvcMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="cvcMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(cvcMainList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -376,7 +376,7 @@
                   (click)="openNurseAssMainsPdf(nurseAssMainList[0]?.Dockey)"
                   *ngIf="nurseAssMainList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseAssMainList[0]?.Dockey, nurseAssMainList[0])">
-                    <select *ngIf="nurseAssMainList.length && nurseAssMainList[0]?.StatusTxt !='N/A' && nurseAssMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="nurseAssMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(nurseAssMainList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -398,7 +398,7 @@
                   (click)="openCriticalPainPdf(CriticalPainList[0]?.Dockey)"
                   *ngIf="CriticalPainList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(CriticalPainList[0]?.Dockey, CriticalPainList[0])">
-                    <select *ngIf="CriticalPainList.length && CriticalPainList[0]?.StatusTxt !='N/A' && CriticalPainList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="CriticalPainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(CriticalPainList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -420,7 +420,7 @@
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
-                      <select *ngIf="educationAssList.length && educationAssList[0]?.StatusTxt !='N/A' && educationAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="educationAssList[0]?.StatusTxt !='N/A' && hasPreviousVersions(educationAssList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -443,7 +443,7 @@
                     *ngIf="latestNurCarePlanList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;"
                     (click)="$event.stopPropagation(); onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
-                    <select *ngIf="latestNurCarePlanList.length && latestNurCarePlanList[0]?.StatusTxt != 'N/A' && latestNurCarePlanList[0]?.Zversion != '00'"
+                    <select *ngIf="latestNurCarePlanList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(latestNurCarePlanList[0])"
                       class="mr-2" name="" id=""></select>
                   </div>
                 </div>
@@ -465,7 +465,7 @@
                     (click)="getScaleDetails(latestNurDischargeSummeryList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNurDischargeSummeryList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurDischargeSummeryList[0]?.Dockey, latestNurDischargeSummeryList[0])">
-                      <select *ngIf="latestNurDischargeSummeryList.length && latestNurDischargeSummeryList[0]?.StatusTxt !='N/A' && latestNurDischargeSummeryList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestNurDischargeSummeryList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurDischargeSummeryList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -486,7 +486,7 @@
                     (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
-                      <select *ngIf="latestBridentScaleList.length && latestBridentScaleList[0]?.StatusTxt !='N/A' && latestBridentScaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestBridentScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestBridentScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -518,7 +518,7 @@
               (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                 *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
-                  <select *ngIf="latestMorseFallScaleData?.Dockey && latestMorseFallScaleData?.Zversion && latestMorseFallScaleData?.StatusTxt !='N/A' && latestMorseFallScaleData?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestMorseFallScaleData?.StatusTxt !='N/A' && hasPreviousVersions(latestMorseFallScaleData)" class="mr-2" name=""
                     id=""></select>
                 </div>
             </div>
@@ -540,7 +540,7 @@
                   (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.NAA$)"
                   *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurAdmissionList[0]?.Dockey, latestNurAdmissionList[0])">
-                    <select *ngIf="latestNurAdmissionList.length && latestNurAdmissionList[0]?.StatusTxt !='N/A' && latestNurAdmissionList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="latestNurAdmissionList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurAdmissionList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -561,7 +561,7 @@
                     (click)="getScaleDetails(latestGlasgowComaScaleList[0],RedirectionType.COMMA$)"
                     *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestGlasgowComaScaleList[0]?.Dockey, latestGlasgowComaScaleList[0])">
-                      <select *ngIf="latestGlasgowComaScaleList.length && latestGlasgowComaScaleList[0]?.StatusTxt !='N/A' && latestGlasgowComaScaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestGlasgowComaScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -582,7 +582,7 @@
                 (click)="openPainAssessmentPdf(painAssessmentLaestDoc[0].Dockey)"
                 *ngIf="painAssessmentLaestDoc[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(painAssessmentLaestDoc[0]?.Dockey, painAssessmentLaestDoc[0])">
-                  <select *ngIf="painAssessmentLaestDoc.length && painAssessmentLaestDoc[0]?.StatusTxt !='N/A' && painAssessmentLaestDoc[0]?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="painAssessmentLaestDoc[0]?.StatusTxt !='N/A' && hasPreviousVersions(painAssessmentLaestDoc[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
             </div>
@@ -604,7 +604,7 @@
                 (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
                 *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(pediatricEarlyWarningList[0]?.Dockey, pediatricEarlyWarningList[0])">
-                  <select *ngIf="pediatricEarlyWarningList?.length && pediatricEarlyWarningList[0]?.StatusTxt !='N/A' && pediatricEarlyWarningList[0]?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="pediatricEarlyWarningList[0]?.StatusTxt !='N/A' && hasPreviousVersions(pediatricEarlyWarningList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
                 <!-- <img src="assets/img/document-html.png" width="18px" height="18px"
@@ -656,7 +656,7 @@
                     (click)="getScaleDetails(latestNumericratingscaleList[0],RedirectionType.NMRTSC$)"
                     *ngIf="latestNumericratingscaleList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNumericratingscaleList[0]?.Dockey, latestNumericratingscaleList[0])">
-                      <select *ngIf="latestNumericratingscaleList.length && latestNumericratingscaleList[0]?.StatusTxt !='N/A' && latestNumericratingscaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestNumericratingscaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNumericratingscaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -677,7 +677,7 @@
                     (click)="getScaleDetails(latestFacePainScaleList[0],RedirectionType.FAC$)"
                     *ngIf="latestFacePainScaleList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestFacePainScaleList[0]?.Dockey, latestFacePainScaleList[0])">
-                      <select *ngIf="latestFacePainScaleList.length && latestFacePainScaleList[0]?.StatusTxt !='N/A' && latestFacePainScaleList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestFacePainScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestFacePainScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -698,7 +698,7 @@
                   (click)="getScaleDetails(latestNurAssessment[0],RedirectionType.BRADEN$)"
                   *ngIf="latestNurAssessment[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurAssessment[0]?.Dockey, latestNurAssessment[0])">
-                    <select *ngIf="latestNurAssessment.length && latestNurAssessment[0]?.StatusTxt !='N/A' && latestNurAssessment[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="latestNurAssessment[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurAssessment[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
               </div>
@@ -757,7 +757,7 @@
                 (click)="openPreCathDocPdf(latestPreCardiacCathList[0]?.Dockey)"
                 *ngIf="latestPreCardiacCathList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPreCardiacCathList[0]?.Dockey, latestPreCardiacCathList[0])">
-                  <select *ngIf="latestPreCardiacCathList.length && latestPreCardiacCathList[0]?.StatusTxt !='N/A' && latestPreCardiacCathList[0]?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestPreCardiacCathList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestPreCardiacCathList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
               </div>
@@ -781,8 +781,8 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
                 *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
-                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
-                  <select *ngIf="latestCprList.length && latestCprList[0]?.StatusTxt !='N/A' && latestCprList[0]?.Zversion != '00'" class="mr-2" name=""
+                <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
+                  <select *ngIf="latestCprList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestCprList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
               </div>
@@ -805,7 +805,7 @@
                  (click)="getScaleDetails(latestModifiedAldreteList[0],RedirectionType.NMRTSC$)"
                  *ngIf="latestModifiedAldreteList[0]?.StatusTxt == 'Released'" />
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestModifiedAldreteList[0]?.Dockey, latestModifiedAldreteList[0])">
-                  <select *ngIf="latestModifiedAldreteList.length && latestModifiedAldreteList[0]?.StatusTxt !='N/A' && latestModifiedAldreteList[0]?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestModifiedAldreteList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestModifiedAldreteList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
              </div>
@@ -827,7 +827,7 @@
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;" (click)="openNeonatalDocPdf(latestNeonatalDischList[0]?.Dockey)"
                 *ngIf="latestNeonatalDischList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNeonatalDischList[0]?.Dockey, latestNeonatalDischList[0])">
-                  <select *ngIf="latestNeonatalDischList.length && latestNeonatalDischList[0]?.StatusTxt !='N/A' && latestNeonatalDischList[0]?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestNeonatalDischList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNeonatalDischList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
              </div>
@@ -850,7 +850,7 @@
                  (click)="getScaleDetails(latestTimeoutCheckList[0],RedirectionType.NMRTSC$)"
                  *ngIf="latestTimeoutCheckList[0]?.StatusTxt == 'Released'" />
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestTimeoutCheckList[0]?.Dockey, latestTimeoutCheckList[0])">
-                  <select *ngIf="latestTimeoutCheckList.length && latestTimeoutCheckList[0]?.StatusTxt !='N/A' && latestTimeoutCheckList[0]?.Zversion != '00'" class="mr-2" name=""
+                  <select *ngIf="latestTimeoutCheckList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestTimeoutCheckList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
              </div>
@@ -873,7 +873,7 @@
                     *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;"
                     (click)="$event.stopPropagation(); onReleaseHistoryData(latestCVCInsertionList[0]?.Dockey, latestCVCInsertionList[0])">
-                    <select *ngIf="latestCVCInsertionList.length && latestCVCInsertionList[0]?.StatusTxt != 'N/A' && latestCVCInsertionList[0]?.Zversion != '00'"
+                    <select *ngIf="latestCVCInsertionList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(latestCVCInsertionList[0])"
                       class="mr-2" name="" id=""></select>
                   </div>
                 </div>
@@ -894,7 +894,7 @@
                  (click)="openNurseIntraHtml(nurseIntraMainList[0])"
                  *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'" />
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
-                   <select *ngIf="nurseIntraMainList.length && nurseIntraMainList[0]?.StatusTxt !='N/A' && nurseIntraMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="nurseIntraMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(nurseIntraMainList[0])" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
@@ -914,13 +914,13 @@
                  (click)="getMewsSetMainPdf(maternitySignMainList[0]?.Dockey)"
                  *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
-                   <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="maternitySignMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(maternitySignMainList[0])" class="mr-2" name=""
                      id=""></select>
                  </div> -->
                  <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(maternitySignMainList[0],RedirectionType.NMRTSC$)" *ngIf="maternitySignMainList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(maternitySignMainList[0]?.Dockey, maternitySignMainList[0])">
-                    <select *ngIf="maternitySignMainList.length && maternitySignMainList[0]?.StatusTxt !='N/A' && maternitySignMainList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="maternitySignMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(maternitySignMainList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
              </div>
@@ -940,7 +940,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(pediatricsFallList[0],RedirectionType.NMRTSC$)" *ngIf="pediatricsFallList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(pediatricsFallList[0]?.Dockey, pediatricsFallList[0])">
-                    <select *ngIf="pediatricsFallList.length && pediatricsFallList[0]?.StatusTxt !='N/A' && pediatricsFallList[0]?.Zversion != '00'" class="mr-2" name=""
+                    <select *ngIf="pediatricsFallList[0]?.StatusTxt !='N/A' && hasPreviousVersions(pediatricsFallList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
                 </div>
@@ -962,7 +962,7 @@
                     *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;"
                     (click)="$event.stopPropagation(); onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
-                    <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt != 'N/A' && sbarNurEndList[0]?.Zversion != '00'"
+                    <select *ngIf="sbarNurEndList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(sbarNurEndList[0])"
                       class="mr-2" name="" id=""></select>
                   </div>
                 </div>
@@ -982,7 +982,7 @@
                      <img src="assets/img/document-html.png" width="18px" height="18px"
                        (click)="getScaleDetails(malnutritionAssList[0],RedirectionType.NMRTSC$)" *ngIf="malnutritionAssList[0]?.StatusTxt == 'Released'" />
                      <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(malnutritionAssList[0]?.Dockey, malnutritionAssList[0])">
-                       <select *ngIf="malnutritionAssList.length && malnutritionAssList[0]?.StatusTxt !='N/A' && malnutritionAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                       <select *ngIf="malnutritionAssList[0]?.StatusTxt !='N/A' && hasPreviousVersions(malnutritionAssList[0])" class="mr-2" name=""
                          id=""></select>
                      </div>
                    </div>
@@ -1004,7 +1004,7 @@
                     (click)="getScaleDetails(latestNewScaleDocumentList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNewScaleDocumentList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNewScaleDocumentList[0]?.Dockey, latestNewScaleDocumentList[0])">
-                      <select *ngIf="latestNewScaleDocumentList.length && latestNewScaleDocumentList[0]?.StatusTxt !='N/A' && latestNewScaleDocumentList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestNewScaleDocumentList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNewScaleDocumentList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1025,7 +1025,7 @@
                      (click)="openPostCareRecordPDF(PostAnesthesiaList[0]?.Dockey)"
                      *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
                      <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
-                       <select *ngIf="PostAnesthesiaList.length && PostAnesthesiaList[0]?.StatusTxt !='N/A' && PostAnesthesiaList[0]?.Zversion != '00'" class="mr-2" name=""
+                       <select *ngIf="PostAnesthesiaList[0]?.StatusTxt !='N/A' && hasPreviousVersions(PostAnesthesiaList[0])" class="mr-2" name=""
                          id=""></select>
                      </div>
                  </div>
@@ -1048,7 +1048,7 @@
                     *ngIf="latestObstetricFallRiskAssessmentList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;"
                     (click)="$event.stopPropagation(); onReleaseHistoryData(latestObstetricFallRiskAssessmentList[0]?.Dockey, latestObstetricFallRiskAssessmentList[0])">
-                    <select *ngIf="latestObstetricFallRiskAssessmentList.length && latestObstetricFallRiskAssessmentList[0]?.StatusTxt != 'N/A' && latestObstetricFallRiskAssessmentList[0]?.Zversion != '00'"
+                    <select *ngIf="latestObstetricFallRiskAssessmentList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(latestObstetricFallRiskAssessmentList[0])"
                       class="mr-2" name="" id=""></select>
                   </div>
                 </div>
@@ -1069,7 +1069,7 @@
                      (click)="openDeliveryRecordPDF(deliverRecordList[0]?.Dockey)"
                      *ngIf="deliverRecordList[0]?.StatusTxt == 'Released'"></i>
                      <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(deliverRecordList[0]?.Dockey, deliverRecordList[0])">
-                       <select *ngIf="deliverRecordList.length && deliverRecordList[0]?.StatusTxt !='N/A' && deliverRecordList[0]?.Zversion != '00'" class="mr-2" name=""
+                       <select *ngIf="deliverRecordList[0]?.StatusTxt !='N/A' && hasPreviousVersions(deliverRecordList[0])" class="mr-2" name=""
                          id=""></select>
                      </div>
                  </div>
@@ -1091,7 +1091,7 @@
                     (click)="getScaleDetails(latestNIPSDocumentList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNIPSDocumentList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNIPSDocumentList[0]?.Dockey, latestNIPSDocumentList[0])">
-                      <select *ngIf="latestNIPSDocumentList.length && latestNIPSDocumentList[0]?.StatusTxt !='N/A' && latestNIPSDocumentList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestNIPSDocumentList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNIPSDocumentList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1113,7 +1113,7 @@
                     *ngIf="latestNursingInitialList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;"
                     (click)="$event.stopPropagation(); onReleaseHistoryData(latestNursingInitialList[0]?.Dockey, latestNursingInitialList[0])">
-                    <select *ngIf="latestNursingInitialList.length && latestNursingInitialList[0]?.StatusTxt != 'N/A' && latestNursingInitialList[0]?.Zversion != '00'"
+                    <select *ngIf="latestNursingInitialList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(latestNursingInitialList[0])"
                       class="mr-2" name="" id=""></select>
                   </div>
                 </div>
@@ -1135,7 +1135,7 @@
                     (click)="getScaleDetails(latestRamsaySedationList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestRamsaySedationList[0]?.StatusTxt == 'Released'" />
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestRamsaySedationList[0]?.Dockey, latestRamsaySedationList[0])">
-                      <select *ngIf="latestRamsaySedationList.length && latestRamsaySedationList[0]?.StatusTxt !='N/A' && latestRamsaySedationList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestRamsaySedationList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestRamsaySedationList[0])" class="mr-2" name=""
                         id=""></select>
                   </div>
                 </div>
@@ -1157,7 +1157,7 @@
                        (click)="getScaleDetails(richmondList[0],RedirectionType.BRADEN$)"
                        *ngIf="richmondList[0]?.StatusTxt == 'Released'" />
                      <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(richmondList[0]?.Dockey, richmondList[0])">
-                         <select *ngIf="richmondList.length && richmondList[0]?.StatusTxt !='N/A' && richmondList[0]?.Zversion != '00'" class="mr-2" name=""
+                         <select *ngIf="richmondList[0]?.StatusTxt !='N/A' && hasPreviousVersions(richmondList[0])" class="mr-2" name=""
                            id=""></select>
                      </div>
                  </div>
@@ -1179,7 +1179,7 @@
                     (click)="getScaleDetails(latestPediatricAdmissionList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestPediatricAdmissionList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPediatricAdmissionList[0]?.Dockey, latestPediatricAdmissionList[0])">
-                      <select *ngIf="latestPediatricAdmissionList.length && latestPediatricAdmissionList[0]?.StatusTxt !='N/A' && latestPediatricAdmissionList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestPediatricAdmissionList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestPediatricAdmissionList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1201,7 +1201,7 @@
                     (click)="getScaleDetails(latestConfusionAssessmentList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestConfusionAssessmentList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestConfusionAssessmentList[0]?.Dockey, latestConfusionAssessmentList[0])">
-                      <select *ngIf="latestConfusionAssessmentList.length && latestConfusionAssessmentList[0]?.StatusTxt !='N/A' && latestConfusionAssessmentList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestConfusionAssessmentList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestConfusionAssessmentList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1221,7 +1221,7 @@
                     (click)="getScaleDetails(laborRoomFlowList[0],RedirectionType.BRADEN$)"
                     *ngIf="laborRoomFlowList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(laborRoomFlowList[0]?.Dockey, laborRoomFlowList[0])">
-                      <select *ngIf="laborRoomFlowList.length && laborRoomFlowList[0]?.StatusTxt !='N/A' && laborRoomFlowList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="laborRoomFlowList[0]?.StatusTxt !='N/A' && hasPreviousVersions(laborRoomFlowList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1242,7 +1242,7 @@
                     (click)="getScaleDetails(latestPaediatricPhysicianList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestPaediatricPhysicianList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPaediatricPhysicianList[0]?.Dockey, latestPaediatricPhysicianList[0])">
-                      <select *ngIf="latestPaediatricPhysicianList.length && latestPaediatricPhysicianList[0]?.StatusTxt !='N/A' && latestPaediatricPhysicianList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestPaediatricPhysicianList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestPaediatricPhysicianList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1265,7 +1265,7 @@
                     (click)="getScaleDetails(latestpostPatientFallAssessmentList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestpostPatientFallAssessmentList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestpostPatientFallAssessmentList[0]?.Dockey, latestpostPatientFallAssessmentList[0])">
-                      <select *ngIf="latestpostPatientFallAssessmentList.length && latestpostPatientFallAssessmentList[0]?.StatusTxt !='N/A' && latestpostPatientFallAssessmentList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestpostPatientFallAssessmentList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestpostPatientFallAssessmentList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1287,7 +1287,7 @@
                     (click)="getScaleDetails(latestInitialNursingNewbornList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestInitialNursingNewbornList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestInitialNursingNewbornList[0]?.Dockey, latestInitialNursingNewbornList[0])">
-                      <select *ngIf="latestInitialNursingNewbornList.length && latestInitialNursingNewbornList[0]?.StatusTxt !='N/A' && latestInitialNursingNewbornList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestInitialNursingNewbornList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestInitialNursingNewbornList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1325,7 +1325,7 @@
                     (click)="getScaleDetails(latestICUFlowsheetList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestICUFlowsheetList[0]?.StatusTxt == 'Released'" />
                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestICUFlowsheetList[0]?.Dockey, latestICUFlowsheetList[0])">
-                      <select *ngIf="latestICUFlowsheetList.length && latestICUFlowsheetList[0]?.StatusTxt !='N/A' && latestICUFlowsheetList[0]?.Zversion != '00'" class="mr-2" name=""
+                      <select *ngIf="latestICUFlowsheetList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestICUFlowsheetList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
                 </div>
@@ -1346,7 +1346,7 @@
                  (click)="openNurseAssMainsPdf(DailyNurseAssList[0]?.Dockey)"
                  *ngIf="DailyNurseAssList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(DailyNurseAssList[0]?.Dockey, DailyNurseAssList[0])">
-                   <select *ngIf="DailyNurseAssList.length && DailyNurseAssList[0]?.StatusTxt !='N/A' && DailyNurseAssList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="DailyNurseAssList[0]?.StatusTxt !='N/A' && hasPreviousVersions(DailyNurseAssList[0])" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
@@ -1367,7 +1367,7 @@
                  (click)="openNurseAssMainsPdf(sbarNurEndList[0]?.Dockey)"
                  *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
-                   <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="sbarNurEndList[0]?.StatusTxt !='N/A' && hasPreviousVersions(sbarNurEndList[0])" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
@@ -1387,7 +1387,7 @@
                  (click)="openNurseAssMainsPdf(sbarNurEndList[0]?.Dockey)"
                  *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
-                   <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="sbarNurEndList[0]?.StatusTxt !='N/A' && hasPreviousVersions(sbarNurEndList[0])" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
@@ -1407,7 +1407,7 @@
                  (click)="openNurseAssMainsPdf(sbarNurEndList[0]?.Dockey)"
                  *ngIf="sbarNurEndList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(sbarNurEndList[0]?.Dockey, sbarNurEndList[0])">
-                   <select *ngIf="sbarNurEndList.length && sbarNurEndList[0]?.StatusTxt !='N/A' && sbarNurEndList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="sbarNurEndList[0]?.StatusTxt !='N/A' && hasPreviousVersions(sbarNurEndList[0])" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
@@ -1428,7 +1428,7 @@
                  (click)="openNurseAssMainsPdf(NicuNursingFlowSheetList[0]?.Dockey)"
                  *ngIf="NicuNursingFlowSheetList[0]?.StatusTxt == 'Released'"></i>
                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(NicuNursingFlowSheetList[0]?.Dockey, NicuNursingFlowSheetList[0])">
-                   <select *ngIf="NicuNursingFlowSheetList.length && NicuNursingFlowSheetList[0]?.StatusTxt !='N/A' && NicuNursingFlowSheetList[0]?.Zversion != '00'" class="mr-2" name=""
+                   <select *ngIf="NicuNursingFlowSheetList[0]?.StatusTxt !='N/A' && hasPreviousVersions(NicuNursingFlowSheetList[0])" class="mr-2" name=""
                      id=""></select>
                  </div>
              </div>
@@ -1520,7 +1520,7 @@
                 <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                 <div class="col-md-1 p-0">
                   <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
-                    <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                    <select *ngIf="member.NodocText !='N/A' && hasPreviousVersions(member)" class="mr-2" name=""
                       id=""></select>
                   </div>
                 </div>

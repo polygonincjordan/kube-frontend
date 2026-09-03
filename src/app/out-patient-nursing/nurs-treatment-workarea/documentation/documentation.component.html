@@ -257,7 +257,7 @@ min-width: 15%;">
                   *ngIf="medlatestDocList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;"
                   (click)="$event.stopPropagation(); onReleaseHistoryData(medlatestDocList[0]?.Dockey, medlatestDocList[0])">
-                  <select *ngIf="medlatestDocList.length && medlatestDocList[0]?.StatusTxt != 'N/A' && medlatestDocList[0]?.Zversion != '00'"
+                  <select *ngIf="medlatestDocList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(medlatestDocList[0])"
                     class="mr-2" name="" id=""></select>
                 </div>
               </div>
@@ -314,7 +314,7 @@ min-width: 15%;">
                 *ngIf="latestCorrespondenceList[0]?.StatusTxt == 'Released'"></i>
                 <div class="d-flex ml-2" style="width: 100%;"
                   (click)="$event.stopPropagation(); onReleaseHistoryData(latestCorrespondenceList[0]?.Dockey, latestCorrespondenceList[0])">
-                  <select *ngIf="latestCorrespondenceList.length && latestCorrespondenceList[0]?.StatusTxt != 'N/A' && latestCorrespondenceList[0]?.Zversion != '00'"
+                  <select *ngIf="latestCorrespondenceList[0]?.StatusTxt != 'N/A' && hasPreviousVersions(latestCorrespondenceList[0])"
                     class="mr-2" name="" id=""></select>
                 </div>
               </div>
@@ -337,8 +337,8 @@ min-width: 15%;">
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openCprDocumentPdf(latestCprList[0]?.Dockey)"
                 *ngIf="latestCprList[0]?.StatusTxt == 'Released'"></i>
-                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
-                  <select *ngIf="latestCprList.length && latestCprList[0]?.StatusTxt !='N/A' && latestCprList[0]?.Zversion != '00'" class="mr-2" name=""
+                <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestCprList[0]?.Dockey, latestCprList[0])">
+                  <select *ngIf="latestCprList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestCprList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
               </div>
@@ -372,7 +372,7 @@ min-width: 15%;">
                   <div class="col-md-3 pr-0" (click)="getPatientProfileData(member)">{{ member.MitarbName }}</div>
                   <div class="col-md-1 p-0">
                     <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
-                      <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                      <select *ngIf="member.NodocText !='N/A' && hasPreviousVersions(member)" class="mr-2" name=""
                         id=""></select>
                     </div>
                   </div>

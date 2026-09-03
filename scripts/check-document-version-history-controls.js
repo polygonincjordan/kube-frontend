@@ -80,6 +80,18 @@ function hasSafeHistoryVisibilityGuard(block) {
   const conditions = [...block.matchAll(/\*ngIf=(?:"([^"]+)"|'([^']+)')/gi)]
     .map((match) => match[1] ?? match[2])
     .filter(Boolean);
+  // `hasPreviousVersions` wraps the shared helper, which already demands a
+  // document key and a version above the first, so it is stricter than the
+  // inline field checks below.
+  const usesSharedVersionGuard = conditions.some(
+    (candidate) =>
+      /\bhasPreviousVersions\s*\(/.test(candidate) && /N\/A/.test(candidate)
+  );
+
+  if (usesSharedVersionGuard) {
+    return true;
+  }
+
   const condition = conditions.find(
     (candidate) =>
       /\b(?:Zversion|Dokvr)\b/.test(candidate) && /N\/A/.test(candidate)

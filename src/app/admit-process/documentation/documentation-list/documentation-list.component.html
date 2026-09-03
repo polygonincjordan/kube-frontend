@@ -37,7 +37,7 @@
                   <div class="col-md-6 p-0">
                     <div class="d-flex" style="width: 100%;"
                     (click)="onReleaseHistoryDataCurrent(item.Dockey, item, documentVersionList)">
-                    <select *ngIf="item?.Dockey && item?.Dokvr && item.NodocText !='N/A' && item.Dokvr != '00'" class="mr-2" name="" id=""></select>
+                    <select *ngIf="item.NodocText !='N/A' && hasPreviousVersions(item)" class="mr-2" name="" id=""></select>
                   </div>
                 </div>
               </div>
@@ -76,7 +76,7 @@
                 <div class="col-md-3 pr-0" (click)="getReleasedPdf(member, labpdfmodal)">{{ member.MitarbName }}</div>
                 <div class="col-md-1 p-0">
                   <div class="d-flex" style="width: 100%;" (click)="onReleaseHistoryData(member.Dockey, member)">
-                    <select *ngIf="member.NodocText !='N/A' && member.Dokvr != '00'" class="mr-2" name=""
+                    <select *ngIf="member.NodocText !='N/A' && hasPreviousVersions(member)" class="mr-2" name=""
                       id=""></select>
                   </div>
                 </div>

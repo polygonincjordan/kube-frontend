@@ -35,6 +35,7 @@ import { NewBornPopupComponent } from './diagnoses-in-patient/new-born-popup/new
 import { SharedService } from '@services/shared.service';
 import { MedicalReportComponent } from './diagnoses-in-patient/medical-report/medical-report.component';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
+import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
 
 @UntilDestroy()
 @Component({
@@ -254,6 +255,12 @@ export class DiagnosesComponent implements OnInit {
 
   dockVer(value) {
     return `(v${parseInt(value)})`;
+  }
+
+  // The history popup lists previous releases only, so the version control is
+  // hidden for a first version or a document without a usable version number.
+  hasPreviousVersions(document: any): boolean {
+    return hasPreviousDocumentVersions(document);
   }
   pdfUrlConvertToBlob(pdfValue) {
     let byteArray = new Uint8Array(atob(pdfValue).split("").map(char => char.charCodeAt(0)));
