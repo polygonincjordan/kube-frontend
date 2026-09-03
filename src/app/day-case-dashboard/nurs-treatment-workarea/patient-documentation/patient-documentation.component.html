@@ -194,7 +194,7 @@
                     <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openSurgicalAssPdf(surgicalPassportList[0]?.Dockey)"
                     *ngIf="surgicalPassportList[0]?.StatusTxt == 'Released'"></i>
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(surgicalPassportList[0]?.Dockey, surgicalPassportList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(surgicalPassportList[0]?.Dockey, surgicalPassportList[0])">
                       <select *ngIf="surgicalPassportList[0]?.StatusTxt !='N/A' && hasPreviousVersions(surgicalPassportList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -215,7 +215,7 @@
                      <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                      (click)="openPostCareRecordPDF(PostAnesthesiaList[0]?.Dockey)"
                      *ngIf="PostAnesthesiaList[0]?.StatusTxt == 'Released'"></i>
-                     <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
+                     <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(PostAnesthesiaList[0]?.Dockey, PostAnesthesiaList[0])">
                        <select *ngIf="PostAnesthesiaList[0]?.StatusTxt !='N/A' && hasPreviousVersions(PostAnesthesiaList[0])" class="mr-2" name=""
                          id=""></select>
                      </div>
@@ -237,7 +237,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
                       <select *ngIf="educationAssList[0]?.StatusTxt !='N/A' && hasPreviousVersions(educationAssList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -259,7 +259,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestNurCarePlanList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNurCarePlanList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestNurCarePlanList[0]?.Dockey, latestNurCarePlanList[0])">
                       <select *ngIf="latestNurCarePlanList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurCarePlanList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -281,7 +281,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestNurDischargeSummeryList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestNurDischargeSummeryList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurDischargeSummeryList[0]?.Dockey, latestNurDischargeSummeryList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestNurDischargeSummeryList[0]?.Dockey, latestNurDischargeSummeryList[0])">
                       <select *ngIf="latestNurDischargeSummeryList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurDischargeSummeryList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -301,7 +301,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
                       <select *ngIf="latestBridentScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestBridentScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -333,7 +333,7 @@
               <img src="assets/img/document-html.png" width="18px" height="18px"
               (click)="getScaleDetails(latestMorseFallScaleData,RedirectionType.BRADEN$)"
                 *ngIf="latestMorseFallScaleData?.StatusTxt == 'Released'" />
-                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
+                <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestMorseFallScaleData?.Dockey, latestMorseFallScaleData)">
                   <select *ngIf="latestMorseFallScaleData?.StatusTxt !='N/A' && hasPreviousVersions(latestMorseFallScaleData)" class="mr-2" name=""
                     id=""></select>
                 </div>
@@ -355,7 +355,7 @@
                 <img src="assets/img/document-html.png" width="15px" height="15px"
                   (click)="getScaleDetails(latestNurAdmissionList[0],RedirectionType.NAA$)"
                   *ngIf="latestNurAdmissionList[0]?.StatusTxt == 'Released'" />
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNurAdmissionList[0]?.Dockey, latestNurAdmissionList[0])">
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestNurAdmissionList[0]?.Dockey, latestNurAdmissionList[0])">
                     <select *ngIf="latestNurAdmissionList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNurAdmissionList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
@@ -501,7 +501,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestGlasgowComaScaleList[0],RedirectionType.COMMA$)"
                     *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestGlasgowComaScaleList[0]?.Dockey, latestGlasgowComaScaleList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestGlasgowComaScaleList[0]?.Dockey, latestGlasgowComaScaleList[0])">
                       <select *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestGlasgowComaScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -526,7 +526,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openPreCathDocPdf(latestPreCardiacCathList[0]?.Dockey)"
                 *ngIf="latestPreCardiacCathList[0]?.StatusTxt == 'Released'"></i>
-                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestPreCardiacCathList[0]?.Dockey, latestPreCardiacCathList[0])">
+                <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestPreCardiacCathList[0]?.Dockey, latestPreCardiacCathList[0])">
                   <select *ngIf="latestPreCardiacCathList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestPreCardiacCathList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>

@@ -170,7 +170,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;" title="View PDF"
                     *ngIf="latestEmergencyNursingDocList[0]?.StatusTxt == 'Released'"
                     (click)="getScaleDetails(latestEmergencyNursingDocList[0], RedirectionType.TRASM$)"></i>
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestEmergencyNursingDocList[0]?.Dockey, latestEmergencyNursingDocList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestEmergencyNursingDocList[0]?.Dockey, latestEmergencyNursingDocList[0])">
                       <select *ngIf="latestEmergencyNursingDocList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestEmergencyNursingDocList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -191,7 +191,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="openNurseIntraHtml(nurseIntraMainList[0])"
                     *ngIf="nurseIntraMainList[0]?.StatusTxt == 'Released'" />
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(nurseIntraMainList[0]?.Dockey, nurseIntraMainList[0])">
                     <select *ngIf="nurseIntraMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(nurseIntraMainList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
@@ -212,7 +212,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openBundlesPdf(bundlesList[0]?.Dockey)"
                     *ngIf="bundlesList[0]?.StatusTxt == 'Released'"></i>
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(bundlesList[0]?.Dockey, bundlesList[0])">
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(bundlesList[0]?.Dockey, bundlesList[0])">
                     <select *ngIf="bundlesList[0]?.StatusTxt !='N/A' && hasPreviousVersions(bundlesList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
@@ -233,7 +233,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openCVCInsertionDocumentPdf(latestCVCInsertionList[0]?.Dockey)"
                     *ngIf="latestCVCInsertionList[0]?.StatusTxt == 'Released'"></i>
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestCVCInsertionList[0]?.Dockey, latestCVCInsertionList[0])">
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestCVCInsertionList[0]?.Dockey, latestCVCInsertionList[0])">
                     <select *ngIf="latestCVCInsertionList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestCVCInsertionList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
@@ -254,7 +254,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openCvcMainsPdf(cvcMainList[0]?.Dockey)"
                     *ngIf="cvcMainList[0]?.StatusTxt == 'Released'"></i>
-                  <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(cvcMainList[0]?.Dockey, cvcMainList[0])">
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(cvcMainList[0]?.Dockey, cvcMainList[0])">
                     <select *ngIf="cvcMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(cvcMainList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
@@ -274,7 +274,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestGlasgowComaScaleList[0],RedirectionType.COMMA$)"
                     *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestGlasgowComaScaleList[0]?.Dockey, latestGlasgowComaScaleList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestGlasgowComaScaleList[0]?.Dockey, latestGlasgowComaScaleList[0])">
                       <select *ngIf="latestGlasgowComaScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestGlasgowComaScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -294,7 +294,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestFacePainScaleList[0],RedirectionType.FAC$)"
                     *ngIf="latestFacePainScaleList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestFacePainScaleList[0]?.Dockey, latestFacePainScaleList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestFacePainScaleList[0]?.Dockey, latestFacePainScaleList[0])">
                       <select *ngIf="latestFacePainScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestFacePainScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -315,7 +315,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestNumericratingscaleList[0],RedirectionType.NMRTSC$)"
                     *ngIf="latestNumericratingscaleList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestNumericratingscaleList[0]?.Dockey, latestNumericratingscaleList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestNumericratingscaleList[0]?.Dockey, latestNumericratingscaleList[0])">
                       <select *ngIf="latestNumericratingscaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestNumericratingscaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -335,7 +335,7 @@
                   <img src="assets/img/document-html.png" width="18px" height="18px"
                     (click)="getScaleDetails(latestBridentScaleList[0],RedirectionType.BRADEN$)"
                     *ngIf="latestBridentScaleList[0]?.StatusTxt == 'Released'" />
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestBridentScaleList[0]?.Dockey, latestBridentScaleList[0])">
                       <select *ngIf="latestBridentScaleList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestBridentScaleList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -356,7 +356,7 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                     (click)="openEducationAssPdf(educationAssList[0].Dockey)"
                     *ngIf="educationAssList[0]?.StatusTxt == 'Released'"></i>
-                    <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
+                    <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(educationAssList[0]?.Dockey, educationAssList[0])">
                       <select *ngIf="educationAssList[0]?.StatusTxt !='N/A' && hasPreviousVersions(educationAssList[0])" class="mr-2" name=""
                         id=""></select>
                     </div>
@@ -409,7 +409,7 @@
                 <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openSurgicalAssPdf(surgicalPassportList[0]?.Dockey)"
                 *ngIf="surgicalPassportList[0]?.StatusTxt == 'Released'"></i>
-                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(surgicalPassportList[0]?.Dockey, surgicalPassportList[0])">
+                <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(surgicalPassportList[0]?.Dockey, surgicalPassportList[0])">
                   <select *ngIf="surgicalPassportList[0]?.StatusTxt !='N/A' && hasPreviousVersions(surgicalPassportList[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
@@ -430,7 +430,7 @@
               <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                 (click)="openPainAssessmentPdf(painAssessmentLaestDoc[0].Dockey)"
                 *ngIf="painAssessmentLaestDoc[0]?.StatusTxt == 'Released'"></i>
-                <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(painAssessmentLaestDoc[0]?.Dockey, painAssessmentLaestDoc[0])">
+                <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(painAssessmentLaestDoc[0]?.Dockey, painAssessmentLaestDoc[0])">
                   <select *ngIf="painAssessmentLaestDoc[0]?.StatusTxt !='N/A' && hasPreviousVersions(painAssessmentLaestDoc[0])" class="mr-2" name=""
                     id=""></select>
                 </div>
@@ -451,7 +451,7 @@
             <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
             (click)="getScaleDetails(pediatricEarlyWarningList[0],RedirectionType.PEWS$)"
             *ngIf="pediatricEarlyWarningList[0]?.StatusTxt == 'Released'"></i>
-            <div class="d-flex ml-2" style="width: 100%;" (click)="onReleaseHistoryData(pediatricEarlyWarningList[0]?.Dockey, pediatricEarlyWarningList[0])">
+            <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(pediatricEarlyWarningList[0]?.Dockey, pediatricEarlyWarningList[0])">
               <select *ngIf="pediatricEarlyWarningList[0]?.StatusTxt !='N/A' && hasPreviousVersions(pediatricEarlyWarningList[0])" class="mr-2" name=""
                 id=""></select>
             </div>
