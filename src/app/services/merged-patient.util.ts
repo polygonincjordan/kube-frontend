@@ -110,11 +110,19 @@ export function formatMrnForDisplay(mrn: string): string {
  * Only the two MRNs already parsed out of the message are substituted, so the
  * clinical wording is preserved verbatim and no other number in the sentence can
  * be altered by accident.
+ *
+ * Runs of whitespace are collapsed because SAP pads the patient number to a
+ * fixed field width, and the two services pad differently: ZNEEMR_SRV (global
+ * search) pads with zeros, ZN_EMERGENCY_DASHBOARD_SRV (ER history) pads with
+ * spaces, which would otherwise show as gaps mid-sentence.
  */
 export function formatMergedPatientMessage(info: MergedPatientInfo): string {
   return info.message
     .split(info.canceledMrn)
     .join(formatMrnForDisplay(info.canceledMrn))
     .split(info.activeMrn)
-    .join(formatMrnForDisplay(info.activeMrn));
+    .join(formatMrnForDisplay(info.activeMrn))
+    .replace(/\s+/g, ' ')
+    .replace(/\s+([.,;:])/g, '$1')
+    .trim();
 }

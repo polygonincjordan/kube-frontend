@@ -179,6 +179,35 @@ describe('merged-patient.util', () => {
       expect(formatted).not.toContain('0000005');
     });
 
+    it('collapses the space padding used by the ER History service', () => {
+      // ZN_EMERGENCY_DASHBOARD_SRV pads the patient number with spaces instead
+      // of zeros, leaving gaps before "was" and before the final period.
+      const spacePadded =
+        'Patient 5803       was canceled (patients merged). The active patient number is 5802     .';
+      const error = buildMergeError();
+      error.error.error.message.value = spacePadded;
+      const info = parseMergedPatientError(error);
+
+      expect(info.canceledMrn).toBe('5803');
+      expect(info.activeMrn).toBe('5802');
+      expect(formatMergedPatientMessage(info)).toBe(
+        'Patient 5803 was canceled (patients merged). The active patient number is 5802.'
+      );
+    });
+
+    it('renders both service formats identically', () => {
+      const zeroPadded = parseMergedPatientError(buildMergeError());
+
+      const spaceError = buildMergeError();
+      spaceError.error.error.message.value =
+        'Patient 5803       was canceled (patients merged). The active patient number is 5802     .';
+      const spacePadded = parseMergedPatientError(spaceError);
+
+      expect(formatMergedPatientMessage(spacePadded)).toBe(
+        formatMergedPatientMessage(zeroPadded)
+      );
+    });
+
     it('does not alter other numbers in the message', () => {
       const withYear =
         'Patient 0000005803 was canceled (patients merged) on 2026. The active patient number is 0000005802.';
