@@ -101,9 +101,9 @@ describe('document-version-history.util', () => {
   });
 
   describe('hasPreviousDocumentVersions', () => {
-    it('hides the history control when no previous release exists', () => {
+    it('hides the history control when no previous version exists', () => {
       expect(hasPreviousDocumentVersions(null)).toBe(false);
-      expect(hasPreviousDocumentVersions({ Zversion: '02' })).toBe(false);
+      expect(hasPreviousDocumentVersions({ Zversion: '01' })).toBe(false);
       expect(hasPreviousDocumentVersions({ Dockey: 'doc-1' })).toBe(false);
       expect(
         hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '' })
@@ -111,17 +111,27 @@ describe('document-version-history.util', () => {
       expect(
         hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '00' })
       ).toBe(false);
-      expect(
-        hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '01' })
-      ).toBe(false);
     });
 
-    it('shows the history control from the second version onwards', () => {
+    it('shows the history control once a v00 predecessor exists', () => {
+      expect(
+        hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '01' })
+      ).toBe(true);
       expect(
         hasPreviousDocumentVersions({ Dockey: 'doc-1', Zversion: '02' })
       ).toBe(true);
       expect(
         hasPreviousDocumentVersions({ DocKey: 'doc-1', Dokvr: '10' })
+      ).toBe(true);
+    });
+
+    it('shows the history control for a draft that supersedes a release', () => {
+      expect(
+        hasPreviousDocumentVersions({
+          Dockey: 'MED000000000000001000003597101000',
+          Zversion: '01',
+          StatusTxt: 'Draft',
+        })
       ).toBe(true);
     });
   });

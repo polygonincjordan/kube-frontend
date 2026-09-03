@@ -138,9 +138,9 @@ export function mergeReleasedDocumentVersions(
 
 /**
  * True only when the history popup would have rows to show: the document is
- * identifiable and its version is at least the second one, so a previous
- * release exists. `mergeReleasedDocumentVersions` drops the current version,
- * so anything below this always produces an empty popup.
+ * identifiable and carries a version above the first. Versions start at `00`,
+ * so `01` already has a `00` predecessor. `mergeReleasedDocumentVersions` drops
+ * the current version, so a `00` document always produces an empty popup.
  */
 export function hasPreviousDocumentVersions(document: any): boolean {
   const documentKey = document?.Dockey ?? document?.DocKey;
@@ -149,5 +149,5 @@ export function hasPreviousDocumentVersions(document: any): boolean {
   }
 
   const version = getDocumentVersion(document);
-  return version !== null && version > 1;
+  return version !== null && version >= 1;
 }
