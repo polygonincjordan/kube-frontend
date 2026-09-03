@@ -20,12 +20,7 @@ import { UserType } from '@services/interfaces/common.enum';
 import { CatalogItem } from '@services/e-kardex/interfaces/vitals';
 import { environment } from 'src/environments/environment';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
-import {
-  MergedPatientInfo,
-  formatMergedPatientMessage,
-  formatMrnForDisplay,
-  parseMergedPatientError,
-} from '@services/merged-patient.util';
+import { MergedPatientNoticeService } from '@services/merged-patient-notice.service';
 
 @Component({
   selector: 'app-header',
@@ -85,7 +80,8 @@ export class HeaderComponent implements OnInit {
     private route: Router,
     private _router: Router,
     private _route: ActivatedRoute,
-    private eprescriptionService: EPrescriptionService
+    private eprescriptionService: EPrescriptionService,
+    private mergedPatientNotice: MergedPatientNoticeService
   ) {
     if (this.storageService.getKubeRule() == UserType.Physician) {
       this.isPhysician = true;
@@ -347,9 +343,26 @@ export class HeaderComponent implements OnInit {
         // A merged MRN fails the search but is a redirect, not a dead end: SAP
         // names the surviving record. Handle it before the generic error so the
         // user is not told an existing patient does not exist.
-        const mergedPatient = parseMergedPatientError(_error);
-        if (mergedPatient) {
-          this.showMergedPatientNotice(mergedPatient, template);
+        const isMergedPatient = this.mergedPatientNotice.handle(
+          _error,
+          (activeMrn, displayMrn) => {
+            // Clear the criteria that belonged to the merged record - name, DOB
+            // and phone describe the old entry and would wrongly narrow the new
+            // search. Empty strings, not reset(), so the payload keeps the shape
+            // SAP expects.
+            this.form.patchValue({
+              mrn: displayMrn,
+              firstName: '',
+              lastName: '',
+              dob: '',
+              telephone: '',
+              idNumber: '',
+              sex: '',
+            });
+            this.patientSearch(template, activeMrn);
+          }
+        );
+        if (isMergedPatient) {
           return;
         }
         this.form.reset();
@@ -364,48 +377,6 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  /**
-   * Warns that the searched MRN was merged into another record and offers the
-   * surviving MRN as the next action. Shown as a warning, not an error: the
-   * patient exists, only the number changed.
-   *
-   * The SAP text is passed as `text` (not `html`) so SweetAlert escapes the
-   * server-supplied message; the active MRN appears both in that text and on the
-   * confirm button, which is the click target.
-   *
-   * MRNs are shown unpadded for readability. `mergedPatient.activeMrn` keeps the
-   * padded value for the follow-up search.
-   */
-  private showMergedPatientNotice(
-    mergedPatient: MergedPatientInfo,
-    template: TemplateRef<any>
-  ) {
-    Swal.fire({
-      title: 'Patient record merged',
-      text: formatMergedPatientMessage(mergedPatient),
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: `Open MRN ${formatMrnForDisplay(mergedPatient.activeMrn)}`,
-      cancelButtonText: 'Close',
-    }).then((result) => {
-      if (!result.isConfirmed) {
-        return;
-      }
-      // Clear the criteria that belonged to the merged record - name, DOB and
-      // phone describe the old entry and would wrongly narrow the new search.
-      // Empty strings, not reset(), so the payload keeps the shape SAP expects.
-      this.form.patchValue({
-        mrn: formatMrnForDisplay(mergedPatient.activeMrn),
-        firstName: '',
-        lastName: '',
-        dob: '',
-        telephone: '',
-        idNumber: '',
-        sex: '',
-      });
-      this.patientSearch(template, mergedPatient.activeMrn);
-    });
-  }
   openPatientSearch(data, type?, itemMainList?) {
     let jsonObj = {
       ActionXml:

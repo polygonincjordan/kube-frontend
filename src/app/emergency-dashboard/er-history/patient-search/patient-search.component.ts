@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { MergedPatientNoticeService } from '@services/merged-patient-notice.service';
 
 @Component({
   selector: 'app-patient-search',
@@ -16,7 +17,7 @@ export class PatientSearchComponent implements OnInit {
   form: FormGroup;
   patientSearchData: any;
   searchString!: string;
-  constructor( private modalService: BsModalService,private formBuilder: FormBuilder,private emergencyService:EmergencyService) { 
+  constructor( private modalService: BsModalService,private formBuilder: FormBuilder,private emergencyService:EmergencyService,private mergedPatientNotice: MergedPatientNoticeService) { 
     this.form = this.formBuilder.group({
       dob: [''],
       mrn: [''],
@@ -50,9 +51,12 @@ export class PatientSearchComponent implements OnInit {
       }
     });
   }
-  patientSearchByField(template){
+  patientSearchByField(template, mrnOverride?: string){
+    // The merged-patient redirect searches the MRN SAP returned; the form
+    // field shows it without padding.
+    const patnr = mrnOverride ?? this.form.controls.mrn.value;
     const json = {
-      Patnr:this.form.controls.mrn.value,
+      Patnr:patnr,
       Vname:this.form.controls.firstName.value,
       Nname:this.form.controls.lastName.value,
       Telnr:this.form.controls.mrn.value
@@ -65,7 +69,22 @@ export class PatientSearchComponent implements OnInit {
           element["isVisible"] = true;
         });
       },
-      (_error: any) => {}
+      (_error: any) => {
+        // A merged MRN fails the search but is a redirect, not a dead end: SAP
+        // names the surviving record, so offer it instead of failing silently.
+        this.mergedPatientNotice.handle(_error, (activeMrn, displayMrn) => {
+          // Clear the criteria that belonged to the merged record; they would
+          // wrongly narrow the search for the surviving patient.
+          this.form.patchValue({
+            mrn: displayMrn,
+            firstName: '',
+            lastName: '',
+            dob: '',
+            telephone: '',
+          });
+          this.patientSearchByField(template, activeMrn);
+        });
+      }
     );
   }
   selectedVisitDetailsData(visitdata){
