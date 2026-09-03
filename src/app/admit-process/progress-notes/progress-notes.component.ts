@@ -193,8 +193,8 @@ export class ProgressNotesComponent implements OnInit {
                 this.initForm();
                 this.getProgressNotesData();
                 this.templteContent = '';
-                this.unsavedProgressNote = false;
-                this.dataToParents.emit(this.unsavedProgressNote);
+                // this.unsavedProgressNote = false;
+                // this.dataToParents.emit(this.unsavedProgressNote);
                 this.emergencyService.successSwalModel(
                   'Progress note is replace successfully'
                 );
@@ -224,8 +224,8 @@ export class ProgressNotesComponent implements OnInit {
                 this.initForm();
                 this.getProgressNotesData();
                 this.templteContent = '';
-                this.unsavedProgressNote = false;
-                this.dataToParents.emit(this.unsavedProgressNote);
+                // this.unsavedProgressNote = false;
+                // this.dataToParents.emit(this.unsavedProgressNote);
                 this.emergencyService.successSwalModel(
                   'Progress note is created successfully'
                 );

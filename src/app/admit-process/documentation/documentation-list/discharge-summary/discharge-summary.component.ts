@@ -93,9 +93,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     if (changes.soapFormEvent.currentValue == 'toReleaseDis') {
       this.getDichargeDataByDockey(true);
     }
-    debugger;
     if (this.admissionService.isCloneDischargeSummery || this.admissionService.isEditDischargeSummery) {
-      debugger;
       if (!this.isCheckAPICall) {
         this.getDichargeDataByDockey(false);
       }
@@ -108,7 +106,6 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
       .subscribe((resp) => {
         if (resp && resp.results && resp.results.length) {
           this.inPatientDischargeData = resp.results[0];
-          console.log(this.inPatientDischargeData);
           this.isCheckAPICall = true;
           let dockey: string = '';
           if (this.admissionService.isCloneDischargeSummery) {
@@ -136,12 +133,21 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
             DischargeDispositionOth: this.inPatientDischargeData.DischargeDispositionOth,
             NeedsTransport: this.inPatientDischargeData.NeedsTransport,
             DischargeReason: this.inPatientDischargeData.DischargeReason,
-            // DischargeFollowipInstruction: this.inPatientDischargeData.DischargeFollowipInstruction,
+            DischargeFollowipInstruction: this.inPatientDischargeData.DischargeFollowipInstruction,
             NoDiagnosis: this.inPatientDischargeData.NoDiagnosis,
             NomedSubstancesAppl: this.inPatientDischargeData.NomedSubstancesAppl,
             Substances: this.inPatientDischargeData.Substances,
             NoMedordAppl: this.inPatientDischargeData.NoMedordAppl,
           });
+          // Enable/Disable Discharge Follow-up Instruction
+          const dischargeDisposition = Number(this.inPatientDischargeData.DischargeDisposition);
+          const dischargeDispositionOth = this.inPatientPhdisDataSet.get('DischargeDispositionOth');
+
+          if (dischargeDisposition === 5) {
+            dischargeDispositionOth?.enable();
+          } else {
+            dischargeDispositionOth?.disable();
+          }
 
           if (!this.admissionService.isCloneDischargeSummery) {
             this.inPatientPhdisDataSet.patchValue({
@@ -149,8 +155,13 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
               Time: this.parseTime(this.inPatientDischargeData.Timee),
             })
           }
-          // this.toDiagnosisArr = this.inPatientDischargeData.ToDiagnosis.results;
-
+          /**
+           * this code manuplate the imported medication data to include only the home medications in the "Discharge and Home Medication" section of the medicationImportData object. It filters the TODISCHMED results to include only those with OrderType 'Home' and maps them to include an additional property OwnMedication based on PatientOwnMed. This ensures that only relevant home medications are displayed in the discharge summary.
+           */
+          const homeMedications = (this.inPatientDischargeData?.TODISCHMED?.results ?? []).filter((item: any) => item.OrderType === 'Home').map((item: any) => ({
+            ...item,
+            OwnMedication: item.PatientOwnMed
+          }));
           this.medicationImportData = {
             'Hospital Medication': {
               applicable: this.inPatientPhdisDataSet.value.NomedSubstancesAppl,
@@ -158,11 +169,9 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
             },
             'Discharge and Home Medication': {
               applicable: this.inPatientPhdisDataSet.value.NoMedordAppl,
-              importedMedications: this.inPatientDischargeData?.TODISCHMED?.results,
+              importedMedications: homeMedications,
             },
           };
-          console.log('medicationImportData', this.medicationImportData);
-
           if (isRelease) {
             this.savePhysicianDischarge(true);
           }
@@ -189,13 +198,13 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     const ToFormData = this.inPatientPhdisDataSet.value;
     ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
     ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
-    
+
     const ToDiagnosis = this.toDiagnosisArr;
     ToFormData['NoDiagnosis'] = this.inPatientPhdisDataSet.value.NoDiagnosis;
-    
+
     const ToHospitalMed = this.medicationImportData?.['Hospital Medication']?.importedMedications;
     ToFormData['NomedSubstancesAppl'] = this.medicationImportData?.['Hospital Medication']?.applicable;
-    
+
     const ToDischargeMed = this.medicationImportData?.['Discharge and Home Medication']?.importedMedications;
     ToFormData['NoMedordAppl'] = this.medicationImportData?.['Discharge and Home Medication']?.applicable;
 
@@ -226,7 +235,6 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   }
 
   updatePhysicianDischarge(isRelease) {
-    debugger;
     const ToFormData = this.inPatientPhdisDataSet.value;
     ToFormData.Time = this.parsePayloadFormateTime(ToFormData.Time)
     ToFormData.Date = ToFormData.Date ? this.sanitizeSAPDateFormat(ToFormData.Date) : null;
@@ -314,7 +322,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
       // Date: new FormControl(null),
       // Time: new FormControl(this.parseTime(this.datePipe.transform(new Date(), "hh:mm:ss"))),
       DischargeDisposition: new FormControl(null),
-      DischargeDispositionOth: new FormControl(''),
+      DischargeDispositionOth: new FormControl({ value: '', disabled: true }),
       NeedsTransport: new FormControl(false),
       DischargeReason: new FormControl(''),
       DischargeFollowipInstruction: new FormControl(''),
@@ -325,10 +333,25 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
     });
   }
 
-  onChangeOtherOption(data: any) {
-    data.DischargeDisposition === '5'
-      ? (this.isDisabledOther = false)
-      : (this.isDisabledOther = true);
+  // onChangeOtherOption(data: any) {
+  //   data.DischargeDisposition === '5'
+  //     ? (this.isDisabledOther = false)
+  //     : (this.isDisabledOther = true);
+  // }
+  onChangeOtherOption(data: any): void {
+    const dischargeReason = Number(data?.DischargeDisposition);
+    const control = this.inPatientPhdisDataSet.get('DischargeDispositionOth');
+    if (dischargeReason === 5) {
+      control?.setValue(
+        this.inPatientDischargeData?.DischargeDispositionOth !== undefined
+          ? this.inPatientDischargeData.DischargeDispositionOth
+          : ''
+      );
+      control?.enable();
+    } else {
+      control?.setValue('');
+      control?.disable();
+    }
   }
 
   parseTime(data: string) {

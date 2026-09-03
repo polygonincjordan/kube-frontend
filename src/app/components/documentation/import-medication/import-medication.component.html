@@ -42,7 +42,7 @@
     </div>
   </div>
   <div class="modal-body" style="padding: 0 11px 0px">
-    <div class="d-flex align-items-center justify-content-between w-100 p-2">
+    <div class="d-flex align-items-center justify-content-between w-100 pt-2 pb-2">
       <!-- Left: Tab Navigation -->
       <div class="tab-navigation-part p-0" *ngIf="selectedTab === 'Discharge and Home Medication'">
         <!-- <div class="tab-navigate">
@@ -176,7 +176,7 @@
           </td>
           <td>
             <input type="checkbox" style="width: 18px; pointer-events: none"
-              [checked]="getDischargeMedication(medication).OwnMedication" readonly />
+              [checked]="getDischargeMedication(medication).OwnMedication" />
           </td>
           <td>
             {{ medication.Dose }}

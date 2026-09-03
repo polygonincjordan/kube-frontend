@@ -778,7 +778,6 @@ export class DocumentationComponent implements OnInit {
       .getPhyDischSummarySetByDocKey(this.admissionService.selectedCurrentDocDetails.Dockey)
       .subscribe((resp) => {
         if (resp && resp.results && resp.results.length) {
-          debugger;
           const data = this.mapPhyDischSummary(resp.results[0]);
           // console.log(data);
           // return;

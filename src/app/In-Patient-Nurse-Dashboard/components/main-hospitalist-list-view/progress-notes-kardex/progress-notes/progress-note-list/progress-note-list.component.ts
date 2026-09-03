@@ -74,9 +74,6 @@ export class ProgressNoteListComponent implements OnInit {
       (item.ProfGroup === 'NURS' && {
         'background-color': '#FFB200', //Surgery
       }) ||
-      (item.ProfGroup === 'NVAD' && {
-        'background-color': '#FFF8DC', // Nursing VAD (Cornsilk)
-      }) ||
       (item.ProfGroup === 'OCTH' && {
         'background-color': '#E9DBF0', //Surgery
       }) ||

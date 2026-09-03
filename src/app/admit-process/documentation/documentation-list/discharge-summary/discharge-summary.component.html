@@ -142,14 +142,13 @@
             <ng-select [searchable]="true" class="form-control p-0" formControlName="DischargeDisposition"
               (change)="onChangeOtherOption(inPatientPhdisDataSet.value)">
               <ng-option *ngFor="let item of dischargeDispositionList" [value]="item.Value">
-                <span style="font-weight: bold; display:none">{{item.Value}}-</span>
-                {{ item.Desc }}
+                <span style="font-weight: bold;"></span>{{ item.Desc }}
               </ng-option>
             </ng-select>
           </div>
           <div class="col-md-4 p-0 mb-2">
             <input type="text" class="form-control height-normal" id="dischargedisposition"
-              formControlName="DischargeDispositionOth" [readonly]="isDisabledOther" />
+              formControlName="DischargeDispositionOth" />
           </div>
           <!-- <div class="col-md-3 pl-0">
             <label for="surgery-time" class="col-form-label">Needs transport</label>

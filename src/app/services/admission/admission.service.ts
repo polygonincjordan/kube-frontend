@@ -515,7 +515,6 @@ export class AdmissionService {
       if (this.selectedCurrentDocDetails.NodocText == 'N/A' && actionType == 'edit') {
         return;
       }
-      debugger
       if (this.selectedCurrentDocDetails.Dtid == 'ZMED_EDUAS') {
         if (this.selectedCurrentDocDetails.DokstText === 'Released' && actionType == 'edit') return;
         if (actionType == 'edit') {
@@ -1049,14 +1048,14 @@ export class AdmissionService {
           Rate: med.Rate || "",
           Cycle: med.Cycle || ""
         })),
-
         // Map Discharge Medications
         TODISCHMED: (input.ToDischargeMed || []).map((med) => ({
           Dockey: this.isCloneDischargeSummery ? '' : input.Dockey || "",
           OrderType: med.OrderType || "Discharge",
           Description: med.Description ? med.Description : med.OrderDesc || "",
           HomeMedication: med.HomeMedication || false,
-          PatientOwnMed: med.PatientOwnMed || false,
+          PatientOwnMed: med.OwnMedication || false,
+          // OwnMedication: med.OwnMedication || false,
           Dose: med.Dose || "",
           Validity: med.Validity || "",
           Route: med.Route || "",
@@ -1098,9 +1097,7 @@ export class AdmissionService {
       ToHospitalMed: data.ToHospitalMed || [],
       ToDischargeMed: data.ToDischargeMed || [],
     };
-    // console.log('saveInPatientPhdisData payload:', payload);
     console.log('transformPayload', this.transformPayload(payload));
-    debugger;
     const url = `${environment.eKardexApiUrl}/inpatientData/saveReleasePhyDischSummarySet`;
     return this.http.post(url, this.transformPayload(payload), { withCredentials: true });
   }

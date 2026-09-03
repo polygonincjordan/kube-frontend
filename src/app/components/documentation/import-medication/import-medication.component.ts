@@ -643,8 +643,6 @@ export class ImportMedicationComponent implements OnInit {
           .map((med: any) => this.mapToHospitalMedication(med))
           .filter(Boolean)
       } as any;
-      console.log(this.allMedications);
-
       // this.allMedications = {
       //   'Discharge and Home Medication': results
       //     .filter(isDischarge)
