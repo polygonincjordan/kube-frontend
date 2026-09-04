@@ -160,15 +160,26 @@ export class ImportMedicationComponent implements OnInit {
   }
 
   toggleAll(): void {
-    const medications = this.activeTabMedications;
+    let medications: any[] = [];
+    if (this.selectedTab === 'Hospital Medication') {
+      medications = this.activeTabMedications;
+    } else {
+      const cleanedType = this.selectedOrderType?.replace(/medication/gi, '').trim();
+      medications = this.activeTabMedications.filter(
+        (medication: any) => medication.OrderType === cleanedType
+      );
+    }
     if (medications.length === 0) return;
-
     const selections = this.activeTabSelections;
     const allSelected = this.isAllSelected();
 
-    medications.forEach(med => {
+    medications.forEach((med: any) => {
       const identifier = this.getIdentifier(med);
-      allSelected ? selections.delete(identifier) : selections.add(identifier);
+      if (allSelected) {
+        selections.delete(identifier);
+      } else {
+        selections.add(identifier);
+      }
     });
   }
 
@@ -184,6 +195,7 @@ export class ImportMedicationComponent implements OnInit {
     this.modalRef = this.modalService.show(template, config);
     // Optional: Subscribe to hide event for cleanup actions
     this.modalService.onHide.subscribe((reason: string | number) => {
+      this.selectedOrderType = 'Discharge Medication';
       this.filterMedicationsByOrderType('Discharge')
     });
   }
@@ -200,6 +212,7 @@ export class ImportMedicationComponent implements OnInit {
 
     this.emitDataChange();
     this.activeTabSelections.clear();
+    // this.selectedOrderType = 'Discharge Medication';
     this.updateAvailableMedications();
     this.modalRef?.hide();
   }

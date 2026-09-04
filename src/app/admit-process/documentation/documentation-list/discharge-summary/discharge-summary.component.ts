@@ -155,10 +155,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
               Time: this.parseTime(this.inPatientDischargeData.Timee),
             })
           }
-          /**
-           * this code manuplate the imported medication data to include only the home medications in the "Discharge and Home Medication" section of the medicationImportData object. It filters the TODISCHMED results to include only those with OrderType 'Home' and maps them to include an additional property OwnMedication based on PatientOwnMed. This ensures that only relevant home medications are displayed in the discharge summary.
-           */
-          const homeMedications = (this.inPatientDischargeData?.TODISCHMED?.results ?? []).filter((item: any) => item.OrderType === 'Home').map((item: any) => ({
+          const homeMedications = (this.inPatientDischargeData?.TODISCHMED?.results ?? []).map((item: any) => ({
             ...item,
             OwnMedication: item.PatientOwnMed
           }));
