@@ -5,3 +5,21 @@
 {
   width: 1%;
 }
+
+// The view-all modal needs the same sizing the inpatient screen defines; without it
+// the dialog falls back to Bootstrap's 500px max-width and the table is unreadable.
+::ng-deep .medicationtable {
+  width: 100%;
+  min-width: 90%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+
+  .modal-content {
+    height: calc(100vh - 50px) !important;
+
+    .table-overfllow {
+      height: calc(100vh - 170px) !important;
+    }
+  }
+}
