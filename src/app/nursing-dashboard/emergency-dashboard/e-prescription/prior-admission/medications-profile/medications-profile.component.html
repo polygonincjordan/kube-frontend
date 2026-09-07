@@ -283,10 +283,34 @@
     <div class="bg-order bg-border-color">
       <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
         <h3 class="m-0 pl-5 font-weight-bold">Prior to Admission</h3>
-        <div class="">
-          <img src="assets/img/close.svg" alt="" height="20">
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/xlsx-extension.png" alt="" style="width: 20px;" (click)="exportToExcelAdmission()"
+                title="Export to excel">
+            </span>
+          </div>
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/view_full.png" alt="" style="width: 20px;" (click)="opemModalForMedication(priortoAdmission)"
+                title="View All">
+            </span>
+          </div>
+          <img src="assets/img/close.svg" alt="" height="20" (click)="closePriortodata()" role="button" aria-expanded="false"
+            aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
+            ml-2
+            c-pointer" *ngIf="MedicationorderForm.value.priortoOrder">
+          <img src="assets/img/open-penal.png" alt="" (click)="closePriortodata()" role="button" aria-expanded="false" aria-controls="collapseExample"
+            class="iconsminds-cursor-click mr-3
+            ml-2
+            c-pointer" *ngIf="!MedicationorderForm.value.priortoOrder">
         </div>
       </div>
+      <ng-container>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="MedicationorderForm.value.priortoOrder" class="table-overfllow">
+          <priorto-admissionlist [filterData]="ePrescriptionService.MedicationdFilterData"></priorto-admissionlist>
+        </div>
+      </ng-container>
       <div class="form-btn text-right p-3 bg-color-me mt-2">
       </div>
     </div>
@@ -298,10 +322,34 @@
     <div class="bg-order bg-border-color">
       <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
         <h3 class="m-0 pl-5 font-weight-bold">Patient Profile History</h3>
-        <div class="">
-          <img src="assets/img/close.svg" alt="" height="20">
+        <div class="c-pointer d-flex">
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/xlsx-extension.png" alt="" style="width: 20px;" (click)="exportToExcelProfileHistory()"
+                title="Export to excel">
+            </span>
+          </div>
+          <div class="mr-2">
+            <span style="margin-right: 15px">
+              <img src="assets/img/view_full.png" alt="" style="width: 20px;" (click)="opemModalForMedication(profileHistory)"
+                title="View All">
+            </span>
+          </div>
+          <img src="assets/img/close.svg" alt="" height="20" (click)="closePatientProfileHistory()" role="button" aria-expanded="false"
+            aria-controls="collapseExample" class="iconsminds-cursor-click mr-3
+            ml-2
+            c-pointer" *ngIf="!MedicationorderForm.value.patientProfileHistory">
+          <img src="assets/img/open-penal.png" alt="" (click)="closePatientProfileHistory()" role="button" aria-expanded="false" aria-controls="collapseExample"
+            class="iconsminds-cursor-click mr-3
+            ml-2
+            c-pointer" *ngIf="MedicationorderForm.value.patientProfileHistory">
         </div>
       </div>
+      <ng-container>
+        <div #collapse="ngbCollapse" [(ngbCollapse)]="!MedicationorderForm.value.patientProfileHistory" class="table-overfllow">
+          <patient-profile-history [filterData]="ePrescriptionService.MedicationdFilterData"></patient-profile-history>
+        </div>
+      </ng-container>
       <div class="form-btn text-right p-3 bg-color-me mt-2">
       </div>
     </div>
@@ -479,5 +527,47 @@
       <label for="administrationBySelf" class="m-0 font-weight-semibold">Self
         administration by the patient</label>
     </span>
+  </div>
+</ng-template>
+
+<ng-template #priortoAdmission>
+  <div class="bg-order bg-border-color">
+    <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
+      <h3 class="m-0 font-weight-bold">Prior to Admission</h3>
+      <div class="c-pointer d-flex">
+        <div class="mr-2">
+          <span style="margin-right: 15px">
+            <img src="assets/img/CloseTab.svg" alt="" style="width: 30px;" (click)="modalRef.hide()" title="Close">
+          </span>
+        </div>
+      </div>
+    </div>
+    <ng-container>
+      <div class="table-overfllow">
+        <priorto-admissionlist [filterData]="ePrescriptionService.MedicationdFilterData"></priorto-admissionlist>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #profileHistory>
+  <div class="bg-order bg-border-color">
+    <div class=" p-2 madiborder-bottom d-flex m-0 justify-content-between">
+      <h3 class="m-0 font-weight-bold">Patient Profile History</h3>
+      <div class="c-pointer d-flex">
+        <div class="mr-2">
+          <span style="margin-right: 15px">
+            <img src="assets/img/CloseTab.svg" alt="" style="width: 30px;" (click)="modalRef.hide()" title="Close">
+          </span>
+        </div>
+      </div>
+    </div>
+    <ng-container>
+      <div class="table-overfllow">
+        <patient-profile-history [filterData]="ePrescriptionService.MedicationdFilterData"></patient-profile-history>
+      </div>
+    </ng-container>
+    <div class="form-btn text-right p-3 bg-color-me mt-2">
+    </div>
   </div>
 </ng-template>
