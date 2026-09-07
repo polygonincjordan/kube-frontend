@@ -501,64 +501,37 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
     XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
   }
 
-  unSubscribe:Subscription;
-  exportToExcelAdmission(nameofFile: string = 'prior_to_admission', fileExtention: string = 'xlsx'): void {
-    let priorAdmission:any = []
-    this.unSubscribe = this.addministrationService.PriorToAdministrSubject.subscribe((data) => {
-      priorAdmission = data;
-    });
-    const eventArray = priorAdmission;
-    const mappedEvents = eventArray.map(event => {
-      return {
-        Descrlt: event.Descrlt,
-        Dosdef: event.Dosdef,
-        Pdur: event.Pdur,
-        Durunittxt: event.Durunittxt,
-        StartD: this.sanitizeSAPDateFormat(event.StartD, event.StartT),
-        EndD: this.sanitizeSAPDateFormat(event.EndD, event.EndT),
-        Prn: event.Prn,
-        Pom: event.Pom,
-        EmpRespNm: event.EmpRespNm,
-        MosidDesc: event.MosidDesc,
-      };
-    });
+  private mapMedicationRowsForExport(rows: any[]) {
+    return (rows || []).map(row => ({
+      Descrlt: row.Descrlt,
+      Dosdef: row.Dosdef,
+      Pdur: row.Pdur,
+      Durunittxt: row.Durunittxt,
+      StartD: this.sanitizeSAPDateFormat(row.StartD, row.StartT),
+      EndD: this.sanitizeSAPDateFormat(row.EndD, row.EndT),
+      Prn: row.Prn,
+      Pom: row.Pom,
+      EmpRespNm: row.EmpRespNm,
+      MosidDesc: row.MosidDesc,
+    }));
+  }
 
+  private writeMedicationSheet(rows: any[], nameofFile: string, fileExtention: string) {
     const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
     const workbook = XLSX.utils.book_new();
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
     XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A1' });
-    XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: -1, skipHeader: true });
+    XLSX.utils.sheet_add_json(ws, this.mapMedicationRowsForExport(rows), { origin: -1, skipHeader: true });
     XLSX.utils.book_append_sheet(workbook, ws, "Medication Data");
     XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
   }
-  exportToExcelProfileHistory(nameofFile: string = 'patient_profile_history', fileExtention: string = 'xlsx'): void {
-    let priorAdmission:any = []
-    this.unSubscribe = this.addministrationService.PriorToAdministrSubject.subscribe((data) => {
-      priorAdmission = data;
-    });
-    const eventArray = priorAdmission;
-    const mappedEvents = eventArray.map(event => {
-      return {
-        Descrlt: event.Descrlt,
-        Dosdef: event.Dosdef,
-        Pdur: event.Pdur,
-        Durunittxt: event.Durunittxt,
-        StartD: this.sanitizeSAPDateFormat(event.StartD, event.StartT),
-        EndD: this.sanitizeSAPDateFormat(event.EndD, event.EndT),
-        Prn: event.Prn,
-        Pom: event.Pom,
-        EmpRespNm: event.EmpRespNm,
-        MosidDesc: event.MosidDesc,
-      };
-    });
 
-    const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
-    const workbook = XLSX.utils.book_new();
-    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
-    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A1' });
-    XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: -1, skipHeader: true });
-    XLSX.utils.book_append_sheet(workbook, ws, "Medication Data");
-    XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
+  exportToExcelAdmission(nameofFile: string = 'prior_to_admission', fileExtention: string = 'xlsx'): void {
+    this.writeMedicationSheet(this.addministrationService.PriorToAdministration, nameofFile, fileExtention);
+  }
+
+  exportToExcelProfileHistory(nameofFile: string = 'patient_profile_history', fileExtention: string = 'xlsx'): void {
+    this.writeMedicationSheet(this.addministrationService.patientProfileHistoryData, nameofFile, fileExtention);
   }
 
   opemModalForMedication(template: TemplateRef<any>) {

@@ -73,6 +73,9 @@ import { CustomSearchPipe } from './e-prescription/prior-admission/medications-p
 import { MedicationsProfileComponent } from './e-prescription/prior-admission/medications-profile/medications-profile.component';
 import { ModetailPanelComponent } from './e-prescription/prior-admission/modetail-panel/modetail-panel.component';
 import { PriorAdmissionComponent } from './e-prescription/prior-admission/prior-admission.component';
+import { PatientProfileHistoryComponent } from './e-prescription/prior-admission/patient-profile-history/patient-profile-history.component';
+import { PriortoAdmissionlistComponent } from './e-prescription/prior-admission/priorto-admissionlist/priorto-admissionlist.component';
+import { EditPriortoAdmissionlistComponent } from './e-prescription/prior-admission/priorto-admissionlist/edit-priorto-admissionlist/edit-priorto-admissionlist.component';
 import { ErHistoryComponent } from './er-history/er-history.component';
 import { CpoeComponent } from './treatment-workarea/cpoe/cpoe.component';
 import { CreateEorderComponent } from './treatment-workarea/cpoe/create-e-order/create-e-order.component';
@@ -166,6 +169,9 @@ export const emergencyDashboard: Routes = [
     AdministrationTemplateEditPopupComponent,
     TemplateEditPopupComponent,
     MedicationsProfileComponent,
+    PriortoAdmissionlistComponent,
+    EditPriortoAdmissionlistComponent,
+    PatientProfileHistoryComponent,
     FrequencyDeftimComponent,
     AdditionInfoprnPopupComponent,
     MedicationTabsComponent,

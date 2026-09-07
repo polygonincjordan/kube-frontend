@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService, MedicationdFilterData } from '@services/e-Prescription/e-prescription.service';
@@ -12,6 +12,7 @@ import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-
 import { MedicationsPopupComponent } from '../medications-popup/medications-popup.component';
 import { ModetailPanelComponent } from '../modetail-panel/modetail-panel.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'medications-profile',
@@ -106,12 +107,14 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
   configurationPopup: string;
   // Isrenewed: boolean;
 
-  constructor(public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService, private route: ActivatedRoute) {
+  constructor(public ePrescriptionService: EPrescriptionService, public addministrationService: AddministrationService, private route: ActivatedRoute, private modalService: BsModalService) {
     this.route.queryParams.subscribe(() => {
       this.addministrationService.loadDropdownList();
       this.MedicationorderForm = new FormGroup({
         MedicationorderData: new FormArray([], Validators.required),
-        isActiveOrder: new FormControl(true)
+        isActiveOrder: new FormControl(true),
+        priortoOrder: new FormControl(false),
+        patientProfileHistory: new FormControl(false)
       });
       this.loadMedicationHistoryData();
       this.modetailsFormSubscription = this.MedicationorderForm.valueChanges.subscribe((resp) => { if (resp) { this.isFormSubmitted = true } });
@@ -146,7 +149,9 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
     this.addministrationService.loadDropdownList();
     this.MedicationorderForm = new FormGroup({
       MedicationorderData: new FormArray([], Validators.required),
-      isActiveOrder: new FormControl(true)
+      isActiveOrder: new FormControl(true),
+      priortoOrder: new FormControl(false),
+      patientProfileHistory: new FormControl(false)
     });
     this.loadMedicationHistoryData();
     this.modetailsFormSubscription = this.MedicationorderForm.valueChanges.subscribe((resp) => { if (resp) { this.isFormSubmitted = true } });
@@ -536,6 +541,51 @@ export class MedicationsProfileComponent implements OnInit, OnDestroy, DoCheck {
 
   closeActivedata() {
     this.MedicationorderForm.patchValue({ isActiveOrder: !this.MedicationorderForm.value.isActiveOrder });
+  }
+
+  closePriortodata() {
+    this.MedicationorderForm.patchValue({ priortoOrder: !this.MedicationorderForm.value.priortoOrder });
+  }
+
+  closePatientProfileHistory() {
+    this.MedicationorderForm.patchValue({ patientProfileHistory: !this.MedicationorderForm.value.patientProfileHistory });
+  }
+
+  opemModalForMedication(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-dialog-centered medicationtable' });
+  }
+
+  private mapMedicationRowsForExport(rows: any[]) {
+    return (rows || []).map(row => ({
+      Descrlt: row.Descrlt,
+      Dosdef: row.Dosdef,
+      Pdur: row.Pdur,
+      Durunittxt: row.Durunittxt,
+      StartD: this.sanitizeSAPDateFormat(row.StartD, row.StartT),
+      EndD: this.sanitizeSAPDateFormat(row.EndD, row.EndT),
+      Prn: row.Prn,
+      Pom: row.Pom,
+      EmpRespNm: row.EmpRespNm,
+      MosidDesc: row.MosidDesc,
+    }));
+  }
+
+  private writeMedicationSheet(rows: any[], nameofFile: string, fileExtention: string) {
+    const Heading = [['Medication Name', 'Dosage', 'Duration', 'Duration Unit', 'Valid From', 'Valid To', 'PRN', 'POM', 'Physician']];
+    const workbook = XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, Heading, { origin: 'A1' });
+    XLSX.utils.sheet_add_json(ws, this.mapMedicationRowsForExport(rows), { origin: -1, skipHeader: true });
+    XLSX.utils.book_append_sheet(workbook, ws, "Medication Data");
+    XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
+  }
+
+  exportToExcelAdmission(nameofFile: string = 'prior_to_admission', fileExtention: string = 'xlsx'): void {
+    this.writeMedicationSheet(this.addministrationService.PriorToAdministration, nameofFile, fileExtention);
+  }
+
+  exportToExcelProfileHistory(nameofFile: string = 'patient_profile_history', fileExtention: string = 'xlsx'): void {
+    this.writeMedicationSheet(this.addministrationService.patientProfileHistoryData, nameofFile, fileExtention);
   }
 
 
