@@ -110,6 +110,27 @@ describe('ConsumablesListComponent', () => {
     );
   });
 
+  it('keeps a manually typed material code visible after a stock error', () => {
+    consumableService.getMaterialStockDetails.and.returnValue(
+      of({ d: { results: [] } })
+    );
+    spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ value: true } as any));
+
+    component.getDetailsOfMaterial(
+      '14000431',
+      0,
+      component.wordType.MaterialCode$
+    );
+
+    expect(component.resultsFormArray.at(0).value).toEqual(
+      jasmine.objectContaining({
+        Matnr: '14000431',
+        rowError: true,
+        rowErrorSource: 'stock',
+      })
+    );
+  });
+
   it('clears the row indicator when the user starts correcting the material', () => {
     fillSelectedRow();
     component.resultsFormArray.at(0).patchValue({
