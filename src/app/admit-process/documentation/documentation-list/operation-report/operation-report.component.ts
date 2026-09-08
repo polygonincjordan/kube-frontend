@@ -105,18 +105,16 @@ export class OperationReportComponent implements OnInit, OnChanges {
   }
 
   initForm() {
-    let currentTime = this.datePipe.transform(new Date(), 'hh:mm:ss');
-
     this.inPatientOrrptDataSet = new FormGroup({
       DateOfSurgery: new FormControl(new Date()),
       DocKey: new FormControl(''),
       OperationPerformed: new FormControl(''),
       OperativeComplication: new FormControl(''),
-      TimeOfSurgery: new FormControl(currentTime),
+      TimeOfSurgery: new FormControl(''),
       DateOfReportEntry: new FormControl(new Date()),
       SpecimenRemoved: new FormControl(''),
       BloodLoss: new FormControl(''),
-      TimeOfReportEntry: new FormControl(currentTime),
+      TimeOfReportEntry: new FormControl(''),
       AnesthesiaType: new FormControl(''),
       BloodTransfused: new FormControl(''),
       PreOperativeDiagnosis: new FormControl(''),
@@ -305,9 +303,13 @@ export class OperationReportComponent implements OnInit, OnChanges {
   }
 
   onChangeTime(timeValue: any, controlType) {
-    if (timeValue) {
-      this.inPatientOrrptDataSet.get(controlType).patchValue(this.parsePayloadFormateTime(timeValue));
+    // The form value is posted straight to the SAP OData time field, so an
+    // untouched (blank) time must still ship a valid duration.
+    if (!timeValue) {
+      this.inPatientOrrptDataSet.get(controlType).patchValue('PT00H00M00S');
+      return;
     }
+    this.inPatientOrrptDataSet.get(controlType).patchValue(this.parsePayloadFormateTime(timeValue));
   }
 
   onOpenSurgeryPopup() {
