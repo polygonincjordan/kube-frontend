@@ -11,6 +11,7 @@ describe('ConsumablesListComponent', () => {
   beforeEach(() => {
     consumableService = jasmine.createSpyObj('ConsumableService', [
       'getMaterialDetails',
+      'getMaterialStockDetails',
       'saveConsumableDataSet',
     ]);
 
@@ -73,12 +74,85 @@ describe('ConsumablesListComponent', () => {
       })
     );
     expect(component.postitemReset.emit).toHaveBeenCalled();
+    expect(component.resultsFormArray.at(0).value.rowError).toBe(true);
+    expect(component.resultsFormArray.at(0).value.rowErrorMessage).toContain(
+      'The material is locked.'
+    );
 
     saveChange('Save', null);
     saveChange(null, 'Save');
 
     expect(consumableService.saveConsumableDataSet).toHaveBeenCalledTimes(2);
     expect(component.resultsFormArray.at(0).value.Matnr).toBe('14000433');
+  });
+
+  it('keeps and highlights a row when the selected material has no stock', () => {
+    consumableService.getMaterialStockDetails.and.returnValue(
+      of({ d: { results: [] } })
+    );
+    spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ value: true } as any));
+    fillSelectedRow();
+
+    component.getDetailsOfMaterial('14000433', 0);
+
+    expect(component.resultsFormArray.at(0).value).toEqual(
+      jasmine.objectContaining({
+        Matnr: '14000433',
+        Arktx: 'Syringe, Disp. Size 5 ml',
+        Menge: '1',
+        isSelected: true,
+        rowError: true,
+        rowErrorSource: 'stock',
+      })
+    );
+    expect(component.resultsFormArray.at(0).value.rowErrorMessage).toContain(
+      'No Stock data'
+    );
+  });
+
+  it('clears the row indicator when the user starts correcting the material', () => {
+    fillSelectedRow();
+    component.resultsFormArray.at(0).patchValue({
+      rowError: true,
+      rowErrorMessage: 'No stock',
+      rowErrorSource: 'stock',
+    });
+
+    component.searchMaterial('14', component.wordType.MaterialCode$, 0);
+
+    expect(component.resultsFormArray.at(0).value.Matnr).toBe('14000433');
+    expect(component.resultsFormArray.at(0).value.rowError).toBe(false);
+    expect(component.resultsFormArray.at(0).value.rowErrorMessage).toBe('');
+  });
+
+  it('posts the remaining materials after the errored row is removed', () => {
+    consumableService.saveConsumableDataSet.and.returnValue(of({}));
+    spyOn(Swal, 'fire').and.returnValue(new Promise(() => {}));
+    fillSelectedRow();
+    component.resultsFormArray.at(0).patchValue({
+      rowError: true,
+      rowErrorMessage: 'No stock',
+      rowErrorSource: 'stock',
+    });
+    component.resultsFormArray.at(1).patchValue({
+      Matnr: 'VALID-ITEM',
+      Arktx: 'Valid material',
+      Stock: '5',
+      Menge: '1',
+      Meins: 'EA',
+      isSelected: true,
+    });
+
+    component.removeRow(null, 0);
+    saveChange(null, 'Save');
+
+    const payload = consumableService.saveConsumableDataSet.calls.mostRecent()
+      .args[0];
+    expect(payload.PatMatCosmpNmm7HdToItmNav.results.length).toBe(1);
+    expect(payload.PatMatCosmpNmm7HdToItmNav.results[0].Matnr).toBe(
+      'VALID-ITEM'
+    );
+    expect(payload.PatMatCosmpNmm7HdToItmNav.results[0].rowError).toBeUndefined();
   });
 
   it('clears and restores the default rows for an explicit reset', () => {
