@@ -252,7 +252,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy , OnChanges{
             if (resp && resp.d.results) {
               this.materialList = this.materialListCopy = resp.d.results;
               if (resp.d.results.length == 1) {
-                this.getDetailsOfMaterial(term, this.indexNumber.valueOf());
+                this.getDetailsOfMaterial(term, this.indexNumber.valueOf(), this.materialType);
               }
             }
           }
@@ -312,8 +312,9 @@ export class ConsumablesListComponent implements OnInit, OnDestroy , OnChanges{
   // }
 
 
-  public getDetailsOfMaterial(event: any, index: number) {
+  public getDetailsOfMaterial(event: any, index: number, manuallyEnteredField?: string) {
     const enteredValue = event;
+    this.preserveManualMaterialValue(index, enteredValue, manuallyEnteredField);
     let parms = {
       enteredValue: event,
       location: this.selectedStorageLocation,
@@ -359,6 +360,17 @@ export class ConsumablesListComponent implements OnInit, OnDestroy , OnChanges{
     this.resultsFormArray.removeAt(index);
   }
 
+  private preserveManualMaterialValue(index: number, value: any, fieldType?: string): void {
+    const controlName = fieldType === this.wordType.MaterialCode$
+      ? 'Matnr'
+      : fieldType === this.wordType.MaterialName$
+        ? 'Arktx'
+        : null;
+    if (controlName) {
+      this.resultsFormArray.at(index)?.get(controlName)?.setValue(value, { emitEvent: false });
+    }
+  }
+
 private saveRecords(): void {
   const formControls = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'];
   this.clearRowErrors('validation');
@@ -368,6 +380,7 @@ private saveRecords(): void {
     Swal.fire({ text: "Please correct or remove the highlighted row before posting.", icon: 'error', confirmButtonText: 'Ok', customClass: { popup: 'myalertpopup' } });
     return;
   }
+
   const filledRows = formControls.filter(d => d.valid && d.value.Matnr?.trim() !== '');
   const notSelectedRow = filledRows.find(d => !d.value.isSelected);
   if (notSelectedRow) {
