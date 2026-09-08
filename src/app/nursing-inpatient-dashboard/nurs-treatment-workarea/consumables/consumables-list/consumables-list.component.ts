@@ -57,15 +57,18 @@ export class ConsumablesListComponent implements OnInit, OnDestroy ,OnChanges{
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+    ngOnChanges(changes: SimpleChanges): void {
     if (changes['postitem']) {
       const currentValue = changes['postitem'].currentValue;
-      if (currentValue === 'Save') {
+      if(currentValue == 'Save'){
         this.saveRecords();
-      } else if (currentValue === 'Reset') {
+      }else if (currentValue == 'Reset'){
         this.consumableHistoryForm.reset();
-        this.consumableHistoryForm = this.generateConsumableForm();
-        this.generateDefaultForm();
+         this.consumableHistoryForm = this.generateConsumableForm();
+         this.generateDefaultForm();
+      }else {
+         this.consumableHistoryForm = this.generateConsumableForm();
+         this.generateDefaultForm();
       }
     }
   }
@@ -424,8 +427,9 @@ private saveRecords(): void {
       icon: 'error',
       confirmButtonText: 'OK',
       customClass: { popup: 'diagnosis-error' },
-    }).then(() => {
-      this.postitemReset.emit();
+    }).then((result) => {
+     this.consumableHistoryForm.reset();
+     this.postitemReset.emit();
     });
   });
 }
