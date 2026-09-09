@@ -55,6 +55,12 @@ export class DayCaseDashboardService {
       withCredentials: true,
     });
   }
+  getAvapPdf(dockey: string) {
+    const url = `${this.url}getAvapPdf?dockey=${dockey}`;
+    return this.http.get(url, {
+      withCredentials: true,
+    });
+  }
   getNurseAssMainPdf(dockey: string) {
     const url = `${this.url}getNurseAssMainPdf?dockey=${dockey}`;
     return this.http.get(url, {

@@ -1168,6 +1168,11 @@ export class EmergencyService {
       withCredentials: true,
     });
   }
+  deleteAvapDoc(json): Observable<any> {
+    return this.http.delete(this.url + `deleteAvapDoc?Dockey=${json}`, {
+      withCredentials: true,
+    });
+  }
   deleteMewsSetDoc(json): Observable<any> {
     return this.http.delete(this.url + `deleteMewsSetDoc?Dockey=${json}`, {
       withCredentials: true,
@@ -1255,6 +1260,11 @@ export class EmergencyService {
   }
   getCvcMainDoc(json): Observable<any> {
     return this.http.post(this.url + 'getCvcMainDoc', json, {
+      withCredentials: true,
+    });
+  }
+  getAvapDoc(json): Observable<any> {
+    return this.http.post(this.url + 'getAvapDoc', json, {
       withCredentials: true,
     });
   }
