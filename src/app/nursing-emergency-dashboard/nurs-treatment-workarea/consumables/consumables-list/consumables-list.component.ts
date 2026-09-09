@@ -79,9 +79,6 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
         this.consumableHistoryForm.reset();
          this.consumableHistoryForm = this.generateConsumableForm();
          this.generateDefaultForm();
-      }else {
-         this.consumableHistoryForm = this.generateConsumableForm();
-         this.generateDefaultForm();
       }
     }
   }
@@ -203,7 +200,24 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
       PrioReq: new FormControl(""),
       Gernr: new FormControl(""),
       isSelected: new FormControl(false),
+      rowError: new FormControl(false),
+      rowErrorMessage: new FormControl(""),
+      rowErrorSource: new FormControl(""),
     })
+  }
+
+  public clearRowError(index: number): void {
+    this.resultsFormArray.at(index)?.patchValue({ rowError: false, rowErrorMessage: '', rowErrorSource: '' }, { emitEvent: false });
+  }
+
+  private setRowError(control: FormGroup, message: string, source: string): void {
+    control.patchValue({ rowError: true, rowErrorMessage: message, rowErrorSource: source }, { emitEvent: false });
+  }
+
+  private clearRowErrors(source: string): void {
+    this.resultsFormArray.controls.forEach(control => {
+      if (control.value.rowErrorSource === source) this.clearRowError(this.resultsFormArray.controls.indexOf(control));
+    });
   }
 
   public isAllchecked(event: any): void {
@@ -234,6 +248,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
 
 
   public searchMaterial(event, type: string, index: number) {
+    this.clearRowError(index);
     this.materialType = type
     this.indexNumber = index;
     this.searchSubject.next(event);
@@ -249,7 +264,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
             if (resp && resp.d.results) {
               this.materialList = this.materialListCopy = resp.d.results;
               if (resp.d.results.length == 1) {
-                this.getDetailsOfMaterial(term, this.indexNumber.valueOf());
+                this.getDetailsOfMaterial(term, this.indexNumber.valueOf(), this.materialType);
               }
             }
           }
@@ -309,8 +324,9 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
    }
 
 
-  public getDetailsOfMaterial(event: any, index: number) {
+  public getDetailsOfMaterial(event: any, index: number, manuallyEnteredField?: string) {
     const enteredValue = event;
+    this.preserveManualMaterialValue(index, enteredValue, manuallyEnteredField);
     let parms = {
       enteredValue: event,
       location: this.selectedStorageLocation,
@@ -319,6 +335,7 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
       next: (resp: MaterialStockDetails) => {
         if (resp && resp.d.results && resp.d.results.length > 0) {
           let materialDetail = resp.d.results[0];
+          this.clearRowError(index);
           this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'][index].patchValue({
             Matnr: materialDetail.Matnr,
             Arktx: materialDetail.Maktx,
@@ -332,24 +349,21 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
           });
           this.getUnitTextList(event, this.indexNumber.valueOf());
         } else {
+          const message = `No Stock data for the selected item ${enteredValue}`;
+          this.setRowError(this.resultsFormArray.at(index) as FormGroup, message, 'stock');
           // this.showNotificationMessage = true;
           Swal.fire({
-            text: `No Stock data for the selected item ${enteredValue}`,
+            text: message,
             icon: 'error',
             confirmButtonText: 'Ok',
             customClass: { popup: 'myalertpopup' }
-          }).then((result) => {
-            if (result.value) {
-              if (this.materialType === this.wordType.MaterialName$) {
-                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Arktx');
-                control.reset();
-              } else {
-                const control = (this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results') as FormArray).at(index).get('Matnr');
-                control.reset();
-              }
-            }
-          })
+          });
         }
+      },
+      error: () => {
+        const message = `Unable to retrieve stock data for the selected item ${enteredValue}`;
+        this.setRowError(this.resultsFormArray.at(index) as FormGroup, message, 'stock');
+        Swal.fire({ text: message, icon: 'error', confirmButtonText: 'Ok', customClass: { popup: 'myalertpopup' } });
       }
     })
   }
@@ -359,11 +373,31 @@ export class ConsumablesListComponent implements OnInit, OnDestroy,OnChanges {
   }
 
    
+  private preserveManualMaterialValue(index: number, value: any, fieldType?: string): void {
+    const controlName = fieldType === this.wordType.MaterialCode$
+      ? 'Matnr'
+      : fieldType === this.wordType.MaterialName$
+        ? 'Arktx'
+        : null;
+    if (controlName) {
+      this.resultsFormArray.at(index)?.get(controlName)?.setValue(value, { emitEvent: false });
+    }
+  }
+
 private saveRecords(): void {
   const formControls = this.consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls'];
+  this.clearRowErrors('validation');
+  this.clearRowErrors('save');
+  const stockErrorRow = formControls.find(d => d.value.rowErrorSource === 'stock');
+  if (stockErrorRow) {
+    Swal.fire({ text: "Please correct or remove the highlighted row before posting.", icon: 'error', confirmButtonText: 'Ok', customClass: { popup: 'myalertpopup' } });
+    return;
+  }
+
   const filledRows = formControls.filter(d => d.valid && d.value.Matnr?.trim() !== '');
   const notSelectedRow = filledRows.find(d => !d.value.isSelected);
   if (notSelectedRow) {
+    this.setRowError(notSelectedRow, 'Please select this filled row to proceed.', 'validation');
     Swal.fire({
       text: "Please select the filled row to proceed.",
       icon: 'warning',
@@ -375,6 +409,7 @@ private saveRecords(): void {
   const selectedRows = formControls.filter(d => d.value.isSelected);
   const selectedInvalid = selectedRows.find(d => !d.valid || d.value.Matnr?.trim() === '');
   if (selectedInvalid) {
+    this.setRowError(selectedInvalid, 'Please fill all the required values.', 'validation');
     Swal.fire({
       text: "Please fill all the required values.",
       icon: 'error',
@@ -388,6 +423,7 @@ private saveRecords(): void {
     (+d.value.Stock === 0 || d.value.Stock === '0')
   );
   if (stockZeroRow) {
+    this.setRowError(stockZeroRow, 'Stock is not available.', 'stock');
     Swal.fire({
       text: "Stock is not available.",
       icon: 'error',
@@ -405,6 +441,9 @@ private saveRecords(): void {
       delete val.isSelected;
       delete val.Stock;
       delete val.Lgort;
+      delete val.rowError;
+      delete val.rowErrorMessage;
+      delete val.rowErrorSource;
       return val;
     });
 
@@ -427,7 +466,7 @@ private saveRecords(): void {
       }
     });
   }, (error: any) => {
-    let messageError = error.error.error.innererror?.errordetails || [];
+    const messageError = error?.error?.error?.innererror?.errordetails || [];
     let message: any = '';
     messageError.forEach((e, index) => {
       if (e.code !== '/IWBEP/CX_MGW_BUSI_EXCEPTION') {
@@ -440,10 +479,12 @@ private saveRecords(): void {
       icon: 'error',
       confirmButtonText: 'OK',
       customClass: { popup: 'diagnosis-error' },
-    }).then((result) => {
-     this.consumableHistoryForm.reset();
-     this.postitemReset.emit();
+    }).then(() => {
+      this.postitemReset.emit();
     });
+    const actionableErrors = messageError.filter(e => e.code !== '/IWBEP/CX_MGW_BUSI_EXCEPTION');
+    const knownRows = selectedRows.filter(row => row.value.Matnr && actionableErrors.some(e => e.message?.includes(row.value.Matnr)));
+    (knownRows.length ? knownRows : selectedRows).forEach(row => this.setRowError(row, message || 'The transaction was not saved.', 'save'));
   });
 }
 }

@@ -35,7 +35,7 @@
           <ng-container
             *ngFor="let product of consumableHistoryForm.get('PatMatCosmpNmm7HdToItmNav').get('results')['controls']; let i = index"
             [formGroupName]="i">
-            <tr>
+            <tr [class.consumable-row-error]="product.value.rowError">
               <td>
                 <div class="d-flex  align-items-center">
                   <div class="position-relative label-with-check">

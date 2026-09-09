@@ -5,6 +5,8 @@
     "ng": "ng",
     "lint": "ng lint",
     "test": "ng test",
+    "test:material-consumption": "ng test --main src/test-material-consumption.ts --ts-config tsconfig.material-consumption.spec.json --watch=false --browsers=ChromeHeadless",
+    "verify": "npm run test:material-consumption && npm run build:qa",
     "postinstall": "ngcc",
     "depcheck": "npx depcheck",
     "start": "node --max-old-space-size=8192 ./node_modules/@angular/cli/bin/ng serve -o --port=4200",
