@@ -504,6 +504,58 @@
   </div>
   <!-- impression and plan of care section till -->
 
+  <section class="discharge-planning-section" aria-labelledby="pediatric-discharge-planning-title"
+    [formGroup]="nursingAdmissionForm">
+    <h3 id="pediatric-discharge-planning-title" class="discharge-planning-title">Discharge Planning</h3>
+    <div class="discharge-planning-fields">
+      <div class="discharge-planning-row">
+        <label for="pediatric-expected-length-stay">Expected Length of Stay</label>
+        <input id="pediatric-expected-length-stay" type="text" maxlength="10" class="form-control discharge-planning-short-field"
+          formControlName="ExpectedLengthStay" [readonly]="isReadOnly">
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-medications">Medications</label>
+        <textarea id="pediatric-medications" rows="1" class="form-control"
+          formControlName="Medications" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-diet">Diet</label>
+        <textarea id="pediatric-diet" rows="1" class="form-control"
+          formControlName="Diet" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-level-mobility">Level of Mobility</label>
+        <textarea id="pediatric-level-mobility" rows="1" class="form-control"
+          formControlName="LevelMobility" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-pain-management">Pain Management (if applicable)</label>
+        <textarea id="pediatric-pain-management" rows="1" class="form-control"
+          formControlName="PainManagement" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-medical-equipment">Medical Equipment (if applicable)</label>
+        <textarea id="pediatric-medical-equipment" rows="1" class="form-control"
+          formControlName="MedicalEquipment" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-home-community">Home-Community Support Services</label>
+        <textarea id="pediatric-home-community" rows="1" class="form-control"
+          formControlName="HomeCommunity" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-clinical-appointments">Clinical Appointments</label>
+        <textarea id="pediatric-clinical-appointments" rows="1" class="form-control"
+          formControlName="ClinicalAppointments" [readonly]="isReadOnly"></textarea>
+      </div>
+      <div class="discharge-planning-row">
+        <label for="pediatric-others">Others</label>
+        <textarea id="pediatric-others" rows="1" class="form-control"
+          formControlName="Others1" [readonly]="isReadOnly"></textarea>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <app-physician-allergy #createAllergyId (importEvent)="importAllergyData($event)"></app-physician-allergy>

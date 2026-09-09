@@ -727,7 +727,16 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
         })
       ]),
 
-      Impression: ''
+      Impression: '',
+      ExpectedLengthStay: '',
+      Medications: '',
+      Diet: '',
+      LevelMobility: '',
+      PainManagement: '',
+      MedicalEquipment: '',
+      HomeCommunity: '',
+      ClinicalAppointments: '',
+      Others1: ''
     });
     this.defaultAddRow();
     this.defaultAddRowforTOINFECTIONS();
@@ -1069,7 +1078,16 @@ export class PaediatricsAdmDocumentComponent implements OnInit {
             OpVGivenByTxt: result.OpVGivenByTxt,
 
             Phy: result.Phy,
-            Impression: result.Impression
+            Impression: result.Impression,
+            ExpectedLengthStay: result.ExpectedLengthStay,
+            Medications: result.Medications,
+            Diet: result.Diet,
+            LevelMobility: result.LevelMobility,
+            PainManagement: result.PainManagement,
+            MedicalEquipment: result.MedicalEquipment,
+            HomeCommunity: result.HomeCommunity,
+            ClinicalAppointments: result.ClinicalAppointments,
+            Others1: result.Others1
           });
 
           this.nursingAdmissionForm.patchValue({ Datee: this.convertDateFormat(Datee) })
