@@ -1,24 +1,178 @@
-<div class="ventilator-shell">
-  <div class="ventilator-shell__panel">
-    <div class="ventilator-shell__header">
-      <div>
-        <div class="ventilator-shell__title-row">
-          <h3>IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)</h3>
-          <span class="under-development-badge">Under Development</span>
-        </div>
-        <p class="ventilator-shell__subtitle">This document is not available for data entry yet.</p>
-      </div>
-    </div>
-
-    <div class="ventilator-shell__body">
-      <div class="ventilator-shell__status">
-        <span class="ventilator-shell__status-label">Status</span>
-        <span class="ventilator-shell__status-value">UI shell only</span>
-      </div>
-    </div>
-
-    <div class="ventilator-shell__actions">
-      <button type="button" class="ventilator-shell__cancel" (click)="onCancel()">Cancel</button>
+<form [formGroup]="avapForm">
+  <div class="uninery-cath">
+    <div class="row d-flex">
+      <label class="col-md-2 p-0">Days since admission</label>
+      <input
+        class="col-md-1"
+        type="text"
+        formControlName="DaysSinceAdmission"
+        (keypress)="restrictToNumeric($event)"
+      />
+      <div class="col-md-1"></div>
+      <label class="col-md-2 p-0">Location</label>
+      <input class="col-md-2 p-0 m-0" type="text" formControlName="Location" />
     </div>
   </div>
-</div>
+
+  <div class="avap-load-error" *ngIf="loadErrorMessage">{{ loadErrorMessage }}</div>
+
+  <div class="uninery-cath">
+    <h3>Bundle Elements</h3>
+
+    <div class="row d-flex">
+      <label class="col-md-3 p-0">Mechanical Ventilation Start Date</label>
+      <div class="header-date p-0">
+        <span class="calendar-icon">
+          <img src="assets/img/Calender.svg" alt="" />
+        </span>
+        <input
+          class="form-control ml-0 avap-date"
+          type="text"
+          placeholder=""
+          readonly
+          #dp="bsDatepicker"
+          formControlName="MechVentStartDate"
+          [class.avap-invalid]="showError('MechVentStartDate')"
+          bsDatepicker
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+        />
+      </div>
+      <div class="col-md-1"></div>
+      <label class="col-md-2 p-0">Mechanical Ventilation Start Time</label>
+      <input
+        class="col-md-1 p-0"
+        type="time"
+        formControlName="MechVentStartTime"
+        [class.avap-invalid]="showError('MechVentStartTime')"
+      />
+    </div>
+    <div class="avap-field-error" *ngIf="showError('MechVentStartDate') || showError('MechVentStartTime')">
+      Mechanical ventilation start date and time are required.
+    </div>
+
+    <div class="row d-flex">
+      <label class="col-md-3 p-0">Date of Intubation</label>
+      <div class="header-date p-0">
+        <span class="calendar-icon">
+          <img src="assets/img/Calender.svg" alt="" />
+        </span>
+        <input
+          class="form-control ml-0 avap-date"
+          type="text"
+          placeholder=""
+          readonly
+          #dp="bsDatepicker"
+          formControlName="IntubationDate"
+          bsDatepicker
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+        />
+      </div>
+      <div class="col-md-1"></div>
+      <label class="col-md-2 p-0">VAP Bundle Date</label>
+      <div class="header-date p-0">
+        <span class="calendar-icon">
+          <img src="assets/img/Calender.svg" alt="" />
+        </span>
+        <input
+          class="form-control ml-0 avap-date"
+          type="text"
+          placeholder=""
+          readonly
+          #dp="bsDatepicker"
+          formControlName="VapBundleDate"
+          bsDatepicker
+          [bsConfig]="{
+            showWeekNumbers: false,
+            dateInputFormat: 'DD.MM.YYYY'
+          }"
+        />
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <label class="col-md-3 p-0">Ventilator Days</label>
+      <input
+        class="col-md-1 p-0 m-0"
+        type="text"
+        formControlName="VentilatorDays"
+        (keypress)="restrictToNumeric($event)"
+      />
+    </div>
+
+
+    <div class="avap-question" *ngFor="let bundle of bundles">
+      <div class="avap-question__text">{{ bundle.text }}</div>
+      <div class="avap-question__answers">
+        <label class="avap-option">
+          <input
+            type="radio"
+            [name]="bundle.field"
+            [checked]="isAnswer(bundle.field, YES)"
+            (change)="setAnswer(bundle.field, YES)"
+          />
+          Yes
+        </label>
+        <label class="avap-option">
+          <input
+            type="radio"
+            [name]="bundle.field"
+            [checked]="isAnswer(bundle.field, NO)"
+            (change)="setAnswer(bundle.field, NO)"
+          />
+          No
+        </label>
+        <div class="avap-option avap-option--na">
+          <label>
+            <input
+              type="radio"
+              [name]="bundle.field"
+              [checked]="isAnswer(bundle.field, NOT_APPLICABLE)"
+              (change)="setAnswer(bundle.field, NOT_APPLICABLE)"
+            />
+            Not Applicable
+          </label>
+          <div class="avap-reason-wrap">
+            <input
+              class="avap-reason"
+              type="text"
+              [formControlName]="bundle.field + 'NaReason'"
+              [readOnly]="!isNotApplicable(bundle.field)"
+              [class.avap-invalid]="showError(bundle.field + 'NaReason')"
+            />
+            <div class="avap-field-error" *ngIf="showError(bundle.field + 'NaReason')">
+              A reason is required when the answer is Not Applicable.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="uninery-cath">
+    <div class="row mt-3">
+      <label class="col-md-3 p-0">VAP Prevention Score</label>
+      <input
+        class="col-md-1 p-0 m-0 avap-score"
+        type="text"
+        formControlName="VapPreventionScore"
+        readonly
+        tabindex="-1"
+      />
+    </div>
+
+    <div class="row mt-3">
+      <label class="col-md-3 p-0">Comments</label>
+      <input class="col-md-8 p-0 m-0" type="text" formControlName="Comments" />
+    </div>
+  </div>
+
+  <div class="avap-actions">
+    <button type="button" class="avap-cancel" (click)="onCancel()">Cancel</button>
+  </div>
+</form>

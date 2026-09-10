@@ -1297,15 +1297,18 @@
               <!--  IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) -->
               <div
                 [ngClass]="isICAdultVentilator ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
-                style="font-weight: bold;" *ngIf="false && (!selectedDocument || selectedDocument == 'IBAVAP')" (click)="selectAssessment('isICAdultVentilator',latestICAdultVentilatorList[0])">
+                style="font-weight: bold;" *ngIf="!selectedDocument || selectedDocument == 'IBAVAP'" (click)="selectAssessment('isICAdultVentilator',latestICAdultVentilatorList[0])">
                 <div class="col-md-4"> IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) {{latestICAdultVentilatorList[0]?.Zversion ?
-                  dockVer(latestICAdultVentilatorList[0]?.Zversion) : ''}} <span class="under-deve">(Under Development)</span> :</div>
+                  dockVer(latestICAdultVentilatorList[0]?.Zversion) : ''}} :</div>
                 <div class="col-md-2 status-color">{{latestICAdultVentilatorList[0]?.StatusTxt || 'N/A'}}</div>
                 <div class="col-md-2" title="{{getTime(latestICAdultVentilatorList[0]?.DocTime)}}">
                   {{getDate(latestICAdultVentilatorList[0]?.DocDate) | date: "dd.MM.y" || '-'}}
                 </div>
                 <div class="col-md-3">{{latestICAdultVentilatorList[0]?.PhyNm || '-'}}</div>
                 <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                  (click)="openAvapPdf(latestICAdultVentilatorList[0]?.Dockey)"
+                  *ngIf="latestICAdultVentilatorList[0]?.StatusTxt == 'Released'"></i>
                 </div>
               </div>
 

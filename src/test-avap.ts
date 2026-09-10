@@ -1,0 +1,26 @@
+import 'zone.js/testing';
+import { getTestBed } from '@angular/core/testing';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
+
+declare const require: {
+  context(path: string, deep?: boolean, filter?: RegExp): {
+    keys(): string[];
+    <T>(id: string): T;
+  };
+};
+
+getTestBed().initTestEnvironment(
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting(),
+  { teardown: { destroyAfterEach: false } }
+);
+
+const context = require.context(
+  './app/shared-module/ic-bundle-adult-ventilator',
+  false,
+  /ic-bundle-adult-ventilator\.component\.spec\.ts$/
+);
+context.keys().map(context);

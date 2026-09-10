@@ -45,6 +45,7 @@ import { TimeOutChecklistComponent } from 'src/app/shared-module/time-out-checkl
 import { NeonatalDischDocumentComponent } from 'src/app/shared-module/neonatal-disch-document/neonatal-disch-document.component';
 import { CvcInsertionComponent } from 'src/app/shared-module/cvc-insertion/cvc-insertion.component';
 import { CvcMaintenanceComponent } from './cvc-maintenance/cvc-maintenance.component';
+import { IcBundleAdultVentilatorComponent } from 'src/app/shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.component';
 import { NursAssessmentRestraintsComponent } from './nurs-assessment-restraints/nurs-assessment-restraints.component';
 import { CriticalCarePainComponent } from './critical-care-pain/critical-care-pain.component';
 import { MaternityEarlyWarningSignComponent } from './maternity-early-warning-sign/maternity-early-warning-sign.component';
@@ -82,6 +83,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(NewbornAssessmentComponent) newBornComp: NewbornAssessmentComponent;
   @ViewChild(ICBundlesComponent) ICBundlesComp: ICBundlesComponent;
   @ViewChild(CvcMaintenanceComponent) ICCvcMainComp: CvcMaintenanceComponent;
+  @ViewChild(IcBundleAdultVentilatorComponent) ICAdultVentilatorComp: IcBundleAdultVentilatorComponent;
   @ViewChild(NursingCarePlansComponent) NursingCarePlansComp: NursingCarePlansComponent;
   @ViewChild(NursingDischargeSummaryComponent) NursingDischargeComp: NursingDischargeSummaryComponent;
   @ViewChild(NursingAdmissionAssessmentComponent) NursingAdmissionComp: NursingAdmissionAssessmentComponent;
@@ -655,6 +657,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNewBorn();
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
+    this.getAvapDoc();
     this.getIntraOpNurRecSetMainDoc();
     this.getMewsSetMainDoc();
     this.getNurseAssMainDoc();
@@ -901,6 +904,17 @@ export class PatientDocumentationComponent implements OnInit {
       error: (err: any) => {
         // Handle errors if the request fails
         console.error('Error  Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+  getAvapDoc() {
+    this.emergencyService.getAvapDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestICAdultVentilatorList = _success.d.results
+      },
+      error: (err: any) => {
+        console.error('Error reading the latest A-VAP document:', err);
         this.sharedService.waringSwallModel(`GET Error : ${err}`);
       },
     });
@@ -2448,6 +2462,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getNewBorn();
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
+    this.getAvapDoc();
     this.getIntraOpNurRecSetMainDoc();
     this.getMewsSetMainDoc();
     this.getNurseAssMainDoc();
@@ -4874,13 +4889,13 @@ export class PatientDocumentationComponent implements OnInit {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.deleteNursingCarePlan(this.selectedDocData.Dockey);
+          this.deleteAvapDoc(this.selectedDocData.Dockey);
         }
       } else if (action == 'release') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
           this.sharedService.waringSwallModel(`The document is already released`)
         } else if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Draft') {
-          this.directReleaseTimeOutCheckListDoc();
+          this.releaseAvapDetail(this.selectedDocData.Dockey);
         }
       } else if (action == 'copy') {
         if (this.selectedDocData != undefined && this.selectedDocData.Dockey != undefined && this.selectedDocData.StatusTxt == 'Released') {
@@ -4893,13 +4908,12 @@ export class PatientDocumentationComponent implements OnInit {
         }
       } else if (action == 'createandrelease') {
         this.openICAdultVentilatorDocument = true;
-        this.NeonatalDischDocumentComp.createNeonatalDischargeDocument('4').then((formValue) => {
+        this.ICAdultVentilatorComp.createDoc('4').then((formValue: any) => {
           if (formValue) {
             this.refresh()
           }
         }).catch((error: any) => {
-          console.error('Error scale:', error);
-          console.error('Error creating Glasgow coma scale:', error);
+          console.error('Error creating IC Bundle for Adult Ventilator Associated Pneumonia:', error);
         });
       }
     }
@@ -5519,6 +5533,16 @@ export class PatientDocumentationComponent implements OnInit {
         }).catch((error: any) => {
           console.error('Error scale:', error);
           console.error('Error creating Glasgow coma scale:', error);
+        })
+      }
+      if (this.openICAdultVentilatorDocument) {
+        let docStatus = '1';
+        this.ICAdultVentilatorComp.createDoc(docStatus).then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error creating IC Bundle for Adult Ventilator Associated Pneumonia:', error);
         })
       }
       if (this.openNurseAssRes) {
@@ -6150,6 +6174,15 @@ export class PatientDocumentationComponent implements OnInit {
           console.error('Error modifying Glasgow coma scale:', error);
         });
       }
+      if (this.openICAdultVentilatorDocument) {
+        this.ICAdultVentilatorComp.createDoc('1', 'edit').then((formValue: any) => {
+          if (formValue) {
+            if (btnType == 'close') this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error modifying IC Bundle for Adult Ventilator Associated Pneumonia:', error);
+        });
+      }
       if (this.openNurseAssRes) {
         this.NurseAssMainComp.createDoc('1', 'edit').then((formValue: any) => {
           if (formValue) {
@@ -6629,6 +6662,15 @@ export class PatientDocumentationComponent implements OnInit {
           }
         }).catch((error: any) => {
           console.error('Error scale:', error);
+        });
+      }
+      if (this.openICAdultVentilatorDocument) {
+        this.ICAdultVentilatorComp.createDoc('3', 'copy').then((formValue: any) => {
+          if (formValue) {
+            this.refresh();
+          }
+        }).catch((error: any) => {
+          console.error('Error versioning IC Bundle for Adult Ventilator Associated Pneumonia:', error);
         });
       }
       if (this.openNurseAssRes) {
@@ -7124,6 +7166,14 @@ export class PatientDocumentationComponent implements OnInit {
       }).catch((error: any) => {
         console.error('Error scale:', error);
         console.error('Error creating Glasgow coma scale:', error);
+      });
+    } else if (this.openICAdultVentilatorDocument) {
+      this.ICAdultVentilatorComp.createDoc('2', 'edit').then((formValue: any) => {
+        if (formValue) {
+          this.refresh();
+        }
+      }).catch((error: any) => {
+        console.error('Error releasing IC Bundle for Adult Ventilator Associated Pneumonia:', error);
       });
     } else if (this.openNursingCarePlans) {
     } else if (this.openNurseAssRes) {
@@ -8825,6 +8875,66 @@ export class PatientDocumentationComponent implements OnInit {
       );
     })
   }
+  async deleteAvapDoc(dockey: any) {
+    Swal.fire({
+      title: 'Confirm',
+      text: 'Do you want to delete?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      customClass: { popup: 'myalertpopup' }
+    } as any).then((result) => {
+      if (result.value) {
+        this.emergencyService.deleteAvapDoc(dockey).subscribe(
+          (_success: any) => {
+            Swal.fire({
+              text: "Document is deleted successfully",
+              icon: 'success',
+              confirmButtonText: 'Ok',
+              customClass: { popup: 'myalertpopup' }
+            } as any)
+            this.refresh();
+          },
+          (_error: any) => {
+            Swal.fire({
+              text: this.getAvapErrorText(_error),
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              customClass: { popup: 'myalertpopup' }
+            } as any)
+            this.refresh();
+          }
+        );
+      }
+    });
+  }
+
+  // SAP reports a refused delete under error.message.value; the deeper
+  // errordetails path the sibling documents read is not always present.
+  getAvapErrorText(response: any): string {
+    return response?.error?.error?.innererror?.errordetails?.[0]?.message
+      || response?.error?.error?.message?.value
+      || 'The document could not be processed.';
+  }
+
+  releaseAvapDetail(dockey: any) {
+    this.admissionService.getAvapDetail(dockey).subscribe((res: any) => {
+      const document = res?.results ? res.results[0] : null;
+      if (!document) {
+        this.sharedService.waringSwallModel(`The document could not be read for release`);
+        return;
+      }
+      // The flat entity is the shape 10a verified against the service.
+      const payload = { ...document, DocStatus: '2' };
+      delete payload.__metadata;
+      this.admissionService.createAvapDoc(payload).subscribe(
+        () => this.refresh(),
+        (_error: any) => this.sharedService.waringSwallModel(this.getAvapErrorText(_error))
+      );
+    })
+  }
+
   releaseCvcMainDetail() {
     this.admissionService.getCvcMainDetail(this.cvcMainList[0].Dockey).subscribe((res: any) => {
       delete res?.results[0]?.__metadata;
@@ -9332,6 +9442,22 @@ export class PatientDocumentationComponent implements OnInit {
         // this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         //   'data:application/pdf;base64,' + data.d.AttachmentData
         // );
+        const config: ModalOptions = {
+          class: 'modal-dialog-centered modal-xl pdfmodal-size',
+        };
+        this.modalRef = this.modalService.show(this.releasepdfmodal, config);
+      });
+  }
+
+  openAvapPdf(Dockey) {
+    this.pdfUrl = '';
+    this.dayCaseDashboardService
+      .getAvapPdf(Dockey)
+      .subscribe((data: any) => {
+        this.pdfUrlType = 'pdf';
+        // ZN_AVAP_SRV returns the base64 under AttachmentDataStr; the sibling
+        // documents read AttachmentData, so accept either.
+        this.pdfUrlConvertToBlob(data?.d?.AttachmentDataStr || data?.d?.AttachmentData);
         const config: ModalOptions = {
           class: 'modal-dialog-centered modal-xl pdfmodal-size',
         };
