@@ -9802,6 +9802,7 @@ export class PatientDocumentationComponent implements OnInit {
       this.openLaborRoomFlow ||
       this.openNicuNurFlowSheet ||
       this.openPaediatricPhysicianDocument ||
+      this.openICAdultVentilatorDocument ||
       this.openICUFlowsheetDocument
     );
   }
