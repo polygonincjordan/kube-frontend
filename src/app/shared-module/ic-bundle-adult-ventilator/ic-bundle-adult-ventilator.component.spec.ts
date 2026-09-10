@@ -93,16 +93,33 @@ describe('IcBundleAdultVentilatorComponent', () => {
   });
 
   describe('mandatory ventilation fields', () => {
-    it('marks the start date and time invalid while empty', () => {
-      expect(component.avapForm.get('MechVentStartDate')?.valid).toBeFalse();
-      expect(component.avapForm.get('MechVentStartTime')?.valid).toBeFalse();
+    // The service rejects null, '' and omission for every one of these, so all
+    // four are required in the form regardless of the looser business rule.
+    const required = ['MechVentStartDate', 'MechVentStartTime', 'IntubationDate', 'VapBundleDate'];
+
+    it('marks all four invalid while empty', () => {
+      required.forEach((field) => expect(component.avapForm.get(field)?.valid).toBeFalse());
     });
 
     it('accepts them once filled', () => {
       component.avapForm.get('MechVentStartDate')?.setValue(new Date());
       component.avapForm.get('MechVentStartTime')?.setValue('08:30:00');
-      expect(component.avapForm.get('MechVentStartDate')?.valid).toBeTrue();
-      expect(component.avapForm.get('MechVentStartTime')?.valid).toBeTrue();
+      component.avapForm.get('IntubationDate')?.setValue(new Date());
+      component.avapForm.get('VapBundleDate')?.setValue(new Date());
+      required.forEach((field) => expect(component.avapForm.get(field)?.valid).toBeTrue());
+    });
+
+    it('still refuses to send when only the start date and time are filled', async () => {
+      const admission: any = (component as any).admissionService;
+      spyOn(admission, 'createAvapDoc').and.callThrough();
+      component.avapForm.get('MechVentStartDate')?.setValue(new Date());
+      component.avapForm.get('MechVentStartTime')?.setValue('08:30:00');
+      component.bundles.forEach((bundle) => component.setAnswer(bundle.field, component.YES));
+
+      const result = await component.createDoc('1');
+
+      expect(result).toBeFalse();
+      expect(admission.createAvapDoc).not.toHaveBeenCalled();
     });
   });
 
@@ -145,6 +162,8 @@ describe('IcBundleAdultVentilatorComponent', () => {
 
       component.avapForm.get('MechVentStartDate')?.setValue(new Date(2026, 8, 9));
       component.avapForm.get('MechVentStartTime')?.setValue('08:30:00');
+      component.avapForm.get('IntubationDate')?.setValue(new Date(2026, 8, 9));
+      component.avapForm.get('VapBundleDate')?.setValue(new Date(2026, 8, 9));
       component.bundles.forEach((bundle) => component.setAnswer(bundle.field, component.YES));
 
       const result = await component.createDoc('1');
@@ -159,6 +178,8 @@ describe('IcBundleAdultVentilatorComponent', () => {
 
       component.avapForm.get('MechVentStartDate')?.setValue(new Date(2026, 8, 9));
       component.avapForm.get('MechVentStartTime')?.setValue('8:30:00');
+      component.avapForm.get('IntubationDate')?.setValue(new Date(2026, 8, 9));
+      component.avapForm.get('VapBundleDate')?.setValue(new Date(2026, 8, 9));
       component.setAnswer('Bundle1', component.YES);
       component.setAnswer('Bundle2', component.NO);
       component.setAnswer('Bundle3', component.NOT_APPLICABLE);
@@ -191,6 +212,8 @@ describe('IcBundleAdultVentilatorComponent', () => {
 
       component.avapForm.get('MechVentStartDate')?.setValue(new Date(2026, 8, 9));
       component.avapForm.get('MechVentStartTime')?.setValue('08:30:00');
+      component.avapForm.get('IntubationDate')?.setValue(new Date(2026, 8, 9));
+      component.avapForm.get('VapBundleDate')?.setValue(new Date(2026, 8, 9));
       component.bundles.forEach((bundle) => component.setAnswer(bundle.field, component.YES));
 
       await component.createDoc('1', 'edit');

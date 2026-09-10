@@ -51,21 +51,6 @@
   font-size: 13px;
 }
 
-.avap-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding: 16px 15px;
-}
-
-.avap-cancel {
-  border: 1px solid #0056b3;
-  background: #fff;
-  color: #0056b3;
-  border-radius: 6px;
-  padding: 6px 18px;
-  font-weight: 600;
-  cursor: pointer;
-}
 
 .avap-question {
   display: flex;
@@ -83,7 +68,11 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 420px;
+  // Fixed, not min-width: the validation message under a reason box would
+  // otherwise stretch this column and knock that question out of line with
+  // the other four.
+  flex: 0 0 420px;
+  width: 420px;
 }
 
 .avap-option {
@@ -124,6 +113,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .avap-invalid {
@@ -135,6 +125,7 @@
   color: #c0392b;
   font-size: 12px;
   padding: 4px 15px 0;
+  max-width: 100%;
 }
 
 .avap-score {

@@ -109,10 +109,12 @@ export class IcBundleAdultVentilatorComponent implements OnInit, OnDestroy {
     this.avapForm = this.formBuilder.group({
       DaysSinceAdmission: [data?.DaysSinceAdmission || ''],
       Location: [data?.Location || ''],
+      // All four are required by the service, not just by the business rule:
+      // null, empty string and omission are each rejected. See the spec.
       MechVentStartDate: [this.getDate(data?.MechVentStartDate) || null, Validators.required],
       MechVentStartTime: [this.parseTime(data?.MechVentStartTime) || null, Validators.required],
-      IntubationDate: [this.getDate(data?.IntubationDate) || null],
-      VapBundleDate: [this.getDate(data?.VapBundleDate) || null],
+      IntubationDate: [this.getDate(data?.IntubationDate) || null, Validators.required],
+      VapBundleDate: [this.getDate(data?.VapBundleDate) || null, Validators.required],
       VentilatorDays: [data?.VentilatorDays || ''],
       Bundle1: [this.bundleValue(data?.Bundle1)],
       Bundle1NaReason: [data?.Bundle1NaReason || ''],
@@ -234,9 +236,7 @@ export class IcBundleAdultVentilatorComponent implements OnInit, OnDestroy {
       this.subscription = this.admissionService.createAvapDoc(payload).subscribe({
         next: () => {},
         error: (err: any) => {
-          this.sharedService.waringSwallModel(
-            `Error at IC Bundle for Adult Ventilator Associated Pneumonia : ${err}`
-          );
+          this.sharedService.waringSwallModel(this.getSapErrorText(err));
           resolve(false);
         },
         complete: () => {
@@ -246,6 +246,16 @@ export class IcBundleAdultVentilatorComponent implements OnInit, OnDestroy {
         }
       });
     });
+  }
+
+  // SAP puts the useful text in error.message.value. Interpolating the raw
+  // HttpErrorResponse yields "[object Object]", which tells the nurse nothing.
+  getSapErrorText(response: any): string {
+    const message = response?.error?.error?.message?.value
+      || response?.error?.error?.innererror?.errordetails?.[0]?.message;
+    return message
+      ? `Could not save the document: ${message}`
+      : 'Could not save the document. Please try again or contact support.';
   }
 
   getSuccessMessage(status?: any, actionType?: any): string {

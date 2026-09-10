@@ -49,8 +49,12 @@
         [class.avap-invalid]="showError('MechVentStartTime')"
       />
     </div>
-    <div class="avap-field-error" *ngIf="showError('MechVentStartDate') || showError('MechVentStartTime')">
-      Mechanical ventilation start date and time are required.
+    <div
+      class="avap-field-error"
+      *ngIf="showError('MechVentStartDate') || showError('MechVentStartTime')
+        || showError('IntubationDate') || showError('VapBundleDate')"
+    >
+      Mechanical ventilation start date and time, date of intubation and VAP bundle date are all required.
     </div>
 
     <div class="row d-flex">
@@ -66,6 +70,7 @@
           readonly
           #dp="bsDatepicker"
           formControlName="IntubationDate"
+          [class.avap-invalid]="showError('IntubationDate')"
           bsDatepicker
           [bsConfig]="{
             showWeekNumbers: false,
@@ -86,6 +91,7 @@
           readonly
           #dp="bsDatepicker"
           formControlName="VapBundleDate"
+          [class.avap-invalid]="showError('VapBundleDate')"
           bsDatepicker
           [bsConfig]="{
             showWeekNumbers: false,
@@ -170,9 +176,5 @@
       <label class="col-md-3 p-0">Comments</label>
       <input class="col-md-8 p-0 m-0" type="text" formControlName="Comments" />
     </div>
-  </div>
-
-  <div class="avap-actions">
-    <button type="button" class="avap-cancel" (click)="onCancel()">Cancel</button>
   </div>
 </form>
