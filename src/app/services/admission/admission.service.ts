@@ -1597,6 +1597,15 @@ export class AdmissionService {
       })
     );
   }
+  getAvapDetail(Dockey) {
+    return this.http.get(`${environment.eKardexApiUrl}/getAvapDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
   getIntraOpNurRecSetDetail(Dockey) {
     return this.http.get(`${environment.eKardexApiUrl}/getIntraOpNurRecSetDetail?Dockey=${Dockey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
@@ -1666,6 +1675,12 @@ export class AdmissionService {
   }
   createCvcMainDoc(json): Observable<any> {
     const url = `${environment.eKardexApiUrl}/createCvcMainDoc`;
+    return this.http.post(url, json, {
+      withCredentials: true,
+    });
+  }
+  createAvapDoc(json): Observable<any> {
+    const url = `${environment.eKardexApiUrl}/createAvapDoc`;
     return this.http.post(url, json, {
       withCredentials: true,
     });

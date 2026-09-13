@@ -36,6 +36,7 @@ import { CprDocumentComponent } from 'src/app/shared-module/cpr-document/cpr-doc
 import { SbarNursingEndorsementComponent } from './sbar-nursing-endorsement/sbar-nursing-endorsement.component';
 import { CvcInsertionComponent } from 'src/app/shared-module/cvc-insertion/cvc-insertion.component';
 import { CvcMaintenanceComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component';
+import { IcBundleAdultVentilatorComponent } from 'src/app/shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.component';
 import { ICBundlesComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/ic-bundles/ic-bundles.component';
 import { IntraOperativeRecordComponent } from 'src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/intra-operative-record/intra-operative-record.component';
 import { hasPreviousDocumentVersions } from '@services/document-version-history.util';
@@ -65,6 +66,7 @@ export class PatientDocumentationComponent implements OnInit {
   @ViewChild(SbarNursingEndorsementComponent) SbarNursingEndorsementComp: SbarNursingEndorsementComponent;
   @ViewChild(ICBundlesComponent) ICBundlesComp: ICBundlesComponent;
   @ViewChild(CvcMaintenanceComponent) ICCvcMainComp: CvcMaintenanceComponent;
+  @ViewChild(IcBundleAdultVentilatorComponent) ICAdultVentilatorComp: IcBundleAdultVentilatorComponent;
   @ViewChild(IntraOperativeRecordComponent) NurseIntraComp: IntraOperativeRecordComponent;
   @ViewChild(CvcInsertionComponent) CVCInsertionComp: CvcInsertionComponent;
 
@@ -94,10 +96,12 @@ export class PatientDocumentationComponent implements OnInit {
   public openCorrespondenceDocument: boolean = false;
   public isBundles: boolean = false;
   public isCvcMain: boolean = false;
+  public isICAdultVentilator: boolean = false;
   public isNurseIntra: boolean = false;
   public isCVCInsertion: boolean = false;
   public openBundles: boolean = false;
   public openCvcMain: boolean = false;
+  public openICAdultVentilatorDocument: boolean = false;
   public openNurseIntra: boolean = false;
   public openCVCInsertionDocument: boolean = false;
   public isCPRDocument: boolean = false;
@@ -156,6 +160,7 @@ export class PatientDocumentationComponent implements OnInit {
   latestCprList = [];
   bundlesList: any[] = [];
   cvcMainList: any[] = [];
+  latestICAdultVentilatorList: any[] = [];
   nurseIntraMainList: any[] = [];
   latestCVCInsertionList: any[] = [];
   releaseDocumentImage: string;
@@ -196,7 +201,7 @@ export class PatientDocumentationComponent implements OnInit {
 
   selectedDocument: any;
   get nursingDocumentOpen(): boolean {
-    return this.openBundles || this.openCvcMain || this.openNurseIntra || this.openCVCInsertionDocument;
+    return this.openBundles || this.openCvcMain || this.openNurseIntra || this.openCVCInsertionDocument || this.openICAdultVentilatorDocument;
   }
 
   documentFilterList = [
@@ -219,6 +224,10 @@ export class PatientDocumentationComponent implements OnInit {
     {
       label: 'IC Bundles for CVC Maintenance',
       value: 'ICBCM'
+    },
+    {
+      label: 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)',
+      value: 'IBAVAP'
     },
     {
       label: 'Glasgow Coma Scale',
@@ -329,6 +338,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSBARNursingDocDetails();
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
+    this.getAvapDoc();
     this.getIntraOpNurRecSetMainDoc();
     this.getCVCInsertionDocDetails();
 
@@ -442,6 +452,18 @@ export class PatientDocumentationComponent implements OnInit {
     this.emergencyService.getBundlesLetDoc(this.apiJson).subscribe({
       next: (_success: any) => {
         this.bundlesList = _success?.d?.results || [];
+      },
+      error: (err: any) => {
+        console.error('Error Data:', err);
+        this.sharedService.waringSwallModel(`GET Error : ${err}`);
+      },
+    });
+  }
+
+  getAvapDoc() {
+    this.emergencyService.getAvapDoc(this.apiJson).subscribe({
+      next: (_success: any) => {
+        this.latestICAdultVentilatorList = _success?.d?.results || [];
       },
       error: (err: any) => {
         console.error('Error Data:', err);
@@ -781,6 +803,7 @@ export class PatientDocumentationComponent implements OnInit {
       'isBundles': { isBundles: true, selectedDocName: 'IC Bundles for Urinary Catheter' },
       'isCVCInsertion': { isCVCInsertion: true, selectedDocName: 'IC Bundles for CVC Insertion' },
       'isCvcMain': { isCvcMain: true, selectedDocName: 'IC Bundles for CVC Maintenance' },
+      'isICAdultVentilator': { isICAdultVentilator: true, selectedDocName: 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)' },
     };
 
     // Reset all flags to false initially
@@ -803,6 +826,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.isSbarNursingEnd = false;
     this.isBundles = false;
     this.isCvcMain = false;
+    this.isICAdultVentilator = false;
     this.isNurseIntra = false;
     this.isCVCInsertion = false;
 
@@ -1171,6 +1195,9 @@ export class PatientDocumentationComponent implements OnInit {
     if (this.openCvcMain) {
       this.ICCvcMainComp.ngOnDestroy();
     }
+    if (this.openICAdultVentilatorDocument) {
+      this.ICAdultVentilatorComp.ngOnDestroy();
+    }
     if (this.openNurseIntra) {
       this.NurseIntraComp.ngOnDestroy();
     }
@@ -1196,6 +1223,7 @@ export class PatientDocumentationComponent implements OnInit {
     this.getSBARNursingDocDetails();
     this.getBundlesLetDoc();
     this.getCvcMainDoc();
+    this.getAvapDoc();
     this.getIntraOpNurRecSetMainDoc();
     this.getCVCInsertionDocDetails();
 
@@ -1231,10 +1259,12 @@ export class PatientDocumentationComponent implements OnInit {
     this.openSbarNursingEnd = false;
     this.isBundles = false;
     this.isCvcMain = false;
+    this.isICAdultVentilator = false;
     this.isNurseIntra = false;
     this.isCVCInsertion = false;
     this.openBundles = false;
     this.openCvcMain = false;
+    this.openICAdultVentilatorDocument = false;
     this.openNurseIntra = false;
     this.openCVCInsertionDocument = false;
 
@@ -1885,7 +1915,7 @@ export class PatientDocumentationComponent implements OnInit {
       }
 
     }
-    else if (this.isBundles || this.isCvcMain || this.isNurseIntra || this.isCVCInsertion) {
+    else if (this.isBundles || this.isCvcMain || this.isNurseIntra || this.isCVCInsertion || this.isICAdultVentilator) {
       this.openSelectedNursingDocument(action);
     }
   }
@@ -1920,6 +1950,7 @@ export class PatientDocumentationComponent implements OnInit {
   setSelectedNursingDocumentOpen() {
     this.openBundles = this.isBundles;
     this.openCvcMain = this.isCvcMain;
+    this.openICAdultVentilatorDocument = this.isICAdultVentilator;
     this.openNurseIntra = this.isNurseIntra;
     this.openCVCInsertionDocument = this.isCVCInsertion;
   }
@@ -1958,6 +1989,8 @@ export class PatientDocumentationComponent implements OnInit {
       savePromise = this.ICBundlesComp.createDoc(status, actionType);
     } else if (this.openCvcMain) {
       savePromise = this.ICCvcMainComp.createDoc(status, actionType);
+    } else if (this.openICAdultVentilatorDocument) {
+      savePromise = this.ICAdultVentilatorComp.createDoc(status, actionType);
     } else if (this.openNurseIntra) {
       savePromise = this.NurseIntraComp.createDoc(status, actionType);
     } else if (this.openCVCInsertionDocument) {
@@ -1997,6 +2030,8 @@ export class PatientDocumentationComponent implements OnInit {
         request = this.emergencyService.deleteBundlesDoc(docKey);
       } else if (this.isCvcMain) {
         request = this.emergencyService.deleteCvcMainDoc(docKey);
+      } else if (this.isICAdultVentilator) {
+        request = this.emergencyService.deleteAvapDoc(docKey);
       } else if (this.isNurseIntra) {
         request = this.emergencyService.deleteIntraOpNurRecSetDoc(docKey);
       } else if (this.isCVCInsertion) {
@@ -2015,7 +2050,7 @@ export class PatientDocumentationComponent implements OnInit {
             this.refresh();
           },
           (_error: any) => {
-            this.sharedService.waringSwallModel(`${_error?.error?.error?.innererror?.errordetails?.[0]?.message || _error}`);
+            this.sharedService.waringSwallModel(`${_error?.error?.error?.innererror?.errordetails?.[0]?.message || _error?.error?.error?.message?.value || _error}`);
             this.refresh();
           }
         );
@@ -2048,6 +2083,20 @@ export class PatientDocumentationComponent implements OnInit {
           payload.DocStatus = '2';
           this.admissionService.createCvcMainDoc({ d: payload }).subscribe(() => {
             this.sharedService.successSwallModel('IC Bundles for CVC Maintenance released successfully');
+            this.refresh();
+          });
+        }
+      });
+    } else if (this.isICAdultVentilator) {
+      this.admissionService.getAvapDetail(docKey).subscribe((res: any) => {
+        const payload = res?.results?.[0];
+        if (payload) {
+          delete payload.__metadata;
+          payload.DocStatus = '2';
+          // ZN_AVAP_SRV takes the flat entity, not the { d: ... } wrapper
+          // the sibling documents use.
+          this.admissionService.createAvapDoc(payload).subscribe(() => {
+            this.sharedService.successSwallModel('IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) released successfully');
             this.refresh();
           });
         }
@@ -3531,6 +3580,23 @@ export class PatientDocumentationComponent implements OnInit {
 
   openCvcMainsPdf(Dockey) {
     this.openNursingDocumentPdf(this.dayCaseDashboardService.getCvcMainPdf(Dockey));
+  }
+
+  openAvapPdf(Dockey) {
+    this.openNursingDocumentPdf(this.dayCaseDashboardService.getAvapPdf(Dockey));
+  }
+
+  // The shared nursing-document path has no Release button in copy mode, so a
+  // new version would stay at v0 forever. DocStatus 5 creates and releases it
+  // in one call.
+  newVersionDirectReleasedAvap() {
+    this.ICAdultVentilatorComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error releasing a new version of IC Bundle for Adult Ventilator Associated Pneumonia:', error);
+    });
   }
 
   getNurseIntraPdf(Dockey) {
