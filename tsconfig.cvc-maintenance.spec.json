@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/cvc-maintenance-spec",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "files": [
+    "src/test-cvc-maintenance.ts",
+    "src/polyfills.ts",
+    "src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/patient-documentation/cvc-maintenance/cvc-maintenance.component.spec.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
