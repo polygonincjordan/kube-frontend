@@ -109,12 +109,17 @@ export class IcBundleAdultVentilatorComponent implements OnInit, OnDestroy {
     this.avapForm = this.formBuilder.group({
       DaysSinceAdmission: [data?.DaysSinceAdmission || ''],
       Location: [data?.Location || ''],
-      // All four are required by the service, not just by the business rule:
-      // null, empty string and omission are each rejected. See the spec.
+      // Only the two ventilation start fields are required, which is the
+      // business rule QA gave. IntubationDate and VapBundleDate were required
+      // too until SAP relaxed the service on 2026-09-13: null and omission are
+      // now accepted where they previously returned 400 and 500. An empty string
+      // is still rejected, but dateToSapFormat sends null for a blank field and
+      // never '', so a blank date reaches the service in the shape it accepts
+      // and is returned as null, which getDate leaves blank on reopen.
       MechVentStartDate: [this.getDate(data?.MechVentStartDate) || null, Validators.required],
       MechVentStartTime: [this.parseTime(data?.MechVentStartTime) || null, Validators.required],
-      IntubationDate: [this.getDate(data?.IntubationDate) || null, Validators.required],
-      VapBundleDate: [this.getDate(data?.VapBundleDate) || null, Validators.required],
+      IntubationDate: [this.getDate(data?.IntubationDate) || null],
+      VapBundleDate: [this.getDate(data?.VapBundleDate) || null],
       VentilatorDays: [data?.VentilatorDays || ''],
       Bundle1: [this.bundleValue(data?.Bundle1)],
       Bundle1NaReason: [data?.Bundle1NaReason || ''],

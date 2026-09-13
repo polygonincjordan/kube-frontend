@@ -93,23 +93,26 @@ describe('IcBundleAdultVentilatorComponent', () => {
   });
 
   describe('mandatory ventilation fields', () => {
-    // The service rejects null, '' and omission for every one of these, so all
-    // four are required in the form regardless of the looser business rule.
-    const required = ['MechVentStartDate', 'MechVentStartTime', 'IntubationDate', 'VapBundleDate'];
+    // Only the two start fields are mandatory. SAP relaxed IntubationDate and
+    // VapBundleDate on 2026-09-13, so the form follows the business rule again.
+    const required = ['MechVentStartDate', 'MechVentStartTime'];
+    const optional = ['IntubationDate', 'VapBundleDate'];
 
-    it('marks all four invalid while empty', () => {
+    it('marks the two start fields invalid while empty', () => {
       required.forEach((field) => expect(component.avapForm.get(field)?.valid).toBeFalse());
+    });
+
+    it('leaves the intubation and bundle dates valid while empty', () => {
+      optional.forEach((field) => expect(component.avapForm.get(field)?.valid).toBeTrue());
     });
 
     it('accepts them once filled', () => {
       component.avapForm.get('MechVentStartDate')?.setValue(new Date());
       component.avapForm.get('MechVentStartTime')?.setValue('08:30:00');
-      component.avapForm.get('IntubationDate')?.setValue(new Date());
-      component.avapForm.get('VapBundleDate')?.setValue(new Date());
       required.forEach((field) => expect(component.avapForm.get(field)?.valid).toBeTrue());
     });
 
-    it('still refuses to send when only the start date and time are filled', async () => {
+    it('sends when only the start date and time are filled, leaving the other two blank', async () => {
       const admission: any = (component as any).admissionService;
       spyOn(admission, 'createAvapDoc').and.callThrough();
       component.avapForm.get('MechVentStartDate')?.setValue(new Date());
@@ -118,8 +121,23 @@ describe('IcBundleAdultVentilatorComponent', () => {
 
       const result = await component.createDoc('1');
 
-      expect(result).toBeFalse();
-      expect(admission.createAvapDoc).not.toHaveBeenCalled();
+      expect(result).toBeTrue();
+      expect(admission.createAvapDoc).toHaveBeenCalled();
+    });
+
+    // '' is still rejected by the service with HTTP 400; null is accepted.
+    it('sends a blank intubation or bundle date as null, never an empty string', async () => {
+      const admission: any = (component as any).admissionService;
+      spyOn(admission, 'createAvapDoc').and.callThrough();
+      component.avapForm.get('MechVentStartDate')?.setValue(new Date());
+      component.avapForm.get('MechVentStartTime')?.setValue('08:30:00');
+      component.bundles.forEach((bundle) => component.setAnswer(bundle.field, component.YES));
+
+      await component.createDoc('1');
+
+      const payload = admission.createAvapDoc.calls.mostRecent().args[0];
+      expect(payload.IntubationDate).toBeNull();
+      expect(payload.VapBundleDate).toBeNull();
     });
   });
 
