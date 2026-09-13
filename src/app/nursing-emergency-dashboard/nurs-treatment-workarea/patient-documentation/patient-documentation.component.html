@@ -111,6 +111,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedAvap()">
+              Release
+            </button>
+          </div>
         </div>
       </div>
       <div class=" top-title-bar w-100 d-flex align-items-center p-3"
@@ -256,6 +261,27 @@
                     *ngIf="cvcMainList[0]?.StatusTxt == 'Released'"></i>
                   <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(cvcMainList[0]?.Dockey, cvcMainList[0])">
                     <select *ngIf="cvcMainList[0]?.StatusTxt !='N/A' && hasPreviousVersions(cvcMainList[0])" class="mr-2" name=""
+                      id=""></select>
+                  </div>
+                </div>
+              </div>
+              <!-- IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) -->
+              <div *ngIf="!selectedDocument || selectedDocument == 'IBAVAP'"
+                [ngClass]="isICAdultVentilator ? 'box-col d-flex mt-2 docs-event  selected-item' : 'box-col d-flex mt-2 docs-event' "
+                style="font-weight: bold;" (click)="selectAssessment('isICAdultVentilator',latestICAdultVentilatorList[0])">
+                <div class="col-md-4">IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP) {{latestICAdultVentilatorList[0]?.Zversion ?
+                  dockVer(latestICAdultVentilatorList[0]?.Zversion) : ''}} :</div>
+                <div class="col-md-2 status-color">{{latestICAdultVentilatorList[0]?.StatusTxt || 'N/A'}}</div>
+                <div class="col-md-2" title="{{getTime(latestICAdultVentilatorList[0]?.DocTime)}}">
+                  {{getDate(latestICAdultVentilatorList[0]?.DocDate) | date: "dd.MM.y" || '-'}}/{{getTime(latestICAdultVentilatorList[0]?.DocTime)}}
+                </div>
+                <div class="col-md-3">{{latestICAdultVentilatorList[0]?.PhyNm || '-'}}</div>
+                <div class="col-md-1 d-flex">
+                  <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
+                    (click)="openAvapPdf(latestICAdultVentilatorList[0]?.Dockey)"
+                    *ngIf="latestICAdultVentilatorList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestICAdultVentilatorList[0]?.Dockey, latestICAdultVentilatorList[0])">
+                    <select *ngIf="latestICAdultVentilatorList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestICAdultVentilatorList[0])" class="mr-2" name=""
                       id=""></select>
                   </div>
                 </div>
@@ -611,6 +637,7 @@
       <app-ic-bundles *ngIf="openBundles" (successEvent)="reloadDoc($event)"></app-ic-bundles>
       <app-cvc-insertion *ngIf="openCVCInsertionDocument"></app-cvc-insertion>
       <app-cvc-maintenance *ngIf="openCvcMain" (successEvent)="reloadDoc($event)"></app-cvc-maintenance>
+      <app-ic-bundle-adult-ventilator *ngIf="openICAdultVentilatorDocument" (cancelEvent)="refresh()"></app-ic-bundle-adult-ventilator>
 
 	    <!-- <app-nursing-care-plans *ngIf="openNursingCarePlans" ></app-nursing-care-plans> -->
 

@@ -117,6 +117,11 @@
               Release
             </button>
           </div>
+          <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)'">
+            <button type="button" class="action-doc" (click)="newVersionDirectReleasedAvap()">
+              Release
+            </button>
+          </div>
           <div class="header-btn" *ngIf="actionType == 'copy' && selectedDocName === 'Nurse Assessment for Restraints'">
             <button type="button" class="action-doc" (click)="newVersionDirectReleasedNurseAssMain()">
               Release
@@ -1246,7 +1251,7 @@
                         id=""></select>
                     </div>
                 </div>
-              </div> -->
+              </div>
 
 
               <!--  Post Patient Fall Assessment -->
@@ -1309,6 +1314,10 @@
                   <i aria-hidden="true" class="fa fa-file-pdf-o" style="font-size: 18px; color: red;"
                   (click)="openAvapPdf(latestICAdultVentilatorList[0]?.Dockey)"
                   *ngIf="latestICAdultVentilatorList[0]?.StatusTxt == 'Released'"></i>
+                  <div class="d-flex ml-2" style="width: 100%;" (click)="$event.stopPropagation(); onReleaseHistoryData(latestICAdultVentilatorList[0]?.Dockey, latestICAdultVentilatorList[0])">
+                    <select *ngIf="latestICAdultVentilatorList[0]?.StatusTxt !='N/A' && hasPreviousVersions(latestICAdultVentilatorList[0])" class="mr-2" name=""
+                      id=""></select>
+                  </div>
                 </div>
               </div>
 

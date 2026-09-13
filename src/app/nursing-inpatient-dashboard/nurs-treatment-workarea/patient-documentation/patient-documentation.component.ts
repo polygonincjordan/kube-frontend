@@ -9132,6 +9132,15 @@ export class PatientDocumentationComponent implements OnInit {
       console.error('Error creating IC maintenance:', error);
     });
   }
+  newVersionDirectReleasedAvap() {
+    this.ICAdultVentilatorComp.createDoc('5', 'copy').then((formValue: any) => {
+      if (formValue) {
+        this.refresh();
+      }
+    }).catch((error: any) => {
+      console.error('Error releasing a new version of IC Bundle for Adult Ventilator Associated Pneumonia:', error);
+    });
+  }
   newVersionDirectReleasedNurseAssMain() {
     this.NurseAssMainComp.createDoc('5', 'copy').then((formValue: any) => {
       if (formValue) {

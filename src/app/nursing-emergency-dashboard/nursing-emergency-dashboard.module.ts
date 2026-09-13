@@ -124,6 +124,7 @@ import { CorrespondenceDocumentModule } from '../shared-module/correspondence-do
 import { HistoryAssessmentModule } from '../shared-module/history-assessment/history-assessment.module';
 import { CprDocumentModule } from '../shared-module/cpr-document/cpr-document.module';
 import { CvcInsertionModule } from '../shared-module/cvc-insertion/cvc-insertion.module';
+import { IcBundleAdultVentilatorModule } from '../shared-module/ic-bundle-adult-ventilator/ic-bundle-adult-ventilator.module';
 import { ReceiveCartComponent } from './nurs-treatment-workarea/e-prescription/madication-profile-nurs/receive-cart/receive-cart.component';
 import { AdminAttechmentModule } from '../shared-module/admin-attechment/admin-attechment.module';
 import { ConsultationsOrdersModule } from '../shared-module/consultations-orders/consultations-orders.module';
@@ -260,6 +261,7 @@ const route: Routes = [
     HistoryAssessmentModule,
     CprDocumentModule,
     CvcInsertionModule,
+    IcBundleAdultVentilatorModule,
     AdminAttechmentModule,
     NursingDischargeSummaryModule,
     ConsultationsOrdersModule,
