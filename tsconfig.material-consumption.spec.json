@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/material-consumption-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": [
+    "src/test-material-consumption.ts",
+    "src/polyfills.ts",
+    "src/app/nursing-inpatient-dashboard/nurs-treatment-workarea/consumables/consumables-list/consumables-list.component.spec.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}

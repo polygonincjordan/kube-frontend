@@ -129,8 +129,37 @@
           }
         }
       }
+
+      tr.consumable-row-error {
+        td {
+          border-top: 2px solid #dc3545;
+          border-bottom: 2px solid #dc3545;
+          background-color: #fff5f5;
+        }
+
+        td:first-child {
+          border-left: 2px solid #dc3545;
+        }
+
+        td:last-child {
+          border-right: 2px solid #dc3545;
+        }
+      }
     }
   }
+}
+
+.consumable-row-error-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: 700;
 }
 
 
