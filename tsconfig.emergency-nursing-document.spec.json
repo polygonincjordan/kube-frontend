@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/emergency-nursing-document-spec",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "files": [
+    "src/test-emergency-nursing-document.ts",
+    "src/polyfills.ts",
+    "src/app/nursing-emergency-dashboard/nurs-treatment-workarea/patient-documentation/emergency-nursing-document/emergency-nursing-document.component.spec.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}

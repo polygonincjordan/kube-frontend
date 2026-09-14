@@ -454,8 +454,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         this.initForm();
         if (data.type == ActionType.Add$ && data.isAllow == true && data.value == '') {
           this.documentMode = ActionType.Add$;
-          let checkindata: any = JSON.parse(localStorage.getItem('checkindata'));
-          this.selectedTableDetails = checkindata;
+          this.selectedTableDetails = this.readCheckInDataForCurrentPatient();
           this.documentStatus = '1';
           setTimeout(() => {
             this.patchValuetoFormDate();
@@ -508,6 +507,40 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     // this.initForm();
     this.changeReviewofSystem('Skin');
     // this.formControlHandeler();
+  }
+
+  // 'checkindata' is one localStorage key shared by every browser tab, so it can
+  // hold the check-in row of a patient opened in another tab. Only trust it when
+  // it belongs to the patient this tab's route points at; otherwise the arrival
+  // time is left empty for the nurse rather than pre-filled from the wrong chart.
+  private readCheckInDataForCurrentPatient(): any {
+    let checkindata: any = null;
+    try {
+      checkindata = JSON.parse(localStorage.getItem('checkindata'));
+    } catch {
+      return null;
+    }
+    if (!checkindata) {
+      return null;
+    }
+    const isCurrentPatient =
+      this.isSameSapId(checkindata.Einri, this.paramsObject?.einri) &&
+      this.isSameSapId(checkindata.Falnr, this.paramsObject?.falnr) &&
+      this.isSameSapId(checkindata.Patnr, this.paramsObject?.patnr);
+    return isCurrentPatient ? checkindata : null;
+  }
+
+  // SAP pads identifiers with leading zeros, and the route does not always carry
+  // the padded form, so compare them unpadded.
+  private isSameSapId(a: any, b: any): boolean {
+    const unpad = (value: any) => (value ?? '').toString().trim().replace(/^0+/, '');
+    return unpad(a) !== '' && unpad(a) === unpad(b);
+  }
+
+  // Patient identity for anything that writes to SAP comes from the route, the
+  // same source the saveXWithNoY methods below already use.
+  private get currentPatientRef() {
+    return { Einri: this.paramsObject?.einri, Patnr: this.paramsObject?.patnr };
   }
 
   private formControlHandeler() {
@@ -1342,7 +1375,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         Language: triageValue?.Language ? triageValue?.Language : 'English',
         TriagePriority: this.selectedTriageDetails?.TriagePriorityCode || (triageValue?.TriagePriority ?? ''),
         // TriagePriority: triageValue?.TriagePriority ? triageValue?.TriagePriority : this.selectedTableDetails.TriagePriorityCode,
-        ArrivalTime: triageValue?.ArrivalTime ? this.parseTime(triageValue?.ArrivalTime) : this.parseTime(this.selectedTableDetails.ZeitIntern),
+        ArrivalTime: triageValue?.ArrivalTime ? this.parseTime(triageValue?.ArrivalTime) : this.parseTime(this.selectedTableDetails?.ZeitIntern),
         ChiefComplaint: triageValue?.ChiefComplaint ? triageValue?.ChiefComplaint : '',
         PsyNoProblem: triageValue?.PsyNoProblem ? triageValue?.PsyNoProblem : false,
         PsyAnxious: triageValue?.PsyAnxious ? triageValue?.PsyAnxious : false,
@@ -1790,7 +1823,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
     if (item.Status) {
       this.swallConfirmation(item.label, index);
     } else {
-      this.socialAddHabit.openModalForAddHabit(item.label, this.selectedTableDetails, this.patientDetails, item);
+      this.socialAddHabit.openModalForAddHabit(item.label, this.currentPatientRef, this.patientDetails, item);
     }
   }
 
@@ -1812,7 +1845,7 @@ export class EmergencyNursingDocumentComponent implements OnInit, OnDestroy {
         } else {
           this.socialAddHabit.openModalForAddHabit(
             habitType,
-            this.selectedTableDetails,
+            this.currentPatientRef,
             this.patientDetails,
             this.socialHistoryList[index]
           );
