@@ -51,7 +51,11 @@
             <!--space-->
             <div class="col-md-1"></div>
             <label class="col-md-2 p-0">CVC Insertion time</label>
-            <input class="col-md-1 p-0" type="time"  formControlName="CvcInsertionTime" />
+            <input class="col-md-1 p-0" type="time"  formControlName="CvcInsertionTime"
+              [class.cvc-invalid]="showError('CvcInsertionTime')" />
+        </div>
+        <div class="cvc-field-error" *ngIf="showError('CvcInsertionTime')">
+            CVC insertion time is required.
         </div>
         <div class="row mt-3">
             <label class="col-md-3 p-0"> Patient Location when CVC Inserted</label>
@@ -156,7 +160,11 @@
             <!--space-->
             <div class="col-md-2"></div>
             <label class="col-md-2 p-0">Maintenance time</label>
-            <input class="col-md-1 p-0" type="time"  formControlName="MaintenanceTime"/>
+            <input class="col-md-1 p-0" type="time"  formControlName="MaintenanceTime"
+              [class.cvc-invalid]="showError('MaintenanceTime')"/>
+        </div>
+        <div class="cvc-field-error" *ngIf="showError('MaintenanceTime')">
+            Maintenance time is required.
         </div>
     </div>
     <div class="container mt-5">
@@ -233,12 +241,13 @@
             <h6>Changing IV sets according to policy.</h6>
         </div>
         <div class="left-section d-flex ml-3">
-            <div class="radio-group">
+            <div class="radio-group cvc-derived">
                 <label><input type="radio" value="0"  formControlName="Cvc2"> Yes</label><br>
                 <label><input type="radio" value="1"  formControlName="Cvc2"> No</label>
                 <div class="d-flex">
                     <label style="width: 160px;"><input type="radio" value="2"  formControlName="Cvc2"> Not Applicable</label>
                 </div>
+                <div class="cvc-derived-hint">Set automatically from 2.1 - 2.4.</div>
             </div>
         </div>
         <!-- <div class="right-section"></div> -->

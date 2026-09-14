@@ -145,3 +145,26 @@ input[type="text"] {
 .mrlrft10 {
     margin-left: 10px;
 }
+.cvc-invalid {
+    border: 1px solid #c0392b !important;
+    background: #fdf3f2;
+}
+
+.cvc-field-error {
+    color: #c0392b;
+    font-size: 12px;
+    padding: 4px 15px 0;
+    max-width: 100%;
+}
+
+.cvc-derived label {
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.cvc-derived-hint {
+    color: #6c757d;
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 4px;
+}
