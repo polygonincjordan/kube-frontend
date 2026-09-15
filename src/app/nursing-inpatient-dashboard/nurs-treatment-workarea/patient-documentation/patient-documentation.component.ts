@@ -390,6 +390,10 @@ export class PatientDocumentationComponent implements OnInit {
       value: 'ICBCM'
     },
     {
+      label: 'IC Bundle for Adult Ventilator Associated Pneumonia (A-VAP)',
+      value: 'IBAVAP'
+    },
+    {
       label: 'Nurse Assessment for Restraints',
       value: 'NAR'
     },
