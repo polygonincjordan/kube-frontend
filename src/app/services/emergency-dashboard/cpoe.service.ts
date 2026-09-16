@@ -276,9 +276,25 @@ export class CpoeService {
   }
 
   saveConfiguration() {
+    const bname = this.configurationoption?.Bname;
+    if (!bname) {
+      // Without the entity key there is no record to update, and posting to the
+      // collection would silently keep the stored flags.
+      swal.fire({
+        text: 'Configuration could not be saved: the user key is missing.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' },
+      } as any);
+      return;
+    }
+
     this.spinner.show();
     this.dataService
-      .postData('OrderConfigSet', this.configurationoption, false)
+      .putOrderConfigset(
+        `OrderConfigSet('${encodeURIComponent(bname)}')`,
+        this.configurationoption
+      )
       .subscribe(
         (_success: any) => {
           this.spinner.hide();

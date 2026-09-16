@@ -227,6 +227,26 @@ export class DataService {
       );
   }
 
+  /**
+   * Updates an existing OrderConfigSet entity by key.
+   *
+   * POSTing the configuration to the collection is an OData create. SAP accepts
+   * it for a key that already exists, refreshes the record's Ertim, and keeps
+   * the stored flags, so a saved configuration never takes effect. The legacy
+   * webService.update() cannot be used here because it omits withCredentials,
+   * which would drop the MYSAPSSO2 session cookie on the way to the proxy.
+   */
+  putOrderConfigset(url: string, data: any) {
+    return this.http.put(this.webService.baseUrl + url, data, {
+      withCredentials: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/json',
+        'sap-client': String(environment.client),
+      },
+    });
+  }
+
   getOrderConfigset(url: any) {
     let headers = {};
     let custHeaders = {
