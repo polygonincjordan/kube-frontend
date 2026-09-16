@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/upstream-error-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": [
+    "src/test-upstream-error.ts",
+    "src/polyfills.ts",
+    "src/app/services/upstream-error.util.spec.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}
