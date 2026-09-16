@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { AttachmentViewerKind, resolveAttachmentViewer } from './attachment-type.util';
 
 
 export interface CaseAttachmentResponse {
@@ -70,25 +71,32 @@ export class AdminAttechmentComponent implements OnInit {
 
   pdfUrl: any = '';
   htmlData: SafeHtml = '';
-  pdfUrlType: any = '';
+  attachmentImage: string = '';
+  pdfUrlType: AttachmentViewerKind = 'unsupported';
   openSurgicalAssPdf(item) {
     this.pdfUrl = '';
+    this.htmlData = '';
+    this.attachmentImage = '';
+    const viewer = resolveAttachmentViewer(item?.Attachmenttype);
     this.emergencyService
       .openAttechmentDoc(item)
       .subscribe((data: any) => {
-        this.pdfUrlType = item.Attachmenttype;
-        if (item.Attachmenttype == 'pdf') {
+        this.pdfUrlType = viewer.kind;
+        if (viewer.kind === 'pdf') {
           this.pdfUrlConvertToBlob(data?.d?.Content);
-        } else if (item.Attachmenttype == 'htm') {
-           const decoded = atob(data?.d?.Content);
+        } else if (viewer.kind === 'html') {
+          const decoded = atob(data?.d?.Content);
           this.htmlData = this.sanitizer.bypassSecurityTrustHtml(decoded);
-          console.log(this.htmlData, "HTML");
-          
+        } else if (viewer.kind === 'image') {
+          this.attachmentImage = `data:${viewer.mimeType};base64,${data?.d?.Content}`;
         }
         const config: ModalOptions = {
           class: 'modal-dialog-centered modal-xl pdfmodal-size',
         };
         this.modalRefForPDF = this.modalService.show(this.releasepdfmodal, config);
+      }, (error) => {
+        // Keep the viewer closed rather than showing an empty modal.
+        console.error(error);
       });
   }
 

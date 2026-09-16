@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/case-attachment-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": [
+    "src/test-case-attachment.ts",
+    "src/polyfills.ts",
+    "src/app/shared-module/admin-attechment/attachment-type.util.spec.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}
