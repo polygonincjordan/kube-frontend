@@ -13,6 +13,11 @@ import { DataService } from './data.service';
 import { HelperService } from './helper.service';
 import { StorageService } from './storage.service';
 import { EmergencyService } from './emergency-dashboard/emergency-service';
+import {
+  hasAnyOrderFunction,
+  resolveDefaultOrderTab,
+} from '../shared-module/e-order-config/order-config.util';
+import { getErrorMessage } from './upstream-error.util';
 
 @Injectable()
 export class eOrderService {
@@ -373,23 +378,15 @@ export class eOrderService {
     );
   }
 
+  /** True once the loaded configuration enables at least one showable function. */
+  get hasAnyFunction(): boolean {
+    return hasAnyOrderFunction(this.configurationoptionBackup);
+  }
+
   configureNavigationDefault(configuration) {
-    if (configuration.Clinicord) {
-      this.navigationTab = 'Clinical';
-    } else if (configuration.Medicat) {
-      this.navigationTab = 'Medications';
-    } else if (configuration.Doctfees) {
-      this.navigationTab = 'Fees';
-    } else if (configuration.Ordset) {
-      this.navigationTab = 'OrderSet';
-    } else if (configuration.Surgery) {
-      this.navigationTab = 'Surgery';
-    } else if (configuration.Consultation) {
-      this.navigationTab = 'Consultation';
-    } else if (configuration.Admission) {
-      this.navigationTab = 'Admission';
-    } else if (configuration.Ordprofile) {
-      this.navigationTab = 'Ordprofile';
+    const defaultTab = resolveDefaultOrderTab(configuration);
+    if (defaultTab) {
+      this.navigationTab = defaultTab;
     }
   }
 
@@ -402,12 +399,21 @@ export class eOrderService {
         (_success: any) => {
           this.spinner.hide();
           this.opentempmodalservices.dismissAll();
-          this.loadeOrderData();
+          // Re-read the configuration directly: loadeOrderData() is gated on the
+          // patient context, so routing through it can leave the saved options
+          // invisible until a full reload.
+          this.loadConfiguration();
         },
-        (_error: any) => {
+        (error: any) => {
           this.spinner.hide();
-          this.opentempmodalservices.dismissAll();
-          this.loadeOrderData();
+          // Keep the modal open on the user's unsaved options, and leave
+          // configurationoptionBackup untouched so the tabs still match SAP.
+          swal.fire({
+            text: getErrorMessage(error),
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            customClass: { popup: 'myalertpopup' },
+          } as any);
         }
       );
   }

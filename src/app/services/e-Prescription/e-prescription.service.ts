@@ -19,6 +19,7 @@ export class EPrescriptionService implements OnDestroy {
     throw new Error('Method not implemented.');
   }
   clinicalOrders: boolean = true;
+  medications: boolean = false;
   feesAndServices: boolean = false;
   consulationOrder: boolean = false;
   admissionOrder: boolean = false;
@@ -102,20 +103,28 @@ export class EPrescriptionService implements OnDestroy {
   }
 
   eOrderTabNavigation(tabName: any) {
-    if (tabName && tabName === 'clinicalOrders') {
-      this.clinicalOrders = true; this.feesAndServices = false; this.consulationOrder = false; this.admissionOrder = false; this.surgeryOrder = false;
-    } else if (tabName && tabName === 'feesAndServices') {
-      this.clinicalOrders = false; this.feesAndServices = true; this.consulationOrder = false; this.admissionOrder = false; this.surgeryOrder = false;
-      // this.loadAddministrationPanel()
-    } else if (tabName && tabName === 'consultationOrder') {
-      this.clinicalOrders = false; this.feesAndServices = false; this.consulationOrder = true; this.admissionOrder = false; this.surgeryOrder = false;
-      // this.loadDischargePanelData();
-    } else if (tabName && tabName === 'admissionOrder') {
-      this.clinicalOrders = false; this.feesAndServices = false; this.consulationOrder = false; this.admissionOrder = true; this.surgeryOrder = false;
-      // this.loadEmarPanelData();
-    } else if (tabName && tabName === 'surgeryOrder') {
-      this.clinicalOrders = false; this.feesAndServices = false; this.consulationOrder = false; this.admissionOrder = false; this.surgeryOrder = true;
-      // this.loadEmarPanelData();
+    // Clear every tab first, then raise the requested one. Repeating the full
+    // set per branch is how the Medications tab ended up missing from some of
+    // them, so the active tab is tracked in one place instead.
+    this.clinicalOrders = false;
+    this.medications = false;
+    this.feesAndServices = false;
+    this.consulationOrder = false;
+    this.admissionOrder = false;
+    this.surgeryOrder = false;
+
+    if (tabName === 'clinicalOrders') {
+      this.clinicalOrders = true;
+    } else if (tabName === 'medications') {
+      this.medications = true;
+    } else if (tabName === 'feesAndServices') {
+      this.feesAndServices = true;
+    } else if (tabName === 'consultationOrder') {
+      this.consulationOrder = true;
+    } else if (tabName === 'admissionOrder') {
+      this.admissionOrder = true;
+    } else if (tabName === 'surgeryOrder') {
+      this.surgeryOrder = true;
     }
   }
 

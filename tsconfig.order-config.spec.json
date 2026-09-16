@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/order-config-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": [
+    "src/test-order-config.ts",
+    "src/polyfills.ts",
+    "src/app/shared-module/e-order-config/order-config.util.spec.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}

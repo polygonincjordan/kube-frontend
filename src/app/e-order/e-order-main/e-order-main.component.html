@@ -1,24 +1,8 @@
 <div class="e-order-wrapper" *ngIf="eOrderService.configurationoptionBackup">
-  <div class="configuration-notification" *ngIf="
-      !eOrderService.configurationoptionBackup.Clinicord &&
-      !eOrderService.configurationoptionBackup.Quickord &&
-      !eOrderService.configurationoptionBackup.Doctfees &&
-      !eOrderService.configurationoptionBackup.Medicat &&
-      !eOrderService.configurationoptionBackup.Ordset &&
-      !eOrderService.configurationoptionBackup.Surgery &&
-      !eOrderService.configurationoptionBackup.Daycaseord
-    ">
+  <div class="configuration-notification" *ngIf="!eOrderService.hasAnyFunction">
     Please Select Configuration Functions
   </div>
-  <div class="container-fluid" *ngIf="
-      eOrderService.configurationoptionBackup.Clinicord ||
-      eOrderService.configurationoptionBackup.Quickord ||
-      eOrderService.configurationoptionBackup.Doctfees ||
-      eOrderService.configurationoptionBackup.Medicat ||
-      eOrderService.configurationoptionBackup.Ordset ||
-      eOrderService.configurationoptionBackup.Surgery ||
-      eOrderService.configurationoptionBackup.Daycaseord
-    ">
+  <div class="container-fluid" *ngIf="eOrderService.hasAnyFunction">
     <div class="row" *ngIf="eOrderService.navigationTab != 'OrderSet' && eOrderService.navigationTab != 'Surgery' && eOrderService.navigationTab != 'Consultation' && eOrderService.navigationTab != 'Admission' && eOrderService.navigationTab !== 'Ordprofile'"  >
       <div class="col-md-7">
         <div class="e-order-sidewrap pb-0">
