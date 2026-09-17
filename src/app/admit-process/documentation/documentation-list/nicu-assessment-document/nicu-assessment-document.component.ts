@@ -919,13 +919,57 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     });
   }
 
+  /**
+   * Parses every date shape this document can receive: the SAP OData
+   * `/Date(ms)/` form and the `YYYY-MM-DDT00:00:00` form the NICU service
+   * returns. The date parts are read literally so the picker shows the day
+   * that was stored, whatever the browser time zone is.
+   */
   public getDate(value) {
-    if (value) {
-      var str = value;
-      var num = parseInt(str.replace(/[^0-9]/g, ''));
-      var date = new Date(num);
-      return date;
+    if (!value) {
+      return null;
     }
+
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? null : value;
+    }
+
+    const str = String(value).trim();
+    if (!str) {
+      return null;
+    }
+
+    // SAP OData v2 epoch form: /Date(1751241600000)/ or /Date(1751241600000+0180)/
+    const sapMatch = /^\/Date\((-?\d+)(?:[+-]\d{4})?\)\/$/.exec(str);
+    if (sapMatch) {
+      const sapDate = new Date(parseInt(sapMatch[1], 10));
+      return isNaN(sapDate.getTime()) ? null : sapDate;
+    }
+
+    // YYYY-MM-DDT00:00:00, with the time part, milliseconds and zone optional
+    const isoMatch =
+      /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2}))?)?/.exec(str);
+    if (isoMatch) {
+      const year = Number(isoMatch[1]);
+      const month = Number(isoMatch[2]);
+      const day = Number(isoMatch[3]);
+      // SAP sends 0000-00-00T00:00:00 for an empty date
+      if (!year || month < 1 || month > 12 || day < 1 || day > 31) {
+        return null;
+      }
+      const isoDate = new Date(
+        year,
+        month - 1,
+        day,
+        Number(isoMatch[4] || 0),
+        Number(isoMatch[5] || 0),
+        Number(isoMatch[6] || 0)
+      );
+      return isNaN(isoDate.getTime()) ? null : isoDate;
+    }
+
+    const parsed = new Date(str);
+    return isNaN(parsed.getTime()) ? null : parsed;
   }
 
   public parseTime(data: string) {
@@ -1224,28 +1268,9 @@ export class NicuAssessmentDocumentComponent implements OnInit {
 
   
   private convertDateFormat(dateInput) {
-
-    // If input is a Date object, convert to /Date(timestamp)/
-    if (dateInput instanceof Date) {
-      return `/Date(${dateInput.getTime()})/`;
-    }
-
-    // If input is an ISO date string (e.g. "2025-06-30T05:07:07.976Z")
-    if (typeof dateInput === 'string' && dateInput.includes('T')) {
-      const date = new Date(dateInput);
-      if (!isNaN(date.getTime())) {
-        return `/Date(${date.getTime()})/`;
-      }
-    }
-
-    // If input is in /Date(timestamp)/ format
-    const match = /\/Date\((\d+)\)\//.exec(dateInput);
-    if (match) {
-      const timestamp = parseInt(match[1], 10);
-      return new Date(timestamp);
-    }
-    return null;
-
+    // The admission date falls back to the check-in record, which can carry
+    // either backend date shape; the picker always needs a Date.
+    return this.getDate(dateInput);
   }
 
 
