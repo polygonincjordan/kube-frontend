@@ -56,6 +56,31 @@ export const ER_ORDER_TABS: { key: string; tab: OrderTab }[] = [
   { key: 'surgeryOrder', tab: 'Surgery' },
 ];
 
+/**
+ * What the emergency dashboard shows when SAP has no configuration row for the
+ * user yet, which is the case on a first login: every emergency tab.
+ *
+ * Derived from ER_ORDER_TABS rather than hand-listed, so the default stays
+ * "all emergency tabs" if a panel is added later. Orders Profile and Order Sets
+ * are absent from that list because the emergency screen has no panel for
+ * either, so they stay off here too.
+ *
+ * Display only. The user has no OrderConfigSet record, so there is nothing to
+ * update and nothing is written back; saveConfiguration refuses to send without
+ * an entity key. Returns a new object each call so a caller editing it cannot
+ * change the default for everyone else.
+ */
+export function createErDefaultConfig(): any {
+  const erFlags = ER_ORDER_TABS.map((entry) => entry.tab);
+  const config: any = {};
+  ORDER_CONFIG_FUNCTIONS.forEach((fn) => {
+    config[fn.flag] = erFlags.indexOf(fn.tab) !== -1;
+  });
+  config.Quickord = false;
+  config.Daycaseord = false;
+  return config;
+}
+
 /** The first emergency-dashboard tab the configuration enables, or null. */
 export function resolveFirstErTab(config: any): string | null {
   if (!config) {

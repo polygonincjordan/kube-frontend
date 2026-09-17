@@ -34,6 +34,9 @@ export class MyClinicComponent implements OnInit,OnDestroy {
     this.showconfig = false;
   }
 
+  // Status pre-selected in Configuration Options when the user has no stored choice.
+  private static readonly DEFAULT_STATUS_DESCR = 'confirmed';
+
   movementTypeConfig: any;
   statustypeConfig: any;
   selectedView: any = '1';
@@ -429,11 +432,28 @@ export class MyClinicComponent implements OnInit,OnDestroy {
           this.VisitType = false;
           this.comment = false
         }
+        if (!this.selectedItemsForStatusConf) {
+          this.applyDefaultStatusSelection();
+        }
         this.selectedView = '1';
         this.movementType = true;
         this.statusView = false;
         this.filterDataConf();
       });
+  }
+
+  // SE_BSSTA has no fixed key for "Confirmed" in this repo, so the default is
+  // resolved from the description SAP returns in the status value help.
+  private applyDefaultStatusSelection() {
+    const defaultStatus = (this.dropdownListForStatus || []).find(
+      (d: any) => (d && d.Valuedescr ? String(d.Valuedescr) : '').trim().toLowerCase() === MyClinicComponent.DEFAULT_STATUS_DESCR
+    );
+    if (!defaultStatus) {
+      return;
+    }
+    this.defaultSelectedItemsForStatus = [{ Valuekey: defaultStatus.Valuekey, Valuedescr: defaultStatus.Valuedescr }];
+    this.defaultSelectedItemsForStatusConf = [{ Valuekey: defaultStatus.Valuekey, Valuedescr: defaultStatus.Valuedescr }];
+    this.selectedItemsForStatusConf = ''.concat(';', defaultStatus.Valuekey);
   }
 
   resetConfigToolsFields() {

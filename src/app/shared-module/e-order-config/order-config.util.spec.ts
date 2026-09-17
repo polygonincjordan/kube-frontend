@@ -1,4 +1,5 @@
 import {
+  createErDefaultConfig,
   ER_ORDER_TABS,
   hasAnyOrderFunction,
   isOrderTabEnabled,
@@ -105,6 +106,53 @@ describe('order-config.util', () => {
     it('is null for an all-off or unloaded configuration', () => {
       expect(resolveFirstErTab(allOff())).toBeNull();
       expect(resolveFirstErTab(null)).toBeNull();
+    });
+  });
+
+  describe('createErDefaultConfig', () => {
+    it('enables every emergency tab', () => {
+      const config = createErDefaultConfig();
+      const enabled = ER_ORDER_TABS.filter((entry) =>
+        isOrderTabEnabled(config, entry.tab)
+      );
+      expect(enabled.length).toBe(ER_ORDER_TABS.length);
+    });
+
+    it('names the six emergency functions, so a change here is deliberate', () => {
+      const config = createErDefaultConfig();
+      const enabled = ORDER_CONFIG_FUNCTIONS
+        .filter((fn) => !!config[fn.flag])
+        .map((fn) => fn.flag);
+      expect(enabled.sort()).toEqual([
+        'Admission',
+        'Clinicord',
+        'Consultation',
+        'Doctfees',
+        'Medicat',
+        'Surgery',
+      ]);
+    });
+
+    it('leaves the functions with no emergency panel off', () => {
+      const config = createErDefaultConfig();
+      expect(config.Ordprofile).toBe(false);
+      expect(config.Ordset).toBe(false);
+      expect(config.Quickord).toBe(false);
+      expect(config.Daycaseord).toBe(false);
+    });
+
+    it('opens Clinical Orders first', () => {
+      expect(resolveFirstErTab(createErDefaultConfig())).toBe('clinicalOrders');
+    });
+
+    it('carries no entity key, so it can never be saved back to SAP', () => {
+      expect(createErDefaultConfig().Bname).toBeUndefined();
+    });
+
+    it('returns a fresh object each call', () => {
+      const first = createErDefaultConfig();
+      first.Clinicord = false;
+      expect(createErDefaultConfig().Clinicord).toBe(true);
     });
   });
 

@@ -315,6 +315,17 @@ export class ClinicComponent implements OnInit {
       (_error: any) => { }
     );
   }
+  // SE_BSSTA has no fixed key for "Confirmed" in this repo, so the default is
+  // resolved from the description SAP returns in the status value help.
+  private pushDefaultConfirmedStatus(statusList: any[], selection: any[]) {
+    const confirmed = (statusList || []).find(
+      (d: any) => (d && d.Valuedescr ? String(d.Valuedescr) : '').trim().toLowerCase() === 'confirmed'
+    );
+    if (confirmed && !selection.some((item: any) => item.Valuekey === confirmed.Valuekey)) {
+      selection.push({ Valuekey: confirmed.Valuekey, Valuedescr: confirmed.Valuedescr });
+    }
+  }
+
   filterFieldsStatus() {
     this._dataServices.getfilterFieldsStatus().subscribe(
       (_success: any) => {
@@ -322,6 +333,7 @@ export class ClinicComponent implements OnInit {
         if (_success) {
           this.dropdownListForStatus = _success.d.FLDPROPTOVHELP.results;
           this.defaultSelectedItemsForStatus.push({ Valuekey: '00', Valuedescr: 'Appointment' }, { Valuekey: '58', Valuedescr: 'Nurse Completed' }, { Valuekey: '30', Valuedescr: 'Checked In' }, { Valuekey: '20', Valuedescr: 'Planned' })
+          this.pushDefaultConfirmedStatus(this.dropdownListForStatus, this.defaultSelectedItemsForStatus);
           this.defaultSelectedItemsForStatus.forEach(element => {
             this.selectedItemsForStatus = this.selectedItemsForStatus.concat(
               ';',
@@ -715,6 +727,7 @@ export class ClinicComponent implements OnInit {
             data.isSelected = false
           });
           this.defaultSelectedItemsForStatusConf.push({ Valuekey: '00', Valuedescr: 'Appointment' }, { Valuekey: '58', Valuedescr: 'Nurse Completed' }, { Valuekey: '30', Valuedescr: 'Checked In' }, { Valuekey: '20', Valuedescr: 'Planned' })
+          this.pushDefaultConfirmedStatus(this.statustypeConfig, this.defaultSelectedItemsForStatusConf);
           this.defaultSelectedItemsForStatusConf.forEach(element => {
             this.selectedItemsForStatusConf = this.selectedItemsForStatusConf.concat(
               ';',
