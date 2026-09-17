@@ -11,6 +11,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import swal from 'sweetalert2';
+import { getErrorMessage } from '@services/upstream-error.util';
+import {
+  createErDefaultConfig,
+  hasAnyOrderFunction,
+  isOrderTabEnabled,
+  OrderTab,
+  resolveDefaultOrderTab,
+} from 'src/app/shared-module/e-order-config/order-config.util';
 
 
 @Injectable()
@@ -83,6 +91,8 @@ export class CpoeService {
   loadquestionsviewcontainerref: any;
 
   isFilterDataPopup = new Subject<any>()
+  /** Fires with the loaded configuration each time OrderConfigSet is read. */
+  configurationLoaded = new Subject<any>()
   element: any;
 
   constructor(
@@ -223,45 +233,99 @@ export class CpoeService {
     this.spinner.show();
     this.dataService.getOrderConfigset("OrderConfigSet('ABAP05')").subscribe(
       (resp: any) => {
-        if (resp._body) {
+        let record = null;
+        if (resp && resp._body) {
           const data = JSON.parse(resp._body);
-          if (data && data.d) {
-            this.configurationoption = data.d;
-            this.configurationoptionBackup = JSON.parse(JSON.stringify(data.d));
-            this.configurationoptionBackup.Clinicord ? this.navigationTab = 'Clinical' : this.configurationoptionBackup.Medicat ? this.navigationTab = 'Medications' : this.configurationoptionBackup.Doctfees ? this.navigationTab = 'Fees' : ''
-            if (this.configurationoptionBackup.Clinicord) {
-              this.loadClinicalOrder();
-            }
-            if (this.configurationoptionBackup.Medicat) {
-              this.loadMedicalOrder();
-            }
-            if (this.configurationoptionBackup.Doctfees) {
-              this.loadFeesOrder();
-            }
-          }
-          this.spinner.hide();
+          record = data && data.d ? data.d : null;
         }
+        // A first-time user has no OrderConfigSet row. Without a fallback the
+        // screen's outer *ngIf hides everything, so show the agreed default set
+        // instead. It is display only and is never written back.
+        this.applyConfiguration(record || createErDefaultConfig());
+        this.spinner.hide();
       },
       (error: any) => {
         this.spinner.hide();
+        if (error && error.status === 404) {
+          this.applyConfiguration(createErDefaultConfig());
+        }
       }
     );
   }
 
+  /** Publishes a configuration to the screen and loads the data its tabs need. */
+  private applyConfiguration(config: any) {
+    this.configurationoption = config;
+    this.configurationoptionBackup = JSON.parse(JSON.stringify(config));
+    this.configureNavigationDefault(this.configurationoptionBackup);
+    this.configurationLoaded.next(this.configurationoptionBackup);
+    if (this.configurationoptionBackup.Clinicord) {
+      this.loadClinicalOrder();
+    }
+    if (this.configurationoptionBackup.Medicat) {
+      this.loadMedicalOrder();
+    }
+    if (this.configurationoptionBackup.Doctfees) {
+      this.loadFeesOrder();
+    }
+  }
+
+  /** True once the loaded configuration enables at least one showable function. */
+  get hasAnyFunction(): boolean {
+    return hasAnyOrderFunction(this.configurationoptionBackup);
+  }
+
+  /** True when the configuration enables this specific tab. */
+  isTabEnabled(tab: OrderTab): boolean {
+    return isOrderTabEnabled(this.configurationoptionBackup, tab);
+  }
+
+  configureNavigationDefault(configuration) {
+    const defaultTab = resolveDefaultOrderTab(configuration);
+    if (defaultTab) {
+      this.navigationTab = defaultTab;
+    }
+  }
+
   saveConfiguration() {
+    const bname = this.configurationoption?.Bname;
+    if (!bname) {
+      // Without the entity key there is no record to update, and posting to the
+      // collection would silently keep the stored flags.
+      swal.fire({
+        text: 'Configuration could not be saved: the user key is missing.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: { popup: 'myalertpopup' },
+      } as any);
+      return;
+    }
+
     this.spinner.show();
     this.dataService
-      .postData('OrderConfigSet', this.configurationoption, false)
+      .putOrderConfigset(
+        `OrderConfigSet('${encodeURIComponent(bname)}')`,
+        this.configurationoption
+      )
       .subscribe(
         (_success: any) => {
           this.spinner.hide();
           this.opentempmodalservices.dismissAll();
-          this.loadeOrderData();
+          // Re-read the configuration directly: loadeOrderData() is gated on the
+          // patient context, so routing through it can leave the saved options
+          // invisible until a full reload.
+          this.loadConfiguration();
         },
-        (_error: any) => {
+        (error: any) => {
           this.spinner.hide();
-          this.opentempmodalservices.dismissAll();
-          this.loadeOrderData();
+          // Keep the modal open on the user's unsaved options, and leave
+          // configurationoptionBackup untouched so the tabs still match SAP.
+          swal.fire({
+            text: getErrorMessage(error),
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            customClass: { popup: 'myalertpopup' },
+          } as any);
         }
       );
   }
