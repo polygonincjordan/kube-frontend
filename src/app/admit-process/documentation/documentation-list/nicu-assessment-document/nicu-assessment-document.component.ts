@@ -502,13 +502,13 @@ export class NicuAssessmentDocumentComponent implements OnInit {
         AVeins : [data?.AVeins || false],
         AVeinsT : [data?.AVeinsT || { value: '', disabled: true }],
         AUvc : [data?.AUvc || false],
-        AUinsertion : [data?.AUinsertion || { value: null, disabled: true }],
-        AUremoval : [data?.AUremoval || { value: null, disabled: true }],
+        AUinsertion : [this.getDate(data?.AUinsertion) || { value: null, disabled: true }],
+        AUremoval : [this.getDate(data?.AUremoval) || { value: null, disabled: true }],
         AUcomplication : [data?.AUcomplication || { value: '', disabled: true }],
         AUcomplicationT : [data?.AUcomplicationT || { value: '', disabled: true }],
         AUac : [data?.AUac || false],
-        AUainsertion : [data?.AUainsertion || { value: null, disabled: true }],
-        AUaremoval : [data?.AUaremoval || { value: null, disabled: true }],
+        AUainsertion : [this.getDate(data?.AUainsertion) || { value: null, disabled: true }],
+        AUaremoval : [this.getDate(data?.AUaremoval) || { value: null, disabled: true }],
         AUacomplication : [data?.AUacomplication || { value: '', disabled: true }],
         AUacomplicationsT : [data?.AUacomplicationsT || { value: '', disabled: true }],
         AComment : [data?.AComment || ''],
@@ -1174,6 +1174,58 @@ export class NicuAssessmentDocumentComponent implements OnInit {
     const day = String(date.getDate()).padStart(2, '0');
 
     formData.CrRdate = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.AUinsertion) {
+    if(typeof formData.AUinsertion === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.AUinsertion)) {
+        formData.AUinsertion = convertDateFormat(formData.AUinsertion);
+      }
+    }
+    const date = new Date(formData.AUinsertion);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.AUinsertion = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.AUremoval) {
+    if(typeof formData.AUremoval === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.AUremoval)) {
+        formData.AUremoval = convertDateFormat(formData.AUremoval);
+      }
+    }
+    const date = new Date(formData.AUremoval);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.AUremoval = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.AUainsertion) {
+    if(typeof formData.AUainsertion === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.AUainsertion)) {
+        formData.AUainsertion = convertDateFormat(formData.AUainsertion);
+      }
+    }
+    const date = new Date(formData.AUainsertion);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.AUainsertion = `${year}-${month}-${day}T00:00:00`;
+  }
+  if (formData.AUaremoval) {
+    if(typeof formData.AUaremoval === 'string'){
+      if (/\d{2}-\d{2}-\d{4}/.test(formData.AUaremoval)) {
+        formData.AUaremoval = convertDateFormat(formData.AUaremoval);
+      }
+    }
+    const date = new Date(formData.AUaremoval);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+
+    formData.AUaremoval = `${year}-${month}-${day}T00:00:00`;
   }
    let checkVitalList: any[] = this.toVitalsArr?.filter((res) => {
     delete res.Vunit;
