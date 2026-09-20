@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 import swal from 'sweetalert2';
 import { getErrorMessage } from '@services/upstream-error.util';
 import {
-  createErDefaultConfig,
+  createErTabConfig,
   hasAnyOrderFunction,
   isOrderTabEnabled,
   OrderTab,
@@ -91,8 +91,21 @@ export class CpoeService {
   loadquestionsviewcontainerref: any;
 
   isFilterDataPopup = new Subject<any>()
-  /** Fires with the loaded configuration each time OrderConfigSet is read. */
+  /** Fires with the configuration each time the screen publishes one. */
   configurationLoaded = new Subject<any>()
+  /**
+   * Show every emergency tab and skip the OrderConfigSet read entirely.
+   *
+   * Set by the emergency dashboard only. That screen has no settings gear, and
+   * SAP does not persist configuration writes, so a stored configuration that
+   * enables nothing left the user at a dead end with no way to act on it.
+   * Agreed with Saja Oweis on 2026-09-17, for that screen alone.
+   *
+   * This class is shared with the nursing-dashboard copy of the screen, which
+   * leaves the flag false and keeps following the configuration. Clearing the
+   * flag restores configuration-driven tabs once SAP can save again.
+   */
+  ignoreOrderConfig = false
   element: any;
 
   constructor(
@@ -230,6 +243,10 @@ export class CpoeService {
   }
 
   loadConfiguration() {
+    if (this.ignoreOrderConfig) {
+      this.applyConfiguration(createErTabConfig());
+      return;
+    }
     this.spinner.show();
     this.dataService.getOrderConfigset("OrderConfigSet('ABAP05')").subscribe(
       (resp: any) => {
@@ -239,15 +256,15 @@ export class CpoeService {
           record = data && data.d ? data.d : null;
         }
         // A first-time user has no OrderConfigSet row. Without a fallback the
-        // screen's outer *ngIf hides everything, so show the agreed default set
+        // screen's outer *ngIf hides everything, so show the full tab set
         // instead. It is display only and is never written back.
-        this.applyConfiguration(record || createErDefaultConfig());
+        this.applyConfiguration(record || createErTabConfig());
         this.spinner.hide();
       },
       (error: any) => {
         this.spinner.hide();
         if (error && error.status === 404) {
-          this.applyConfiguration(createErDefaultConfig());
+          this.applyConfiguration(createErTabConfig());
         }
       }
     );

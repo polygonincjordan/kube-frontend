@@ -1,5 +1,5 @@
 import {
-  createErDefaultConfig,
+  createErTabConfig,
   ER_ORDER_TABS,
   hasAnyOrderFunction,
   isOrderTabEnabled,
@@ -109,9 +109,9 @@ describe('order-config.util', () => {
     });
   });
 
-  describe('createErDefaultConfig', () => {
+  describe('createErTabConfig', () => {
     it('enables every emergency tab', () => {
-      const config = createErDefaultConfig();
+      const config = createErTabConfig();
       const enabled = ER_ORDER_TABS.filter((entry) =>
         isOrderTabEnabled(config, entry.tab)
       );
@@ -119,7 +119,7 @@ describe('order-config.util', () => {
     });
 
     it('names the six emergency functions, so a change here is deliberate', () => {
-      const config = createErDefaultConfig();
+      const config = createErTabConfig();
       const enabled = ORDER_CONFIG_FUNCTIONS
         .filter((fn) => !!config[fn.flag])
         .map((fn) => fn.flag);
@@ -133,8 +133,17 @@ describe('order-config.util', () => {
       ]);
     });
 
+    it('enables the three flags the screen data loads read', () => {
+      // applyConfiguration triggers loadClinicalOrder, loadMedicalOrder and
+      // loadFeesOrder from these; miss one and that tab renders empty.
+      const config = createErTabConfig();
+      expect(config.Clinicord).toBe(true);
+      expect(config.Medicat).toBe(true);
+      expect(config.Doctfees).toBe(true);
+    });
+
     it('leaves the functions with no emergency panel off', () => {
-      const config = createErDefaultConfig();
+      const config = createErTabConfig();
       expect(config.Ordprofile).toBe(false);
       expect(config.Ordset).toBe(false);
       expect(config.Quickord).toBe(false);
@@ -142,17 +151,17 @@ describe('order-config.util', () => {
     });
 
     it('opens Clinical Orders first', () => {
-      expect(resolveFirstErTab(createErDefaultConfig())).toBe('clinicalOrders');
+      expect(resolveFirstErTab(createErTabConfig())).toBe('clinicalOrders');
     });
 
     it('carries no entity key, so it can never be saved back to SAP', () => {
-      expect(createErDefaultConfig().Bname).toBeUndefined();
+      expect(createErTabConfig().Bname).toBeUndefined();
     });
 
     it('returns a fresh object each call', () => {
-      const first = createErDefaultConfig();
+      const first = createErTabConfig();
       first.Clinicord = false;
-      expect(createErDefaultConfig().Clinicord).toBe(true);
+      expect(createErTabConfig().Clinicord).toBe(true);
     });
   });
 
