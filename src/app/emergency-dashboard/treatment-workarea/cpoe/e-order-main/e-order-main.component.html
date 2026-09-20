@@ -1,14 +1,10 @@
-<div class="e-order-wrapper" *ngIf="CpoeService.configurationoptionBackup">
-  <div class="configuration-notification" *ngIf="!CpoeService.hasAnyFunction">
-    Please Select Configuration Functions
-  </div>
-  <div class="container-fluid p-0" *ngIf="CpoeService.hasAnyFunction">
+<div class="e-order-wrapper">
+  <div class="container-fluid p-0">
     <div class="tab-navigation-part">
       <div class="tab-navigate">
         <div class="tab-nav">
           <ul class="m-0 p-0 d-flex flex-wrap">
             <li class="d-flex m-0 align-items-center"
-              *ngIf="CpoeService.isTabEnabled('Clinical')"
               (click)="openTab('clinicalOrders')"
               [ngClass]="this.eprescriptionService.clinicalOrders ? 'active'
               : ''">
@@ -16,14 +12,12 @@
               <p class="d-inline-block m-0">Clinical Orders</p>
             </li>
             <li class="d-flex m-0 align-items-center"
-              *ngIf="CpoeService.isTabEnabled('Medications')"
               (click)="openTab('medications')"
               [ngClass]="this.eprescriptionService.medications ? 'active' : ''">
               <img src="assets/img/grid-icon.svg">
               <p class="d-inline-block m-0">Medications</p>
             </li>
             <li class="d-flex m-0 align-items-center"
-              *ngIf="CpoeService.isTabEnabled('Fees')"
               (click)="openTab('feesAndServices')"
               [ngClass]="this.eprescriptionService.feesAndServices ? 'active' :
               ''">
@@ -31,7 +25,6 @@
               <p class="d-inline-block m-0">Fees and Services</p>
             </li>
             <li class="d-flex m-0 align-items-center"
-              *ngIf="CpoeService.isTabEnabled('Consultation')"
               (click)="openTab('consultationOrder')"
               [ngClass]="this.eprescriptionService.consulationOrder ? 'active' :
               ''">
@@ -39,14 +32,12 @@
               <p class="d-inline-block m-0">Consultation Order</p>
             </li>
             <li class="d-flex m-0 align-items-center"
-              *ngIf="CpoeService.isTabEnabled('Admission')"
               (click)="openTab('admissionOrder')"
               [ngClass]="this.eprescriptionService.admissionOrder ? 'active' : ''">
               <img src="assets/img/grid-icon.svg">
               <p class="d-inline-block m-0">Admission Order</p>
             </li>
             <li class="d-flex m-0 align-items-center"
-              *ngIf="CpoeService.isTabEnabled('Surgery')"
               (click)="openTab('surgeryOrder')"
               [ngClass]="this.eprescriptionService.surgeryOrder ? 'active' : ''">
               <img src="assets/img/grid-icon.svg">
@@ -59,10 +50,7 @@
             <div class="col-md-7">
               <div class="e-order-sidewrap pb-0">
                 <div class="clincal-dash pb-0">
-                  <div class="clinic-order h-100" *ngIf="
-                      this.eprescriptionService.clinicalOrders &&
-                      CpoeService.isTabEnabled('Clinical')
-                    ">
+                  <div class="clinic-order h-100" *ngIf="this.eprescriptionService.clinicalOrders">
                     <div class="e-order-search">
                       <div class="row">
                         <div class="col-md-8">
@@ -209,7 +197,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="medications h-100" *ngIf="this.eprescriptionService.medications && CpoeService.isTabEnabled('Medications')">
+                  <div class="medications h-100" *ngIf="this.eprescriptionService.medications">
                     <div class="e-order-search">
                       <div class="row">
                         <div class="col-md-8">

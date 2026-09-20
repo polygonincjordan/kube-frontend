@@ -11,7 +11,7 @@ import { Subject, catchError, debounceTime, of } from 'rxjs';
 import { Patient } from '@services/e-kardex/interfaces/patient';
 import { DatePipe } from '@angular/common';
 import { FeeListService } from '@services/fee-service/fee-list.service';
-import { ER_ORDER_TABS, resolveFirstErTab } from 'src/app/shared-module/e-order-config/order-config.util';
+import { ER_ORDER_TABS } from 'src/app/shared-module/e-order-config/order-config.util';
 
 @UntilDestroy()
 @Component({
@@ -61,22 +61,8 @@ export class EOrderMainComponent implements OnInit {
     this.encounterId = this.paramsObj.einri+ this.paramsObj.falnr + this.paramsObj.lfdnr;
     this.getDataPatient();
     this.feeListService.onNavigationClick('Fees');
-    this.selectConfiguredTab(this.CpoeService.configurationoptionBackup);
-    this.CpoeService.configurationLoaded
-      .pipe(untilDestroyed(this))
-      .subscribe((configuration: any) => this.selectConfiguredTab(configuration));
-  }
-
-  /**
-   * Open the first tab the configuration actually enables. Without this the bar
-   * stays on Clinical Orders even when that function is switched off, leaving
-   * the user on a tab they can no longer see.
-   */
-  private selectConfiguredTab(configuration: any) {
-    const tab = resolveFirstErTab(configuration);
-    if (tab) {
-      this.openTab(tab);
-    }
+    // Every tab is shown on this screen, so it always opens on the first one.
+    this.openTab(ER_ORDER_TABS[0].key);
   }
 
   /**
