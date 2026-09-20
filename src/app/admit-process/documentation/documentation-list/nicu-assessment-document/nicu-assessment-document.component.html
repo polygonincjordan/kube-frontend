@@ -3545,6 +3545,52 @@
           <i class="fa fa-copy pl-2" style="vertical-align: top;"></i>
         </div>
       </div>
+      <section class="discharge-planning-section" aria-labelledby="nicu-discharge-planning-title">
+        <h3 id="nicu-discharge-planning-title" class="discharge-planning-title">Discharge Planning</h3>
+        <div class="discharge-planning-fields">
+          <div class="discharge-planning-row">
+            <label for="nicu-expected-length-stay">Expected Length of Stay</label>
+            <input id="nicu-expected-length-stay" type="text" maxlength="10"
+              class="form-control discharge-planning-short-field" formControlName="ExpectedLengthStay">
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-medications">Medications</label>
+            <textarea id="nicu-medications" rows="1" class="form-control" formControlName="DpMedications"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-diet">Diet</label>
+            <textarea id="nicu-diet" rows="1" class="form-control" formControlName="DpDiet"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-level-mobility">Level of Mobility</label>
+            <textarea id="nicu-level-mobility" rows="1" class="form-control" formControlName="DpMobility"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-pain-management">Pain Management (if applicable)</label>
+            <textarea id="nicu-pain-management" rows="1" class="form-control" formControlName="DpPainManagement"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-medical-equipment">Medical Equipment (if applicable)</label>
+            <textarea id="nicu-medical-equipment" rows="1" class="form-control" formControlName="DpMedicalEquipment"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-home-community">Home-Community Support Services</label>
+            <textarea id="nicu-home-community" rows="1" class="form-control" formControlName="DpHomeSupport"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-smoking-cessation">Smoking Cessation Services</label>
+            <textarea id="nicu-smoking-cessation" rows="1" class="form-control" formControlName="DpSmokingCessation"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-clinical-appointments">Clinical Appointments</label>
+            <textarea id="nicu-clinical-appointments" rows="1" class="form-control" formControlName="DpClinicalAppointments"></textarea>
+          </div>
+          <div class="discharge-planning-row">
+            <label for="nicu-others">Others</label>
+            <textarea id="nicu-others" rows="1" class="form-control" formControlName="DpOthers"></textarea>
+          </div>
+        </div>
+      </section>
     </form>
 </div>
 
