@@ -1,0 +1,12 @@
+{
+  "/bridge-api": {
+    "target": "https://mating-suggest-darwin-implies.trycloudflare.com",
+    "secure": true,
+    "changeOrigin": true,
+    "cookieDomainRewrite": "localhost",
+    "pathRewrite": {
+      "^/bridge-api": ""
+    },
+    "logLevel": "debug"
+  }
+}

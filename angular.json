@@ -122,6 +122,28 @@
                   "maximumError": "10000kb"
                 }
               ]
+            },
+            "bridge": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.bridge.ts"
+                }
+              ],
+              "optimization": false,
+              "sourceMap": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "7mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "800kb",
+                  "maximumError": "10000kb"
+                }
+              ]
             }
           },
           "defaultConfiguration": ""
@@ -134,6 +156,9 @@
           "configurations": {
             "production": {
               "browserTarget": "kardex:build:production"
+            },
+            "bridge": {
+              "browserTarget": "kardex:build:bridge"
             }
           }
         },
