@@ -130,12 +130,7 @@
   <app-neonatal-medical-report [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-neonatal-medical-report>
 </div>
 <div *ngIf="admissionService.isAddEditDocPaediatricsAdmissionForm">
-  <app-paediatrics-adm-document [soapFormEvent]="soapFormEvent"
-    (realodEducationList)="realodEducationList($event)"></app-paediatrics-adm-document>
-</div>
-<div *ngIf="admissionService.isNewBornForm">
-  <app-newborn-assessment [soapFormEvent]="soapFormEvent" [isExpanded]="isExpanded"
-    (realodEducationList)="realodEducationList($event)"></app-newborn-assessment>
+  <app-paediatric-physician-assessment [soapFormEvent]="soapFormEvent" (realodEducationList)="realodEducationList($event)"></app-paediatric-physician-assessment>
 </div>
 <div *ngIf="admissionService.isAddEditNeonatalDischarge">
   <app-neonatal-disch-document [soapFormEvent]="soapFormEvent" (reloadTableList)="realodEducationList($event)"></app-neonatal-disch-document>

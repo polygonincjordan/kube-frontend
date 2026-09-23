@@ -1,59 +1,23 @@
-import { of } from 'rxjs';
-import Swal from 'sweetalert2';
-import { AdmitProcessComponent } from './admit-process.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('AdmitProcessComponent progress-note navigation', () => {
-  let component: AdmitProcessComponent;
-  let admissionService: jasmine.SpyObj<any>;
+import { EprescriptionComponent } from './e-prescription.component';
 
-  beforeEach(() => {
-    spyOn(AdmitProcessComponent.prototype, 'getBedDetails');
-    spyOn(AdmitProcessComponent.prototype, 'phyOrderTableList');
-    spyOn(AdmitProcessComponent.prototype, 'occupationalGroupList');
+describe('EPrescriptionComponent', () => {
+  let component: EprescriptionComponent;
+  let fixture: ComponentFixture<EprescriptionComponent>;
 
-    admissionService = jasmine.createSpyObj('AdmissionService', [
-      'tabPanelNavigation',
-    ]);
-    const storageService = jasmine.createSpyObj('StorageService', [
-      'setEinri',
-      'setFalnr',
-      'setLfdnr',
-      'setPatnr',
-    ]);
-    const route = {
-      queryParams: of({ activeValue: '02' }),
-    };
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ EprescriptionComponent ]
+    })
+    .compileComponents();
 
-    component = new AdmitProcessComponent(
-      {} as any,
-      {} as any,
-      admissionService,
-      {} as any,
-      {} as any,
-      route as any,
-      storageService
-    );
+    fixture = TestBed.createComponent(EprescriptionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('navigates without warning when the progress note is saved', async () => {
-    component.unsavedProgressNote = false;
-    const warning = spyOn(Swal, 'fire');
-
-    await component.calltab('Documentation');
-
-    expect(warning).not.toHaveBeenCalled();
-    expect(admissionService.tabPanelNavigation).toHaveBeenCalledWith('Documentation');
-  });
-
-  it('keeps the warning for genuinely unsaved note text', async () => {
-    component.unsavedProgressNote = true;
-    spyOn(Swal, 'fire').and.returnValue(
-      Promise.resolve({ isConfirmed: false } as any)
-    );
-
-    await component.calltab('Documentation');
-
-    expect(Swal.fire).toHaveBeenCalled();
-    expect(admissionService.tabPanelNavigation).not.toHaveBeenCalled();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });

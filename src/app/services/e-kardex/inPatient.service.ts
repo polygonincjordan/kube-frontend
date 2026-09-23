@@ -92,7 +92,7 @@ export class InPatientConfigurationService {
     localStorage.removeItem("data");
   }
 
-  async saveInPatientDocumentData(data: any, userConfiguration: UserConfig, documentType: boolean,status?:any) {
+  async saveInPatientDocumentData(data: any, userConfiguration: UserConfig, documentType: boolean, status?: any) {
     const payloadData = {
       DocKey: data.patientFormData.DocKey !== undefined ? data.patientFormData.DocKey : "",
       Dtid: data.patientDtId,
@@ -128,7 +128,7 @@ export class InPatientConfigurationService {
     await lastValueFrom(savePatientConfig$)
   }
 
-  saveSurgery(payload:any){
+  saveSurgery(payload: any) {
     const url = `${environment.eKardexApiUrl}/inpatientData/saveInPatientDataSet`;
     return this.http.post(url, payload, { withCredentials: true })
   }
@@ -189,7 +189,7 @@ export class InPatientConfigurationService {
     // await lastValueFrom(savePatientConfig$)
   }
   async deleteInPatientPhdisData(DocKey: any) {
-    const url = `${environment.eKardexApiUrl}/inpatientData/deleteDischargeSummarySet?DocKey=${DocKey}`;
+    const url = `${environment.eKardexApiUrl}/inpatientData/PhyDischSummarySet?DocKey=${DocKey}`;
 
     const createPatientConfig$ = this.http
       .delete(url, { withCredentials: true })
@@ -202,6 +202,22 @@ export class InPatientConfigurationService {
 
     await lastValueFrom(createPatientConfig$);
   }
+
+  /**old code  */
+  // async deleteInPatientPhdisData(DocKey: any) {
+  //   const url = `${environment.eKardexApiUrl}/inpatientData/deleteDischargeSummarySet?DocKey=${DocKey}`;
+
+  //   const createPatientConfig$ = this.http
+  //     .delete(url, { withCredentials: true })
+  //     .pipe(
+  //       tap((data) => {
+  //         this.getListOfAllPatientVisitDataSet();
+  //       }),
+  //       catchError((error: HttpErrorResponse) => throwError(() => error))
+  //     );
+
+  //   await lastValueFrom(createPatientConfig$);
+  // }
 
 
   async deleteInPatientData(deleteDockey: string) {
@@ -220,7 +236,6 @@ export class InPatientConfigurationService {
   }
 
   // getSurgeryPopupData() {
-  //   debugger
   //   const url = `${environment.eKardexApiUrl}/inPatientData/getSurgeryTeamData?SequenceNumberMovem=${this.storageService.lfdnr}&CaseNumber=${this.storageService.falnr}`
   //   return this.http.get(url, { withCredentials: true })
   // }
@@ -230,7 +245,7 @@ export class InPatientConfigurationService {
     return this.http.get(url, { withCredentials: true })
   }
 
-  getDiagnosisPopupData(obj:any) {
+  getDiagnosisPopupData(obj: any) {
     const url = `${environment.eKardexApiUrl}/inPatientData/getDiagnosisData?Institution=${obj.einri}&PatientNumber=${obj.patnr}&CaseNumber=${obj.falnr}`
     return this.http.get(url, { withCredentials: true }).pipe(
       map((data: any) => { return data.d.results }),
@@ -245,10 +260,10 @@ export class InPatientConfigurationService {
     await lastValueFrom(this.getPatientVisitDataByDocKey(docKey));
   }
 
-  getPatientVisitDataByDocKey(docKey: string,params?:any): Observable<InPatientDataResult> {
+  getPatientVisitDataByDocKey(docKey: string, params?: any): Observable<InPatientDataResult> {
     const url = this.getUrlInPatientVisitDataByDocKey(
-      this.storageService.einri ?  this.storageService.einri :params?.einri,
-      this.storageService.patnr ?  this.storageService.patnr :params?.patnr ,
+      this.storageService.einri ? this.storageService.einri : params?.einri,
+      this.storageService.patnr ? this.storageService.patnr : params?.patnr,
       docKey
     );
     return this.http.get(url, { withCredentials: true }).pipe(
@@ -262,6 +277,16 @@ export class InPatientConfigurationService {
 
   getPatientSummaryDataByDocKey(docKey: string): Observable<any> {
     return this.http.get(`${environment.eKardexApiUrl}/inPatientData/savedDocumentGetData?DocKey=${docKey}`, { withCredentials: true }).pipe(
+      map((data: any) => { return data.d }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error);
+        return throwError(error);
+      })
+    );
+  }
+
+  getPhyDischSummarySetByDocKey(docKey: string): Observable<any> {
+    return this.http.get(`${environment.eKardexApiUrl}/inPatientData/getPhyDischSummarySet?DocKey=${docKey}`, { withCredentials: true }).pipe(
       map((data: any) => { return data.d }),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
