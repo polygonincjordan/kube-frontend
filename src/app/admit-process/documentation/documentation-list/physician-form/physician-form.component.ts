@@ -402,7 +402,17 @@ export class PhysicianFormComponent implements OnInit {
       CannotAssessedReview: [false],
       NoMedicalHistory: [false],
       NoSurgeryHistory: [false],
-      NoFamilyHistory: [false]
+      NoFamilyHistory: [false],
+      ExpectedLengthStay: [''],
+      Medications: [''],
+      Diet: [''],
+      LevelMobility: [''],
+      PainManagement: [''],
+      MedicalEquipment: [''],
+      HomeCommunity: [''],
+      SmokingCessation: [''],
+      ClinicalAppointments: [''],
+      Others1: ['']
     });
   }
 

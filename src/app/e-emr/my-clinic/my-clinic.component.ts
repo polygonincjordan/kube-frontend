@@ -139,7 +139,7 @@ export class MyClinicComponent implements OnInit,OnDestroy {
     });
      this.refreshInterval = setInterval(() => {
        this.filterDataConf()
-    }, environment.emergencyRefreshTime);
+    }, 15 * 60 * 1000);
   }
 
   ngOnDestroy(): void {
