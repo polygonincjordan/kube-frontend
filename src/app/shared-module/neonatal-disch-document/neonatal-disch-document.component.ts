@@ -316,13 +316,14 @@ export class NeonatalDischDocumentComponent implements OnInit {
       AVeins: [data?.AVeins || false],
       AVeinsT: [data?.AVeinsT || { value: '', disabled: true }],
       AUvc: [data?.AUvc || false],
-      AUinsertion: [this.getDate(data?.AUinsertion) || { value: new Date(), disabled: true }],
-      AUremoval: [this.getDate(data?.AUremoval) || { value: new Date(), disabled: true }],
+      // UVC/UAC dates stay empty unless the line is ticked; toggleInput defaults them to today on tick.
+      AUinsertion: [data?.AUvc ? this.getDate(data?.AUinsertion) || '' : { value: '', disabled: true }],
+      AUremoval: [data?.AUvc ? this.getDate(data?.AUremoval) || '' : { value: '', disabled: true }],
       AUcomplication: [data?.AUcomplication || { value: '', disabled: true }],
       AUcomplicationT: [data?.AUcomplicationT || { value: '', disabled: true }],
       AUac: [data?.AUac || false],
-      AUainsertion: [this.getDate(data?.AUainsertion) || { value: new Date(), disabled: true }],
-      AUaremoval: [this.getDate(data?.AUaremoval) || { value: new Date(), disabled: true }],
+      AUainsertion: [data?.AUac ? this.getDate(data?.AUainsertion) || '' : { value: '', disabled: true }],
+      AUaremoval: [data?.AUac ? this.getDate(data?.AUaremoval) || '' : { value: '', disabled: true }],
       AUacomplication: [data?.AUacomplication || { value: '', disabled: true }],
       AUacomplicationsT: [data?.AUacomplicationsT || { value: '', disabled: true }],
       AComment: [data?.AComment || false],
@@ -461,12 +462,16 @@ export class NeonatalDischDocumentComponent implements OnInit {
       if (checkboxName == 'AUvc') {
         this.neonatalDischarge.get('AUcomplication')?.setValue('1');
         this.neonatalDischarge.get('AUinsertion')?.enable();
+        this.neonatalDischarge.get('AUinsertion')?.setValue(new Date());
         this.neonatalDischarge.get('AUremoval')?.enable();
+        this.neonatalDischarge.get('AUremoval')?.setValue(new Date());
       }
       if (checkboxName == 'AUac') {
         this.neonatalDischarge.get('AUacomplication')?.setValue('1');
         this.neonatalDischarge.get('AUainsertion')?.enable();
+        this.neonatalDischarge.get('AUainsertion')?.setValue(new Date());
         this.neonatalDischarge.get('AUaremoval')?.enable();
+        this.neonatalDischarge.get('AUaremoval')?.setValue(new Date());
       }
       if (checkboxName == 'CrIntubated') {
         this.neonatalDischarge.get('CrIntubatedYn')?.setValue('1');
@@ -488,14 +493,18 @@ export class NeonatalDischDocumentComponent implements OnInit {
       }
       if (checkboxName == 'AUvc') {
         this.neonatalDischarge.get('AUcomplication')?.disable();
+        this.neonatalDischarge.get('AUinsertion')?.setValue('');
         this.neonatalDischarge.get('AUinsertion')?.disable();
+        this.neonatalDischarge.get('AUremoval')?.setValue('');
         this.neonatalDischarge.get('AUremoval')?.disable();
         this.neonatalDischarge.get('AUcomplicationT')?.disable();
       }
       if (checkboxName == 'AUac') {
         this.neonatalDischarge.get('AUacomplicationsT')?.disable();
         this.neonatalDischarge.get('AUacomplication')?.disable();
+        this.neonatalDischarge.get('AUainsertion')?.setValue('');
         this.neonatalDischarge.get('AUainsertion')?.disable();
+        this.neonatalDischarge.get('AUaremoval')?.setValue('');
         this.neonatalDischarge.get('AUaremoval')?.disable();
       }
       if (checkboxName == 'HfAnterior') {
