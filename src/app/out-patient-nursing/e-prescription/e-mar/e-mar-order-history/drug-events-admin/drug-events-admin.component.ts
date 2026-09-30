@@ -412,6 +412,7 @@ export class DrugEventsAdminComponent implements OnInit {
                         if (parseData) {
                           const PayloadData = {
                             ...this.administratiForm.get('NotAdminister').value,
+                            Quan2: "0.000",
                             Meresp2: parseData.d.Vma !== null ? parseData.d.Vma : "",
                             Meresp1: this.getUserConfigData.VMA,
                             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
@@ -435,6 +436,7 @@ export class DrugEventsAdminComponent implements OnInit {
         else {
           const PayloadData = {
             ...this.administratiForm.get('NotAdminister').value,
+            Quan2: "0.000",
             Meresp1: this.getUserConfigData.VMA,
             Meresp2: "",
             Rdrugdq: this.administratiForm.get('NotAdminister').value.Rdrugdq.length ? this.administratiForm.get('NotAdminister').value.Rdrugdq : `0.000`,
