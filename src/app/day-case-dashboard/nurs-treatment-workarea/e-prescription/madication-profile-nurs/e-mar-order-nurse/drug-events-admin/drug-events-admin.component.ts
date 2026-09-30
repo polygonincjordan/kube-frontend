@@ -454,7 +454,7 @@ export class DrugEventsAdminComponent implements OnInit {
                             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
                           }
 
-                          const { Quanunit,DosageStr,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
+                          const { Quanunit, Quan2,DosageStr,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
                           delete payload.DosageStr
                           delete payload.AmountPrescribed
                           this.AdministerEventaction("The event has been NotAdminustered!", payload)
@@ -479,7 +479,7 @@ export class DrugEventsAdminComponent implements OnInit {
             Rbtad: `${this.parseTime(this.administratiForm.get('NotAdminister').value.Rbdad)}`,
             Rbdad: `${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, 'YYYY-MM-DD')}T${formatDate(this.administratiForm.get('NotAdminister').value.Rbdad, "HH:mm:ss")}`
           }
-          const { Quanunit,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
+          const { Quanunit, Quan2,SCRAP,PlanDQ,PlanUN, ...payload } = PayloadData;
 
           delete payload.DosageStr
           delete payload.AmountPrescribed
