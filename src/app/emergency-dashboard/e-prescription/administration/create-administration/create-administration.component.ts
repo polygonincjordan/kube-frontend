@@ -389,7 +389,10 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }
       const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
-        this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030" });
+        this.drugArray.controls[index].patchValue({ Priority: "030", IsFrequencyDeftim: false, Dosdef: "" });
+        if (!resetDuration) {
+          this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS" });
+        }
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
         this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`), Agentid:this.drugArray.value[index].Agentid }]);
         const selectedData = [];

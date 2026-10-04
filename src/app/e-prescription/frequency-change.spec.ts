@@ -132,6 +132,19 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
     expect(order.EndD).toBeNull();
   });
 
+  for (const frequency of ['STAT', 'ONCE']) {
+    it(`retains single-dose defaults when loading a ${frequency} template`, () => {
+      const template = { ...create.drugArray.at(0).value, N1znr: frequency };
+      spyOn(create, 'openMoDetailPanel');
+      create.processTemplateData([template]);
+      const form = create.drugArray.at(0);
+      expect(form.value.Pdur).toBe(1);
+      expect(form.value.Pduru).toBe('DOS');
+      expect(form.value.IsFrequencyDeftim).toBe(false);
+      expect(form.value.Dosdef).toBe('');
+    });
+  }
+
   it('submits cleared values for an edited order', () => {
     edit.editprofileForm.patchValue({ N1znr: 'DEFTIM' });
     changeEditFrequency('DEFTIM');

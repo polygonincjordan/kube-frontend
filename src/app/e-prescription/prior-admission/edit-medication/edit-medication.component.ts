@@ -398,9 +398,9 @@ export class EditMedicationComponent implements OnInit {
       }
       const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT")) {
-        this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "020" });
+        this.editprofileForm.patchValue({ Priority: "020", IsFrequencyDeftim: false, Dosdef: "" });
       }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
-        this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
+        this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, Dosdef: "" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
         const defineDoses = this.editprofileForm.value.Dosdef ? this.editprofileForm.value.Dosdef.split(" ") : [];
         if (defineDoses && defineDoses.length) {
