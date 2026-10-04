@@ -79,7 +79,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
           })
           const findFormIndex = this.drugArray.controls.findIndex(d => d.value === notTouchedForms[notTouchedFormIndex].value);
           notTouchedForms[notTouchedFormIndex].markAsTouched();
-          this.onChangeFrequencySet(item.N1znr, findFormIndex)
+          this.onChangeFrequencySet(item.N1znr, findFormIndex, false)
           this.openMoDetailPanel(findFormIndex, notTouchedForms[notTouchedFormIndex].value, notTouchedForms[notTouchedFormIndex].valid, false);
           notTouchedFormIndex = notTouchedFormIndex + 1;
         } else {
@@ -107,7 +107,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             TOCYCDEF: item.TOCYCDEF && item.TOCYCDEF.results ? item.TOCYCDEF.results : (item.TOCYCDEF || []),
           })
           this.drugArray.push(arrayOfFormControl);
-          this.onChangeFrequencySet(item.N1znr, this.drugArray.controls.length - 1)
+          this.onChangeFrequencySet(item.N1znr, this.drugArray.controls.length - 1, false)
           this.openMoDetailPanel(this.drugArray.controls.length - 1, this.drugArray.controls[this.drugArray.controls.length - 1].value, this.drugArray.controls[this.drugArray.controls.length - 1].valid, false);
         }
       });
@@ -351,7 +351,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeFrequencySet(data?: any, index?: number) {
+  onChangeFrequencySet(data?: any, index?: number, resetDuration: boolean = true) {
     if (data !== null || data !== "") {
       this.drugArray.controls[index].get('deftimcycleData').setValue([]);
       if (this.drugArray.controls[index].get('Result_Drug_Name').value === "" || this.drugArray.controls[index].get('Result_Drug_Name').value === null) {
@@ -394,9 +394,15 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       } else {
         this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
-      this.validFromTobaseonDuration(index, this.drugArray.controls[index].value);
+      // Template loading retains its duration; a user change must clear it.
+      if (!resetDuration) {
+        this.validFromTobaseonDuration(index, this.drugArray.controls[index].value);
+      }
     } else {
       this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false, IsmoDetails: false });
+    }
+    if (resetDuration) {
+      this.drugArray.controls[index].patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
     }
   }
 

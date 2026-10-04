@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/medication-frequency-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": ["src/test-medication-frequency.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts"]
+}
