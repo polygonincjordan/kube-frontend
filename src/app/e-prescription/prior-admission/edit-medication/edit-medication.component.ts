@@ -426,10 +426,10 @@ export class EditMedicationComponent implements OnInit {
       } else {
         this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
-      this.validFromTobaseonDuration(this.editprofileForm.value);
     } else {
       this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, IsmoDetails: false });
     }
+    this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
     this.checkIsFrequencyDeftim()
   }
   public onOpenFrequencySet() {

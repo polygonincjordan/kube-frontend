@@ -96,7 +96,7 @@
           <span class="input-text-field d-inline-block align-top
             w-100 edit-select frequency-input-group">
             <ng-select [searchable]="true" formControlName="N1znr" class="Medica-font-size editing-grid"
-              (change)="validFromTobaseonDuration(editprofileForm.value);" (change)="onChangeFrequencySet(editprofileForm.get('N1znr').value)" (click)="onOpenFrequencySet()">
+              (change)="onChangeFrequencySet(editprofileForm.get('N1znr').value)" (click)="onOpenFrequencySet()">
               <ng-option *ngFor=" let medicationFrequency of
                 addministrationService.frequencyList" [value]="medicationFrequency.CycleKey">
                 {{ medicationFrequency.OptionField}}
