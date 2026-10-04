@@ -7,3 +7,4 @@ getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDyn
 });
 
 import './app/e-prescription/frequency-change.spec';
+import './app/e-prescription/frequency-change-ui.spec';

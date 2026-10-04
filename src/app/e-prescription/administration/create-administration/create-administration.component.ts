@@ -362,10 +362,13 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         });
       }
       const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
-      if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT")) {
-        this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "020" });
-      }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
-        this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
+      if (frequencyData && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
+        this.drugArray.controls[index].patchValue({
+          Priority: frequencyData.N1id == "STAT" ? "020" : "010", IsFrequencyDeftim: false, Dosdef: ""
+        });
+        if (!resetDuration) {
+          this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS" });
+        }
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
         const defineDoses = this.drugArray.value[index].Dosdef ? this.drugArray.value[index].Dosdef.split("-") : [];
         if (defineDoses && defineDoses.length) {
@@ -413,6 +416,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   }
 
   ChangeDate(index: number,data: any){
+    // Clearing the date emits before the parent form value is refreshed.
+    if (!this.drugArray.controls[index].get('EndD').value) { return; }
     if (data.StartD && data.EndD) {
       const startDate = new Date(data.StartD);
       const endDate = new Date(data.EndD);
