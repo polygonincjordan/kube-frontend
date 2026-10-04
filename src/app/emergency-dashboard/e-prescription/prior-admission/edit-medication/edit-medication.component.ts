@@ -300,6 +300,10 @@ export class EditMedicationComponent implements OnInit {
     }
   }
 
+  onChangeFrequencySet() {
+    this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
+  }
+
   validFromTobaseonDuration(data: any) {
     let getMonth = data.StartD.getMonth();
     let getFullYear = data.StartD.getFullYear();

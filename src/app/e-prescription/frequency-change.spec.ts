@@ -3,14 +3,24 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { EMPTY, of } from 'rxjs';
 import { CreateAdministrationComponent } from './administration/create-administration/create-administration.component';
 import { EditMedicationComponent } from './prior-admission/edit-medication/edit-medication.component';
+import { CreateAdministrationComponent as EmergencyCreateAdministrationComponent } from '../emergency-dashboard/e-prescription/administration/create-administration/create-administration.component';
+import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../emergency-dashboard/e-prescription/prior-admission/edit-medication/edit-medication.component';
 
-describe('Medication frequency changes', () => {
-  let create: CreateAdministrationComponent;
-  let edit: EditMedicationComponent;
+['Inpatient', 'Emergency'].forEach(dashboard => describe(`${dashboard} medication frequency changes`, () => {
+  let create: CreateAdministrationComponent | EmergencyCreateAdministrationComponent;
+  let edit: EditMedicationComponent | EmergencyEditMedicationComponent;
   let prescriptionService: any;
   const startDate = new Date(2030, 0, 1, 8);
   const endDate = new Date(2030, 0, 3, 8);
   const frequencies = ['Q12H', 'DEFTIM', 'DAILY', 'STAT', 'ONCE'];
+
+  function changeEditFrequency(frequency: string) {
+    if (edit instanceof EmergencyEditMedicationComponent) {
+      edit.onChangeFrequencySet();
+    } else {
+      edit.onChangeFrequencySet(frequency);
+    }
+  }
 
   function seed(form: FormGroup) {
     form.patchValue({
@@ -41,13 +51,16 @@ describe('Medication frequency changes', () => {
     const administrationService: any = {
       frequencyList: frequencies.map(N1id => ({ CycleKey: N1id, N1id })),
       medicationAdministrative: {},
+      getStatFrequency: () => ({ CycleKey: 'STAT', N1id: 'STAT' }),
     };
-    create = new CreateAdministrationComponent(null, prescriptionService, null, administrationService, null);
+    const CreateComponent = dashboard === 'Emergency' ? EmergencyCreateAdministrationComponent : CreateAdministrationComponent;
+    const EditComponent = dashboard === 'Emergency' ? EmergencyEditMedicationComponent : EditMedicationComponent;
+    create = new CreateComponent(null, prescriptionService, null, administrationService, null);
     create.administrationForm = new FormGroup({ AdministrationData: new FormArray([]) });
     create.drugArray.push(create.generateForm());
     seed(create.drugArray.at(0) as FormGroup);
 
-    edit = new EditMedicationComponent(null, prescriptionService, new DatePipe('en-US'), administrationService);
+    edit = new EditComponent(null, prescriptionService, new DatePipe('en-US'), administrationService);
     edit.editdata = { ...create.drugArray.at(0).value };
     spyOn(edit, 'onSelectMedicine');
     edit.ngOnInit();
@@ -61,7 +74,7 @@ describe('Medication frequency changes', () => {
         if (screen === 'create') {
           create.onChangeFrequencySet(frequency, 0);
         } else {
-          edit.onChangeFrequencySet(frequency);
+          changeEditFrequency(frequency);
         }
         expectCleared(form);
       });
@@ -72,14 +85,14 @@ describe('Medication frequency changes', () => {
       for (const frequency of ['STAT', 'DEFTIM']) {
         seed(form);
         form.patchValue({ N1znr: frequency });
-        screen === 'create' ? create.onChangeFrequencySet(frequency, 0) : edit.onChangeFrequencySet(frequency);
+        screen === 'create' ? create.onChangeFrequencySet(frequency, 0) : changeEditFrequency(frequency);
         expectCleared(form);
       }
     });
   }
 
   it('keeps saved duration and end date when opening the edit screen or frequency dropdown', () => {
-    edit.onOpenFrequencySet();
+    if (edit instanceof EditMedicationComponent) { edit.onOpenFrequencySet(); }
     expect(edit.editprofileForm.value.Pdur).toBe(2);
     expect(edit.editprofileForm.value.Pduru).toBe('TAG');
     expect(edit.editprofileForm.value.EndD).toEqual(endDate);
@@ -121,7 +134,7 @@ describe('Medication frequency changes', () => {
 
   it('submits cleared values for an edited order', () => {
     edit.editprofileForm.patchValue({ N1znr: 'DEFTIM' });
-    edit.onChangeFrequencySet('DEFTIM');
+    changeEditFrequency('DEFTIM');
     edit.onEditAction();
     const order = prescriptionService.postData.calls.mostRecent().args[1];
     expect(order.Pdur).toBe('');
@@ -129,4 +142,19 @@ describe('Medication frequency changes', () => {
     expect(order.EndD).toBeNull();
     expect(order.EndT).toBeNull();
   });
-});
+  if (dashboard === 'Emergency') {
+    it('retains the initial STAT default and clears it when the physician changes frequency', () => {
+      const form = create.drugArray.at(0) as FormGroup;
+      form.patchValue({ N1znr: null, Pdur: '', Pduru: null, EndD: null });
+      (create as EmergencyCreateAdministrationComponent).applyStatDefault(form);
+      expect(form.value.N1znr).toBe('STAT');
+      expect(form.value.Pdur).toBe(1);
+      expect(form.value.Pduru).toBe('DOS');
+      form.patchValue({ N1znr: 'DEFTIM' });
+      create.onChangeFrequencySet('DEFTIM', 0);
+      expectCleared(form);
+      (create as EmergencyCreateAdministrationComponent).applyStatDefault(form);
+      expectCleared(form);
+    });
+  }
+}));
