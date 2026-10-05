@@ -449,7 +449,7 @@ float: right;" />
   <app-treatment-workarea style="width: calc(100% - 90px);" *ngIf="treatmentarea"
     (redirectTreatmentPatientData)="collectTreatmentPatientData($event)"></app-treatment-workarea>
   <app-checkin-list style="width: calc(100% - 60px);" *ngIf="checkin" (redirectCheckInData)="collectCheckInData($event)" (sendErPatientCount)="collectErPatientCount($event)"></app-checkin-list>
-  <app-er-history style="width: calc(100% - 78px);" *ngIf="erhistory" (setExcelData)="getExcelDataForExport($event)" [getExcelData]="getExcelData" [ERlistData]="erhistoryList" (redirectCheckInData)="collectCheckInData($event)" (redirectVisitData)="collectErPatientSearchData($event)" (sendErPatientCount)="collectErHistPatientCount($event)"></app-er-history>
+  <app-er-history style="width: calc(100% - 78px);" *ngIf="erhistory" (redirectCheckInData)="collectCheckInData($event)" (redirectVisitData)="collectErPatientSearchData($event)" (sendErPatientCount)="collectErHistPatientCount($event)"></app-er-history>
   <!-- <div class="col"> -->
   <app-e-prescription style="width: calc(100% - 90px);" *ngIf="dischargeorder"
     (redirectTreatmentPatientData)="collectTreatmentPatientData($event)"></app-e-prescription>

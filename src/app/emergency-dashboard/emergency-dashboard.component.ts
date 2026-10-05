@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 import { Title } from '@angular/platform-browser';
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
-import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist';
+import { buildErHistoryExportRows, ER_HISTORY_EXPORT_HEADING } from './er-history/er-history-export.util';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 @UntilDestroy()
 @Component({
@@ -42,8 +42,6 @@ export class EmergencyDashboardComponent implements OnInit {
     }
     this.showfilter = false;
   }
-  erhistoryList: Array<HospitalistType> = [];
-  getExcelData = false;
   checkin=true;
   treatmentarea=false;
   day: any;
@@ -570,32 +568,17 @@ export class EmergencyDashboardComponent implements OnInit {
     this.ErHistoryPatientCount = event;
     }
 
-    getExcelDataForExport(event) {
-      this.erhistoryList = event;
-    }
     exportToExcel(nameofFile: string = 'Emergency', fileExtention: string = 'xlsx'): void {
-      this.getExcelData = true;
-      const eventArray = this.erhistoryList;
-      console.log('event :',eventArray);
-
-      const mappedEvents = eventArray.map((event:any) => ({
-        Patient: event.Patient,
-        Patnr: event.Patnr,
-        Datum: this.datePipe.transform(event.Datum, 'dd.MM.y'),
-        ZeitIntern: this.datePipe.transform(event.ZeitIntern, 'HH:mm:ss'),
-        TriagePriorityCode: event.TriagePriorityCode,
-        BehraumKb: event.BehraumKb,
-        StatusTxt: event.StatusTxt,
-        ZzfinCat: event.ZzfinCat,
-        Behpersname: event.Behpersname,
-        Diagnosis: event.Diagnosis,
-        assignedTime: event.assignedTime,
-      }));
-      let Heading = [['MRN', 'Date' , 'Time','Risk','Allergy','Triage','Vitals','Room','Status','Financial Cat.','Assigned physician','Diagnosis','Waiting Time']];
+      const erHistory = this.ErHistoryComponent;
+      if (!erHistory) {
+        return;
+      }
+      // Export the list as displayed (filtered and sorted) by the ER history component.
+      const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([
+        ER_HISTORY_EXPORT_HEADING,
+        ...buildErHistoryExportRows(erHistory.ERlistData),
+      ]);
       const workbook = XLSX.utils.book_new();
-      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
-      XLSX.utils.sheet_add_aoa(ws, Heading);
-      XLSX.utils.sheet_add_json(ws, mappedEvents, { origin: 'A2', skipHeader: true });
       XLSX.utils.book_append_sheet(workbook, ws, "test");
       XLSX.writeFile(workbook, `${nameofFile}.${fileExtention}`);
     }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { EmergencyService } from '@services/emergency-dashboard/emergency-service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ErVitalsComponent } from '../checkin-list/er-vitals/er-vitals.component';
@@ -16,16 +16,14 @@ import { HospitalistType } from '@services/e-hospitalist/interfaces/hospitalist'
   templateUrl: './er-history.component.html',
   styleUrls: ['./er-history.component.scss']
 })
-export class ErHistoryComponent implements OnInit, OnChanges {
+export class ErHistoryComponent implements OnInit {
   @Output() redirectCheckInData = new EventEmitter<any>();
-  @Output() setExcelData = new EventEmitter<any>();
   @Output() redirectVisitData = new EventEmitter<any>();
   @Output() sendErPatientCount = new EventEmitter<any>();
   @ViewChild('erVitalsModal') erVitalsModal: ErVitalsComponent;
   @ViewChild('patientSearchModal') patientSearchModal: PatientSearchComponent;
   @ViewChild('diagnosisNotesKardexId') diagnosisNotesKardex: ERDiagnosisComponent;
-  @Input() ERlistData: any[] = [];
-  @Input() getExcelData
+  ERlistData: any[] = [];
   listItemArray: HospitalistType[] = [];
   modalRef: BsModalRef;
   modalRefForAllergy:BsModalRef;
@@ -137,12 +135,6 @@ export class ErHistoryComponent implements OnInit, OnChanges {
     this.getErList([new Date(),new Date()]);
    }
     this.dataForTriage();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes['getExcelData'] && changes['getExcelData'].currentValue) {
-      this.setExcelData.emit(this.ERlistData)
-    }
   }
   addItemForRisk(element?): void {
     this.riskFormitems = this.riskform.get('riskFormitems') as FormArray;
