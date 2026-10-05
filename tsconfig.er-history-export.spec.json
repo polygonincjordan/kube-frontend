@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/er-history-export-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": [
+    "src/test-er-history-export.ts",
+    "src/polyfills.ts",
+    "src/app/emergency-dashboard/er-history/er-history-export.util.spec.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}
