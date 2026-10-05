@@ -387,6 +387,8 @@ export class EditMedicationComponent implements OnInit {
     }
   }
     public onChangeFrequencySet(data?: any) {
+    // Drop the previous frequency's duration and Valid To; the new frequency's own defaults are applied below.
+    this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
     if (data !== null || data !== "") {
       this.editprofileForm.get('deftimcycleData').setValue([]);
       if (this.editprofileForm.get('Result_Drug_Name').value === "" || this.editprofileForm.get('Result_Drug_Name').value === null) {
@@ -398,9 +400,9 @@ export class EditMedicationComponent implements OnInit {
       }
       const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT")) {
-        this.editprofileForm.patchValue({ Priority: "020", IsFrequencyDeftim: false, Dosdef: "" });
+        this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "020", IsFrequencyDeftim: false, Dosdef: "" });
       }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
-        this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, Dosdef: "" });
+        this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010", IsFrequencyDeftim: false, Dosdef: "" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
         const defineDoses = this.editprofileForm.value.Dosdef ? this.editprofileForm.value.Dosdef.split(" ") : [];
         if (defineDoses && defineDoses.length) {
@@ -426,10 +428,10 @@ export class EditMedicationComponent implements OnInit {
       } else {
         this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
+      this.validFromTobaseonDuration(this.editprofileForm.value);
     } else {
       this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, IsmoDetails: false });
     }
-    this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
     this.checkIsFrequencyDeftim()
   }
   public onOpenFrequencySet() {

@@ -56,7 +56,7 @@ screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
     TestBed.resetTestingModule();
   });
 
-  ['Q12H', 'DAILY'].forEach(previousFrequency => it(`clears fields and timed-dose panel from ${previousFrequency} to STAT`, fakeAsync(() => {
+  ['Q12H', 'DAILY'].forEach(previousFrequency => it(`replaces fields and clears timed-dose panel from ${previousFrequency} to STAT`, fakeAsync(() => {
     fixture = TestBed.createComponent(screen.component as any);
     const component = fixture.componentInstance;
     const values = {
@@ -107,12 +107,12 @@ screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
     fixture.detectChanges();
 
     expect(form.value.N1znr).toBe('0000000001');
-    expect(form.value.Pdur).toBe('');
-    expect(form.value.Pduru).toBeNull();
-    expect(form.value.EndD).toBeNull();
-    expect(duration.value).toBe('');
-    expect(durationUnit.querySelector('.ng-value')).toBeNull();
-    expect(endDate.value).toBe('');
+    expect(form.value.Pdur).toBe(1);
+    expect(form.value.Pduru).toBe('DOS');
+    expect(form.value.EndD).toEqual(new Date(2030, 0, 2, 8));
+    expect(duration.value).toBe('1');
+    expect(durationUnit.textContent).toContain('Dose');
+    expect(endDate.value).not.toBe('');
     if (form.get('IsFrequencyDeftim')) {
       expect(form.value.IsFrequencyDeftim).toBe(false);
       expect(form.value.deftimcycleData).toEqual([]);

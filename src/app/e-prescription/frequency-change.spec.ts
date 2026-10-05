@@ -30,6 +30,13 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
     });
   }
 
+  function expectSingleDoseDefault(form: FormGroup) {
+    expect(form.value.Pdur).toBe(1);
+    expect(form.value.Pduru).toBe('DOS');
+    expect(form.value.EndD).toEqual(new Date(2030, 0, 2, 8));
+    expect(form.value.StartD).toEqual(startDate);
+  }
+
   function expectCleared(form: FormGroup) {
     expect(form.value.Pdur).toBe('');
     expect(form.value.Pduru).toBeNull();
@@ -67,28 +74,33 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
   });
 
   for (const screen of ['create', 'edit']) {
-    for (const frequency of [...frequencies, null]) {
+    const changeFrequency = (form: FormGroup, frequency: string) => {
+      form.patchValue({ N1znr: frequency });
+      screen === 'create' ? create.onChangeFrequencySet(frequency, 0) : changeEditFrequency(frequency);
+    };
+
+    for (const frequency of ['Q12H', 'DEFTIM', 'DAILY', null]) {
       it(`${screen}: clears duration and end date when frequency changes to ${frequency}`, () => {
         const form = (screen === 'create' ? create.drugArray.at(0) : edit.editprofileForm) as FormGroup;
-        form.patchValue({ N1znr: frequency });
-        if (screen === 'create') {
-          create.onChangeFrequencySet(frequency, 0);
-        } else {
-          changeEditFrequency(frequency);
-        }
+        changeFrequency(form, frequency);
         expectCleared(form);
       });
     }
 
-    it(`${screen}: clears replacement values on a subsequent frequency change`, () => {
-      const form = (screen === 'create' ? create.drugArray.at(0) : edit.editprofileForm) as FormGroup;
-      for (const frequency of ['STAT', 'DEFTIM']) {
-        seed(form);
-        form.patchValue({ N1znr: frequency });
-        screen === 'create' ? create.onChangeFrequencySet(frequency, 0) : changeEditFrequency(frequency);
+    for (const frequency of ['STAT', 'ONCE']) {
+      it(`${screen}: replaces the previous duration with the ${frequency} default`, () => {
+        const form = (screen === 'create' ? create.drugArray.at(0) : edit.editprofileForm) as FormGroup;
+        changeFrequency(form, frequency);
+        expectSingleDoseDefault(form);
+      });
+
+      it(`${screen}: clears the ${frequency} default when the frequency changes again`, () => {
+        const form = (screen === 'create' ? create.drugArray.at(0) : edit.editprofileForm) as FormGroup;
+        changeFrequency(form, frequency);
+        changeFrequency(form, 'Q12H');
         expectCleared(form);
-      }
-    });
+      });
+    }
   }
 
   it('keeps saved duration and end date when opening the edit screen or frequency dropdown', () => {
