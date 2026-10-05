@@ -378,6 +378,11 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   }
 
   onChangeFrequencySet(data?: any, index?: number, resetDuration: boolean = true) {
+    // A physician's change drops the previous frequency's duration and Valid To;
+    // the new frequency's own defaults are applied below.
+    if (resetDuration) {
+      this.drugArray.controls[index].patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
+    }
     if (data !== null || data !== "") {
       this.drugArray.controls[index].get('deftimcycleData').setValue([]);
       if (this.drugArray.controls[index].get('Result_Drug_Name').value === "" || this.drugArray.controls[index].get('Result_Drug_Name').value === null) {
@@ -389,10 +394,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }
       const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
-        this.drugArray.controls[index].patchValue({ Priority: "030", IsFrequencyDeftim: false, Dosdef: "" });
-        if (!resetDuration) {
-          this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS" });
-        }
+        this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030", IsFrequencyDeftim: false, Dosdef: "" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
         this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`), Agentid:this.drugArray.value[index].Agentid }]);
         const selectedData = [];
@@ -406,15 +408,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       } else {
         this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
-      // Template loading retains its duration; a user change must clear it.
-      if (!resetDuration) {
-        this.validFromTobaseonDuration(index, this.drugArray.controls[index].value);
-      }
+      this.validFromTobaseonDuration(index, this.drugArray.controls[index].value);
     } else {
       this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
-    }
-    if (resetDuration) {
-      this.drugArray.controls[index].patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
     }
   }
 

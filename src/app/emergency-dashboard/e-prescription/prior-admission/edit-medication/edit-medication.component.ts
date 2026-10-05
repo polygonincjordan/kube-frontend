@@ -301,7 +301,13 @@ export class EditMedicationComponent implements OnInit {
   }
 
   onChangeFrequencySet() {
+    // Drop the previous frequency's duration and Valid To, then apply the new frequency's single-dose default.
     this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
+    const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == this.editprofileForm.get('N1znr').value);
+    if (frequencyData && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
+      this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS" });
+      this.validFromTobaseonDuration(this.editprofileForm.value);
+    }
   }
 
   validFromTobaseonDuration(data: any) {
