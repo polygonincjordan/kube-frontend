@@ -21,60 +21,67 @@
       </tr>
     </thead>
     <tbody class="mb-3" formArrayName="priortoadmissionlistformArray">
-      <tr *ngFor="let item of drugArray.controls | customSearch:
-      addministrationService.searchMedicationProfile | filterPipe:
-      filterConfig.Sorting:filterConfig.MedicationSorting;let i = index" [formGroupName]="i">
+      <tr
+        *ngFor="let item of drugArray.controls | customSearch: addministrationService.searchMedicationProfile | filterPipe: filterConfig.Sorting:filterConfig.MedicationSorting;let i = index"
+        [formGroupName]="i">
         <td>
           <table class="w-100">
-            <tr >
+            <tr>
               <td class="p-1 align-middle border-0 w-19">
                 <span class="input-medication d-inline-block align-top
                 w-100
                 font-weight-bolder">
-                  <input type="text" class="form-control Medica-font-size text-overflow-ellipsis" formControlName="Descrlt" title="{{item.value.Descrlt}}" readOnly/>
+                  <input type="text" class="form-control Medica-font-size text-overflow-ellipsis"
+                    formControlName="Descrlt" title="{{item.value.Descrlt}}" readOnly />
                 </span>
               </td>
               <td class="w-9 p-1">
-                <input type="text" *ngIf="item.value.Indisdos === 'Apply'" class="form-control Medica-font-size text-overflow-ellipsis"
-                            title="Apply {{item.value.Formatdescr}} {{item.value.N1id}}"
-                            value="{{item.value.Indisdos}} {{item.value.Formatdescr}} {{item.value.N1id}}" [readOnly]="!item.value.isCollapsed"/>
-                          <input type="text" *ngIf="item.value.Indisdos !== 'Apply'" class="form-control Medica-font-size text-overflow-ellipsis"
-                            title="{{item.value.N1id === 'DEFTIM' || item.value.N1id === 'DAILY' ? item.value.Dosdef : item.value.Quan | removeTrailingZeros}}{{' '+ item.value.Quanunit}} {{item.value.Routedescr}} {{item.value.Formatdescr}} {{item.value.N1id}}"
-                            value="{{item.value.N1id === 'DEFTIM' || item.value.N1id === 'DAILY' ? item.value.Dosdef : item.value.Quan | removeTrailingZeros}}{{' '+ item.value.Quanunit}} {{item.value.Routedescr}} {{item.value.Formatdescr}} {{item.value.N1id}}"
-                            [readOnly]="!item.value.isCollapsed" />
+                <input type="text" *ngIf="item.value.Indisdos === 'Apply'"
+                  class="form-control Medica-font-size text-overflow-ellipsis"
+                  title="Apply {{item.value.Formatdescr}} {{item.value.N1id}}"
+                  value="{{item.value.Indisdos}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                  [readOnly]="!item.value.isCollapsed" />
+                <input type="text" *ngIf="item.value.Indisdos !== 'Apply'"
+                  class="form-control Medica-font-size text-overflow-ellipsis"
+                  title="{{item.value.N1id === 'DEFTIM' || item.value.N1id === 'DAILY' ? item.value.Dosdef : item.value.Quan | removeTrailingZeros}}{{' '+ item.value.Quanunit}} {{item.value.Routedescr}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                  value="{{item.value.N1id === 'DEFTIM' || item.value.N1id === 'DAILY' ? item.value.Dosdef : item.value.Quan | removeTrailingZeros}}{{' '+ item.value.Quanunit}} {{item.value.Routedescr}} {{item.value.Formatdescr}} {{item.value.N1id}}"
+                  [readOnly]="!item.value.isCollapsed" />
               </td>
               <td class="w-6 p-1">
                 <span class="input-text-field
                   d-inline-block align-top w-100">
-                  <input type="textbox" class="form-control Medica-font-size" value="{{durationConvert(item.value.Pdur | customDecimal) }}" title="{{durationConvert(item.value.Pdur | customDecimal) }}" readOnly>
+                  <input type="textbox" class="form-control Medica-font-size"
+                    value="{{durationConvert(item.value.Pdur | customDecimal) }}"
+                    title="{{durationConvert(item.value.Pdur | customDecimal) }}" readOnly>
                 </span>
               </td>
               <td class="w-8 p-1">
                 <span class="input-text-field d-inline-block align-top
                   w-100 edit-select">
-                  <input type="text" class="form-control Medica-font-size" formControlName="Durunittxt"  title="{{item.value.Durunittxt}}" readOnly>
+                  <input type="text" class="form-control Medica-font-size" formControlName="Durunittxt"
+                    title="{{item.value.Durunittxt}}" readOnly>
                 </span>
               </td>
               <td class="w-8 p-1">
-                <input type="text"
-                class="form-control font-weight-bolder Medica-font-size"
-                 formControlName="StartD" [bsConfig]="{withTimepicker:
+                <input type="text" class="form-control font-weight-bolder Medica-font-size" formControlName="StartD"
+                  [bsConfig]="{withTimepicker:
                   true,showWeekNumbers:false,
                   dateInputFormat:
-                  'DD.MM.YYYY'}" bsDatepicker
-                readOnly />
+                  'DD.MM.YYYY'}" bsDatepicker readOnly />
               </td>
               <td class=" w-9 p-1">
-                <input type="text" class="form-control font-weight-bolder Medica-font-size" formControlName="EndD" [bsConfig]="{withTimepicker:
+                <input type="text" class="form-control font-weight-bolder Medica-font-size" formControlName="EndD"
+                  [bsConfig]="{withTimepicker:
                   true,showWeekNumbers:false,
                   dateInputFormat:
-                  'DD.MM.YYYY'}" bsDatepicker readOnly/>
+                  'DD.MM.YYYY'}" bsDatepicker readOnly />
               </td>
               <td class="w-4 p-1 text-center">
                 <div>
                   <div class="d-flex align-items-center
                     position-relative">
-                    <input type="checkbox" class="mr-1 checkbox-panel" [checked]="item.value.Prn" title="{{item.value.Prncond}}" disabled readOnly>
+                    <input type="checkbox" class="mr-1 checkbox-panel" [checked]="item.value.Prn"
+                      title="{{item.value.Prncond}}" disabled readOnly>
                     <span class="mr-2 admin admin-gray"></span>
                     <label class="m-0">PRN</label>
                   </div>
@@ -84,7 +91,8 @@
                 <div>
                   <div class="d-flex align-items-center
                     position-relative">
-                    <input type="checkbox" class="mr-1 checkbox-panel" [checked]="item.value.ContHospital" disabled readOnly>
+                    <input type="checkbox" class="mr-1 checkbox-panel" [checked]="item.value.ContHospital" disabled
+                      readOnly>
                     <span class="mr-2 admin admin-gray"></span>
                     <label class="m-0">Continue in Hospital</label>
                   </div>
@@ -96,11 +104,13 @@
               </td>
               <td class="w-6 p-1">
                 <div class="d-flex w-100">
-                <div title="Edit" class="p-2 c-pointer Mp-hover"><img src="assets/img/pen-icon-edit.jpg" alt="" height="25" (click)="onEditlist(i)"></div>
-                <div placement="left" title="Cancel" class="p-2 c-pointer Mp-hover" ><img  src="assets/img/delete-icon.svg" height="25"
-                [popover]="cancelActionRef" [popoverContext]="{item: item.value,index:
+                  <div title="Edit" class="p-2 c-pointer Mp-hover"><img src="assets/img/pen-icon-edit.jpg" alt=""
+                      height="25" (click)="onEditlist(i)"></div>
+                  <div placement="left" title="Cancel" class="p-2 c-pointer Mp-hover"><img
+                      src="assets/img/delete-icon.svg" height="25" [popover]="cancelActionRef" [popoverContext]="{item: item.value,index:
                   i}" placement="left" title="Cancel" (click)="medicationCancellationAction()"></div>
-                <div class="p-2 Mp-hover"><img src="assets/img/Additional-Info.jpg" height="20" class="c-pointer"  title="{{item.value.Descr}}" (click)="onOpenInfoPopup(item.value, i)"></div>
+                  <div class="p-2 Mp-hover"><img src="assets/img/Additional-Info.jpg" height="20" class="c-pointer"
+                      title="{{item.value.Descr}}" (click)="onOpenInfoPopup(item.value, i)"></div>
                 </div>
               </td>
             </tr>
@@ -110,7 +120,8 @@
                   <div class="ma-tab-content
                     d-flex
                     edit-border">
-                    <edit-priorto-admissionlist class="w-100" [editdata]="updatedata(item.value.Id)"></edit-priorto-admissionlist>
+                    <edit-priorto-admissionlist class="w-100"
+                      [editdata]="updatedata(item.value.Id)"></edit-priorto-admissionlist>
                     <div class="mt-4 mr-3 c-pointer">
                       <img src="assets/img/close.svg" alt="" height="20px" (click)="closeEditModetail(i)">
                     </div>
@@ -127,7 +138,8 @@
 <ng-template #cancelActionRef let-item="item" let-index="index">
   <div class="ma-template p-3">
     <div class="e-order-history-btn p-0 border-0 m-0 text-right">
-      <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3" (click)="onDelete(item ,cancelActions[index]['value'])">Cancel
+      <button type="button" class="btn btn-secondary rounded-sm ml-2 mb-3"
+        (click)="onDelete(item ,cancelActions[index]['value'])">Cancel
         Status</button>
     </div>
     <div class="additional-input additional-input py-3 abc">

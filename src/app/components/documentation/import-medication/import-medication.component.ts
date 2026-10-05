@@ -6,6 +6,7 @@ import { EPrescriptionService } from "@services/e-Prescription/e-prescription.se
 import { MedicationOrderTypeEnum, MedicationOrderTypeLabels } from "@services/interfaces/common.enum";
 import { StorageService } from "@services/storage.service";
 import { getDate } from "@services/utiltiy.service";
+import { forkJoin } from "rxjs";
 
 const MedicationTabTypes = ['Hospital Medication', 'Discharge and Home Medication'] as const;
 type MedicationTabType = typeof MedicationTabTypes[number];
@@ -637,40 +638,80 @@ export class ImportMedicationComponent implements OnInit {
 
   private loadMedicationHistoryData(): void {
     const { einri, falnr } = this.ePrescriptionService.parameters;
-    const entitySet = `e-prescription/OrderHistorylist?Einri=${einri}&Falnr=${falnr}`;
-    this.ePrescriptionService.loadData(entitySet, false, false, false, false).subscribe((res: any) => {
-      const results = res?.body?.d?.results ?? [];
-      // const customResults = this.dataReturn().d.results;
-      // results.push(...customResults);
-      if (!results?.length) return;
-      // const isDischarge = (med: any) => med?.MotypId === MedicationOrderTypeEnum.Discharge;
-      // const isHomeMedicaion = (med: any) => med?.MotypId === '40';
-      this.allMedications = {
-        'Discharge and Home Medication': results
-          .filter((med: any) => ['30', '00'].includes(String(med.MotypId)))
-          .map((med: any) => this.mapToDischargeMedication(med))
-          .filter(Boolean),
+    const medicationHistoryEntitySet =
+      `e-prescription/OrderHistorylist?Einri=${einri}&Falnr=${falnr}`;
+    const homeMedicationEntitySet =
+      `e-prescription/PriorToAdmissionget?Einri=${einri}&Falnr=${falnr}`;
 
-        'Hospital Medication': results
-          .filter((med: any) => String(med.MotypId) === '20')
-          .map((med: any) => this.mapToHospitalMedication(med))
-          .filter(Boolean)
-      } as any;
-      // this.allMedications = {
-      //   'Discharge and Home Medication': results
-      //     .filter(isDischarge)
-      //     .map((med: any) => this.mapToDischargeMedication(med))
-      //     .filter(Boolean)
-      //     .filter((med: any) => this.getMedicationStatus(med)?.toLowerCase() === 'active'),
-      //   'Hospital Medication': results
-      //     .filter((med: any) => !isDischarge(med))
-      //     .map((med: any) => this.mapToHospitalMedication(med))
-      //     .filter(Boolean),
-      // } as any;
-      this.updateAvailableMedications();
-      // this.filterMedicationsByOrderType('Discharge')
+    forkJoin({
+      medicationHistory: this.ePrescriptionService.loadData(medicationHistoryEntitySet, false, false, false, false),
+      homeMedication: this.ePrescriptionService.loadData(homeMedicationEntitySet, false, false, false, false)
+    }).subscribe({
+      next: (res: any) => {
+        // Hospital Medications API Results
+        const medicationResults = res?.medicationHistory?.body?.d?.results ?? [];
+        // Discharge and Home Medication API Results
+        const homeMedicationResults = res?.homeMedication?.body?.d?.results ?? [];
+        console.log('Medication History:', medicationResults);
+        console.log('Home Medication:', homeMedicationResults);
+        // Map Medication History
+        this.allMedications = {
+          'Discharge and Home Medication': homeMedicationResults.filter((med: any) =>
+            ['30', '00'].includes(String(med.MotypId))).map((med: any) => this.mapToDischargeMedication(med)).filter(Boolean),
+
+          'Hospital Medication': medicationResults.filter((med: any) =>
+            String(med.MotypId) === '20').map((med: any) => this.mapToHospitalMedication(med)).filter(Boolean)
+        } as any;
+        // Process Home Medication API result
+        if (homeMedicationResults.length) {
+          console.log('Home medications:', homeMedicationResults);
+          // Add your home medication mapping logic here
+        }
+        // Call only after both APIs have completed
+        this.updateAvailableMedications();
+      },
+      error: (error) => {
+        console.error('Error loading medication data:', error);
+      }
     });
   }
+
+  // private loadMedicationHistoryData(): void {
+  //   const { einri, falnr } = this.ePrescriptionService.parameters;
+  //   const entitySet = `e-prescription/OrderHistorylist?Einri=${einri}&Falnr=${falnr}`;
+  //   this.ePrescriptionService.loadData(entitySet, false, false, false, false).subscribe((res: any) => {
+  //     const results = res?.body?.d?.results ?? [];
+  //     // const customResults = this.dataReturn().d.results;
+  //     // results.push(...customResults);
+  //     if (!results?.length) return;
+  //     // const isDischarge = (med: any) => med?.MotypId === MedicationOrderTypeEnum.Discharge;
+  //     // const isHomeMedicaion = (med: any) => med?.MotypId === '40';
+  //     this.allMedications = {
+  //       'Discharge and Home Medication': results
+  //         .filter((med: any) => ['30', '00'].includes(String(med.MotypId)))
+  //         .map((med: any) => this.mapToDischargeMedication(med))
+  //         .filter(Boolean),
+
+  //       'Hospital Medication': results
+  //         .filter((med: any) => String(med.MotypId) === '20')
+  //         .map((med: any) => this.mapToHospitalMedication(med))
+  //         .filter(Boolean)
+  //     } as any;
+  //     // this.allMedications = {
+  //     //   'Discharge and Home Medication': results
+  //     //     .filter(isDischarge)
+  //     //     .map((med: any) => this.mapToDischargeMedication(med))
+  //     //     .filter(Boolean)
+  //     //     .filter((med: any) => this.getMedicationStatus(med)?.toLowerCase() === 'active'),
+  //     //   'Hospital Medication': results
+  //     //     .filter((med: any) => !isDischarge(med))
+  //     //     .map((med: any) => this.mapToHospitalMedication(med))
+  //     //     .filter(Boolean),
+  //     // } as any;
+  //     this.updateAvailableMedications();
+  //     // this.filterMedicationsByOrderType('Discharge')
+  //   });
+  // }
 
   public isImport: boolean = true;
   filterMedicationsByOrderType(filterValue: string): void {
