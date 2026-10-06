@@ -120,4 +120,83 @@ screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
       expect(fixture.nativeElement.querySelector('frequency-deftim')).toBeNull();
     }
   })));
+
+  if (screen.create) {
+    const statPriority = screen.name.startsWith('Emergency') ? '030' : '020';
+
+    function render() {
+      fixture = TestBed.createComponent(screen.component as any);
+      fixture.detectChanges();
+      const form = fixture.componentInstance.drugArray.at(0);
+      form.patchValue({
+        Result_Drug_Name: 'Test medication', Phformid: 'TABLET', Routedescr: 'ORAL',
+        Quan: 1, Quanunit: 'EA', N1znr: '0000000002', StartD: new Date(2030, 0, 1, 8),
+      });
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      return form;
+    }
+
+    function choose(controlName: string, label: string) {
+      const dropdown = fixture.nativeElement.querySelector(`ng-select[formControlName="${controlName}"]`);
+      dropdown.querySelector('.ng-select-container').dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      const option = Array.from(document.querySelectorAll('.ng-option'))
+        .find((element: HTMLElement) => element.textContent.trim() === label) as HTMLElement;
+      option.click();
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+    }
+
+    function toggleAdditionalDose() {
+      fixture.nativeElement.querySelector('input[formControlName="AddDose"]').click();
+      fixture.detectChanges();
+      tick();
+    }
+
+    it('keeps a typed duration when the frequency changes', fakeAsync(() => {
+      const form = render();
+      const duration = fixture.nativeElement.querySelector('input[formControlName="Pdur"]');
+      duration.value = '3';
+      duration.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      choose('Pduru', 'Days');
+      choose('N1znr', 'DAILY');
+      expect(form.value.Pdur).toBe('3');
+      expect(form.value.Pduru).toBe('TAG');
+      expect(form.value.EndD).toEqual(new Date(2030, 0, 4, 8));
+    }));
+
+    it('clears the STAT defaults every time the frequency leaves STAT', fakeAsync(() => {
+      const form = render();
+      for (let round = 0; round < 2; round++) {
+        choose('N1znr', 'STAT');
+        expect(form.value.Pdur).toBe(1);
+        expect(form.value.EndD).toEqual(new Date(2030, 0, 2, 8));
+        expect(form.value.Priority).toBe(statPriority);
+        choose('N1znr', 'Q12H');
+        expect(form.value.Pdur).toBe('');
+        expect(form.value.Pduru).toBeNull();
+        expect(form.value.EndD).toBeNull();
+        expect(form.value.Priority).toBe('010');
+      }
+    }));
+
+    it('Additional Dose Now follows the highest default priority', fakeAsync(() => {
+      const form = render();
+      toggleAdditionalDose();
+      expect(form.value.Priority).toBe('020');
+      toggleAdditionalDose();
+      expect(form.value.Priority).toBe('010');
+      choose('N1znr', 'STAT');
+      toggleAdditionalDose();
+      expect(form.value.Priority).toBe(statPriority);
+      toggleAdditionalDose();
+      expect(form.value.Priority).toBe(statPriority);
+    }));
+  }
 }));

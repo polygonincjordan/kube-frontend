@@ -103,6 +103,136 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
     }
   }
 
+  describe('values the physician entered', () => {
+    const enter = (form: FormGroup, values: any) => {
+      form.patchValue(values);
+      Object.keys(values).forEach(name => form.get(name).markAsDirty());
+    };
+    const changeCreateFrequency = (frequency: string) => {
+      create.drugArray.at(0).patchValue({ N1znr: frequency });
+      create.onChangeFrequencySet(frequency, 0);
+    };
+
+    it('create: keeps an entered duration and recalculates Valid To from it', () => {
+      const form = create.drugArray.at(0) as FormGroup;
+      enter(form, { Pdur: '3', Pduru: 'TAG' });
+      changeCreateFrequency('DAILY');
+      expect(form.value.Pdur).toBe('3');
+      expect(form.value.Pduru).toBe('TAG');
+      expect(form.value.EndD).toEqual(new Date(2030, 0, 4, 8));
+    });
+
+    it('create: keeps a picked Valid To', () => {
+      const form = create.drugArray.at(0) as FormGroup;
+      const picked = new Date(2030, 0, 10, 8);
+      enter(form, { EndD: picked });
+      if (create instanceof CreateAdministrationComponent) {
+        // Inpatient derives the duration from the picked date, so it is kept with it.
+        create.ChangeDate(0, form.value);
+      }
+      changeCreateFrequency('Q12H');
+      expect(form.value.EndD).toEqual(picked);
+      if (create instanceof CreateAdministrationComponent) {
+        expect(form.value.Pdur).toBe('10');
+        expect(form.value.Pduru).toBe('TAG');
+      } else {
+        expect(form.value.Pdur).toBe('');
+        expect(form.value.Pduru).toBeNull();
+      }
+    });
+
+    for (const frequency of ['STAT', 'ONCE']) {
+      it(`create: ${frequency} default replaces entered values and is cleared on the next change`, () => {
+        const form = create.drugArray.at(0) as FormGroup;
+        enter(form, { Pdur: '3', Pduru: 'TAG', EndD: new Date(2030, 0, 10, 8) });
+        changeCreateFrequency(frequency);
+        expectSingleDoseDefault(form);
+        changeCreateFrequency('Q12H');
+        expectCleared(form);
+      });
+    }
+
+    it('edit: clears entered values when the frequency changes', () => {
+      const form = edit.editprofileForm;
+      enter(form, { Pdur: '3', Pduru: 'TAG', EndD: new Date(2030, 0, 10, 8) });
+      form.patchValue({ N1znr: 'DAILY' });
+      changeEditFrequency('DAILY');
+      expectCleared(form);
+    });
+  });
+
+  describe('create priority', () => {
+    const statPriority = dashboard === 'Emergency' ? '030' : '020';
+    const oncePriority = dashboard === 'Emergency' ? '030' : '010';
+    let form: FormGroup;
+    const changeTo = (frequency: string) => {
+      form.patchValue({ N1znr: frequency });
+      create.onChangeFrequencySet(frequency, 0);
+    };
+    const setAdditionalDose = (ticked: boolean) => {
+      form.patchValue({ AddDose: ticked });
+      create.applyDefaultPriority(form);
+    };
+    const choosePriority = (priority: string) => {
+      form.patchValue({ Priority: priority });
+      form.get('Priority').markAsDirty();
+    };
+
+    beforeEach(() => form = create.drugArray.at(0) as FormGroup);
+
+    it('applies the STAT and ONCE default priority', () => {
+      changeTo('STAT');
+      expect(form.value.Priority).toBe(statPriority);
+      changeTo('ONCE');
+      expect(form.value.Priority).toBe(oncePriority);
+    });
+
+    for (const frequency of ['Q12H', 'DEFTIM', 'DAILY']) {
+      it(`returns to Regular when STAT changes to ${frequency}`, () => {
+        changeTo('STAT');
+        changeTo(frequency);
+        expect(form.value.Priority).toBe('010');
+      });
+    }
+
+    it('keeps a chosen priority when the new frequency has no default', () => {
+      choosePriority('030');
+      changeTo('DAILY');
+      expect(form.value.Priority).toBe('030');
+    });
+
+    it('replaces a chosen priority with the STAT default, then returns to Regular', () => {
+      choosePriority('010');
+      changeTo('STAT');
+      expect(form.value.Priority).toBe(statPriority);
+      changeTo('Q12H');
+      expect(form.value.Priority).toBe('010');
+    });
+
+    it('Additional Dose Now sets High and unticking returns to Regular', () => {
+      changeTo('Q12H');
+      setAdditionalDose(true);
+      expect(form.value.Priority).toBe('020');
+      setAdditionalDose(false);
+      expect(form.value.Priority).toBe('010');
+    });
+
+    it('Additional Dose Now never lowers the STAT priority', () => {
+      changeTo('STAT');
+      setAdditionalDose(true);
+      expect(form.value.Priority).toBe(statPriority);
+      setAdditionalDose(false);
+      expect(form.value.Priority).toBe(statPriority);
+    });
+
+    it('keeps High while Additional Dose Now stays ticked across frequency changes', () => {
+      changeTo('STAT');
+      setAdditionalDose(true);
+      changeTo('DAILY');
+      expect(form.value.Priority).toBe('020');
+    });
+  });
+
   it('keeps saved duration and end date when opening the edit screen or frequency dropdown', () => {
     if (edit instanceof EditMedicationComponent) { edit.onOpenFrequencySet(); }
     expect(edit.editprofileForm.value.Pdur).toBe(2);
