@@ -282,9 +282,7 @@
                       <td class="border-0" colspan="2">
                         <div class="d-flex align-items-center
                           position-relative">
-                          <input type="checkbox" class="mr-1 checkbox-panel" formControlName="AddDose" (change)="item.value.AddDose? item.patchValue({
-                            Priority: '020' }):item.patchValue({ Priority: '010'
-                            })">
+                          <input type="checkbox" class="mr-1 checkbox-panel" formControlName="AddDose" (change)="applyDefaultPriority(item)">
                           <span class="mr-2 admin"></span>
                           <label class="m-0"> Additional Dose Now</label>
                         </div>
