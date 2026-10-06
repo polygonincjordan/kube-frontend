@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService, TemplateMedDataList } from '@services/e-Prescription/e-prescription.service';
@@ -378,10 +378,11 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   }
 
   onChangeFrequencySet(data?: any, index?: number, resetDuration: boolean = true) {
-    // A physician's change drops the previous frequency's duration and Valid To;
-    // the new frequency's own defaults are applied below.
+    const row = this.drugArray.controls[index];
+    // A physician's change drops the previous frequency's defaults but keeps what the
+    // physician entered; the new frequency's own defaults are applied below.
     if (resetDuration) {
-      this.drugArray.controls[index].patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
+      this.clearDefaultDuration(row);
     }
     if (data !== null || data !== "") {
       this.drugArray.controls[index].get('deftimcycleData').setValue([]);
@@ -394,7 +395,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       }
       const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
-        this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030", IsFrequencyDeftim: false, Dosdef: "" });
+        this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", IsFrequencyDeftim: false, Dosdef: "" });
+        // The frequency's default replaces a duration or Valid To the physician entered.
+        ['Pdur', 'Pduru', 'EndD'].forEach(name => row.get(name).markAsPristine());
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
         this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit?.Meinh ? this.drugArray.value[index].Quanunit?.Meinh : this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`), Agentid:this.drugArray.value[index].Agentid }]);
         const selectedData = [];
@@ -406,11 +409,49 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         });
         this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
       } else {
-        this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
+        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: false });
       }
-      this.validFromTobaseonDuration(index, this.drugArray.controls[index].value);
+      // A Valid To the physician picked is kept; otherwise it follows the duration.
+      if (!this.isEnteredByPhysician(row, 'EndD')) {
+        this.validFromTobaseonDuration(index, row.value);
+      }
     } else {
-      this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
+      this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: false });
+    }
+    this.applyDefaultPriority(row);
+  }
+
+  /** True when the physician entered the value; defaults and cleared fields are not. */
+  isEnteredByPhysician(row: AbstractControl, name: string): boolean {
+    const control = row.get(name);
+    return control.dirty && control.value !== "" && control.value !== null && control.value !== undefined;
+  }
+
+  /** Clears the duration and Valid To unless the physician entered them. */
+  clearDefaultDuration(row: AbstractControl) {
+    if (!this.isEnteredByPhysician(row, 'Pdur') && !this.isEnteredByPhysician(row, 'Pduru')) {
+      row.patchValue({ Pdur: "", Pduru: null });
+    }
+    if (!this.isEnteredByPhysician(row, 'EndD')) {
+      row.patchValue({ EndD: null, EndT: "" });
+    }
+  }
+
+  /**
+   * Priority is the highest default of the frequency and "Additional Dose Now" (High).
+   * Without a default it returns to Regular, unless the physician chose the priority.
+   */
+  applyDefaultPriority(row: AbstractControl) {
+    const frequencyData = (this.addministrationService.frequencyList || []).find(d => d.CycleKey == row.get('N1znr').value);
+    const defaults = [
+      frequencyData && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE") ? "030" : null,
+      row.get('AddDose').value ? "020" : null,
+    ].filter(Boolean).sort();
+    if (defaults.length) {
+      row.patchValue({ Priority: defaults[defaults.length - 1] });
+      row.get('Priority').markAsPristine();
+    } else if (!row.get('Priority').dirty) {
+      row.patchValue({ Priority: "010" });
     }
   }
 
