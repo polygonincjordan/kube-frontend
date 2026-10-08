@@ -28,7 +28,7 @@ export class DischargeSummaryComponent implements OnInit, OnChanges {
   orderType = MedicationOrderTypeLabels;
   inPatientPhdisDataSet!: FormGroup;
   dischargeDispositionList: any = [
-    { Desc: 'Vitally Stable', Value: '0' },
+    // { Desc: 'Vitally Stable', Value: '0' }, // as per thier requirement they want to remove this option from the list = 08/10/2026
     { Desc: 'Discharged Home', Value: '1' },
     { Desc: 'DAMA', Value: '2' },
     { Desc: 'Deceased', Value: '3' },

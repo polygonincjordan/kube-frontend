@@ -638,10 +638,8 @@ export class ImportMedicationComponent implements OnInit {
 
   private loadMedicationHistoryData(): void {
     const { einri, falnr } = this.ePrescriptionService.parameters;
-    const medicationHistoryEntitySet =
-      `e-prescription/OrderHistorylist?Einri=${einri}&Falnr=${falnr}`;
-    const homeMedicationEntitySet =
-      `e-prescription/PriorToAdmissionget?Einri=${einri}&Falnr=${falnr}`;
+    const medicationHistoryEntitySet = `e-prescription/OrderHistorylist?Einri=${einri}&Falnr=${falnr}`;
+    const homeMedicationEntitySet = `e-prescription/PriorToAdmissionget?Einri=${einri}&Falnr=${falnr}`;
 
     forkJoin({
       medicationHistory: this.ePrescriptionService.loadData(medicationHistoryEntitySet, false, false, false, false),
@@ -652,21 +650,21 @@ export class ImportMedicationComponent implements OnInit {
         const medicationResults = res?.medicationHistory?.body?.d?.results ?? [];
         // Discharge and Home Medication API Results
         const homeMedicationResults = res?.homeMedication?.body?.d?.results ?? [];
-        console.log('Medication History:', medicationResults);
-        console.log('Home Medication:', homeMedicationResults);
+        const dischargeMedicationResults = medicationResults.filter((med: any) => ['30', '00'].includes(String(med.MotypId)));
+        const mergedMedicationResults = [...dischargeMedicationResults, ...homeMedicationResults];
+        // console.log('Merged Medication Results:', homeMedicationResults, dischargeMedicationResults, mergedMedicationResults);
         // Map Medication History
         this.allMedications = {
-          'Discharge and Home Medication': homeMedicationResults.filter((med: any) =>
-            ['30', '00'].includes(String(med.MotypId))).map((med: any) => this.mapToDischargeMedication(med)).filter(Boolean),
+          'Discharge and Home Medication': mergedMedicationResults
+            .map((med: any) => this.mapToDischargeMedication(med))
+            .filter(Boolean)
+            .filter((med: any) => this.getMedicationStatus(med)?.toLowerCase() === 'active'),
 
-          'Hospital Medication': medicationResults.filter((med: any) =>
-            String(med.MotypId) === '20').map((med: any) => this.mapToHospitalMedication(med)).filter(Boolean)
+          'Hospital Medication': medicationResults
+            .filter((med: any) => String(med.MotypId) === '20')
+            .map((med: any) => this.mapToHospitalMedication(med))
+            .filter(Boolean)
         } as any;
-        // Process Home Medication API result
-        if (homeMedicationResults.length) {
-          console.log('Home medications:', homeMedicationResults);
-          // Add your home medication mapping logic here
-        }
         // Call only after both APIs have completed
         this.updateAvailableMedications();
       },
