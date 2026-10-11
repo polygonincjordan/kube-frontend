@@ -7,7 +7,8 @@ import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
+import swal from 'sweetalert2';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { CreateAdministrationComponent } from './administration/create-administration/create-administration.component';
@@ -24,13 +25,25 @@ const screens = [
 
 screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
   let fixture: ComponentFixture<any>;
+  let prescriptionService: any;
   const frequencies = [
     { CycleKey: '0000000001', N1id: 'STAT', OptionField: 'STAT' },
     { CycleKey: '0000000002', N1id: 'Q12H', OptionField: 'Q12H' },
     { CycleKey: '0000000003', N1id: 'DAILY', OptionField: 'DAILY' },
+    { CycleKey: '0000000100', N1id: 'DEFTIM', OptionField: 'Defined Timing' },
   ];
 
   beforeEach(async () => {
+    // CSS animation-end events are not advanced by fakeAsync's clock.
+    const fire = swal.fire.bind(swal);
+    spyOn(swal, 'fire').and.callFake((options: any) => fire({
+      ...options, showClass: { popup: '' }, hideClass: { popup: '' },
+    }));
+    prescriptionService = {
+      parameters: {},
+      loadData: jasmine.createSpy('loadData').and.returnValue(EMPTY),
+      postData: jasmine.createSpy('postData').and.returnValue(EMPTY),
+    };
     await TestBed.configureTestingModule({
       declarations: [screen.component],
       imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule,
@@ -39,7 +52,7 @@ screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
         DatePipe,
         { provide: ActivatedRoute, useValue: {} },
         { provide: NgbModal, useValue: {} },
-        { provide: EPrescriptionService, useValue: { parameters: {}, loadData: () => EMPTY } },
+        { provide: EPrescriptionService, useValue: prescriptionService },
         { provide: AddministrationService, useValue: {
           frequencyList: frequencies,
           durationUnitList: [{ Unit: 'TAG', Text: 'Days' }, { Unit: 'DOS', Text: 'Dose' }],
@@ -52,6 +65,7 @@ screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
   });
 
   afterEach(() => {
+    swal.close();
     fixture?.destroy();
     TestBed.resetTestingModule();
   });
@@ -120,6 +134,94 @@ screens.forEach(screen => describe(`${screen.name}: frequency dropdown`, () => {
       expect(fixture.nativeElement.querySelector('frequency-deftim')).toBeNull();
     }
   })));
+
+
+  if (!screen.create) {
+    function renderEdit() {
+      fixture = TestBed.createComponent(screen.component as any);
+      const component = fixture.componentInstance;
+      component.editdata = {
+        Result_Drug_Name: 'Test medication', Quan: 1, Quanunit: 'EA',
+        N1znr: '0000000002', N1id: 'Q12H', Pdur: 3, Pduru: 'TAG',
+        StartD: new Date(2030, 0, 1, 8), EndD: new Date(2030, 0, 4, 8), EndT: 'PT08H00M00S',
+      };
+      spyOn(component, 'onSelectMedicine');
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      prescriptionService.loadData.calls.reset();
+      prescriptionService.loadData.and.returnValue(of({
+        body: { d: { results: [{ Rcode: 'END', Rcodeid: 'END' }] } },
+      }));
+      return component.editprofileForm;
+    }
+
+    function chooseEditFrequency(label: string) {
+      const frequency = fixture.nativeElement.querySelector('ng-select[formControlName="N1znr"]');
+      frequency.querySelector('.ng-select-container').dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      const option = Array.from(document.querySelectorAll('.ng-option'))
+        .find((element: HTMLElement) => element.textContent.trim() === label) as HTMLElement;
+      option.click();
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+    }
+
+    ['DAILY', 'Defined Timing'].forEach(label => it(`preserves displayed validity after selecting ${label}`, fakeAsync(() => {
+      const form = renderEdit();
+      const endDate = fixture.nativeElement.querySelector('input[formControlName="EndD"]');
+      const before = endDate.value;
+      chooseEditFrequency(label);
+      expect(fixture.nativeElement.querySelector('input[formControlName="Pdur"]').value).toBe('3');
+      expect(fixture.nativeElement.querySelector('ng-select[formControlName="Pduru"]').textContent).toContain('Days');
+      expect(endDate.value).toBe(before);
+      expect(form.value.EndD).toEqual(new Date(2030, 0, 4, 8));
+    })));
+
+    it('Edit displays the validity warning; No returns to the form and Yes submits', fakeAsync(() => {
+      const form = renderEdit();
+      chooseEditFrequency('Defined Timing');
+      const before = form.value;
+      const editButton = fixture.nativeElement.querySelector('button.edit-color');
+      editButton.click();
+      tick(400);
+      expect(swal.isVisible()).toBe(true);
+      expect(swal.getHtmlContainer().textContent).toContain('Test medication');
+      expect(swal.getHtmlContainer().textContent).toContain('04.01.2030 08:00:00');
+      expect(prescriptionService.loadData).not.toHaveBeenCalled();
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+      swal.getCancelButton().click();
+      tick(400);
+      expect(swal.isVisible()).toBe(false);
+      expect(form.value).toEqual(before);
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+      editButton.click();
+      tick(400);
+      swal.getConfirmButton().click();
+      tick(400);
+      expect(prescriptionService.postData).toHaveBeenCalledTimes(1);
+      expect(prescriptionService.postData.calls.mostRecent().args[1].Pdur).toBe('3');
+      expect(prescriptionService.postData.calls.mostRecent().args[1].EndD).toBe('2030-01-04T08:00:00');
+    }));
+
+    it('a typed duration survives a cycle change and suppresses the reminder', fakeAsync(() => {
+      const form = renderEdit();
+      const duration = fixture.nativeElement.querySelector('input[formControlName="Pdur"]');
+      duration.value = '5';
+      duration.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      chooseEditFrequency('DAILY');
+      expect(form.value.Pdur).toBe('5');
+      expect(form.value.EndD).toEqual(new Date(2030, 0, 6, 8));
+      fixture.nativeElement.querySelector('button.edit-color').click();
+      tick(400);
+      expect(swal.isVisible()).toBe(false);
+      expect(prescriptionService.postData).toHaveBeenCalledTimes(1);
+    }));
+  }
 
   if (screen.create) {
     const statPriority = screen.name.startsWith('Emergency') ? '030' : '020';

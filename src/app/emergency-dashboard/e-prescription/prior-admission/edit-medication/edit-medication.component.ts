@@ -6,6 +6,7 @@ import { formatDate } from 'ngx-bootstrap/chronos';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import swal from 'sweetalert2';
+import { EditMedicationValidity, getEditMedicationValidity, needsEditMedicationValidityReminder, showEditMedicationValidityReminder } from '../../../../e-prescription/edit-medication-validity.util';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
 import { PrnConditionPopupComponent } from '../../discharge-order/prn-condition-popup/prn-condition-popup.component';
 import { CycleDefinitionPopupComponent } from '../../../../shared-module/cycle-definition/cycle-definition-popup.component';
@@ -20,6 +21,8 @@ export class EditMedicationComponent implements OnInit {
   public medicationEndReason: any[];
   public isFormSubmitted: boolean = false;
   public defaultAgentId: string;
+  private automaticValidity: EditMedicationValidity;
+  private isValidityConfirmationOpen = false;
   constructor(public route: ActivatedRoute, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, public addministrationService: AddministrationService) { }
 
   @Input() editdata: any;
@@ -92,7 +95,7 @@ export class EditMedicationComponent implements OnInit {
     if (new Date() > this.editdata.StartD) {
       this.editprofileForm.patchValue({ StartD: new Date() });
     }
-    // this.validFromTobaseonDuration(this.editprofileForm.value);
+    this.automaticValidity = getEditMedicationValidity(this.editprofileForm);
   }
 
   updateAdditionalInfo(event) {
@@ -167,6 +170,21 @@ export class EditMedicationComponent implements OnInit {
   }
 
   onEditAction() {
+    if (this.isValidityConfirmationOpen) { return; }
+    if (needsEditMedicationValidityReminder(this.editprofileForm, this.automaticValidity)) {
+      const unitText = this.addministrationService.durationUnitList?.find(
+        unit => unit.Unit === this.editprofileForm.value.Pduru
+      )?.Text;
+      this.isValidityConfirmationOpen = true;
+      return showEditMedicationValidityReminder(this.editprofileForm, unitText).then(confirmed => {
+        this.isValidityConfirmationOpen = false;
+        if (confirmed) { this.submitEditAction(); }
+      });
+    }
+    this.submitEditAction();
+  }
+
+  private submitEditAction() {
     const genratePayload = {
       ...this.editprofileForm.value,
       // Map TOCYCDEF to writable fields (drops __metadata etc. from read-back records).
@@ -301,12 +319,11 @@ export class EditMedicationComponent implements OnInit {
   }
 
   onChangeFrequencySet() {
-    // Drop the previous frequency's duration and Valid To, then apply the new frequency's single-dose default.
-    this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
     const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == this.editprofileForm.get('N1znr').value);
     if (frequencyData && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
       this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS" });
       this.validFromTobaseonDuration(this.editprofileForm.value);
+      this.automaticValidity = getEditMedicationValidity(this.editprofileForm);
     }
   }
 

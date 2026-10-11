@@ -6,6 +6,7 @@ import { formatDate } from 'ngx-bootstrap/chronos';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import swal from 'sweetalert2';
+import { EditMedicationValidity, getEditMedicationValidity, needsEditMedicationValidityReminder, showEditMedicationValidityReminder } from '../../edit-medication-validity.util';
 import { PrnConditionPopupComponent } from '../../discharge-order/prn-condition-popup/prn-condition-popup.component';
 import { CycleDefinitionPopupComponent } from '../../../shared-module/cycle-definition/cycle-definition-popup.component';
 
@@ -20,6 +21,8 @@ export class EditMedicationComponent implements OnInit {
   public isFormSubmitted: boolean = false;
   public isFrequencyDeftimCollapse: boolean = false
   public defaultAgentId: string;
+  private automaticValidity: EditMedicationValidity;
+  private isValidityConfirmationOpen = false;
   constructor(public route: ActivatedRoute, public ePrescriptionService: EPrescriptionService, private datePipe: DatePipe, public addministrationService: AddministrationService) { }
 
   @Input() editdata: any;
@@ -100,7 +103,7 @@ export class EditMedicationComponent implements OnInit {
     if((this.editdata?.N1znr === "0000000100" && this.editdata?.N1id == "DEFTIM") || (this.editdata?.N1znr === "0000000003" && this.editdata?.N1id == "DAILY" )){
       this.setIfDeftimcycleDataKey(this.editdata?.N1znr);
     }
-    // this.validFromTobaseonDuration(this.editprofileForm.value);
+    this.automaticValidity = getEditMedicationValidity(this.editprofileForm);
   }
 
   updateAdditionalInfo(event) {
@@ -175,6 +178,21 @@ export class EditMedicationComponent implements OnInit {
   }
 
   onEditAction() {
+    if (this.isValidityConfirmationOpen) { return; }
+    if (needsEditMedicationValidityReminder(this.editprofileForm, this.automaticValidity)) {
+      const unitText = this.addministrationService.durationUnitList?.find(
+        unit => unit.Unit === this.editprofileForm.value.Pduru
+      )?.Text;
+      this.isValidityConfirmationOpen = true;
+      return showEditMedicationValidityReminder(this.editprofileForm, unitText).then(confirmed => {
+        this.isValidityConfirmationOpen = false;
+        if (confirmed) { this.submitEditAction(); }
+      });
+    }
+    this.submitEditAction();
+  }
+
+  private submitEditAction() {
 
     const genratePayload = {
       ...this.editprofileForm.value,
@@ -382,14 +400,11 @@ export class EditMedicationComponent implements OnInit {
         const selectedData = deftimDcycleData.map(element => `${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`);
         this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
       }
-      this.validFromTobaseonDuration(this.editprofileForm.value);
       this.checkIsFrequencyDeftim();
     }
   }
-    public onChangeFrequencySet(data?: any) {
-    // Drop the previous frequency's duration and Valid To; the new frequency's own defaults are applied below.
-    this.editprofileForm.patchValue({ Pdur: "", Pduru: null, EndD: null, EndT: "" });
-    if (data !== null || data !== "") {
+  public onChangeFrequencySet(data?: any) {
+    if (data != null && data !== "") {
       this.editprofileForm.get('deftimcycleData').setValue([]);
       if (this.editprofileForm.get('Result_Drug_Name').value === "" || this.editprofileForm.get('Result_Drug_Name').value === null) {
         this.showErrorPopup('', 'Please select medicine', "Error").then((result) => {
@@ -428,7 +443,10 @@ export class EditMedicationComponent implements OnInit {
       } else {
         this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
-      this.validFromTobaseonDuration(this.editprofileForm.value);
+      if (frequencyData?.N1id === "STAT" || frequencyData?.N1id === "ONCE") {
+        this.validFromTobaseonDuration(this.editprofileForm.value);
+        this.automaticValidity = getEditMedicationValidity(this.editprofileForm);
+      }
     } else {
       this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false, IsmoDetails: false });
     }
