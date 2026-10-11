@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { FormArray, FormGroup } from '@angular/forms';
 import { EMPTY, of } from 'rxjs';
+import swal from 'sweetalert2';
 import { CreateAdministrationComponent } from './administration/create-administration/create-administration.component';
 import { EditMedicationComponent } from './prior-admission/edit-medication/edit-medication.component';
 import { CreateAdministrationComponent as EmergencyCreateAdministrationComponent } from '../emergency-dashboard/e-prescription/administration/create-administration/create-administration.component';
@@ -58,6 +59,7 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
     const administrationService: any = {
       frequencyList: frequencies.map(N1id => ({ CycleKey: N1id, N1id })),
       medicationAdministrative: {},
+      durationUnitList: [{ Unit: 'TAG', Text: 'Days' }, { Unit: 'DOS', Text: 'Dose' }],
       getStatFrequency: () => ({ CycleKey: 'STAT', N1id: 'STAT' }),
     };
     const CreateComponent = dashboard === 'Emergency' ? EmergencyCreateAdministrationComponent : CreateAdministrationComponent;
@@ -80,10 +82,18 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
     };
 
     for (const frequency of ['Q12H', 'DEFTIM', 'DAILY', null]) {
-      it(`${screen}: clears duration and end date when frequency changes to ${frequency}`, () => {
+      it(`${screen}: ${screen === 'create' ? 'clears' : 'preserves'} validity when frequency changes to ${frequency}`, () => {
         const form = (screen === 'create' ? create.drugArray.at(0) : edit.editprofileForm) as FormGroup;
+        const before = form.value;
         changeFrequency(form, frequency);
-        expectCleared(form);
+        if (screen === 'create') {
+          expectCleared(form);
+        } else {
+          expect(form.value.Pdur).toBe(before.Pdur);
+          expect(form.value.Pduru).toBe(before.Pduru);
+          expect(form.value.EndD).toEqual(before.EndD);
+          expect(form.value.EndT).toBe(before.EndT);
+        }
       });
     }
 
@@ -94,11 +104,11 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
         expectSingleDoseDefault(form);
       });
 
-      it(`${screen}: clears the ${frequency} default when the frequency changes again`, () => {
+      it(`${screen}: ${screen === 'create' ? 'clears' : 'preserves'} the ${frequency} default when the frequency changes again`, () => {
         const form = (screen === 'create' ? create.drugArray.at(0) : edit.editprofileForm) as FormGroup;
         changeFrequency(form, frequency);
         changeFrequency(form, 'Q12H');
-        expectCleared(form);
+        screen === 'create' ? expectCleared(form) : expectSingleDoseDefault(form);
       });
     }
   }
@@ -152,12 +162,14 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
       });
     }
 
-    it('edit: clears entered values when the frequency changes', () => {
+    it('edit: preserves entered values when the frequency changes', () => {
       const form = edit.editprofileForm;
       enter(form, { Pdur: '3', Pduru: 'TAG', EndD: new Date(2030, 0, 10, 8) });
       form.patchValue({ N1znr: 'DAILY' });
       changeEditFrequency('DAILY');
-      expectCleared(form);
+      expect(form.value.Pdur).toBe('3');
+      expect(form.value.Pduru).toBe('TAG');
+      expect(form.value.EndD).toEqual(new Date(2030, 0, 10, 8));
     });
   });
 
@@ -287,16 +299,144 @@ import { EditMedicationComponent as EmergencyEditMedicationComponent } from '../
     });
   }
 
-  it('submits cleared values for an edited order', () => {
+  it('submits preserved values for an edited order after confirmation', async () => {
+    spyOn(swal, 'fire').and.returnValue(Promise.resolve({ isConfirmed: true } as any));
     edit.editprofileForm.patchValue({ N1znr: 'DEFTIM' });
     changeEditFrequency('DEFTIM');
-    edit.onEditAction();
+    await edit.onEditAction();
     const order = prescriptionService.postData.calls.mostRecent().args[1];
-    expect(order.Pdur).toBe('');
-    expect(order.Pduru).toBeNull();
-    expect(order.EndD).toBeNull();
-    expect(order.EndT).toBeNull();
+    expect(order.Pdur).toBe('2');
+    expect(order.Pduru).toBe('TAG');
+    expect(order.EndD).toBe('2030-01-03T08:00:00');
+    expect(order.EndT).toBe('PT08H00M00S');
   });
+
+  describe('edit validity reminder', () => {
+    let warning: jasmine.Spy;
+
+    beforeEach(() => {
+      warning = spyOn(swal, 'fire').and.returnValue(Promise.resolve({ isConfirmed: false } as any));
+      prescriptionService.loadData.calls.reset();
+    });
+
+    it('shows the saved order validity and sends no requests when No is chosen', async () => {
+      const before = edit.editprofileForm.value;
+      await edit.onEditAction();
+      expect(warning).toHaveBeenCalledTimes(1);
+      const options = warning.calls.mostRecent().args[0];
+      expect(options.icon).toBe('warning');
+      expect(options.text).toContain('Test medication');
+      expect(options.text).toContain('2 Days');
+      expect(options.text).toContain('03.01.2030 08:00:00');
+      expect(options.confirmButtonText).toBe('Yes');
+      expect(options.cancelButtonText).toBe('No');
+      expect(prescriptionService.loadData).not.toHaveBeenCalled();
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+      expect(edit.editprofileForm.value).toEqual(before);
+    });
+
+    it('sends no requests when the warning is dismissed', async () => {
+      warning.and.returnValue(Promise.resolve({ isConfirmed: false, isDismissed: true } as any));
+      await edit.onEditAction();
+      expect(prescriptionService.loadData).not.toHaveBeenCalled();
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+    });
+
+    it('sends the edit requests only after Yes and can retry after No', async () => {
+      await edit.onEditAction();
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+      warning.and.returnValue(Promise.resolve({ isConfirmed: true } as any));
+      const pending = edit.onEditAction();
+      expect(prescriptionService.loadData).not.toHaveBeenCalled();
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+      await pending;
+      expect(prescriptionService.loadData).toHaveBeenCalledTimes(1);
+      expect(prescriptionService.postData).toHaveBeenCalledTimes(1);
+      expect(prescriptionService.postData.calls.mostRecent().args[0]).toBe('e-prescription/EditMedicationStatus');
+    });
+
+    it('prevents duplicate confirmation and requests while the warning is open', async () => {
+      const pending = edit.onEditAction();
+      edit.onEditAction();
+      expect(warning).toHaveBeenCalledTimes(1);
+      await pending;
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+    });
+
+    for (const frequency of ['STAT', 'ONCE']) {
+      it(`confirms ${frequency} automatic defaults even after earlier manual edits`, async () => {
+        edit.editprofileForm.patchValue({ Pdur: '5', Pduru: 'TAG', EndD: new Date(2030, 0, 6, 8) });
+        ['Pdur', 'Pduru', 'EndD'].forEach(name => edit.editprofileForm.get(name).markAsDirty());
+        edit.editprofileForm.patchValue({ N1znr: frequency });
+        changeEditFrequency(frequency);
+        await edit.onEditAction();
+        expect(warning.calls.mostRecent().args[0].text).toContain('1 Dose');
+        expect(warning.calls.mostRecent().args[0].text).toContain('02.01.2030 08:00:00');
+        expect(prescriptionService.postData).not.toHaveBeenCalled();
+        warning.and.returnValue(Promise.resolve({ isConfirmed: true } as any));
+        await edit.onEditAction();
+        const order = prescriptionService.postData.calls.mostRecent().args[1];
+        expect(order.Pdur).toBe('1');
+        expect(order.Pduru).toBe('DOS');
+        expect(order.EndD).toBe('2030-01-02T08:00:00');
+      });
+    }
+
+    for (const values of [
+      { Pdur: '3' }, { Pduru: 'STD' }, { EndD: new Date(2030, 0, 10, 8) },
+      { Pdur: '' }, { Pdur: '0' }, { Pduru: null }, { EndD: null },
+    ]) {
+      it(`skips the reminder when validity is manually changed or incomplete: ${Object.keys(values)[0]}=${Object.values(values)[0]}`, () => {
+        edit.editprofileForm.patchValue(values);
+        Object.keys(values).forEach(name => edit.editprofileForm.get(name).markAsDirty());
+        edit.onEditAction();
+        expect(warning).not.toHaveBeenCalled();
+        expect(prescriptionService.postData).toHaveBeenCalledTimes(1);
+      });
+    }
+
+    it('keeps the reminder when only unrelated fields are edited', async () => {
+      edit.editprofileForm.patchValue({ Quan: 2, Prn: true });
+      edit.editprofileForm.get('Quan').markAsDirty();
+      await edit.onEditAction();
+      expect(warning).toHaveBeenCalledTimes(1);
+      expect(prescriptionService.postData).not.toHaveBeenCalled();
+    });
+
+    it('preserves an incomplete saved validity through an ordinary cycle change', () => {
+      edit.editdata = { ...edit.editdata, Pdur: '', Pduru: null, EndD: null, EndT: null };
+      edit.ngOnInit();
+      edit.editprofileForm.patchValue({ N1znr: 'DEFTIM' });
+      changeEditFrequency('DEFTIM');
+      edit.onEditAction();
+      expect(warning).not.toHaveBeenCalled();
+      expect(prescriptionService.postData.calls.mostRecent().args[1].EndD).toBeNull();
+    });
+
+    it('keeps the reminder and values after repeated ordinary cycle changes', async () => {
+      for (const N1znr of ['DAILY', 'Q12H', 'DEFTIM', 'Q12H']) {
+        edit.editprofileForm.patchValue({ N1znr });
+        changeEditFrequency(N1znr);
+      }
+      expect(edit.editprofileForm.value.Pdur).toBe(2);
+      expect(edit.editprofileForm.value.EndD).toEqual(endDate);
+      await edit.onEditAction();
+      expect(warning).toHaveBeenCalledTimes(1);
+    });
+
+    if (dashboard === 'Inpatient') {
+      for (const [N1znr, N1id] of [['0000000003', 'DAILY'], ['0000000100', 'DEFTIM']]) {
+        it(`does not recalculate saved Valid To when opening a ${N1id} order`, () => {
+          edit.addministrationService.frequencyList.push({ CycleKey: N1znr, N1id });
+          edit.editdata = { ...edit.editdata, N1znr, N1id, Dosdef: '1(08:00)', EndD: new Date(2030, 0, 10, 8) };
+          edit.ngOnInit();
+          expect(edit.editprofileForm.value.Pdur).toBe(2);
+          expect(edit.editprofileForm.value.EndD).toEqual(new Date(2030, 0, 10, 8));
+        });
+      }
+    }
+  });
+
   if (dashboard === 'Emergency') {
     it('retains the initial STAT default and clears it when the physician changes frequency', () => {
       const form = create.drugArray.at(0) as FormGroup;
