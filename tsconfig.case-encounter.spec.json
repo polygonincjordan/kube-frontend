@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/case-encounter-spec",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "files": [
+    "src/test-case-encounter.ts",
+    "src/polyfills.ts",
+    "src/app/services/case-encounter.service.spec.ts",
+    "src/app/core/header/header-case-navigation.spec.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
