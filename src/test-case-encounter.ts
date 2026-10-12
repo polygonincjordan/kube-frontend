@@ -21,6 +21,6 @@ getTestBed().initTestEnvironment(
 const context = require.context(
   './app',
   true,
-  /(case-encounter\.service|header-case-navigation)\.spec\.ts$/
+  /(case-encounter\.service|header-case-navigation|patient-encounter\.guard)\.spec\.ts$/
 );
 context.keys().map(context);

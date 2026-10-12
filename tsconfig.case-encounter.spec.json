@@ -11,7 +11,8 @@
     "src/test-case-encounter.ts",
     "src/polyfills.ts",
     "src/app/services/case-encounter.service.spec.ts",
-    "src/app/core/header/header-case-navigation.spec.ts"
+    "src/app/core/header/header-case-navigation.spec.ts",
+    "src/app/services/interceptor/patient-encounter.guard.spec.ts"
   ],
   "include": [
     "src/**/*.d.ts"
