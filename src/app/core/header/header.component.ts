@@ -21,6 +21,7 @@ import { CatalogItem } from '@services/e-kardex/interfaces/vitals';
 import { environment } from 'src/environments/environment';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { MergedPatientNoticeService } from '@services/merged-patient-notice.service';
+import { CaseEncounterService } from '@services/case-encounter.service';
 
 @Component({
   selector: 'app-header',
@@ -81,7 +82,8 @@ export class HeaderComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private eprescriptionService: EPrescriptionService,
-    private mergedPatientNotice: MergedPatientNoticeService
+    private mergedPatientNotice: MergedPatientNoticeService,
+    private caseEncounterService: CaseEncounterService
   ) {
     if (this.storageService.getKubeRule() == UserType.Physician) {
       this.isPhysician = true;
@@ -377,7 +379,32 @@ export class HeaderComponent implements OnInit {
     );
   }
 
+  openingCase = false;
+
   openPatientSearch(data, type?, itemMainList?) {
+    if (type === 'caseList') {
+      if (this.openingCase) return;
+      this.openingCase = true;
+      this.caseEncounterService.resolve(itemMainList?.PATNR, itemMainList?.EINRI, data?.Case)
+        .subscribe({
+          next: (encounter) => {
+            this.openingCase = false;
+            this.storageService.setCheckinData(encounter);
+            localStorage.setItem('checkindata', JSON.stringify(encounter));
+            this.redirectToTreatment(encounter);
+          },
+          error: () => {
+            this.openingCase = false;
+            Swal.fire({
+              title: 'Unable to open this case',
+              text: 'The patient encounter could not be verified. Please try again or contact support.',
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          },
+        });
+      return;
+    }
     let jsonObj = {
       ActionXml:
         '<?xml version="1.0" encoding="utf-16"?><asx:abap version="1.0" xmlns:asx="http://www.sap.com/abapxml"><asx:values><OUTPUT><ACTIONID>ROWCLICK</ACTIONID><SOURCEDATA>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;asx:abap version=&quot;1.0&quot; xmlns:asx=&quot;http://www.sap.com/abapxml&quot;&gt;&lt;asx:values&gt;&lt;OUTPUT&gt;&lt;RN1WPV007_FIELDCAT&gt;&lt;PATNR&gt;0000000002&lt;/PATNR&gt;&lt;PZIFF&gt;8&lt;/PZIFF&gt;&lt;EINRI&gt;1000&lt;/EINRI&gt;&lt;EINKB/&gt;&lt;STORN/&gt;&lt;NNAME&gt;Cenizal&lt;/NNAME&gt;&lt;NNAMS&gt;CENIZAL&lt;/NNAMS&gt;&lt;VNAME&gt;Neslie&lt;/VNAME&gt;&lt;VNAMS&gt;NESLIE&lt;/VNAMS&gt;&lt;VORSW/&gt;&lt;NAMZU/&gt;&lt;TITEL/&gt;&lt;NAME2/&gt;&lt;PNAME&gt;Cenizal,Neslie&lt;/PNAME&gt;&lt;GBNAM&gt;Cenizal&lt;/GBNAM&gt;&lt;GBNAS&gt;CENIZAL&lt;/GBNAS&gt;&lt;GBDAT&gt;1995-10-22&lt;/GBDAT&gt;&lt;GSCHL&gt;2&lt;/GSCHL&gt;&lt;GSCHLE&gt;F&lt;/GSCHLE&gt;&lt;GSCHLTXT&gt;Female&lt;/GSCHLTXT&gt;&lt;NO_TC_ICON/&gt;&lt;EXTNR/&gt;&lt;RVNUM/&gt;&lt;PASSTY&gt;DL&lt;/PASSTY&gt;&lt;PASSTYTXT&gt;DriversLicense&lt;/PASSTYTXT&gt;&lt;PASSNR&gt;DRIVE123&lt;/PASSNR&gt;&lt;RESID/&gt;&lt;TODKZ/&gt;&lt;TODUR/&gt;&lt;TUTXT/&gt;&lt;AUFKZ/&gt;&lt;KRZAN/&gt;&lt;NOTAN/&gt;&lt;LAND&gt;JO&lt;/LAND&gt;&lt;LANDX&gt;Jordan&lt;/LANDX&gt;&lt;PSTLZ/&gt;&lt;ORT&gt;AbdaliBoulevardAmman&lt;/ORT&gt;&lt;ORT2/&gt;&lt;STRAS&gt;123&lt;/STRAS&gt;&lt;TELNR&gt;796992432&lt;/TELNR&gt;&lt;ADRES&gt;AbdaliBoulevardAmman123&lt;/ADRES&gt;&lt;RFPAT/&gt;&lt;TERMINID/&gt;&lt;ADRNR/&gt;&lt;ADROB/&gt;&lt;ADRN2/&gt;&lt;ADRO2/&gt;&lt;VIPKZ/&gt;&lt;INACT/&gt;&lt;PAPID/&gt;&lt;VKGID&gt;00000000&lt;/VKGID&gt;&lt;INSID/&gt;&lt;PATEXTID/&gt;&lt;STP/&gt;&lt;TAXNUM/&gt;&lt;_-ISHFR_-BIRTHRK&gt;0&lt;/_-ISHFR_-BIRTHRK&gt;&lt;EXTERNAL_SYSTEM/&gt;&lt;PSPNAME/&gt;&lt;PSPGBNAME/&gt;&lt;PSPADDRESS/&gt;&lt;EXTAUFG/&gt;&lt;VNAME_LONG/&gt;&lt;NNAME_LONG/&gt;&lt;GBNAM_LONG/&gt;&lt;TITLE_ACA2/&gt;&lt;TITLE_ACA2TXT/&gt;&lt;NAME_CO/&gt;&lt;PSTLP/&gt;&lt;PFACH/&gt;&lt;LANPF/&gt;&lt;ORTPF/&gt;&lt;ADRESPF/&gt;&lt;/RN1WPV007_FIELDCAT&gt;&lt;/OUTPUT&gt;&lt;/asx:values&gt;&lt;/asx:abap&gt;</SOURCEDATA><FIELDNAME></FIELDNAME></OUTPUT></asx:values></asx:abap>',
@@ -399,17 +426,11 @@ export class HeaderComponent implements OnInit {
           const falnr = params.get('falnr');
           const einri = params.get('einri');
           const lfdnr = params.get('lfdnr');
-          let formattedCaseNumber = this.normalizeId(data?.Case, 10);
           const json = {
             Patnr: this.normalizeId(patnr, 10),
             Einri: this.normalizeId(einri),
-            Falnr: type == 'caseList' ?  formattedCaseNumber : this.normalizeId(data?.falnr, 10),
-            // For a case-list click the widget URL's lfdnr belongs to SAP's
-            // default/last case (a *different* case than the one clicked), so
-            // gluing it onto the clicked falnr yields an invalid encounter key.
-            // Leave it blank for that path; topnav reconciles the correct
-            // movement from CASESET for the selected case.
-            Lfdnr: type == 'caseList' ? '' : this.normalizeId(lfdnr),
+            Falnr: this.normalizeId(data?.falnr, 10),
+            Lfdnr: this.normalizeId(lfdnr),
           };
           this.storageService.setCheckinData(json);
           localStorage.setItem('checkindata', JSON.stringify(json));

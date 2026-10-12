@@ -22,6 +22,8 @@ import { PatientNurseDashboardGuard } from '@services/interceptor/patient-nurse-
 import { DayCaseDashboardGuard } from '@services/interceptor/day-case-dashboard.guard';
 import { NursingInpatientDashboardGuard } from '@services/interceptor/nursing-inpatient-dashboard.guard';
 
+import { PatientEncounterGuard } from '@services/interceptor/patient-encounter.guard';
+
 export const rootRoutes: Routes = [
   {
     path: 'emr',
@@ -39,14 +41,16 @@ export const rootRoutes: Routes = [
   },
   {
     path: 'radiologist-ekardex',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     component: RootComponent,
     loadChildren: () =>
       import('../radiologist-ekardex/radiologist-ekardex.module').then((m) => m.RadiologistEkardexModule),
   },
   {
     path: 'labreception-dashboard',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     component: RootComponent,
     loadChildren: () =>
       import('../labreception-dashboard/labreception-dashboard.module').then((m) => m.LabreceptionDashboardModule),
@@ -61,7 +65,8 @@ export const rootRoutes: Routes = [
   },
   {
     path: 'e-kardex',
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     component: RootComponent,
     loadChildren: () =>
       import('../e-kardex/e-kardex.module').then((m) => m.EKardexModule),
@@ -141,7 +146,8 @@ export const rootRoutes: Routes = [
   {
     path: 'nursing-emergncy-dashboard',
     component: RootComponent,
-    canActivate: [NursingEmergencyGuard],
+    canActivate: [NursingEmergencyGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadChildren: () =>
       import(
         '../nursing-emergency-dashboard/nursing-emergency-dashboard.module'
@@ -150,7 +156,8 @@ export const rootRoutes: Routes = [
   {
     path: 'day-case-dashboard',
     component: RootComponent,
-    canActivate: [DayCaseDashboardGuard],
+    canActivate: [DayCaseDashboardGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadChildren: () =>
       import('../day-case-dashboard/day-case-dashboard.module').then(
         (m) => m.DayCaseDashboardModule
@@ -159,7 +166,8 @@ export const rootRoutes: Routes = [
   {
     path: 'nursing-inpatient-dashboard',
     component: RootComponent,
-    canActivate: [NursingInpatientDashboardGuard],
+    canActivate: [NursingInpatientDashboardGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadChildren: () =>
       import(
         '../nursing-inpatient-dashboard/nursing-inpatient-dashboard.module'
@@ -168,7 +176,8 @@ export const rootRoutes: Routes = [
   {
     path: 'out-patient-nursing',
     component: RootComponent,
-    canActivate: [OutPatientNursingGuard],
+    canActivate: [OutPatientNursingGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadChildren: () =>
       import('../out-patient-nursing/out-patient-nursing.module').then(
         (m) => m.OutPatientNursingModule
@@ -177,7 +186,8 @@ export const rootRoutes: Routes = [
   {
     path: 'dialysis-nursing-dashboard',
     component: RootComponent,
-    canActivate: [DialysisNursingDashboardGuard],
+    canActivate: [DialysisNursingDashboardGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadChildren: () =>
       import(
         '../dialysis-nursing-dashboard/dialysis-nursing-dashboard.module'
@@ -186,7 +196,8 @@ export const rootRoutes: Routes = [
   {
     path: 'emergencydashboard',
     component: RootComponent,
-    canActivate: [ERDashboardGuard],
+    canActivate: [ERDashboardGuard, PatientEncounterGuard],
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
     loadChildren: () =>
       import('../emergency-dashboard/emergency-dashboard.module').then(
         (m) => m.EmergencyDashboardModule
