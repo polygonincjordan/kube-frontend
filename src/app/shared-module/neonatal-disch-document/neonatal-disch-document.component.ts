@@ -13,6 +13,7 @@ import { AdmissionService } from '@services/admission/admission.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import { DocsService } from '@services/docs.service';
+import { parseNeonatalDate, toOptionalSapDate, toSapDateString } from './neonatal-disch-date.util';
 
 @Component({
   selector: 'app-neonatal-disch-document',
@@ -722,11 +723,11 @@ export class NeonatalDischDocumentComponent implements OnInit {
       paylaod.CrIintubation = paylaod.CrIintubation ? this.dateFormateString(paylaod.CrIintubation) : null;
       paylaod.CrRdate = paylaod.CrRdate ? this.dateFormateString(paylaod.CrRdate) : null;
       paylaod.CrRentryDate = paylaod.CrRentryDate ? this.dateFormateString(paylaod.CrRentryDate) : null;
-      paylaod.AUinsertion = paylaod.AUinsertion ? this.dateFormateString(paylaod.AUinsertion) : '';
-      paylaod.AUremoval = paylaod.AUremoval ? this.dateFormateString(paylaod.AUremoval) : '';
+      paylaod.AUinsertion = toOptionalSapDate(paylaod.AUinsertion);
+      paylaod.AUremoval = toOptionalSapDate(paylaod.AUremoval);
       paylaod.CrIextubation = paylaod.CrIextubation ? this.dateFormateString(paylaod.CrIextubation) : null;
-      paylaod.AUainsertion = paylaod.AUainsertion ? this.dateFormateString(paylaod.AUainsertion) : '';
-      paylaod.AUaremoval = paylaod.AUaremoval ? this.dateFormateString(paylaod.AUaremoval) : '';
+      paylaod.AUainsertion = toOptionalSapDate(paylaod.AUainsertion);
+      paylaod.AUaremoval = toOptionalSapDate(paylaod.AUaremoval);
 
 
       paylaod.AdmTime = paylaod.AdmTime ? this.convertTimeToDuration(paylaod.AdmTime) : '';
@@ -1027,31 +1028,11 @@ export class NeonatalDischDocumentComponent implements OnInit {
   }
 
   public getDate(value) {
-    if (value) {
-      var str = value;
-      var num = parseInt(str.replace(/[^0-9]/g, ''));
-      var date = new Date(num);
-      return date;
-    }
+    return parseNeonatalDate(value);
   }
 
   dateFormateString(dateString: any) {
-    const convertDateFormat = (dateString: string): string => {
-      const [day, month, year] = dateString.split('-').map(Number);
-      const date = new Date(year, month - 1, day);
-      return date.toString();
-    };
-    if (typeof dateString === 'string') {
-      if (/\d{2}-\d{2}-\d{4}/.test(dateString)) {
-        dateString = convertDateFormat(dateString);
-      }
-    }
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}T00:00:00`;
+    return toSapDateString(dateString);
   }
 
   convertTimeToDuration(timeString: string): string {
