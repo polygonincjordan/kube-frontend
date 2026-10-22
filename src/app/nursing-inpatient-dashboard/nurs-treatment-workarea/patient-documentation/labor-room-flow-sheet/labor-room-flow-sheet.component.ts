@@ -15,6 +15,7 @@ import { GlosGowCommaScalePopupComponent } from 'src/app/shared-module/paediatri
 import { MorseFallScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/morse-fall-scale/morse-fall-scale.component';
 import { BradenScaleComponent } from 'src/app/shared-module/paediatrics-adm-document/braden-scale/braden-scale.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { optionalSapDate } from '@services/optional-sap-date.util';
 
 @Component({
   selector: 'app-labor-room-flow-sheet',
@@ -834,9 +835,9 @@ export class LaborRoomFlowSheetComponent implements OnInit {
   public createLaborRoomDoc(status?: any, actionType?: any) {
     return new Promise((resolve, reject) => {
       let formData = this.labourForm.value;
-      formData.Datee = formData.Datee ? this.sanitizeSAPDateFormat(formData.Datee) : '';
-      formData.Lmp = formData.Lmp ? this.sanitizeSAPDateFormat(formData.Lmp) : '';
-      formData.Edd = formData.Edd ? this.sanitizeSAPDateFormat(formData.Edd) : '';
+      formData.Datee = optionalSapDate(formData.Datee, (date) => this.sanitizeSAPDateFormat(date));
+      formData.Lmp = optionalSapDate(formData.Lmp, (date) => this.sanitizeSAPDateFormat(date));
+      formData.Edd = optionalSapDate(formData.Edd, (date) => this.sanitizeSAPDateFormat(date));
       formData.DocStatus = status;
       formData.Height = formData.Height ? formData.Height : '0';
       formData.Weight = formData.Weight ? formData.Weight : '0';
