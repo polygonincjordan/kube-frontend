@@ -60,6 +60,12 @@ export class DocumentationListComponent implements OnInit {
     "ZMED_SOAP", // SOAP
     "ZMED_VISIT" // Visit Note
   ];
+  // Shown read-only in Patient profile only; not created from this screen.
+  private readonly PROFILE_ONLY_DOCUMENT_TYPES = [
+    "ZMED_PAIN", // Pain Assessment
+    "ZMED_PACR", // Post Anaesthesia Care Record
+    "ZMED_SRGPP" // Surgical Passport
+  ];
   readonly isReleasedDocument = isDocumentReleased;
   @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @ViewChild('diagnosisHistory', { static: true })
@@ -591,7 +597,7 @@ export class DocumentationListComponent implements OnInit {
             new Set(this.currentVisitDocumet.map(res => res.DtidText))
           );
         } else {
-          this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
+          this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid) || this.PROFILE_ONLY_DOCUMENT_TYPES.includes(item.Dtid));
           // this.documentTypeFilterValue = _success.d.results;
           this.filterByPeriod();
           this.sort();
