@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { NicuErVitalsComponent } from './er-vitals/er-vitals.component';
 import { DatePipe } from '@angular/common';
 import { DocsService } from '@services/docs.service';
+import { optionalSapDate } from '@services/optional-sap-date.util';
 
 
 
@@ -1237,6 +1238,11 @@ export class NicuAssessmentDocumentComponent implements OnInit {
 
     formData.AUaremoval = `${year}-${month}-${day}T00:00:00`;
   }
+  // Unticking Intubation/Reintubation clears these dates to ''; SAP rejects an empty date.
+  formData.CrIintubation = optionalSapDate(formData.CrIintubation);
+  formData.CrIextubation = optionalSapDate(formData.CrIextubation);
+  formData.CrRdate = optionalSapDate(formData.CrRdate);
+  formData.CrRentryDate = optionalSapDate(formData.CrRentryDate);
    let checkVitalList: any[] = this.toVitalsArr?.filter((res) => {
     delete res.Vunit;
     delete res.value;
