@@ -38,26 +38,27 @@ import { hasPreviousDocumentVersions } from '@services/document-version-history.
   styleUrls: ['./documentation-list.component.scss'],
 })
 export class DocumentationListComponent implements OnInit {
-  private readonly ALLOWED_DOCUMENTS = [
-    "Paediatrics Physician Admission Assessment",
-    "Education Assessment",
-    "Neonatal Discharge Summary",
-    "Transfer Assessment",
-    "Operation Report",
-    "Physician Assessment",
-    "Document Attachment",
-    "Medical Report",
-    "NewBorn Assessment Form",
-    "Neonatal Medical Report",
-    "Neonatal Progress Note",
-    "NICU Admission Note",
-    "Obstetric VTE Risk Assess&Mgt Antepartum",
-    "Obstetrics & Gynecology Physician Assessment",
-    "Obstetric VTE Risk Assess&Mgt Postaprtum",
-    "Department of Surgery - Operation Notes",
-    "Physician Discharge Summary",
-    "SOAP",
-    "Visit Note"
+  // Matched by type code because SAP cuts DtidText to 40 characters.
+  private readonly ALLOWED_DOCUMENT_TYPES = [
+    "ZMED_PDASM", // Paediatrics Physician Admission Assessment
+    "ZMED_EDUAS", // Education Assessment
+    "ZMED_NEODS", // Neonatal Discharge Summary
+    "ZMED_TRFAS", // Transfer Assessment
+    "ZMED_ORRPT", // Operation Report
+    "ZMED_PHASM", // Physician Assessment
+    "ZMED_ATCHM", // Document Attachment
+    "ZMED_MEDRP", // Medical Report
+    "ZMED_NBASM", // NewBorn Assessment Form
+    "ZMED_NEOMD", // Neonatal Medical Report
+    "ZMED_NEOPN", // Neonatal Progress Note
+    "ZMED_NICAD", // NICU Admission Note
+    "ZMED_OBANT", // Obstetric VTE Risk Assess&Mgt Antepartum
+    "ZMED_OBPHY", // Obstetrics & Gynecology Physician Assessment
+    "ZMED_OBPPT", // Obstetric VTE Risk Assess&Mgt Postpartum
+    "ZMED_OPERT", // Department of Surgery - Operation Notes
+    "ZMED_PHDIS", // Physician Discharge Summary
+    "ZMED_SOAP", // SOAP
+    "ZMED_VISIT" // Visit Note
   ];
   readonly isReleasedDocument = isDocumentReleased;
   @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
@@ -566,28 +567,31 @@ export class DocumentationListComponent implements OnInit {
         })
       )
       .subscribe((data: any) => {
+        data?.d?.results.forEach((res) => {
+          if (res.Dtid === 'ZMED_NEODS') {
+            res.DtidText = 'Neonatal Discharge Summary'
+          }
+          if (res.Dtid === 'ZMED_PHDIS') {
+            res.DtidText = 'Physician Discharge Summary'
+          }
+          if (res.Dtid === 'ZMED_PDASM') {
+            res.DtidText = 'Paediatrics Physician Admission Assessment'
+          }
+          if (res.Dtid === 'ZMED_OPERT') {
+            res.DtidText = 'Department of Surgery - Operation Notes'
+          }
+          if (res.Dtid === 'ZMED_OBPHY') {
+            res.DtidText = 'Obstetrics & Gynecology Physician Assessment'
+          }
+        })
         if (type == '2') {
-          data?.d?.results.forEach((res) => {
-            if (res.Dtid === 'ZMED_NEODS') {
-              res.DtidText = 'Neonatal Discharge Summary'
-            }
-            if (res.Dtid === 'ZMED_PHDIS') {
-              res.DtidText = 'Physician Discharge Summary'
-            }
-            if (res.Dtid === 'ZMED_PDASM') {
-              res.DtidText = 'Paediatrics Physician Admission Assessment'
-            }
-            if (res.Dtid === 'ZMED_OPERT') {
-              res.DtidText = 'Department of Surgery - Operation Notes'
-            }
-          })
-          this.currentVisitDocumetClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENTS.includes(item.DtidText));
-          this.currentVisitDocumet = data?.d.results.filter(item => this.ALLOWED_DOCUMENTS.includes(item.DtidText));
+          this.currentVisitDocumetClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
+          this.currentVisitDocumet = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
           this.currentVisitDocumentNameList = Array.from(
             new Set(this.currentVisitDocumet.map(res => res.DtidText))
           );
         } else {
-          this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENTS.includes(item.DtidText));
+          this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
           // this.documentTypeFilterValue = _success.d.results;
           this.filterByPeriod();
           this.sort();
