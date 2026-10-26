@@ -63,6 +63,43 @@ describe('EncounterSaveInterceptor', () => {
     expect(await send('POST', 'http://api/patientHistory/createAttachmentDoc', form)).toEqual([]);
   });
 
+  it('stops a progress note on a Planned page, which names the case CaseId', async () => {
+    const note = { CaseId: '', MovementId: '00000', Text: 'note' };
+    expect(await send('POST', 'http://api/e-emr/createProgressEntry', note)).toEqual([]);
+    expect(shown()).toContain('no case in SAP');
+  });
+
+  for (const field of ['Caseno', 'CaseNumber', 'caseNumber', 'CaseNo', 'Case']) {
+    it(`treats ${field} as the case`, async () => {
+      expect(await send('POST', url, { [field]: '' })).toEqual([]);
+    });
+  }
+
+  it('ignores a non-identifier Case value and nested Case objects with a case', async () => {
+    expect(await send('POST', url, { Case: false })).toEqual(['sent']);
+    expect(await send('POST', url, { Case: { Falnr: '0000007258' } })).toEqual(['sent']);
+  });
+
+  it('does not show the movement reason on a page without a case', async () => {
+    expect(await send('POST', url, { Patnr: '0000016895', Lfdnr: '00000' })).toEqual(['sent']);
+  });
+
+  describe('on a case with no movement', () => {
+    beforeEach(() => router.url = '/e-kardex?patnr=0000006730&falnr=0000007258&einri=1000&lfdnr=');
+
+    for (const field of ['Lfdbw', 'MovemntSeqno']) {
+      it(`treats ${field} as the movement`, async () => {
+        expect(await send('POST', url, { Falnr: '0000007258', [field]: '' })).toEqual([]);
+        expect(shown()).toContain('no movement in SAP');
+      });
+    }
+
+    it('allows a progress note, whose MovementId is always 00000', async () => {
+      const note = { CaseId: '0000007258', MovementId: '00000', Text: 'note' };
+      expect(await send('POST', 'http://api/e-emr/createProgressEntry', note)).toEqual(['sent']);
+    });
+  });
+
   it('allows reads, including POST lookups', async () => {
     expect(await send('GET', 'http://api/patient/getDataPatient/1000')).toEqual(['sent']);
     expect(await send('POST', 'http://api/widgetDataFilter', { Falnr: '' })).toEqual(['sent']);

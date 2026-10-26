@@ -13,19 +13,30 @@ const REASONS = {
     'movement. Please contact support if this is unexpected.'
 };
 
+// Payloads name the case and the movement in several ways. MovementId is left
+// out: progress notes always send '00000' there, even with a movement.
+const FIELDS = {
+  case: ['falnr', 'caseid', 'caseno', 'casenumber', 'case'],
+  movement: ['lfdnr', 'lfdbw', 'movemntseqno']
+};
+
 function blank(value: unknown): boolean {
   return /^0*$/.test(String(value ?? '').trim());
 }
 
-// Collects every value of a case field (any casing, any depth) in a request body.
-function fieldValues(body: unknown, field: string, found: unknown[] = []): unknown[] {
+// Collects every primitive value of the named fields (any casing, any depth).
+function fieldValues(body: unknown, names: string[], found: unknown[] = []): unknown[] {
   if (typeof FormData !== 'undefined' && body instanceof FormData) {
-    body.forEach((value, key) => { if (key.toLowerCase() === field) { found.push(value); } });
+    body.forEach((value, key) => { if (names.includes(key.toLowerCase())) { found.push(value); } });
   } else if (typeof body === 'string' && /^\s*[[{]/.test(body)) {
-    try { fieldValues(JSON.parse(body), field, found); } catch { /* not JSON */ }
+    try { fieldValues(JSON.parse(body), names, found); } catch { /* not JSON */ }
   } else if (body && typeof body === 'object') {
     for (const [key, value] of Object.entries(body)) {
-      if (key.toLowerCase() === field) { found.push(value); } else { fieldValues(value, field, found); }
+      if (names.includes(key.toLowerCase()) && (value === null || typeof value !== 'object')) {
+        found.push(value);
+      } else {
+        fieldValues(value, names, found);
+      }
     }
   }
   return found;
@@ -48,17 +59,18 @@ export class EncounterSaveInterceptor implements HttpInterceptor {
   // Judged from the current page URL only. StorageService keeps the last
   // patient after leaving their page, and some modules (e-prescription) keep
   // their own empty copy. A page counts only when its URL carries a case.
-  private incompletePage(): boolean {
+  private missingOnPage(): 'case' | 'movement' | null {
     const page = this.router.parseUrl(this.router.url).queryParams;
-    return 'falnr' in page && !!page.patnr && (blank(page.falnr) || blank(page.lfdnr));
+    if (!('falnr' in page) || !page.patnr) { return null; }
+    if (blank(page.falnr)) { return 'case'; }
+    return blank(page.lfdnr) ? 'movement' : null;
   }
 
   private blockedReason(req: HttpRequest<any>): 'case' | 'movement' | null {
-    if (!this.incompletePage()) { return null; }
+    const missing = this.missingOnPage();
+    if (!missing) { return null; }
     const endpoint = req.url.split('?')[0].split('/').pop() ?? '';
     if (!WRITE_METHODS.includes(req.method) || !WRITE_ENDPOINT.test(endpoint)) { return null; }
-    if (fieldValues(req.body, 'falnr').some(blank)) { return 'case'; }
-    if (fieldValues(req.body, 'lfdnr').some(blank)) { return 'movement'; }
-    return null;
+    return fieldValues(req.body, FIELDS[missing]).some(blank) ? missing : null;
   }
 }

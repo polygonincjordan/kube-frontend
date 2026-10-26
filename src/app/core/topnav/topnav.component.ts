@@ -142,6 +142,9 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
     if (planned) {
       this.lastLoadedEncounterId = '';
       this.patient = planned as Patient;
+      // Tab windows read storageService.patientData; replace any previous
+      // patient's data so their headers render for this patient.
+      this.storageService.setPatientData(this.patient);
       return;
     }
     if (
