@@ -8,7 +8,7 @@ const WRITE_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
 const WRITE_ENDPOINT = /^(save|create|update|delete|replace|release)/i;
 
 const REASONS = {
-  case: 'Saving isn\'t available: this visit has no case in SAP yet, and documents must be saved to a case.',
+  case: 'Nothing has been submitted to SAP, as there is no SAP case yet',
   movement: 'Saving isn\'t available: this case has no movement in SAP, and documents must be filed to a ' +
     'movement. Please contact support if this is unexpected.'
 };
@@ -51,7 +51,7 @@ export class EncounterSaveInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const reason = this.blockedReason(req);
     if (!reason) { return next.handle(req); }
-    Swal.fire({ icon: 'warning', title: 'Saving isn\'t available', text: REASONS[reason] });
+    Swal.fire({ icon: 'error', title: 'Saving isn\'t available', text: REASONS[reason] });
     // EMPTY rather than an error, so a caller's own error popup can't replace the reason.
     return EMPTY;
   }

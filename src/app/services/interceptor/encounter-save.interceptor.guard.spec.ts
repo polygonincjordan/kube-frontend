@@ -33,7 +33,8 @@ describe('EncounterSaveInterceptor', () => {
   it('stops a case document save on a page with no case, and says why', async () => {
     expect(await send('POST', url, { Patnr: '0000016895', Falnr: '', Lfdnr: '00000' })).toEqual([]);
     expect(next.handle).not.toHaveBeenCalled();
-    expect(shown()).toContain('no case in SAP');
+    expect(shown()).toContain('Nothing has been submitted to SAP, as there is no SAP case yet');
+    expect(shown()).toContain('"icon":"error"');
   });
 
   it('stops a save on a case with no movement, and says why', async () => {
@@ -66,7 +67,7 @@ describe('EncounterSaveInterceptor', () => {
   it('stops a progress note on a Planned page, which names the case CaseId', async () => {
     const note = { CaseId: '', MovementId: '00000', Text: 'note' };
     expect(await send('POST', 'http://api/e-emr/createProgressEntry', note)).toEqual([]);
-    expect(shown()).toContain('no case in SAP');
+    expect(shown()).toContain('Nothing has been submitted to SAP, as there is no SAP case yet');
   });
 
   for (const field of ['Caseno', 'CaseNumber', 'caseNumber', 'CaseNo', 'Case']) {
