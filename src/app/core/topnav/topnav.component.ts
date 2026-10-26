@@ -23,6 +23,7 @@ import { HelperService } from '@services/helper.service';
 // import { PopupService } from '@services/popup.service';
 import { ISidebar, SidebarService } from '@services/sidebar.service';
 import { StorageService } from '@services/storage.service';
+import { plannedVisitBanner } from '@services/planned-visit-patient';
 // import { TranslationsService } from '@services/translations.service';
 import { getThemeColor, setThemeColor } from '@services/utiltiy.service';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
@@ -56,6 +57,7 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
   private patientSubscription: Subscription;
   private userData: any = {};
   private lastLoadedEncounterId = '';
+  plannedVisit = false;
   allergyList: any;
   allergenValues: any;
   allergenGroupValues: any;
@@ -134,6 +136,14 @@ export class TopnavComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private loadCurrentEncounter() {
     const encounterId = this.storageService.getEncounterId();
+    // No case yet: the encounter and CASESET lookups can't run.
+    const planned = plannedVisitBanner(this.storageService.patnr, this.storageService.falnr);
+    this.plannedVisit = !!planned;
+    if (planned) {
+      this.lastLoadedEncounterId = '';
+      this.patient = planned as Patient;
+      return;
+    }
     if (
       !this.storageService.einri ||
       !this.storageService.falnr ||

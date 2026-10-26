@@ -24,6 +24,7 @@ import { HelperService } from '@services/helper.service';
 import { StorageService } from '@services/storage.service';
 import { AuthInterceptor } from '@services/interceptor/auth.interceptor.guard';
 import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
+import { EncounterSaveInterceptor } from '@services/interceptor/encounter-save.interceptor.guard';
 import { DischargeOrderComponent } from './discharge-order/discharge-order.component';
 import { TemplatePopupComponent } from './discharge-order/template-popup/template-popup.component';
 import { TemplateDetailPopupComponent } from './discharge-order/template-detail-popup/template-detail-popup.component';
@@ -161,6 +162,7 @@ export const ePrescriptionRoutes: Routes = [
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService,
     ErDischargeordersService, AddministrationService, PatientService, PatientHistoryService,
+    { provide: HTTP_INTERCEPTORS, useClass: EncounterSaveInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }]
 })

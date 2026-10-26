@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { WebeOrderService } from '@services/e-Order/web-e-orders.service';
 import { AuthInterceptor } from '@services/interceptor/auth.interceptor.guard';
 import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
+import { EncounterSaveInterceptor } from '@services/interceptor/encounter-save.interceptor.guard';
 import { WebService } from '@services/web.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AppComponent } from './app.component';
@@ -51,6 +52,7 @@ export const appRoutes: Routes = [
     WebeOrderService,
     DatePipe,
 
+    { provide: HTTP_INTERCEPTORS, useClass: EncounterSaveInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     MissedMedicationDosesService
