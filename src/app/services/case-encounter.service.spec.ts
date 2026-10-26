@@ -38,32 +38,52 @@ describe('CaseEncounterService', () => {
     service.resolve('10', '1000', '20').subscribe(result => expect(result.Lfdnr).toBe('00002'));
   });
 
+  it('keeps a movement chosen in the link when it belongs to this case', () => {
+    service.resolve('10', '1000', '20', '1').subscribe(result => expect(result.Lfdnr).toBe('00001'));
+  });
+
+  it('ignores a chosen movement that belongs to another case', () => {
+    service.resolve('10', '1000', '20', '00007').subscribe(result => expect(result.Lfdnr).toBe('00002'));
+  });
+
   [
-    ['another case', (r: any) => r.falnr = '21'],
-    ['another patient', (r: any) => r.CASTOPATSET.patnr = '11'],
-    ['another institution', (r: any) => r.einri = '2000'],
-    ['an inconsistent movement', (r: any) => r.lfdnr = '00009'],
-    ['missing movements', (r: any) => { r.lfdnr = ''; r.CASTOMOVEMENTSET.results = []; }],
-  ].forEach(([label, change]: any[]) => {
-    it('rejects ' + label, () => {
+    ['another case', 'invalid-identifiers', (r: any) => r.falnr = '21'],
+    ['another patient', 'patient-case-mismatch', (r: any) => r.CASTOPATSET.patnr = '11'],
+    ['another institution', 'patient-case-mismatch', (r: any) => r.einri = '2000'],
+    ['an inconsistent movement', 'no-movement', (r: any) => r.lfdnr = '00009'],
+    ['missing movements', 'no-movement', (r: any) => { r.lfdnr = ''; r.CASTOMOVEMENTSET.results = []; }],
+  ].forEach(([label, reason, change]: any[]) => {
+    it(`rejects ${label} as ${reason}`, () => {
       change(record);
-      let rejected = false;
-      service.resolve('10', '1000', '20').subscribe({ next: () => fail('Must not resolve'), error: () => rejected = true });
-      expect(rejected).toBe(true);
+      let rejected = '';
+      service.resolve('10', '1000', '20').subscribe({
+        next: () => fail('Must not resolve'), error: error => rejected = error.reason });
+      expect(rejected).toBe(reason);
     });
   });
 
-  it('rejects an empty result and upstream failures', () => {
-    [of({ d: { results: [] } }), throwError(() => new Error('Unavailable'))].forEach(response => {
+  it('rejects another patient even when the chosen movement belongs to the case', () => {
+    record.CASTOPATSET.patnr = '11';
+    let rejected = '';
+    service.resolve('10', '1000', '20', '00001').subscribe({
+      next: () => fail('Must not resolve'), error: error => rejected = error.reason });
+    expect(rejected).toBe('patient-case-mismatch');
+  });
+
+  it('rejects an empty result and upstream failures with their reasons', () => {
+    [[of({ d: { results: [] } }), 'invalid-identifiers'],
+     [throwError(() => new Error('Unavailable')), 'case-lookup-failed']].forEach(([response, reason]: any[]) => {
       api.loadData.and.returnValue(response);
-      let rejected = false;
-      service.resolve('10', '1000', '20').subscribe({ next: () => fail('Must not resolve'), error: () => rejected = true });
-      expect(rejected).toBe(true);
+      let rejected = '';
+      service.resolve('10', '1000', '20').subscribe({ next: () => fail('Must not resolve'), error: error => rejected = error.reason });
+      expect(rejected).toBe(reason);
     });
   });
 
   it('does not query SAP for invalid identifiers', () => {
-    service.resolve('10', '1000', 'undefined').subscribe({ next: () => fail('Must not resolve'), error: () => {} });
+    let rejected = '';
+    service.resolve('10', '1000', 'undefined').subscribe({ next: () => fail('Must not resolve'), error: error => rejected = error.reason });
+    expect(rejected).toBe('invalid-identifiers');
     expect(api.loadData).not.toHaveBeenCalled();
   });
 });

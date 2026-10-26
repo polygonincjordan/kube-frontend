@@ -9,6 +9,7 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { HelperService } from '@services/helper.service';
 import { AuthInterceptor } from '@services/interceptor/auth.interceptor.guard';
 import { LoadingInterceptor } from '@services/interceptor/loading.interceptor.guard';
+import { EncounterSaveInterceptor } from '@services/interceptor/encounter-save.interceptor.guard';
 import { StorageService } from '@services/storage.service';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -145,6 +146,7 @@ export const ePrescriptionRoutes: Routes = [
     ImportMedicationComponent,
   ],
   providers: [EPrescriptionService, HelperService, DatePipe, StorageService, PatientHistoryService,
+    { provide: HTTP_INTERCEPTORS, useClass: EncounterSaveInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }]
 })

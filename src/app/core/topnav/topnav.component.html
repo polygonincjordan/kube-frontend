@@ -39,7 +39,15 @@
           patient?.financeCat
           }}</span>
       </div>
-      <div class="user-detail col-md-4">
+      <ng-container *ngIf="plannedVisit">
+        <div class="user-detail col-md-4">
+          <span class="text-white w-100 d-inline-block align-top"><b>Planned visit · No case yet</b></span>
+        </div>
+        <div class="user-detail col-md-4">
+          <span class="text-white w-100 d-inline-block align-top">Allergies and Dx not shown: no case in SAP yet</span>
+        </div>
+      </ng-container>
+      <div class="user-detail col-md-4" *ngIf="!plannedVisit">
         <span class="text-white w-100 d-inline-block align-top" title="{{getHeaderPatientDetail(patient)}}"><b>
             {{ patient?.isInPatient ? "In-Patient" : "Outpatient" }} -
             {{ getHeaderPatientDetail(patient) }}
@@ -57,7 +65,7 @@
         </span>
         <span class="text-white w-100 d-inline-block align-top">Attending Physician: {{ patient?.careManager }}</span>
       </div>
-      <div class="user-detail col-md-4">
+      <div class="user-detail col-md-4" *ngIf="!plannedVisit">
         <span class="text-white w-100 d-inline-block align-top" title="Allergies - {{ patient?.allergyInfo }}">Allergies
           - {{ patient?.allergyInfo }}</span>
         <span class="text-white w-100 d-inline-block align-top" title="Dx - {{patient?.primDiaTxt}}">Dx - {{

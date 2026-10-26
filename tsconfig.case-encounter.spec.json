@@ -12,7 +12,9 @@
     "src/polyfills.ts",
     "src/app/services/case-encounter.service.spec.ts",
     "src/app/core/header/header-case-navigation.spec.ts",
-    "src/app/services/interceptor/patient-encounter.guard.spec.ts"
+    "src/app/services/interceptor/patient-encounter.guard.spec.ts",
+    "src/app/services/planned-visit-patient.spec.ts",
+    "src/app/services/interceptor/encounter-save.interceptor.guard.spec.ts"
   ],
   "include": [
     "src/**/*.d.ts"

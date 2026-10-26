@@ -14,6 +14,7 @@ import { PatientService } from '@services/e-kardex/patient.service';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { catchError, of } from 'rxjs';
 import { AdminAttechmentComponent } from 'src/app/shared-module/admin-attechment/admin-attechment.component';
+import { rememberPlannedVisitPatient } from '@services/planned-visit-patient';
 
 @UntilDestroy()
 @Component({
@@ -511,10 +512,12 @@ export class MyClinicComponent implements OnInit,OnDestroy {
     this.FALNR = data.FALNR;
     this.EINRI = data.EINRI;
     this.LFDBW = data.LFDBW;
+    rememberPlannedVisitPatient(data.PATNR, data.PATIENT);
   }
   openModuleKardex(data) {
     if (data.BESSTATTEXT == 'Planned') {
       if (data.BESSTATTEXT == 'Planned' && data.PATNR) {
+        rememberPlannedVisitPatient(data.PATNR, data.PATIENT);
         window.open(
           'e-kardex?patnr=' +
           data.PATNR +
