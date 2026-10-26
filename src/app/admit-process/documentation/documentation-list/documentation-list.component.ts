@@ -38,34 +38,35 @@ import { hasPreviousDocumentVersions } from '@services/document-version-history.
   styleUrls: ['./documentation-list.component.scss'],
 })
 export class DocumentationListComponent implements OnInit {
-  // Matched by type code because SAP cuts DtidText to 40 characters.
-  private readonly ALLOWED_DOCUMENT_TYPES = [
-    "ZMED_PDASM", // Paediatrics Physician Admission Assessment
-    "ZMED_EDUAS", // Education Assessment
-    "ZMED_NEODS", // Neonatal Discharge Summary
-    "ZMED_TRFAS", // Transfer Assessment
-    "ZMED_ORRPT", // Operation Report
-    "ZMED_PHASM", // Physician Assessment
-    "ZMED_ATCHM", // Document Attachment
-    "ZMED_MEDRP", // Medical Report
-    "ZMED_NBASM", // NewBorn Assessment Form
-    "ZMED_NEOMD", // Neonatal Medical Report
-    "ZMED_NEOPN", // Neonatal Progress Note
-    "ZMED_NICAD", // NICU Admission Note
-    "ZMED_OBANT", // Obstetric VTE Risk Assess&Mgt Antepartum
-    "ZMED_OBPHY", // Obstetrics & Gynecology Physician Assessment
-    "ZMED_OBPPT", // Obstetric VTE Risk Assess&Mgt Postpartum
-    "ZMED_OPERT", // Department of Surgery - Operation Notes
-    "ZMED_PHDIS", // Physician Discharge Summary
-    "ZMED_SOAP", // SOAP
-    "ZMED_VISIT" // Visit Note
-  ];
-  // Shown read-only in Patient profile only; not created from this screen.
-  private readonly PROFILE_ONLY_DOCUMENT_TYPES = [
-    "ZMED_PAIN", // Pain Assessment
-    "ZMED_PACR", // Post Anaesthesia Care Record
-    "ZMED_SRGPP" // Surgical Passport
-  ];
+  // Physician document filter disabled: every document type is shown.
+  // // Matched by type code because SAP cuts DtidText to 40 characters.
+  // private readonly ALLOWED_DOCUMENT_TYPES = [
+  //   "ZMED_PDASM", // Paediatrics Physician Admission Assessment
+  //   "ZMED_EDUAS", // Education Assessment
+  //   "ZMED_NEODS", // Neonatal Discharge Summary
+  //   "ZMED_TRFAS", // Transfer Assessment
+  //   "ZMED_ORRPT", // Operation Report
+  //   "ZMED_PHASM", // Physician Assessment
+  //   "ZMED_ATCHM", // Document Attachment
+  //   "ZMED_MEDRP", // Medical Report
+  //   "ZMED_NBASM", // NewBorn Assessment Form
+  //   "ZMED_NEOMD", // Neonatal Medical Report
+  //   "ZMED_NEOPN", // Neonatal Progress Note
+  //   "ZMED_NICAD", // NICU Admission Note
+  //   "ZMED_OBANT", // Obstetric VTE Risk Assess&Mgt Antepartum
+  //   "ZMED_OBPHY", // Obstetrics & Gynecology Physician Assessment
+  //   "ZMED_OBPPT", // Obstetric VTE Risk Assess&Mgt Postpartum
+  //   "ZMED_OPERT", // Department of Surgery - Operation Notes
+  //   "ZMED_PHDIS", // Physician Discharge Summary
+  //   "ZMED_SOAP", // SOAP
+  //   "ZMED_VISIT" // Visit Note
+  // ];
+  // // Shown read-only in Patient profile only; not created from this screen.
+  // private readonly PROFILE_ONLY_DOCUMENT_TYPES = [
+  //   "ZMED_PAIN", // Pain Assessment
+  //   "ZMED_PACR", // Post Anaesthesia Care Record
+  //   "ZMED_SRGPP" // Surgical Passport
+  // ];
   readonly isReleasedDocument = isDocumentReleased;
   @ViewChild(NeonatalDischDocumentComponent) NeonatalDischDocumentComp: NeonatalDischDocumentComponent;
   @ViewChild('diagnosisHistory', { static: true })
@@ -591,13 +592,16 @@ export class DocumentationListComponent implements OnInit {
           }
         })
         if (type == '2') {
-          this.currentVisitDocumetClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
-          this.currentVisitDocumet = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
+          // this.currentVisitDocumetClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
+          // this.currentVisitDocumet = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid));
+          this.currentVisitDocumetClone = data?.d.results;
+          this.currentVisitDocumet = data?.d.results;
           this.currentVisitDocumentNameList = Array.from(
             new Set(this.currentVisitDocumet.map(res => res.DtidText))
           );
         } else {
-          this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid) || this.PROFILE_ONLY_DOCUMENT_TYPES.includes(item.Dtid));
+          // this.documentTypeFilterValueClone = data?.d.results.filter(item => this.ALLOWED_DOCUMENT_TYPES.includes(item.Dtid) || this.PROFILE_ONLY_DOCUMENT_TYPES.includes(item.Dtid));
+          this.documentTypeFilterValueClone = data?.d.results;
           // this.documentTypeFilterValue = _success.d.results;
           this.filterByPeriod();
           this.sort();
