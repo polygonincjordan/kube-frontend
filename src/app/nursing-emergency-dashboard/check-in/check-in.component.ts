@@ -1314,6 +1314,11 @@ export class CheckInComponent implements OnInit {
         // Handle triage popup open based on condition
         console.log('latestDocumentData', latestDocumentData);
         console.log('triageListData', triageListData);
+        // A released triage cannot be saved again, so show its PDF instead of the editable form
+        if (latestDocumentData?.StatusTxt === 'Released') {
+          this.openReleasedDocPdf(latestDocumentData);
+          return;
+        }
         // Do whatever processing you need with the responses here
         if (latestDocumentData === undefined) {
           this.triageModal.openModalForMain(data, '', triageListData);
@@ -1336,12 +1341,22 @@ export class CheckInComponent implements OnInit {
   }
 
   openReleasedDocPdf(traigeDetails: any) {
-    this.emergencyService.getTriageReleasedPdfUrl(traigeDetails).subscribe((res: any) => {
-      let byteArray = new Uint8Array(atob(res?.d?.AttachmentData).split("").map(char => char.charCodeAt(0)));
-      let file = new Blob([byteArray], { type: "application/pdf" });
-      this.pdfUrl = file;
-      this.pdfFormOpen();
-    })
+    this.emergencyService.getTriageReleasedPdfUrl(traigeDetails).subscribe({
+      next: (res: any) => {
+        let byteArray = new Uint8Array(atob(res?.d?.AttachmentData).split("").map(char => char.charCodeAt(0)));
+        let file = new Blob([byteArray], { type: "application/pdf" });
+        this.pdfUrl = file;
+        this.pdfFormOpen();
+      },
+      error: () => {
+        Swal.fire({
+          text: 'The triage document is released, but its PDF could not be opened.',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' },
+        });
+      },
+    });
   }
 
   pdfFormOpen() {
