@@ -814,6 +814,11 @@ alreadySelected(){
             this.prioritySaveFailed('An existing Priority differs from this ER Admission. Review the loaded Priority and retry Save.');
             return;
           }
+          // Priority is changed elsewhere; SAP confirmed an unchanged one needs no re-save.
+          if (this.triageList.some(item => item.TriagePriorityCode === currentPriorityCode)) {
+            this.triageSaveCompleted();
+            return;
+          }
         }
         this.savePriorityDocument(priorityCode);
       },
@@ -860,12 +865,16 @@ alreadySelected(){
         }
         this.selectedTriageDetails = data.d;
         this.isTriagePrioritySelected = true;
-        this.isSaving = false;
-        this.sharedService.successSwallModel('Triage history saved successfully');
-        this.modalRefForAllergy?.hide();
+        this.triageSaveCompleted();
       },
       error: () => this.prioritySaveFailed(),
     });
+  }
+
+  private triageSaveCompleted(): void {
+    this.isSaving = false;
+    this.sharedService.successSwallModel('Triage history saved successfully');
+    this.modalRefForAllergy?.hide();
   }
 
   private prioritySaveFailed(detail = ''): void {

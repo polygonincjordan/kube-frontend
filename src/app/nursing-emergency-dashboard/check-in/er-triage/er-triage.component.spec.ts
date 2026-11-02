@@ -60,14 +60,28 @@ describe('Emergency Triage Priority save', () => {
     expect(hide).toHaveBeenCalledTimes(1);
   });
 
-  it('uses fresh Priority keys and code, never assessment keys or a stale opening record', () => {
+  it('saves only admission when the fresh lookup finds the same existing Priority', () => {
     component.selectedTriageDetails = { ...PRIORITY, Dockey: 'STALE-KEY', Dokvr: '00' };
     component.triageForm.patchValue({ Dockey: 'ASSESSMENT-KEY', TriagePriority: '02' });
     component.Zversion = '99';
     emergency.triagePriorityList.and.returnValue(of({ d: { results: [PRIORITY] } }));
     component.saveTraige();
-    expect(emergency.saveTriage).toHaveBeenCalledWith(jasmine.objectContaining(PRIORITY));
+    expect(emergency.saveNurEmrTriage).toHaveBeenCalledTimes(1);
+    expect(emergency.saveTriage).not.toHaveBeenCalled();
+    expect(component.selectedTriageDetails).toEqual(PRIORITY);
     expect(component.triageForm.value.TriagePriority).toBe('02');
+    expect(shared.successSwallModel).toHaveBeenCalledTimes(1);
+    expect(shared.waringSwallModel).not.toHaveBeenCalled();
+    expect(hide).toHaveBeenCalledTimes(1);
+    expect(component.isSaving).toBe(false);
+  });
+
+  it('does not report success for an existing Priority without a valid code', () => {
+    component.triageForm.patchValue({ TriagePriority: '' });
+    emergency.triagePriorityList.and.returnValue(of({ d: { results: [{ ...PRIORITY, TriagePriorityCode: '' }] } }));
+    component.saveTraige();
+    expect(emergency.saveTriage).not.toHaveBeenCalled();
+    expectPartialSave();
   });
 
   it('waits for admission, lookup and a nonempty Priority response before closing', () => {
@@ -124,14 +138,14 @@ describe('Emergency Triage Priority save', () => {
 
   it('reuses admission and discovers Priority created before a lost response on retry', () => {
     component.triageForm.patchValue({ TriagePriority: '02' });
-    emergency.saveTriage.and.returnValues(throwError(() => new Error('Response lost')), of({ d: PRIORITY }));
+    emergency.saveTriage.and.returnValue(throwError(() => new Error('Response lost')));
     emergency.triagePriorityList.and.returnValues(of({ d: { results: [] } }), of({ d: { results: [PRIORITY] } }));
     component.saveTraige();
     component.saveTraige();
     expect(emergency.saveNurEmrTriage.calls.argsFor(0)[0].Dockey).toBe('');
     expect(emergency.saveNurEmrTriage.calls.argsFor(1)[0].Dockey).toBe('ADMISSION-KEY');
+    expect(emergency.saveTriage).toHaveBeenCalledTimes(1);
     expect(emergency.saveTriage.calls.argsFor(0)[0].Dockey).toBe('');
-    expect(emergency.saveTriage.calls.argsFor(1)[0]).toEqual(jasmine.objectContaining(PRIORITY));
     expect(shared.successSwallModel).toHaveBeenCalledTimes(1);
   });
 
@@ -143,7 +157,9 @@ describe('Emergency Triage Priority save', () => {
     expect(emergency.saveTriage).not.toHaveBeenCalled();
     expectPartialSave();
     component.saveTraige();
-    expect(emergency.saveTriage).toHaveBeenCalledWith(jasmine.objectContaining(PRIORITY));
+    expect(emergency.saveNurEmrTriage).toHaveBeenCalledTimes(2);
+    expect(emergency.saveTriage).not.toHaveBeenCalled();
+    expect(shared.successSwallModel).toHaveBeenCalledTimes(1);
   });
 
   it('does not overwrite a different Priority discovered after admission saves', () => {
@@ -158,7 +174,7 @@ describe('Emergency Triage Priority save', () => {
     expect(emergency.saveNurEmrTriage.calls.argsFor(1)[0]).toEqual(jasmine.objectContaining({
       Dockey: 'ADMISSION-KEY', TriagePriority: '02',
     }));
-    expect(emergency.saveTriage).toHaveBeenCalledWith(jasmine.objectContaining(PRIORITY));
+    expect(emergency.saveTriage).not.toHaveBeenCalled();
     expect(shared.successSwallModel).toHaveBeenCalledTimes(1);
   });
 
