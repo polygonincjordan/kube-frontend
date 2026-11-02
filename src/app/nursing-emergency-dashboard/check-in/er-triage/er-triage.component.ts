@@ -47,6 +47,7 @@ export class ErTriageComponent implements OnInit {
   socialHistory: boolean = true;
   noHabitApplicable: boolean = false;
   isTriagePrioritySelected:boolean = false;
+  isSaving = false;
   modeArrivalList = [
     { value: '0', label: 'Ambulatory' },
     { value: '1', label: 'Wheel Chair' },
@@ -144,6 +145,7 @@ export class ErTriageComponent implements OnInit {
     const config: ModalOptions = {
       class: 'modal-dialog-centered modal-xl allergy-modal-size allergy-model-height',
       ignoreBackdropClick: true,
+      keyboard: false,
     };
     this.toAllergyArr = [];
     this.toVitalsArr = [];
@@ -171,13 +173,17 @@ export class ErTriageComponent implements OnInit {
     this.storageService.setLfdnr(data.Lfdbw ? data.Lfdbw : data.Lfdnr);
     this.storageService.setPatnr(data.Patnr);
     this.selectedTriageDetails = triageDetails;
+    this.isTriagePrioritySelected = typeof triageDetails?.Dockey === 'string' && !!triageDetails.Dockey.trim();
+    this.isSaving = false;
+    this.Zversion = undefined;
+    this.ZMode = 'I';
+    this.initForm();
     if (documentStatus) {
       this.Zversion = documentStatus.Zversion;
       this.ZMode = 'U';
       this.statusDraftDocDetails(documentStatus);
     };
     this.getDataPatient();
-    this.initForm();
     this.getSocialHistoryHabitList();
   }
 
@@ -275,9 +281,6 @@ export class ErTriageComponent implements OnInit {
   // if traige list status is Draft then call this API
   statusDraftDocDetails(documentStatus) {
     this.emergencyService.getTriageDataIfStatusDraft(documentStatus).subscribe((res: any) => {
-      if(res?.d?.results[0].TriagePriority){
-        this.isTriagePrioritySelected = true
-      }
       this.initForm(res?.d?.results[0]);
       this.toAllergyArr = res?.d?.results[0].TOALLERGIES?.results;
       this.toVitalsArr = res?.d?.results[0].TOVITALSIGNS.results;
@@ -723,11 +726,11 @@ export class ErTriageComponent implements OnInit {
 
   // Main triage documnet post API
   saveTraige() {
-    let checkScalesList: any[] = this.scalesList.filter((res) => {
-      delete res.description;
-      delete res.value;
-      if (res.LastScore) return res;
-    });
+    if (this.isSaving) return;
+    this.isSaving = true;
+    const checkScalesList = this.scalesList
+      .filter(scale => scale.LastScore)
+      .map(({ description, value, ...scale }) => scale);
 
     let updatedList = this.socialHistoryList.map(item => {
       const { isNoConsume, isAddHabit, Status, value, label, Quantity, DateFrom, Habitid, ...rest } = item;
@@ -754,13 +757,13 @@ export class ErTriageComponent implements OnInit {
     // Subscribe using an object to define handlers
     this.emergencyService.saveNurEmrTriage(payload).subscribe({
       next: (data: any) => {
-        // Handle successful data retrieval
-        this.updateTriageStatus();
-        this.sharedService.successSwallModel('Triage history saved successfully');
-        this.modalRefForAllergy?.hide();
+        if (typeof data?.d?.Dockey === 'string' && data.d.Dockey.trim()) {
+          this.triageForm.patchValue({ Dockey: data.d.Dockey });
+        }
+        this.updateTriageStatus(payload.TriagePriority);
       },
       error: (error: any) => {
-        // Handle errors if the request fails
+        this.isSaving = false;
         this.sharedService.waringSwallModel(`POST Error : ${error?.error?.error?.message?.value}`);
       }
     });
@@ -785,12 +788,55 @@ alreadySelected(){
   return this.scalesList.some(scale => scale.Dockey && scale.Dockey.trim() !== '');
 }
  
-  public updateTriageStatus(): void {
+  public updateTriageStatus(priorityCode = this.triageForm.value.TriagePriority): void {
+    // A failed save may have reached SAP. Re-read before retrying with empty keys.
+    this.emergencyService.triagePriorityList({
+      patnr: this.selectedTableDetails.Patnr,
+      falnr: this.selectedTableDetails.Falnr,
+    }).subscribe({
+      next: (response: any) => {
+        const records = response?.d?.results;
+        if (!Array.isArray(records) || records.length > 1 ||
+          (records.length === 1 && (
+            typeof records[0]?.Dockey !== 'string' || !records[0].Dockey.trim() ||
+            typeof records[0].Dokst !== 'string' || typeof records[0].Dokvr !== 'string'
+          ))) {
+          this.prioritySaveFailed('The existing Priority document could not be verified.');
+          return;
+        }
+        this.selectedTriageDetails = records[0];
+        this.isTriagePrioritySelected = records.length === 1;
+        if (this.isTriagePrioritySelected) {
+          // An existing Priority must not be changed from the admission form.
+          const currentPriorityCode = records[0].TriagePriorityCode;
+          this.triageForm.patchValue({ TriagePriority: currentPriorityCode });
+          if (priorityCode !== currentPriorityCode) {
+            this.prioritySaveFailed('An existing Priority differs from this ER Admission. Review the loaded Priority and retry Save.');
+            return;
+          }
+          // Priority is changed elsewhere; SAP confirmed an unchanged one needs no re-save.
+          if (this.triageList.some(item => item.TriagePriorityCode === currentPriorityCode)) {
+            this.triageSaveCompleted();
+            return;
+          }
+        }
+        this.savePriorityDocument(priorityCode);
+      },
+      error: () => this.prioritySaveFailed('The existing Priority document could not be verified.'),
+    });
+  }
+
+  private savePriorityDocument(priorityCode: string): void {
+    const priority = this.triageList.find(item => item.TriagePriorityCode === priorityCode);
+    if (!priority) {
+      this.prioritySaveFailed('Select a Triage Priority before retrying.');
+      return;
+    }
 
     let payload = {
-      Dockey: this.triageForm.value.Dockey,
-      Dokst: "FR",
-      Dokvr: this.Zversion,
+      Dockey: this.selectedTriageDetails?.Dockey ?? '',
+      Dokst: this.selectedTriageDetails?.Dokst ?? '',
+      Dokvr: this.selectedTriageDetails?.Dokvr ?? '',
       Dtid: "ZMED_TRPRI",
       DtidText: "",
       Einri: this.selectedTableDetails.Einri,
@@ -805,24 +851,41 @@ alreadySelected(){
       Patnr: this.selectedTableDetails.Patnr,
       Referredby: "",
       Released: false,
-      TriageColor: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriageColor,
-      TriagePriorityCode: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].TriagePriorityCode,
-      TriagePriorityText: this.triageList.filter((item) => item.TriagePriorityCode == this.triageForm.value.TriagePriority)[0].label,
+      TriageColor: priority.TriageColor,
+      TriagePriorityCode: priority.TriagePriorityCode,
+      TriagePriorityText: priority.label,
       Zimmr: "",
       Mode: true,
     };
     this.emergencyService.saveTriage(payload).subscribe({
       next: (data: any) => {
-        // Handle successful data retrieval
+        if (typeof data?.d?.Dockey !== 'string' || !data.d.Dockey.trim()) {
+          this.prioritySaveFailed();
+          return;
+        }
+        this.selectedTriageDetails = data.d;
+        this.isTriagePrioritySelected = true;
+        this.triageSaveCompleted();
       },
-      error: (error: any) => {
-        // Handle errors if the request fails
-        this.sharedService.waringSwallModel(`POST Error : ${error?.error?.error?.message?.value}`);
-      },
+      error: () => this.prioritySaveFailed(),
     });
   }
 
+  private triageSaveCompleted(): void {
+    this.isSaving = false;
+    this.sharedService.successSwallModel('Triage history saved successfully');
+    this.modalRefForAllergy?.hide();
+  }
+
+  private prioritySaveFailed(detail = ''): void {
+    this.isSaving = false;
+    this.sharedService.waringSwallModel(
+      `ER Admission saved, but Triage Priority was not saved. ${detail} You can retry Save or close this form.`.replace('  ', ' ')
+    );
+  }
+
   closeMainModel() {
+    if (this.isSaving) return;
     Swal.fire({
       text: 'Are you sure you want to close without saving the data?',
       icon: 'warning',

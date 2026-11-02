@@ -20,7 +20,7 @@ import { PatientService } from '@services/e-kardex/patient.service';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { commonKeyValuePariExt1 } from '@services/e-kardex/interfaces/documents.interface';
-import { Subscription, forkJoin} from 'rxjs';
+import { Subscription, catchError, forkJoin, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HelperService } from '@services/helper.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -1295,25 +1295,37 @@ export class CheckInComponent implements OnInit {
   
 
   openModalForTriage(template, data) {
-    // Assuming this is within a method of your component or service
     const json = { "patnr": data.Patnr, "falnr": data.Falnr };
-    console.log(data);
     // Combine both API calls using forkJoin
     forkJoin([
-      this.emergencyService.triagePriorityList(json),
+      // Priority lookup failure must not prevent saving the ER admission.
+      this.emergencyService.triagePriorityList(json).pipe(catchError(() => of(null))),
       this.emergencyService.getTriageLatestDocumentSet(data)
     ]).subscribe({
       next: ([triageListResponse, latestDocumentResponse]: [any, any]) => {
         // Handle successful responses from both API calls
 
         // Handle triagePriorityList response
-        const triageListData = triageListResponse.d.results[0];
+        const priorities = triageListResponse?.d?.results;
+        const triageListData = Array.isArray(priorities) && priorities.length === 1
+          ? priorities[0] : undefined;
 
         // Handle getTriageLatestDocumentSet response
         const latestDocumentData = latestDocumentResponse.d.results[0];
         // Handle triage popup open based on condition
-        console.log('latestDocumentData', latestDocumentData);
-        console.log('triageListData', triageListData);
+        // A released triage cannot be saved again, so show its PDF instead of the editable form
+        if (latestDocumentData?.StatusTxt === 'Released') {
+          this.openReleasedDocPdf(latestDocumentData);
+          return;
+        }
+        if (!Array.isArray(priorities) || priorities.length > 1) {
+          Swal.fire({
+            text: 'Triage Priority could not be loaded. You can still save ER Admission; Priority will be checked again when saving.',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+            customClass: { popup: 'myalertpopup' },
+          });
+        }
         // Do whatever processing you need with the responses here
         if (latestDocumentData === undefined) {
           this.triageModal.openModalForMain(data, '', triageListData);
@@ -1336,12 +1348,22 @@ export class CheckInComponent implements OnInit {
   }
 
   openReleasedDocPdf(traigeDetails: any) {
-    this.emergencyService.getTriageReleasedPdfUrl(traigeDetails).subscribe((res: any) => {
-      let byteArray = new Uint8Array(atob(res?.d?.AttachmentData).split("").map(char => char.charCodeAt(0)));
-      let file = new Blob([byteArray], { type: "application/pdf" });
-      this.pdfUrl = file;
-      this.pdfFormOpen();
-    })
+    this.emergencyService.getTriageReleasedPdfUrl(traigeDetails).subscribe({
+      next: (res: any) => {
+        let byteArray = new Uint8Array(atob(res?.d?.AttachmentData).split("").map(char => char.charCodeAt(0)));
+        let file = new Blob([byteArray], { type: "application/pdf" });
+        this.pdfUrl = file;
+        this.pdfFormOpen();
+      },
+      error: () => {
+        Swal.fire({
+          text: 'The triage document is released, but its PDF could not be opened.',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          customClass: { popup: 'myalertpopup' },
+        });
+      },
+    });
   }
 
   pdfFormOpen() {

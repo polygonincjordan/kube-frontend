@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/er-triage-save-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": [
+    "src/test-er-triage-save.ts",
+    "src/polyfills.ts",
+    "src/app/nursing-emergency-dashboard/check-in/er-triage/er-triage.component.spec.ts"
+  ],
+  "include": ["src/**/*.d.ts"]
+}
