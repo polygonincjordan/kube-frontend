@@ -29,8 +29,8 @@
             <div class="arrival-header">
               <label>Arrival & Triage Data</label>
               <div>
-                <button class="triage-model-btn" (click)="closeMainModel()">Cancel</button>
-                <button class="triage-model-btn" (click)="saveTraige()">Save</button>
+                <button type="button" class="triage-model-btn" [disabled]="isSaving" (click)="closeMainModel()">Cancel</button>
+                <button type="button" class="triage-model-btn" [disabled]="isSaving" (click)="saveTraige()">{{ isSaving ? 'Saving...' : 'Save' }}</button>
               </div>
             </div>
           </div>
