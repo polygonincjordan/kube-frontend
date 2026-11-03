@@ -102,7 +102,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   }
 
   onEditAction() {
-    if (this.showTimedScheduleErrors()) { return; }
+    if (this.showDoseErrors()) { return; }
     // if (this.editprofileForm.valid) {
       delete this.editprofileForm.value.AgentidResult;
       delete this.editprofileForm.value.Rcodeid;
@@ -337,7 +337,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   }
 
   /** A timing table in use needs a dose, unit and time in every row before the order is saved. */
-  showTimedScheduleErrors(): boolean {
+  showDoseErrors(): boolean {
     const rows = this.editprofileForm.get('deftimcycleData').value;
     const errors = this.isTimedSchedule() && rows && rows.length ? timedScheduleErrors(rows) : [];
     if (!errors.length) { return false; }

@@ -180,7 +180,7 @@ export class EditMedicationComponent implements OnInit {
 
   onEditAction() {
     if (this.isValidityConfirmationOpen) { return; }
-    if (this.showTimedScheduleErrors()) { return; }
+    if (this.showDoseErrors()) { return; }
     if (needsEditMedicationValidityReminder(this.editprofileForm, this.automaticValidity)) {
       const unitText = this.addministrationService.durationUnitList?.find(
         unit => unit.Unit === this.editprofileForm.value.Pduru
@@ -446,7 +446,7 @@ export class EditMedicationComponent implements OnInit {
   }
 
   /** A timing table in use needs a dose, unit and time in every row before the order is saved. */
-  showTimedScheduleErrors(): boolean {
+  showDoseErrors(): boolean {
     const rows = this.editprofileForm.get('deftimcycleData').value;
     const errors = this.isTimedSchedule() && rows && rows.length ? timedScheduleErrors(rows) : [];
     if (!errors.length) { return false; }

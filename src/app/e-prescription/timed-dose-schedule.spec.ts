@@ -8,7 +8,7 @@ import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EMPTY } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 import swal from 'sweetalert2';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
@@ -49,6 +49,7 @@ describe('Inpatient create order: DEFTIM and DAILY timing table', () => {
   let fixture: ComponentFixture<CreateAdministrationComponent>;
   let component: CreateAdministrationComponent;
   let prescriptionService: any;
+  let unitList$: Subject<any>;
 
   const row = () => component.drugArray.at(0) as FormGroup;
   const query = (selector: string) => fixture.nativeElement.querySelector(selector);
@@ -103,9 +104,11 @@ describe('Inpatient create order: DEFTIM and DAILY timing table', () => {
     }));
     prescriptionService = {
       parameters: {}, loadParameters: () => ({}),
-      loadData: jasmine.createSpy('loadData').and.returnValue(EMPTY),
+      loadData: jasmine.createSpy('loadData').and.callFake((url: string) =>
+        typeof url === 'string' && url.startsWith('e-prescription/DurgUnitlist') ? unitList$ : EMPTY),
       postData: jasmine.createSpy('postData').and.returnValue(EMPTY),
     };
+    unitList$ = new Subject();
     await TestBed.configureTestingModule({
       declarations: [CreateAdministrationComponent, FrequencyDeftimComponent],
       imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule,
@@ -230,6 +233,35 @@ describe('Inpatient create order: DEFTIM and DAILY timing table', () => {
         expect(tableDoses().map(d => d.value)).toEqual(['75']);
         expect(row().value.Quan).toBe(75);
         expect(row().value.Dosdef).toBe('0(08:00)-75(20:00)');
+        flush();
+      }));
+
+      it('starts the timing table over when the medicine changes while it is open', fakeAsync(() => {
+        render();
+        chooseFrequency(frequency);
+        type(tableDoses()[0], '150');
+        addTime(20);
+        type(tableDoses()[1], '75');
+
+        component.onSelectMedicine({ data: { Agentid: 'B1', Drugid: 'DB', Drugname: 'Medicine B', Formatdescr: 'Tablet' }, index: 0 });
+        settle();
+        expect(query('frequency-deftim')).toBeNull();
+        expect(row().value.Quan).toBe('');
+        unitList$.next({ body: { d: { results: [{ Agentid: 'B1', Mseht: 'ML', Agent: '', Meinh: 'ML', Quant: '10.000' }] } } });
+        settle();
+
+        expect(tableDoses().map(d => d.value)).toEqual(['']);
+        expect(row().value.deftimcycleData[0].deftimDosageUnit).toBe('ML');
+        expect(row().value.Dosdef).toBe('(08:00)');
+        expect(mainDose().value).toBe('');
+        expect(mainDose().readOnly).toBe(true);
+        // Editing the new table no longer brings the previous medicine's dose back.
+        type(tableDoses()[0], '');
+        expect(row().value.Quan).toBe('');
+        component.onSubmitData();
+        settle();
+        expect(prescriptionService.postData).not.toHaveBeenCalled();
+        expect(lastPopupText()).toBe('Missing Test medication: row 1 (08:00): Dose');
         flush();
       }));
 

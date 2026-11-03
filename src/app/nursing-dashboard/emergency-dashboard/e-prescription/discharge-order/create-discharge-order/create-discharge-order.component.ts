@@ -5,6 +5,7 @@ import { EPrescriptionService, PatientMedicationData, TemplateMedDataList } from
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../addition-info-popup/addition-info-popup.component';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { missingDose } from '../../../../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'create-discharge-order',
@@ -375,9 +376,18 @@ export class CreateDischargeOrderComponent implements OnInit {
     } as any);
   }
 
+  /** Names each medicine without a dose; this screen has no timing table, so every order needs one. */
+  showDoseErrors(): boolean {
+    const noDose = missingDose(this.drugArray.controls, []);
+    if (!noDose) { return false; }
+    this.showErrorPopup('Enter the dose', noDose.text, 'Error');
+    return true;
+  }
+
   onSubmitData() {
     let postObject = this.ePrescriptionService.loadParameters(true, true, true, true)
     this.isFormSubmitted = true;
+    if (this.showDoseErrors()) { return; }
     if (this.drugArray.controls && this.drugArray.controls.length) {
       const invalidForms = this.drugArray.controls.filter(d => !d.valid && d.touched);
       const validForms = this.drugArray.controls.filter(d => d.valid && d.touched);

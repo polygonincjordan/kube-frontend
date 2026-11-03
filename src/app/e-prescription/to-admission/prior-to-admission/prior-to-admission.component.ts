@@ -12,7 +12,7 @@ import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-
 import { TemplateDescriptionComponent } from '../../administration/create-administration/template-description/template-description.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { PlannedAdministrationComponent } from '../planned-administration/planned-administration.component';
-import { firstScheduledDose, incompleteTimedSchedule, isTimedFrequency, scheduledTime, timedDosdef, timedScheduleRows } from '../../../shared-module/timed-dose-schedule';
+import { firstScheduledDose, incompleteTimedSchedule, missingDose, isTimedFrequency, scheduledTime, restartedTimedSchedule, timedDosdef, timedScheduleRows } from '../../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'prior-to-admission',
@@ -212,6 +212,12 @@ export class PriorToAdmissionComponent implements OnInit {
     if (event.data) {
       // The physician enters the dose; a previous medicine's dose must not carry over.
       this.drugArray.controls[event.index].patchValue({ Quan: '' });
+      // A timing table starts over for the new medicine once its units are known.
+      const restartSchedule = this.isTimedSchedule(this.drugArray.controls[event.index]);
+      if (restartSchedule) {
+        this.drugArray.controls[event.index].patchValue({ IsFrequencyDeftim: false, Dosdef: '' });
+        this.drugArray.controls[event.index].get('deftimcycleData').setValue([]);
+      }
       this.defaultAgentId = event.data.Agentid;
       const filter = {
         einri: this.ePrescriptionService.parameters.einri,
@@ -252,6 +258,7 @@ export class PriorToAdmissionComponent implements OnInit {
               AgentidResult: resp.body.d.results,
               Quanunit: resp.body.d.results[0].Meinh,
             });
+            if (restartSchedule) { this.restartTimedSchedule(event.index); }
           }
         }
       });
@@ -340,13 +347,23 @@ export class PriorToAdmissionComponent implements OnInit {
     return isTimedFrequency(this.addministrationService.frequencyList, row.get('N1znr').value);
   }
 
+  /** Starts the timing table over for a new medicine: one 08:00 time without a dose. */
+  restartTimedSchedule(index: number) {
+    const row = this.drugArray.controls[index];
+    const scheduleRows = restartedTimedSchedule(row.value);
+    row.get('deftimcycleData').setValue(scheduleRows);
+    row.patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: '' });
+  }
+
   firstScheduledTime(row: AbstractControl): string {
     const rows = row.get('deftimcycleData').value;
     return rows && rows.length ? scheduledTime(rows[0].deftimTime) : '';
   }
 
-  /** Opens the first timing table with a missing dose, unit or time and names what is missing. */
-  showTimedScheduleErrors(): boolean {
+  /** Names a medicine without a dose, or opens the first timing table with a missing dose, unit or time and names what is missing. */
+  showDoseErrors(): boolean {
+    const noDose = missingDose(this.drugArray.controls, this.addministrationService.frequencyList);
+    if (noDose) { this.showErrorPopup('Enter the dose', noDose.text, 'Error'); return true; }
     const incomplete = incompleteTimedSchedule(this.drugArray.controls, this.addministrationService.frequencyList);
     if (!incomplete) { return false; }
     incomplete.order.patchValue({ IsFrequencyDeftim: true, IsmoDetails: false });
@@ -592,7 +609,7 @@ export class PriorToAdmissionComponent implements OnInit {
 
   onSubmitData() {
     // Both the prior-to-admission and the planned (template) orders are sent from here.
-    if (this.showTimedScheduleErrors() || this.template.showTimedScheduleErrors()) { return; }
+    if (this.showDoseErrors() || this.template.showDoseErrors()) { return; }
     let Payload = this.ePrescriptionService.loadParameters(true, true, true, true);
     this.ePrescriptionService.drugArrayActions$.next({isSubmitted: true, value:null});
     const invalidForms = this.ePrescriptionService.drugArrayActions$.getValue().value;

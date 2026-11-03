@@ -62,6 +62,11 @@ export function timedScheduleRows(order: any): any[] {
   return doses.map(({ dose, time }) => ({ deftimDose: dose, deftimDosageUnit: unit, deftimTime: new Date(`${today}T${time}`), Agentid: order.Agentid }));
 }
 
+/** A new medicine's timing table: one 08:00 time without a dose, in the order's current unit. */
+export function restartedTimedSchedule(order: any): any[] {
+  return timedScheduleRows({ ...order, Dosdef: '', Quan: '' });
+}
+
 /** Dosdef for the timing rows, listing 08:00 as 0 when no dose is scheduled then. */
 export function timedDosdef(rows: any[]): string {
   const doses = rows.map(row => `${row.deftimDose}(${scheduledTime(row.deftimTime)})`);
@@ -96,4 +101,16 @@ export function incompleteTimedSchedule(orders: AbstractControl[], frequencyList
   if (!incomplete.length) { return null; }
   const name = (d: { order: AbstractControl; index: number }) => (d.order.get('Result_Drug_Name') && d.order.get('Result_Drug_Name').value) || `Medication ${d.index + 1}`;
   return { order: incomplete[0].order, text: `Missing ${incomplete.map(d => `${name(d)}: ${d.errors.join('; ')}`).join(' | ')}` };
+}
+
+/**
+ * The first touched order with a medicine but no dose outside a timing table, with a message
+ * naming each such medicine; null when every entered medicine has a dose.
+ */
+export function missingDose(orders: AbstractControl[], frequencyList: any[],
+  frequencyKey: (order: AbstractControl) => any = order => order.get('N1znr').value): { order: AbstractControl; text: string } | null {
+  const missing = orders.filter(order => order.touched && order.get('Result_Drug_Name') && order.get('Result_Drug_Name').value
+    && isMissingDose(order.get('Quan').value) && !isTimedFrequency(frequencyList, frequencyKey(order)));
+  if (!missing.length) { return null; }
+  return { order: missing[0], text: `Enter the dose for ${missing.map(order => order.get('Result_Drug_Name').value).join(', ')}` };
 }

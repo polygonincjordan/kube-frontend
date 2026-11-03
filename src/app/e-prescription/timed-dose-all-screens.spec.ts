@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { FormArray, FormGroup } from '@angular/forms';
 import { EMPTY, of } from 'rxjs';
 import swal from 'sweetalert2';
+import { scheduledTime as scheduled } from '../shared-module/timed-dose-schedule';
 import { CreateAdministrationComponent } from './administration/create-administration/create-administration.component';
 import { PlannedAdministrationComponent } from './to-admission/planned-administration/planned-administration.component';
 import { PriorToAdmissionComponent } from './to-admission/prior-to-admission/prior-to-admission.component';
@@ -197,7 +198,7 @@ screens.forEach(screen => describe(`${screen.name}: dose and timing table`, () =
         { deftimDose: 150, deftimDosageUnit: 'MG', deftimTime: at(8), Agentid: 'A2' },
         { deftimDose: null, deftimDosageUnit: 'MG', deftimTime: at(20), Agentid: 'A2' },
       ], 0, units());
-      expect(component.showTimedScheduleErrors()).toBe(true);
+      expect(component.showDoseErrors()).toBe(true);
       expect(popupText()).toBe('Missing Test medication: row 2 (20:00): Dose');
       expect(row().value.IsFrequencyDeftim).toBe(true);
       if (screen.post) {
@@ -206,7 +207,36 @@ screens.forEach(screen => describe(`${screen.name}: dose and timing table`, () =
         expect(prescription.postData.calls.all().filter(c => c.args[0] === screen.post.path).length).toBe(0);
       }
     });
+
+    it('starts the timing table over when another medicine is selected', () => {
+      completeRow();
+      chooseFrequency(DEFTIM);
+      component.FrequencySetcycle([
+        { deftimDose: 150, deftimDosageUnit: 'MG', deftimTime: at(8), Agentid: 'A2' },
+        { deftimDose: 75, deftimDosageUnit: 'MG', deftimTime: at(20), Agentid: 'A2' },
+      ], 0, units());
+      component.onSelectMedicine(screen.medicine(0));
+      expect(row().value.deftimcycleData.map(d => [d.deftimDose, scheduled(d.deftimTime)])).toEqual([['', '08:00']]);
+      expect(row().value.Dosdef).toBe('(08:00)');
+      expect(row().value.Quan).toBe('');
+      expect(row().value.IsFrequencyDeftim).toBe(true);
+      expect(component.showDoseErrors()).toBe(true);
+      expect(popupText()).toBe('Missing Test medication: row 1 (08:00): Dose');
+    });
   }
+
+  it('names a medicine without a dose instead of blocking silently', () => {
+    completeRow();
+    chooseFrequency(Q12H);
+    expect(component.showDoseErrors()).toBe(true);
+    expect((swal.fire as jasmine.Spy).calls.mostRecent().args[0].title).toBe('Enter the dose');
+    expect(popupText()).toBe('Enter the dose for Test medication');
+    if (screen.post) {
+      prescription.postData.calls.reset();
+      screen.post.submit(component);
+      expect(prescription.postData.calls.all().filter(c => c.args[0] === screen.post.path).length).toBe(0);
+    }
+  });
 
   if (screen.post) {
     it('sends every dose of a complete schedule as entered', () => {
@@ -266,6 +296,30 @@ describe('Orders sent by a parent screen: timing table check', () => {
     const popup = spyOn(chemotherapy, 'showErrorPopup');
     chemotherapy.CreateEventData();
     expect(popup).toHaveBeenCalledWith('Complete the timing table', 'Missing Test medication: row 1 (08:00): Dose', 'Error');
+  });
+
+  it('chemotherapy names a premedication without a dose instead of dropping it', () => {
+    const { prescription, administration } = services();
+    const premedications: any = new PremedicationsComponent(null, prescription, {} as any, null, administration, cdr as any);
+    incompleteRows(premedications);
+    premedications.drugArray.at(0).patchValue({ N1znr: Q12H, deftimcycleData: [] });
+    const chemotherapy: any = Object.create(ChemotherapyComponent.prototype);
+    Object.assign(chemotherapy, { addministrationService: administration, CreateEventdata: premedications.drugArray });
+    const popup = spyOn(chemotherapy, 'showErrorPopup');
+    chemotherapy.CreateEventData();
+    expect(popup).toHaveBeenCalledWith('Enter the dose', 'Enter the dose for Test medication', 'Error');
+  });
+
+  it('nursing emergency discharge names a medicine without a dose', () => {
+    const { prescription } = services();
+    const discharge: any = new NursingEmergencyDischarge(prescription, null, null);
+    discharge.MedicationForm = new FormGroup({ MedicationData: new FormArray([]) });
+    discharge.drugArray.push(discharge.generateForm());
+    discharge.drugArray.at(0).patchValue({ Result_Drug_Name: 'Test medication' });
+    discharge.drugArray.at(0).markAsTouched();
+    discharge.onSubmitData();
+    expect(prescription.postData).not.toHaveBeenCalled();
+    expect((swal.fire as jasmine.Spy).calls.mostRecent().args[0].text).toBe('Enter the dose for Test medication');
   });
 });
 

@@ -155,6 +155,7 @@ describe('Inpatient create order: dose and dosage unit', () => {
     expect(create.isFormSubmitted).toBe(true);
     expect(row().touched).toBe(true);
     expect(row().get('Quan').errors).toEqual({ required: true });
+    expect((swal.fire as jasmine.Spy).calls.mostRecent().args[0].text).toBe('Enter the dose for Test medication');
   });
 
   it('loads saved template doses unchanged', () => {

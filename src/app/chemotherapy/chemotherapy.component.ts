@@ -12,7 +12,7 @@ import swal from 'sweetalert2';
 import { ChemoPanelComponent } from './chemo-panel/chemo-panel.component';
 import { HistoryDiagnosisComponent } from './history-diagnosis/history-diagnosis.component';
 import { ClinicWebCamComponent } from './web-cam/web-cam.component';
-import { incompleteTimedSchedule } from '../shared-module/timed-dose-schedule';
+import { incompleteTimedSchedule, missingDose } from '../shared-module/timed-dose-schedule';
 @Component({
   selector: 'chemotherapy',
   templateUrl: './chemotherapy.component.html',
@@ -539,9 +539,11 @@ export class ChemotherapyComponent {
 
   CreateEventData() {
     this.isFormSubmitted = true;
-    // Premedication and chemotherapeutic orders are not sent with an incomplete timing table.
-    const incomplete = [this.CreateEventdata, this.chemobiologicreset]
-      .filter(Boolean)
+    // Premedication and chemotherapeutic orders are not sent without a dose or with an incomplete timing table.
+    const orderSets = [this.CreateEventdata, this.chemobiologicreset].filter(Boolean);
+    const noDose = orderSets.map(orders => missingDose(orders.controls, this.addministrationService.frequencyList)).find(Boolean);
+    if (noDose) { this.showErrorPopup('Enter the dose', noDose.text, 'Error'); return; }
+    const incomplete = orderSets
       .map(orders => incompleteTimedSchedule(orders.controls, this.addministrationService.frequencyList))
       .find(Boolean);
     if (incomplete) { this.showErrorPopup('Complete the timing table', incomplete.text, 'Error'); return; }
