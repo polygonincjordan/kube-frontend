@@ -15,6 +15,9 @@ import { EPrescriptionService } from '@services/e-Prescription/e-prescription.se
 import { parseDosdef, timedScheduleErrors } from '../shared-module/timed-dose-schedule';
 import { CreateAdministrationComponent } from './administration/create-administration/create-administration.component';
 import { FrequencyDeftimComponent } from './administration/frequency-deftim/frequency-deftim.component';
+import { CreateAdministrationComponent as EmergencyCreate } from '../emergency-dashboard/e-prescription/administration/create-administration/create-administration.component';
+import { FrequencyDeftimComponent as EmergencyFrequencyDeftim } from '../emergency-dashboard/e-prescription/administration/frequency-deftim/frequency-deftim.component';
+import { PriorToAdmissionComponent } from './to-admission/prior-to-admission/prior-to-admission.component';
 
 const frequencies = [
   { CycleKey: '0000000002', N1id: 'Q12H', OptionField: 'Q12H' },
@@ -310,3 +313,62 @@ describe('Inpatient create order: DEFTIM and DAILY timing table', () => {
     flush();
   }));
 });
+
+// These screens show a Dosdef box (not Quan) as the Dosage while a timing table is in use.
+[
+  { name: 'Emergency create order', component: EmergencyCreate, panel: EmergencyFrequencyDeftim },
+  { name: 'Prior to admission', component: PriorToAdmissionComponent, panel: FrequencyDeftimComponent },
+].forEach(screen => describe(`${screen.name}: Dosage box with a timing table`, () => {
+  let fixture: ComponentFixture<any>;
+
+  beforeEach(async () => {
+    const fire = swal.fire.bind(swal);
+    spyOn(swal, 'fire').and.callFake((options: any) => fire({ ...options, showClass: { popup: '' }, hideClass: { popup: '' } }));
+    await TestBed.configureTestingModule({
+      declarations: [screen.component, screen.panel],
+      imports: [CommonModule, FormsModule, ReactiveFormsModule, NgSelectModule,
+        BsDatepickerModule.forRoot(), NoopAnimationsModule, NgbCollapseModule],
+      providers: [
+        DatePipe,
+        { provide: ActivatedRoute, useValue: {} },
+        { provide: NgbModal, useValue: {} },
+        { provide: EPrescriptionService, useValue: {
+          parameters: {}, loadParameters: () => ({}), loadData: () => EMPTY, postData: () => EMPTY,
+          drugArrayActions$: { next: () => {}, getValue: () => ({ value: [] }), subscribe: () => {} },
+        } },
+        { provide: AddministrationService, useValue: {
+          frequencyList: frequencies, durationUnitList: [{ Unit: 'TAG', Text: 'Days' }],
+          routeDropdownList: [], medicationDrugList: [], physicianList: [],
+          medicationAdministrative: {}, loadDropdownList: () => {}, getStatFrequency: () => null,
+        } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
+
+  afterEach(() => {
+    swal.close();
+    fixture?.destroy();
+    TestBed.resetTestingModule();
+  });
+
+  it('is read-only and points to the timing table, which holds the doses', fakeAsync(() => {
+    fixture = TestBed.createComponent(screen.component as any);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    const row = component.drugArray.at(0) as FormGroup;
+    row.patchValue({ Result_Drug_Name: 'Test medication', AgentidResult: unitList, Quanunit: unitList[1], Agentid: 'A2', Quan: '150' });
+    row.markAsTouched();
+    row.patchValue({ N1znr: '0000000100' });
+    component.onChangeFrequencySet('0000000100', 0);
+    fixture.detectChanges(); tick(100); fixture.detectChanges();
+
+    const dosdef: HTMLInputElement = fixture.nativeElement.querySelector('input[formControlName="Dosdef"]');
+    expect(dosdef.value).toBe('150(08:00)');
+    expect(dosdef.readOnly).toBe(true);
+    expect(fixture.nativeElement.querySelector('.timed-dose-hint').textContent).toContain('Edit doses in the timing table');
+    const dose: HTMLInputElement = fixture.nativeElement.querySelector('frequency-deftim input[formControlName="deftimDose"]');
+    expect(dose.value).toBe('150');
+    flush();
+  }));
+}));

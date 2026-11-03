@@ -111,9 +111,12 @@
                               item.get('Dosdef').errors &&
                               isFormSubmitted ?
                               'ep-error-message': ''"
-                              [readonly]="item.value.Complex"/>
+                              [readonly]="item.value.Complex || isTimedSchedule(item)"/>
                           </span>
                         </span>
+                        <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule(item)" (click)="onOpenFrequencySet(i)">
+                          <u>Edit doses in the timing table</u>
+                        </small>
                       </td>
                       <td class="align-middle border-0 w-12 p-1"
                         *ngIf="!item.value.IsFrequencyDeftim">
