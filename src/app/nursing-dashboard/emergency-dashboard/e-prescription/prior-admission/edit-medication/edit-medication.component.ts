@@ -248,9 +248,9 @@ export class EditMedicationComponent implements OnInit {
   onChangeDosageUnit(data: any, event: any) {
     const selectedDosage = data.find(d => d.Meinh === event)
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
+      // The unit's default quantity is not applied, so the dose the physician entered is kept.
       this.editprofileForm.patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
-        Quan: Math.floor(selectedDosage.Quant)
       })
     } else {
       this.editprofileForm.patchValue({

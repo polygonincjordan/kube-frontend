@@ -85,9 +85,12 @@
                                 &&
                                 item.get('Dosdef').errors &&
                                 isFormSubmitted ?
-                                'ep-error-message': ''" [readonly]="item.value.Complex" />
+                                'ep-error-message': ''" [readonly]="item.value.Complex || isTimedSchedule(item)" />
                             </span>
                           </span>
+                          <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule(item)" (click)="onOpenFrequencySet(i)">
+                            <u>Edit doses in the timing table</u>
+                          </small>
                         </td>
                         <td class="align-middle border-0 w-12 p-1" *ngIf="!item.value.IsFrequencyDeftim && !(item.value.N1znr === '0000000100' || item.value.N1znr === '0000000003')">
                           <span class="d-flex align-items-center p-0
@@ -98,9 +101,12 @@
                               <input type="textbox" class="form-control" formControlName="Quan" [ngClass]="item.touched &&
                                 item.get('Quan').errors &&
                                 isFormSubmitted ?
-                                'ep-error-message': ''" [readonly]="item.value.Complex" appDigitDecimaNumber />
+                                'ep-error-message': ''" [readonly]="item.value.Complex || isTimedSchedule(item)" appDigitDecimaNumber />
                             </span>
                           </span>
+                          <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule(item)" (click)="onOpenFrequencySet(i)">
+                            First dose{{ firstScheduledTime(item) ? ' (' + firstScheduledTime(item) + ')' : '' }} &middot; <u>Edit doses in the timing table</u>
+                          </small>
                         </td>
                         <td class="align-middle border-0 w-18 p-1" *ngIf="!item.value.IsFrequencyDeftim">
                           <span class="d-flex align-items-center p-0 fontsize

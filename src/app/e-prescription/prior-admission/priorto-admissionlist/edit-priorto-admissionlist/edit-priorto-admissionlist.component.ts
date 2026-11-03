@@ -7,6 +7,7 @@ import { AddministrationService } from '@services/e-Prescription/Administration.
 import { EPrescriptionService } from '@services/e-Prescription/e-prescription.service';
 import swal from 'sweetalert2';
 import { PrnConditionPopupComponent } from 'src/app/e-prescription/discharge-order/prn-condition-popup/prn-condition-popup.component';
+import { firstScheduledDose, isTimedFrequency, parseDosdef, scheduledTime, timedDosdef, timedScheduleErrors, timedScheduleRows } from '../../../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'edit-priorto-admissionlist',
@@ -101,6 +102,7 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   }
 
   onEditAction() {
+    if (this.showDoseErrors()) { return; }
     // if (this.editprofileForm.valid) {
       delete this.editprofileForm.value.AgentidResult;
       delete this.editprofileForm.value.Rcodeid;
@@ -172,9 +174,9 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   onChangeDosageUnit(data: any, event: any) {
     const selectedDosage = data.find(d => d.Meinh === event)
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
+      // The unit's default quantity is not applied, so the dose the physician entered is kept.
       this.editprofileForm.patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
-        Quan: Math.floor(selectedDosage.Quant)
       })
     } else {
       this.editprofileForm.patchValue({
@@ -278,20 +280,11 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
   private setIfDeftimcycleDataKey(data?: string) {
     const frequencyData = this.addministrationService.frequencyList.find(d => d.CycleKey == data);
     if (this.editdata.N1znr === "0000000100" && frequencyData?.N1id == "DEFTIM") {
-      const defineDoses = this.editprofileForm.value?.Dosdef ? this.editprofileForm.value.Dosdef.split("-") : [];
-      if (defineDoses && defineDoses.length) {
-        let deftimDcycleData = [];
-        defineDoses.forEach((element) => {
-          const quanUnitDescription = element.split("(")[0];
-          const defineTimeMatch = element.match(/\(([^)]+)\)/);
-          if (defineTimeMatch && defineTimeMatch[1]) {
-            const defineTime = defineTimeMatch[1];
-            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.editprofileForm.value.Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
-          }
-        });
-        this.editprofileForm.get('deftimcycleData').setValue(deftimDcycleData)
-        const selectedData = deftimDcycleData.map(element => `${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`);
-        this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
+      // A saved schedule opens with its own dose per time.
+      if (parseDosdef(this.editprofileForm.value?.Dosdef).length) {
+        const scheduleRows = timedScheduleRows(this.editprofileForm.value);
+        this.editprofileForm.get('deftimcycleData').setValue(scheduleRows);
+        this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: firstScheduledDose(scheduleRows) });
       }
       this.validFromTobaseonDuration(this.editprofileForm.value);
       this.checkIsFrequencyDeftim();
@@ -313,27 +306,10 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
       }else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE") {
         this.editprofileForm.patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        const defineDoses = this.editprofileForm.value.Dosdef ? this.editprofileForm.value.Dosdef.split(" ") : [];
-        if (defineDoses && defineDoses.length) {
-          let deftimDcycleData = [];
-          defineDoses.forEach((element) => {
-            const quanUnitDescription = element.split("(")[0];
-            const defineTime = element.match(/\(([^)]+)\)/)[1];
-            deftimDcycleData.push({ deftimDose: quanUnitDescription, deftimDosageUnit: this.editprofileForm.value.Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T${defineTime}`) });
-            this.editprofileForm.get('deftimcycleData').setValue(deftimDcycleData)
-          });
-          deftimDcycleData = [];
-        } else {
-          this.editprofileForm.get('deftimcycleData').setValue([{ deftimDose: this.editprofileForm.value.Quan, deftimDosageUnit: this.editprofileForm.value.Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
-        }
-        const selectedData = [];
-        if (!this.editprofileForm.get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
-          selectedData.push("0(08:00)")
-        }
-        this.editprofileForm.get('deftimcycleData').value.forEach(element => {
-          selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-        });
-        this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
+        // A saved schedule keeps its own dose per time; otherwise the entered dose starts the first row.
+        const scheduleRows = timedScheduleRows(this.editprofileForm.value);
+        this.editprofileForm.get('deftimcycleData').setValue(scheduleRows);
+        this.editprofileForm.patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: firstScheduledDose(scheduleRows) });
       } else {
         this.editprofileForm.patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
@@ -349,6 +325,26 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
       this.checkIsFrequencyDeftim()
     }
   }
+
+  /** DEFTIM / DAILY doses are edited only in the timing table, so the Dosage is read-only. */
+  isTimedSchedule(): boolean {
+    return isTimedFrequency(this.addministrationService.frequencyList, this.editprofileForm.get('N1znr').value);
+  }
+
+  firstScheduledTime(): string {
+    const rows = this.editprofileForm.get('deftimcycleData').value;
+    return rows && rows.length ? scheduledTime(rows[0].deftimTime) : '';
+  }
+
+  /** A timing table in use needs a dose, unit and time in every row before the order is saved. */
+  showDoseErrors(): boolean {
+    const rows = this.editprofileForm.get('deftimcycleData').value;
+    const errors = this.isTimedSchedule() && rows && rows.length ? timedScheduleErrors(rows) : [];
+    if (!errors.length) { return false; }
+    this.onOpenFrequencySet();
+    this.showErrorPopup('Complete the timing table', `Missing ${this.editprofileForm.get('Result_Drug_Name').value || 'medication'}: ${errors.join('; ')}`, 'Error');
+    return true;
+  }
   public FrequencySetcycle(event, data: any) {
     if (event && event.length) {
       this.editprofileForm.get("deftimcycleData").setValue(event);
@@ -360,8 +356,9 @@ export class EditPriortoAdmissionlistComponent implements OnInit {
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
         this.onChangeDosageUnit(data, element.deftimDosageUnit)
       });
+      // Quan mirrors the first row's dose as entered; an empty dose stays empty so the order is blocked.
       this.editprofileForm.patchValue({
-        Quan: Math.floor(event[0].deftimDose),
+        Quan: firstScheduledDose(event),
         Quanunit: event[0].deftimDosageUnit,
       })
       this.editprofileForm.patchValue({

@@ -46,18 +46,24 @@
           position-relative pt-2">
           <span class="input-title z-indexlabel">Dosage</span>
           <span class="input-text-field d-inline-block align-top w-100">
-            <input type="text" class="form-control w-100" formControlName="Dosdef" [ngClass]="editprofileForm.value.touched && editprofileForm.value.get('Dosdef').errors && isFormSubmitted ? 'ep-error-message': ''" />
+            <input type="text" class="form-control w-100" formControlName="Dosdef" [readonly]="isTimedSchedule()" [ngClass]="editprofileForm.value.touched && editprofileForm.value.get('Dosdef').errors && isFormSubmitted ? 'ep-error-message': ''" />
           </span>
         </span>
+        <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule()" (click)="onOpenFrequencySet()">
+          <u>Edit doses in the timing table</u>
+        </small>
       </td>
        <td class="align-middle border-0 w-15 p-1" *ngIf="!editprofileForm.value.IsFrequencyDeftim && !(editprofileForm.value.N1znr === '0000000100' || editprofileForm.value.N1znr === '0000000003')">
         <span class="d-flex align-items-center p-0
           position-relative pt-2">
           <span class="input-title z-indexlabel">Dosage</span>
           <span class="input-text-field d-inline-block align-top w-100">
-            <input type="textbox" class="form-control w-100" formControlName="Quan" [ngClass]="editprofileForm.touched && editprofileForm.get('Quan').errors && isFormSubmitted ? 'ep-error-message': ''" appDigitDecimaNumber />
+            <input type="textbox" class="form-control w-100" formControlName="Quan" [readonly]="isTimedSchedule()" [ngClass]="editprofileForm.touched && editprofileForm.get('Quan').errors && isFormSubmitted ? 'ep-error-message': ''" appDigitDecimaNumber />
           </span>
         </span>
+        <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule()" (click)="onOpenFrequencySet()">
+          First dose{{ firstScheduledTime() ? ' (' + firstScheduledTime() + ')' : '' }} &middot; <u>Edit doses in the timing table</u>
+        </small>
       </td>
       <td class="align-middle border-0 w-15 p-1" *ngIf="!editprofileForm.value.IsFrequencyDeftim">
         <span class="d-flex align-items-center p-0

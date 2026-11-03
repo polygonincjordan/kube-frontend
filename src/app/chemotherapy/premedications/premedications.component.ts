@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChemotherapyService } from '@services/chemotherapy.service';
@@ -11,6 +11,7 @@ import { Subscription, distinctUntilChanged, of } from 'rxjs';
 import { TemplateDescriptionComponent } from 'src/app/e-prescription/administration/create-administration/template-description/template-description.component';
 import { AdditionInfoPopupComponent } from 'src/app/e-prescription/discharge-order/addition-info-popup/addition-info-popup.component';
 import swal from 'sweetalert2';
+import { firstScheduledDose, incompleteTimedSchedule, missingDose, isTimedFrequency, scheduledTime, restartedTimedSchedule, timedDosdef, timedScheduleRows } from '../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'premedications',
@@ -267,7 +268,7 @@ export class PremedicationsComponent implements OnInit {
       Aprouteid: new FormControl(null, Validators.required),
       Pdur: new FormControl(''),
       Pduru: new FormControl(null),
-      Quan: new FormControl('0', Validators.required),
+      Quan: new FormControl('', Validators.required),
       Quanunit: new FormControl(null, Validators.required),
       N1znr: new FormControl(null, Validators.required),
       Dosdef: new FormControl(""),
@@ -396,6 +397,14 @@ export class PremedicationsComponent implements OnInit {
 
   onSelectMedicine(event: any) {
     if (event.data) {
+      // The physician enters the dose; a previous medicine's dose must not carry over.
+      this.drugArray.controls[event.index].patchValue({ Quan: '' });
+      // A timing table starts over for the new medicine once its units are known.
+      const restartSchedule = this.isTimedSchedule(this.drugArray.controls[event.index]);
+      if (restartSchedule) {
+        this.drugArray.controls[event.index].patchValue({ IsFrequencyDeftim: false, Dosdef: '' });
+        this.drugArray.controls[event.index].get('deftimcycleData').setValue([]);
+      }
       this.defaultAgentId = event.data.Agentid;
       const filter = {
         einri: this.ePrescriptionService.parameters.einri,
@@ -435,8 +444,8 @@ export class PremedicationsComponent implements OnInit {
             this.drugArray.controls[event.index].patchValue({
               AgentidResult: resp.body.d.results,
               Quanunit: resp.body.d.results[0].Meinh,
-              Quan: resp.body.d.results[0].Quant && parseInt(resp.body.d.results[0].Quant) === Number(resp.body.d.results[0].Quant) ? parseInt(resp.body.d.results[0].Quant) : Number(resp.body.d.results[0].Quant)
             });
+            if (restartSchedule) { this.restartTimedSchedule(event.index); }
           }
         }
       });
@@ -452,9 +461,9 @@ export class PremedicationsComponent implements OnInit {
   onChangeDosageUnit(data: any, event: any, index: number) {
     const selectedDosage = data.find(d => d.Meinh === event)
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
+      // The unit's default quantity is not applied, so the dose the physician entered is kept.
       this.drugArray.controls[index].patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
-        Quan: Math.floor(selectedDosage.Quant)
       })
     } else {
       this.drugArray.controls[index].patchValue({
@@ -474,8 +483,9 @@ export class PremedicationsComponent implements OnInit {
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
         this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
       });
+      // Quan mirrors the first row's dose as entered; an empty dose stays empty so the order is blocked.
       this.drugArray.controls[index].patchValue({
-        Quan: Math.floor(event[0].deftimDose),
+        Quan: firstScheduledDose(event),
         Quanunit: event[0].deftimDosageUnit,
       })
       this.drugArray.controls[index].patchValue({
@@ -500,15 +510,10 @@ export class PremedicationsComponent implements OnInit {
       } else if (frequencyData && frequencyData.N1id && frequencyData.N1id == "ONCE" || data == "ONCE") {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "010" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[0].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
-        const selectedData = [];
-        if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
-          selectedData.push("0(08:00)")
-        }
-        this.drugArray.controls[index].get('deftimcycleData').value.forEach(element => {
-          selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-        });
-        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
+        // A saved schedule keeps its own dose per time; otherwise the entered dose starts the first row.
+        const scheduleRows = timedScheduleRows(this.drugArray.value[index]);
+        this.drugArray.controls[index].get('deftimcycleData').setValue(scheduleRows);
+        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: firstScheduledDose(scheduleRows) });
       } else {
         this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
@@ -522,6 +527,35 @@ export class PremedicationsComponent implements OnInit {
     if (this.drugArray.controls[index].get('deftimcycleData').value && this.drugArray.controls[index].get('deftimcycleData').value.length) {
       this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, IsmoDetails: false });
     }
+  }
+
+  /** DEFTIM / DAILY doses are edited only in the timing table, so the main Dosage is read-only. */
+  isTimedSchedule(row: AbstractControl): boolean {
+    return isTimedFrequency(this.addministrationService.frequencyList, row.get('N1znr').value);
+  }
+
+  /** Starts the timing table over for a new medicine: one 08:00 time without a dose. */
+  restartTimedSchedule(index: number) {
+    const row = this.drugArray.controls[index];
+    const scheduleRows = restartedTimedSchedule(row.value);
+    row.get('deftimcycleData').setValue(scheduleRows);
+    row.patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: '' });
+  }
+
+  firstScheduledTime(row: AbstractControl): string {
+    const rows = row.get('deftimcycleData').value;
+    return rows && rows.length ? scheduledTime(rows[0].deftimTime) : '';
+  }
+
+  /** Names a medicine without a dose, or opens the first timing table with a missing dose, unit or time and names what is missing. */
+  showDoseErrors(): boolean {
+    const noDose = missingDose(this.drugArray.controls, this.addministrationService.frequencyList);
+    if (noDose) { this.showErrorPopup('Enter the dose', noDose.text, 'Error'); return true; }
+    const incomplete = incompleteTimedSchedule(this.drugArray.controls, this.addministrationService.frequencyList);
+    if (!incomplete) { return false; }
+    incomplete.order.patchValue({ IsFrequencyDeftim: true, IsmoDetails: false });
+    this.showErrorPopup('Complete the timing table', incomplete.text, 'Error');
+    return true;
   }
 
 
@@ -714,6 +748,7 @@ export class PremedicationsComponent implements OnInit {
     }
   }
   onTemplateData() {
+    if (this.showDoseErrors()) { this.isFormSubmitted = true; return; }
     const TouchedForms = this.drugArray.controls.filter(d => d.touched && d.valid);
     if ((this.drugArray.controls && this.drugArray.controls.length) && (TouchedForms && TouchedForms.length)) {
       this.templateDescription.showPopup();

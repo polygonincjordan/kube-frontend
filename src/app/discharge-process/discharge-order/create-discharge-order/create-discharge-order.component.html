@@ -72,19 +72,25 @@
                                           type="textbox"
                                           min="0"
                                           class="form-control"
-                                          formControlName="Quan"
+                                          formControlName="Quan" [readonly]="isTimedSchedule(item)"
                                           [ngClass]="item.touched &&
                                             item.get('Quan').errors &&
                                             isFormSubmitted ?
                                             'ep-error-message': ''"
                                           appDigitDecimaNumber
                                           [ngModel]="item.get('Quan').value | removeTrailingZeros">
+                                    <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule(item)" (click)="onOpenFrequencySet(i)">
+                                      First dose{{ firstScheduledTime(item) ? ' (' + firstScheduledTime(item) + ')' : '' }} &middot; <u>Edit doses in the timing table</u>
+                                    </small>
                                   </td>
                                   <td class="border-td w-40" *ngIf="item.value.IsFrequencyDeftim">
-                                    <input type="text" class="form-control" formControlName="Dosdef" [ngClass]="item.touched &&
+                                    <input type="text" class="form-control" formControlName="Dosdef" [readonly]="isTimedSchedule(item)" [ngClass]="item.touched &&
                                     item.get('Dosdef').errors &&
                                     isFormSubmitted ?
                                     'ep-error-message': ''">
+                                    <small class="d-block text-muted c-pointer timed-dose-hint" *ngIf="isTimedSchedule(item)" (click)="onOpenFrequencySet(i)">
+                                      <u>Edit doses in the timing table</u>
+                                    </small>
                                   </td>
                                   <td class="border-td">
                                     <div *ngIf="item.get('IsPatientMedication').value">

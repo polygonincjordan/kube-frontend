@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/medication-dose-spec",
+    "types": ["jasmine", "node"]
+  },
+  "files": ["src/test-medication-dose.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts"]
+}

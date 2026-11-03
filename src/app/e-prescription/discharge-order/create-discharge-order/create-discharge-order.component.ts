@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild ,AfterContentChecked ,ChangeDetectorRef} from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { EPrescriptionService, PatientMedicationData, TemplateMedDataList, TemplateMedDataListget } from '@services/e-Prescription/e-prescription.service';
 import swal from 'sweetalert2';
@@ -9,6 +9,7 @@ import { AddministrationService } from '@services/e-Prescription/Administration.
 import { element } from 'protractor';
 import { Subscription } from 'rxjs';
 import { TemplateDescriptionComponent } from '../../administration/create-administration/template-description/template-description.component';
+import { firstScheduledDose, incompleteTimedSchedule, missingDose, isTimedFrequency, isUntimedFrequency, scheduledTime, restartedTimedSchedule, timedDosdef, timedScheduleRows } from '../../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'create-discharge-order',
@@ -261,6 +262,14 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
 
   onSelectMedicine(event: any) {
     if (event.data) {
+      // The physician enters the dose; a previous medicine's dose must not carry over.
+      this.drugArray.controls[event.index].patchValue({ Quan: '' });
+      // A timing table starts over for the new medicine once its units are known.
+      const restartSchedule = this.isTimedSchedule(this.drugArray.controls[event.index]);
+      if (restartSchedule) {
+        this.drugArray.controls[event.index].patchValue({ IsFrequencyDeftim: false, Dosdef: '' });
+        this.drugArray.controls[event.index].get('deftimcycleData').setValue([]);
+      }
       const selectedData = event.medicationDruglist.filter(d => d.Drugid === event.data) || this.medicationDrugList.filter(d => d.Drugid === event.data);
       if (selectedData && selectedData.length) {
         const filter = {
@@ -305,8 +314,8 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
               this.drugArray.controls[event.index].patchValue({
                 AgentidResult: resp.body.d.results,
                 Quanunit: resp.body.d.results[0].Meinh,
-                Quan: resp.body.d.results[0].Quant && parseInt(resp.body.d.results[0].Quant) === Number(resp.body.d.results[0].Quant) ? parseInt(resp.body.d.results[0].Quant) : Number(resp.body.d.results[0].Quant)
               });
+              if (restartSchedule) { this.restartTimedSchedule(event.index); }
             }
           }
         });
@@ -324,9 +333,9 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
   onChangeDosageUnit(data: any, event: any, index: number) {
     const selectedDosage = data.find(d => d.Meinh === event)
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
+      // The unit's default quantity is not applied, so the dose the physician entered is kept.
       this.drugArray.controls[index].patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
-        Quan: Math.floor(selectedDosage.Quant)
       })
     } else {
       this.drugArray.controls[index].patchValue({
@@ -381,7 +390,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
       Aprouteid: new FormControl(''),
       Pdur: new FormControl('0', Validators.required),
       Pduru: new FormControl(null, Validators.required),
-      Quan: new FormControl('0', Validators.required),
+      Quan: new FormControl('', Validators.required),
       Quanunit: new FormControl(null, Validators.required),
       N1znr: new FormControl(''),
       Prn: new FormControl(false),
@@ -417,6 +426,41 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
       this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true });
     }
   }
+
+  /** The chosen frequency: N1ztxt holds its key once picked here, N1znr the key of a loaded order. */
+  frequencyKey(row: AbstractControl): any {
+    const selected = row.get('N1ztxt').value;
+    return (this.addministrationService.frequencyList || []).some(d => d.CycleKey == selected) ? selected : row.get('N1znr').value;
+  }
+
+  /** DEFTIM / DAILY doses are edited only in the timing table, so the Dosage fields are read-only. */
+  isTimedSchedule(row: AbstractControl): boolean {
+    return isTimedFrequency(this.addministrationService.frequencyList, this.frequencyKey(row));
+  }
+
+  /** Starts the timing table over for a new medicine: one 08:00 time without a dose. */
+  restartTimedSchedule(index: number) {
+    const row = this.drugArray.controls[index];
+    const scheduleRows = restartedTimedSchedule(row.value);
+    row.get('deftimcycleData').setValue(scheduleRows);
+    row.patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: '' });
+  }
+
+  firstScheduledTime(row: AbstractControl): string {
+    const rows = row.get('deftimcycleData').value;
+    return rows && rows.length ? scheduledTime(rows[0].deftimTime) : '';
+  }
+
+  /** Names a medicine without a dose, or opens the first timing table with a missing dose, unit or time and names what is missing. */
+  showDoseErrors(): boolean {
+    const noDose = missingDose(this.drugArray.controls, this.addministrationService.frequencyList, row => this.frequencyKey(row));
+    if (noDose) { this.showErrorPopup('Enter the dose', noDose.text, 'Error'); return true; }
+    const incomplete = incompleteTimedSchedule(this.drugArray.controls, this.addministrationService.frequencyList, row => this.frequencyKey(row));
+    if (!incomplete) { return false; }
+    incomplete.order.patchValue({ IsFrequencyDeftim: true });
+    this.showErrorPopup('Complete the timing table', incomplete.text, 'Error');
+    return true;
+  }
   serachInput(term: string, item: any) {
     term = term.toLowerCase();
     return (item.Descr.toLowerCase().includes(term) || item.Aprou.toLowerCase().includes(term))
@@ -432,8 +476,9 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
         this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
       });
+      // Quan mirrors the first row's dose as entered; an empty dose stays empty so the order is blocked.
       this.drugArray.controls[index].patchValue({
-        Quan: Math.floor(event[0].deftimDose),
+        Quan: firstScheduledDose(event),
         Quanunit: event[0].deftimDosageUnit,
       })
       this.drugArray.controls[index].patchValue({
@@ -449,30 +494,11 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        if (eventData && eventData === "change") { this.drugArray.controls[index].get('Dosdef').setValue(null); }
-        if (!this.drugArray.value[index].Dosdef) {
-          this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[index].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
-          const selectedData = [];
-          if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
-            selectedData.push("0(08:00)")
-          }
-          this.drugArray.controls[index].get('deftimcycleData').value.forEach(element => {
-            selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-          });
-          this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
-        } else if (this.drugArray.value[index].Dosdef) {
-          const dosDefSplit = this.drugArray.controls[index].get('Dosdef').value.split("-");
-          if (dosDefSplit && dosDefSplit.length) {
-            const selectedMedicationData = [];
-            this.drugArray.controls[index].get('Dosdef').value.split("-").forEach(element => {
-              const getdefDose = element.split("");
-              const getdefTime = getdefDose.slice(2, 7).join("");
-              selectedMedicationData.push({ deftimDose: getdefDose[0], deftimTime: getdefTime, deftimDosageUnit: this.drugArray.value[index].Quanunit });
-            });
-            this.drugArray.controls[index].get('deftimcycleData').setValue(selectedMedicationData);
-          }
-          this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true });
-        }
+        // A saved schedule keeps its own dose per time, also when the frequency is changed and chosen again;
+        // otherwise the entered dose starts the first row.
+        const scheduleRows = timedScheduleRows(this.drugArray.value[index]);
+        this.drugArray.controls[index].get('deftimcycleData').setValue(scheduleRows);
+        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: firstScheduledDose(scheduleRows) });
       } else {
         this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
@@ -503,6 +529,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
   onSubmitData() {
     let postObject = this.ePrescriptionService.loadParameters(true, true, true, true)
     this.isFormSubmitted = true;
+    if (this.showDoseErrors()) { return; }
     if (this.drugArray.controls && this.drugArray.controls.length) {
       const invalidForms = this.drugArray.controls.filter(d => !d.valid && d.touched);
       const validForms = this.drugArray.controls.filter(d => d.valid);
@@ -518,6 +545,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
           element.Prncond = element.Prn ? element.Prncond : "";
           element.N1ztxt = frequencyData && frequencyData.Text ? frequencyData.Text : element.N1ztxt!="" ? element.N1ztxt :"";
           element.N1znr =  frequencyData && frequencyData.CycleKey ? frequencyData.CycleKey : element.N1znr!=""? element.N1znr:"";
+          element.Dosdef = isUntimedFrequency(this.addministrationService.frequencyList, element.N1znr) ? "" : element.Dosdef;
           delete element.IsPatientMedication;
           delete element.AgentidResult;
           delete element.deftimcycleData;
@@ -557,6 +585,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
   onTemplate() {
     let postObject = this.ePrescriptionService.loadParameters(true, true, true, true)
     this.isFormSubmitted = true;
+    if (this.showDoseErrors()) { return; }
     if (this.drugArray.controls && this.drugArray.controls.length) {
       this.templateDescription.showPopup();
       if (this.subscription) { this.subscription.unsubscribe(); }
@@ -572,6 +601,7 @@ export class CreateDischargeOrderComponent implements OnInit , AfterContentCheck
             element.Pdur = `${element.Pdur}`;
             element.N1ztxt = frequencyData && frequencyData.Text ? frequencyData.Text : element.N1ztxt!="" ? element.N1ztxt :"";
             element.N1znr =  frequencyData && frequencyData.CycleKey ? frequencyData.CycleKey : element.N1znr!=""? element.N1znr:"";
+            element.Dosdef = isUntimedFrequency(this.addministrationService.frequencyList, element.N1znr) ? "" : element.Dosdef;
             element.Aprouteid = element.Routedescr.Aprouid !== undefined ? element.Routedescr.Aprouid :element.Aprouteid;
             element.Routedescr = element.Routedescr.Descr !== undefined ? element.Routedescr.Descr :element.Routedescr;
             element.Prncond = element.Prn ? element.Prncond : "";
