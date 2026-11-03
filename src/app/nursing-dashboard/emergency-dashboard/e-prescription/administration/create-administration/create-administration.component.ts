@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService, TemplateMedDataList } from '@services/e-Prescription/e-prescription.service';
@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import swal from 'sweetalert2';
 import { AdditionInfoPopupComponent } from '../../discharge-order/addition-info-popup/addition-info-popup.component';
 import { CycleDefinitionPopupComponent } from '../../../../../shared-module/cycle-definition/cycle-definition-popup.component';
+import { firstScheduledDose, incompleteTimedSchedule, isTimedFrequency, scheduledTime, timedDosdef, timedScheduleRows } from '../../../../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'create-administration',
@@ -105,7 +106,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       Aprouteid: new FormControl(null, Validators.required),
       Pdur: new FormControl('0'),
       Pduru: new FormControl(null),
-      Quan: new FormControl('0', Validators.required),
+      Quan: new FormControl('', Validators.required),
       Quanunit: new FormControl(null, Validators.required),
       N1znr: new FormControl(null, Validators.required),
       Dosdef: new FormControl(""),
@@ -221,6 +222,8 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   onSelectMedicine(event: any) {
     this.defaultAgentId = event.data.Agentid;
     if (event.data) {
+      // The physician enters the dose; a previous medicine's dose must not carry over.
+      this.drugArray.controls[event.index].patchValue({ Quan: '' });
       const filter = {
         einri: this.ePrescriptionService.parameters.einri,
         case: this.ePrescriptionService.parameters.falnr,
@@ -259,7 +262,6 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
             this.drugArray.controls[event.index].patchValue({
               AgentidResult: resp.body.d.results,
               Quanunit: resp.body.d.results[0].Meinh,
-              Quan: Math.floor(resp.body.d.results[0].Quant)
             })
           }
         }
@@ -270,9 +272,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   onChangeDosageUnit(data: any, event: any, index: number) {
     const selectedDosage = data.find(d => d.Meinh === event)
     if (selectedDosage !== undefined && selectedDosage.Agentid !== '') {
+      // The unit's default quantity is not applied, so the dose the physician entered is kept.
       this.drugArray.controls[index].patchValue({
         Agentid: selectedDosage.Agentid !== null ? selectedDosage.Agentid : "",
-        Quan: Math.floor(selectedDosage.Quant)
       })
     } else {
       this.drugArray.controls[index].patchValue({
@@ -292,8 +294,9 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
         this.onChangeDosageUnit(data, element.deftimDosageUnit, index)
       });
+      // Quan mirrors the first row's dose as entered; an empty dose stays empty so the order is blocked.
       this.drugArray.controls[index].patchValue({
-        Quan: Math.floor(event[0].deftimDose),
+        Quan: firstScheduledDose(event),
         Quanunit: event[0].deftimDosageUnit,
       })
       this.drugArray.controls[index].patchValue({
@@ -316,15 +319,10 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
       if (frequencyData !== undefined && (frequencyData == "STAT" || frequencyData == "ONCE")) {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030" });
       } else if (frequencyData !== undefined && (frequencyData == "DEFTIM" || frequencyData == "DAILY")) {
-        this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[0].Quan, deftimDosageUnit: this.drugArray.value[0].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
-        const selectedData = [];
-        if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
-          selectedData.push("0(08:00)")
-        }
-        this.drugArray.controls[index].get('deftimcycleData').value.forEach(element => {
-          selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-        });
-        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
+        // A saved schedule keeps its own dose per time; otherwise the entered dose starts the first row.
+        const scheduleRows = timedScheduleRows(this.drugArray.value[index]);
+        this.drugArray.controls[index].get('deftimcycleData').setValue(scheduleRows);
+        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: firstScheduledDose(scheduleRows) });
       } else {
         this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
@@ -338,6 +336,25 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
     if (this.drugArray.controls[index].get('deftimcycleData').value && this.drugArray.controls[index].get('deftimcycleData').value.length) {
       this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true });
     }
+  }
+
+  /** DEFTIM / DAILY doses are edited only in the timing table, so the main Dosage is read-only. */
+  isTimedSchedule(row: AbstractControl): boolean {
+    return isTimedFrequency(this.addministrationService.frequencyList, row.get('N1znr').value);
+  }
+
+  firstScheduledTime(row: AbstractControl): string {
+    const rows = row.get('deftimcycleData').value;
+    return rows && rows.length ? scheduledTime(rows[0].deftimTime) : '';
+  }
+
+  /** Opens the first timing table with a missing dose, unit or time and names what is missing. */
+  showTimedScheduleErrors(): boolean {
+    const incomplete = incompleteTimedSchedule(this.drugArray.controls, this.addministrationService.frequencyList);
+    if (!incomplete) { return false; }
+    incomplete.order.patchValue({ IsFrequencyDeftim: true, IsmoDetails: false });
+    this.showErrorPopup('Complete the timing table', incomplete.text, 'Error');
+    return true;
   }
 
   validFromTobaseonDuration(index: number, data: any) {
@@ -584,6 +601,7 @@ export class CreateAdministrationComponent implements OnInit, OnDestroy {
   onSubmitData() {
     let postObject = this.ePrescriptionService.loadParameters(true, true, true, true)
     this.isFormSubmitted = true;
+    if (this.showTimedScheduleErrors()) { return; }
     if (this.drugArray.controls && this.drugArray.controls.length) {
       const invalidForms = this.drugArray.controls.filter(d => !d.valid && d.touched);
       const validForms = this.drugArray.controls.filter(d => d.valid && d.touched);

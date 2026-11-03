@@ -1,6 +1,6 @@
 import { formatDate } from 'ngx-bootstrap/chronos';
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
+import { AbstractControl, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AddministrationService } from '@services/e-Prescription/Administration.service';
 import { EPrescriptionService, PatientMedicationData, TemplateMedDataList } from '@services/e-Prescription/e-prescription.service';
@@ -10,6 +10,7 @@ import { TemplateDescriptionComponent } from 'src/app/e-prescription/administrat
 import { AdditionInfoPopupComponent } from 'src/app/e-prescription/discharge-order/addition-info-popup/addition-info-popup.component';
 import { ChemotherapyService } from '@services/chemotherapy.service';
 import { DatePipe } from '@angular/common';
+import { firstScheduledDose, incompleteTimedSchedule, isTimedFrequency, isUntimedFrequency, scheduledTime, timedDosdef, timedScheduleRows } from '../../shared-module/timed-dose-schedule';
 
 @Component({
   selector: 'chemo-discharge',
@@ -411,6 +412,8 @@ export class ChemoDischargeComponent implements OnInit {
 
   onSelectMedicine(event: any) {
     if (event.data) {
+      // The physician enters the dose; a previous medicine's dose must not carry over.
+      this.drugArray.controls[event.index].patchValue({ Quan: '' });
       const selectedData = event.medicationDruglist.filter(d => d.Drugid === event.data) || this.medicationDrugList.filter(d => d.Drugid === event.data);
       if (selectedData && selectedData.length) {
         const filter = {
@@ -528,7 +531,7 @@ export class ChemoDischargeComponent implements OnInit {
       Aprouteid: new FormControl(''),
       Pdur: new FormControl('0', Validators.required),
       Pduru: new FormControl(null, Validators.required),
-      Quan: new FormControl('0', Validators.required),
+      Quan: new FormControl('', Validators.required),
       Quanunit: new FormControl(''),
       N1znr: new FormControl(''),
       Prn: new FormControl(false),
@@ -569,6 +572,31 @@ export class ChemoDischargeComponent implements OnInit {
     }
   }
 
+  /** The chosen frequency: N1ztxt holds its key once picked here, N1znr the key of a loaded order. */
+  frequencyKey(row: AbstractControl): any {
+    const selected = row.get('N1ztxt').value;
+    return (this.frequencyList || []).some(d => d.CycleKey == selected) ? selected : row.get('N1znr').value;
+  }
+
+  /** DEFTIM / DAILY doses are edited only in the timing table, so the Dosage fields are read-only. */
+  isTimedSchedule(row: AbstractControl): boolean {
+    return isTimedFrequency(this.frequencyList, this.frequencyKey(row));
+  }
+
+  firstScheduledTime(row: AbstractControl): string {
+    const rows = row.get('deftimcycleData').value;
+    return rows && rows.length ? scheduledTime(rows[0].deftimTime) : '';
+  }
+
+  /** Opens the first timing table with a missing dose, unit or time and names what is missing. */
+  showTimedScheduleErrors(): boolean {
+    const incomplete = incompleteTimedSchedule(this.drugArray.controls, this.frequencyList, row => this.frequencyKey(row));
+    if (!incomplete) { return false; }
+    incomplete.order.patchValue({ IsFrequencyDeftim: true });
+    this.showErrorPopup('Complete the timing table', incomplete.text, 'Error');
+    return true;
+  }
+
   FrequencySetcycle(event, index: number) {
     if (event && event.length) {
       this.drugArray.controls[index].get("deftimcycleData").setValue(event);
@@ -579,8 +607,9 @@ export class ChemoDischargeComponent implements OnInit {
       event.forEach(element => {
         selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
       });
+      // Quan mirrors the first row's dose as entered; an empty dose stays empty so the order is blocked.
       this.drugArray.controls[index].patchValue({
-        Quan: Math.floor(event[0].deftimDose),
+        Quan: firstScheduledDose(event),
         Quanunit: event[0].deftimDosageUnit,
       })
       this.drugArray.controls[index].patchValue({
@@ -596,30 +625,11 @@ export class ChemoDischargeComponent implements OnInit {
       if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "STAT" || frequencyData.N1id == "ONCE")) {
         this.drugArray.controls[index].patchValue({ Pdur: 1, Pduru: "DOS", Priority: "030" });
       } else if (frequencyData && frequencyData.N1id && (frequencyData.N1id == "DEFTIM" || frequencyData.N1id == "DAILY")) {
-        if (eventData && eventData === "change") { this.drugArray.controls[index].get('Dosdef').setValue(null); }
-        if (!this.drugArray.value[index].Dosdef) {
-          this.drugArray.controls[index].get('deftimcycleData').setValue([{ deftimDose: this.drugArray.value[index].Quan, deftimDosageUnit: this.drugArray.value[index].Quanunit, deftimTime: new Date(`${formatDate(new Date(), "YYYY-MM-DD")}T08:00`) }]);
-          const selectedData = [];
-          if (!this.drugArray.controls[index].get('deftimcycleData').value.find(d => formatDate(d.deftimTime, "HH:mm") === "08:00")) {
-            selectedData.push("0(08:00)")
-          }
-          this.drugArray.controls[index].get('deftimcycleData').value.forEach(element => {
-            selectedData.push(`${element.deftimDose}(${formatDate(element.deftimTime, "HH:mm")})`)
-          });
-          this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: selectedData.join("-") });
-        } else if (this.drugArray.value[index].Dosdef) {
-          const dosDefSplit = this.drugArray.controls[index].get('Dosdef').value.split("-");
-          if (dosDefSplit && dosDefSplit.length) {
-            const selectedMedicationData = [];
-            this.drugArray.controls[index].get('Dosdef').value.split("-").forEach(element => {
-              const getdefDose = element.split("");
-              const getdefTime = getdefDose.slice(2, 7).join("");
-              selectedMedicationData.push({ deftimDose: getdefDose[0], deftimTime: getdefTime, deftimDosageUnit: this.drugArray.value[index].Quanunit });
-            });
-            this.drugArray.controls[index].get('deftimcycleData').setValue(selectedMedicationData);
-          }
-          this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true });
-        }
+        // A saved schedule keeps its own dose per time, also when the frequency is changed and chosen again;
+        // otherwise the entered dose starts the first row.
+        const scheduleRows = timedScheduleRows(this.drugArray.value[index]);
+        this.drugArray.controls[index].get('deftimcycleData').setValue(scheduleRows);
+        this.drugArray.controls[index].patchValue({ IsFrequencyDeftim: true, Dosdef: timedDosdef(scheduleRows), Quan: firstScheduledDose(scheduleRows) });
       } else {
         this.drugArray.controls[index].patchValue({ Priority: "010", IsFrequencyDeftim: false });
       }
@@ -669,6 +679,7 @@ export class ChemoDischargeComponent implements OnInit {
   onSubmitData() {
     let postObject = this.ePrescriptionService.loadParameters(true, true, true, true)
     this.isFormSubmitted = true;
+    if (this.showTimedScheduleErrors()) { return; }
     if (this.drugArray.controls && this.drugArray.controls.length) {
       const invalidForms = this.drugArray.controls.filter(d => !d.valid && d.touched);
       const validForms = this.drugArray.controls.filter(d => d.valid && d.touched);
@@ -682,6 +693,7 @@ export class ChemoDischargeComponent implements OnInit {
           element.Prncond = element.Prn ? element.Prncond : "";
           element.N1ztxt = frequencyData && frequencyData.Text ? frequencyData.Text : element.N1ztxt != "" ? element.N1ztxt : "";
           element.N1znr = frequencyData && frequencyData.CycleKey ? frequencyData.CycleKey : element.N1znr != "" ? element.N1znr : "";
+          element.Dosdef = isUntimedFrequency(this.frequencyList, element.N1znr) ? "" : element.Dosdef;
           delete element.IsPatientMedication;
           delete element.AgentidResult;
           delete element.deftimcycleData;
@@ -722,6 +734,7 @@ export class ChemoDischargeComponent implements OnInit {
   onTemplate() {
     let postObject = this.ePrescriptionService.loadParameters(true, true, true, true)
     this.isFormSubmitted = true;
+    if (this.showTimedScheduleErrors()) { return; }
     if (this.drugArray.controls && this.drugArray.controls.length) {
       this.templateDescription.showPopup();
       if (this.subscription) { this.subscription.unsubscribe(); }
@@ -737,6 +750,7 @@ export class ChemoDischargeComponent implements OnInit {
             element.Pdur = `${element.Pdur}`;
             element.N1ztxt = frequencyData && frequencyData.Text ? frequencyData.Text : element.N1ztxt != "" ? element.N1ztxt : "";
             element.N1znr = frequencyData && frequencyData.CycleKey ? frequencyData.CycleKey : element.N1znr != "" ? element.N1znr : "";
+            element.Dosdef = isUntimedFrequency(this.frequencyList, element.N1znr) ? "" : element.Dosdef;
             element.Prncond = element.Prn ? element.Prncond : "";
             delete element.IsPatientMedication;
             delete element.AgentidResult;

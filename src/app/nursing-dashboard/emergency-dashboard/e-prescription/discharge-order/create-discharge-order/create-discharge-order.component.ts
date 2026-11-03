@@ -237,6 +237,8 @@ export class CreateDischargeOrderComponent implements OnInit {
 
   onSelectMedicine(event: any) {
     if (event.data) {
+      // The physician enters the dose; a previous medicine's dose must not carry over.
+      this.drugArray.controls[event.index].patchValue({ Quan: '' });
       const selectedData = event.medicationDruglist.filter(d => d.Drugid === event.data) || this.medicationDrugList.filter(d => d.Drugid === event.data);
       if (selectedData && selectedData.length) {
         const filter = {
@@ -332,7 +334,7 @@ export class CreateDischargeOrderComponent implements OnInit {
       Aprouteid: new FormControl(''),
       Pdur: new FormControl('0', Validators.required),
       Pduru: new FormControl(null, Validators.required),
-      Quan: new FormControl('0', Validators.required),
+      Quan: new FormControl('', Validators.required),
       Quanunit: new FormControl(null, Validators.required),
       N1znr: new FormControl(''),
       Prn: new FormControl(false),

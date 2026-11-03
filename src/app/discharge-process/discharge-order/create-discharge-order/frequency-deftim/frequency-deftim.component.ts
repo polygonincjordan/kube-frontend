@@ -47,7 +47,8 @@ export class FrequencyDeftimComponent implements OnInit, OnDestroy {
 
   generateDeftimCycle() {
     return new FormGroup({
-      deftimDose: new FormControl('1'),
+      // A new time starts without a dose until the physician enters one.
+      deftimDose: new FormControl(''),
       deftimDosageUnit: new FormControl(this.defaultData.Quanunit),
       deftimTime: new FormControl(null)
     })
